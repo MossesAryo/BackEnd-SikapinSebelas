@@ -8,11 +8,11 @@ use Illuminate\Support\Facades\Schema;
 return new class extends Migration {
     public function up() {
         Schema::create('penilaian', function (Blueprint $table) {
-            $table->id('id_penilaian');
+            $table->integer('id_penilaian')->unique();
             $table->Integer('nip_wakasek')->nullable();
             $table->Integer('nip_walikelas')->nullable();
             $table->Integer('nip_bk')->nullable();
-            $table->unsignedBigInteger('id_aspek_penilaian');
+            $table->integer('id_aspek_penilaian');
             $table->Integer('nis');
             $table->date('tanggal');
             

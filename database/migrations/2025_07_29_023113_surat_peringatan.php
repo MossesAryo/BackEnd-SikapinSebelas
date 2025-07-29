@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Schema;
 return new class extends Migration {
     public function up() {
         Schema::create('surat_peringatan', function (Blueprint $table) {
-            $table->id('id_sp');
+            $table->integer('id_sp')->unique();
             $table->integer('nis');
             $table->date('tanggal_sp');
             $table->enum('level_sp', ['SP1', 'SP2', 'SP3']);
