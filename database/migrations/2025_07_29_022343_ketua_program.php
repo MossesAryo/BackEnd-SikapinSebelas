@@ -9,11 +9,11 @@ return new class extends Migration {
     public function up() {
         Schema::create('ketua_program', function (Blueprint $table) {
             $table->integer('nip_kaprog');
-            $table->unsignedBigInteger('id_user');
+            $table->string('username');
             $table->string('nama_ketua_program');
             $table->string('jurusan');
             
-            $table->foreign('id_user')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('username')->references('username')->on('users')->onDelete('cascade');
         });
     }
     public function down() {

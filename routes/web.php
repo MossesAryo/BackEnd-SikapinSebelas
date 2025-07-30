@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\LaporanController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\KelasController;
 use App\Http\Controllers\PenilaianController;
 use App\Http\Controllers\SiswaController;
 
@@ -25,10 +26,17 @@ Route::get('/wakasek/penilaian', [PenilaianController::class, 'index'])->name('w
 Route::get('/wakasek', fn() => view('wakasek.dashboard'))->name('wakasek.dashboard');
 Route::get('/gurubk', fn() => view('gurubk.dashboard'))->name('gurubk.dashboard');
 
+
 Route::get('/siswa', [SiswaController::class, 'index'])->name('siswa.index');
 Route::get('/siswa/create', [SiswaController::class, 'create'])->name('siswa.create');
 Route::put('/siswa/{nis}/update', [SiswaController::class, 'update'])->name('siswa.update');
 Route::delete('/siswa/{nis}', [SiswaController::class, 'destroy'])->name('siswa.destroy');
+
+
+Route::get('/kelas', [KelasController::class, 'index'])->name('kelas');
+Route::post('/kelas/store', [KelasController::class, 'store'])->name('kelas.store');
+Route::put('/kelas/{id}/update', [KelasController::class, 'update'])->name('kelas.update');
+Route::delete('/kelas/{id}/destroy', [KelasController::class, 'destroy'])->name('kelas.destroy');
 
 
 
