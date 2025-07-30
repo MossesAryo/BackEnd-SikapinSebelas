@@ -15,13 +15,13 @@
                 <nav class="mt-8">
                     <ul class="space-y-2">
                         <li>
-                            <a href="#" class="flex items-center gap-3 px-4 py-3 text-blue-600 bg-blue-50 rounded-lg">
+                         <a href="{{ route('wakasek.dashboard') }}" class="flex items-center gap-3 px-4 py-3 text-blue-600 bg-blue-50 rounded-lg">
                                 <i class="bi bi-house"></i>
                                 <span>Dashboard</span>
                             </a>
                         </li>
                         <li>
-                            <a href="#" class="flex items-center gap-3 px-4 py-3 text-gray-600 hover:bg-gray-50 rounded-lg">
+                            <a href="{{ route('siswa.index') }}" class="flex items-center gap-3 px-4 py-3 text-gray-600 hover:bg-gray-50 rounded-lg">
                                 <i class="bi bi-people"></i>
                                 <span>Siswa</span>
                             </a>
