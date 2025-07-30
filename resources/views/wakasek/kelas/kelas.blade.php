@@ -164,14 +164,14 @@
                     <div>
                         <label for="id_kelas" class="block text-sm font-medium text-gray-700">ID Kelas</label>
                         <input type="text" id="id_kelas" name="id_kelas"
-                            class="mt-1 block w-full border border-gray-300 rounded-lg shadow-sm px-3 py-1.5 focus:ring focus:ring-blue-200 focus:outline-none"
-                            placeholder="Contoh: B0001 atau IT0001" required>
+                            class="mt-1 block w-full border border-gray-300 rounded-lg shadow-sm px-3 py-1.5 focus:ring focus:ring-blue-200 focus:outline-none uppercase"
+                            placeholder="Contoh: B001 atau IT001" required>
                     </div>
                     <div>
                         <label for="nama_kelas" class="block text-sm font-medium text-gray-700">Nama Kelas</label>
                         <input type="text" id="nama_kelas" name="nama_kelas"
-                            class="mt-1 block w-full border border-gray-300 rounded-lg shadow-sm px-3 py-1.5 focus:ring focus:ring-blue-200 focus:outline-none"
-                            placeholder="Contoh: XII RPL 1">
+                            class="mt-1 block w-full border border-gray-300 rounded-lg shadow-sm px-3 py-1.5 focus:ring focus:ring-blue-200 focus:outline-none uppercase"
+                            placeholder="Contoh: 12 RPL 1">
                     </div>
                 </div>
                 <div class="flex justify-end gap-2">
@@ -193,19 +193,19 @@
                 <div class="flex justify-between items-center">
                     <h2 class="text-xl font-bold text-gray-700">Edit Kelas</h2>
                     <button type="button" onclick="document.getElementById('modal-edit').classList.add('hidden')"
-                        class="text-gray-500 hover:text-gray-700 text-xl">&times;</button>
+                        class="text-gray-500 hover:text-gray-700 text-xl ">&times;</button>
                 </div>
                 <div class="space-y-2">
                     <div>
                         <label for="edit_id_kelas" class="block text-sm font-medium text-gray-700">ID Kelas</label>
                         <input type="text" id="edit_id_kelas" name="id_kelas"
-                            class="mt-1 block w-full border border-gray-300 rounded-lg shadow-sm px-3 py-1.5 focus:ring focus:ring-blue-200 focus:outline-none"
+                            class="uppercase mt-1 block w-full border border-gray-300 rounded-lg shadow-sm px-3 py-1.5 focus:ring focus:ring-blue-200 focus:outline-none"
                             >
                     </div>
                     <div>
                         <label for="edit_nama_kelas" class="block text-sm font-medium text-gray-700">Nama Kelas</label>
                         <input type="text" id="edit_nama_kelas" name="nama_kelas"
-                            class="mt-1 block w-full border border-gray-300 rounded-lg shadow-sm px-3 py-1.5 focus:ring focus:ring-blue-200 focus:outline-none"
+                            class="uppercase mt-1 block w-full border border-gray-300 rounded-lg shadow-sm px-3 py-1.5 focus:ring focus:ring-blue-200 focus:outline-none"
                             required>
                     </div>
                 </div>

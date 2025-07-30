@@ -64,7 +64,7 @@ class KelasController extends Controller
             'nama_kelas' => 'required',
         ]);
 
-        kelas::find($id)->update($data);
+        kelas::where('id_kelas', $id)->update($data);
         return redirect()->route('kelas')->with('success', 'kelas berhasil diedit');
     }
 
@@ -73,7 +73,7 @@ class KelasController extends Controller
      */
     public function destroy(string $id)
     {
-        $data = kelas::find($id)->delete();
+        $data = kelas::where('id_kelas', $id)->delete();
 
         return redirect()->route('kelas')->with('success', 'kelas berhasil dihapus');
     }

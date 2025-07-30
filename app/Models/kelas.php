@@ -10,4 +10,5 @@ class kelas extends Model
     protected $primaryKey = 'id_kelas';
     protected $fillable = ['id_kelas', 'nama_kelas'];
     public $timestamps = false;
+    protected $keyType = 'string';
 }
