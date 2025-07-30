@@ -131,15 +131,12 @@
                                             title="Edit">
                                             <i class="bi bi-pencil-square"></i>
                                         </a>
-                                        <form action="{{ route('kelas.destroy', $item->id_kelas) }}" method="POST"
-                                            onsubmit="return confirm('Yakin ingin menghapus data ini?')" class="inline">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button type="submit" class="text-red-600 hover:text-red-800 action-btn"
-                                                title="Hapus">
-                                                <i class="bi bi-trash"></i>
-                                            </button>
-                                        </form>
+                                        <a href="javascript:void(0)"
+                                            class="text-red-600 hover:text-red-800 action-btn"
+                                            onclick="openDeleteModal('{{ $item->id_kelas }}', '{{ $item->nama_kelas }}')"
+                                            title="Hapus">
+                                            <i class="bi bi-trash"></i>
+                                        </a>
                                     </div>
                                 </td>
                             </tr>
@@ -200,7 +197,7 @@
                         <label for="edit_id_kelas" class="block text-sm font-medium text-gray-700">ID Kelas</label>
                         <input type="text" id="edit_id_kelas" name="id_kelas"
                             class="uppercase mt-1 block w-full border border-gray-300 rounded-lg shadow-sm px-3 py-1.5 focus:ring focus:ring-blue-200 focus:outline-none"
-                            >
+                            readonly>
                     </div>
                     <div>
                         <label for="edit_nama_kelas" class="block text-sm font-medium text-gray-700">Nama Kelas</label>
@@ -218,6 +215,29 @@
             </form>
         </div>
     </div>
+
+    <!-- Modal Delete Kelas -->
+    <div id="modal-delete" class="fixed inset-0 bg-black bg-opacity-40 z-50 flex items-center justify-center hidden">
+        <div class="bg-white rounded-xl shadow-xl w-full max-w-md mx-4">
+            <form id="form-delete" method="POST" class="p-6 space-y-4">
+                @csrf
+                @method('DELETE')
+                <div class="flex justify-between items-center">
+                    <h2 class="text-xl font-bold text-gray-700">Hapus Kelas </h2>
+                    <button type="button" onclick="document.getElementById('modal-delete').classList.add('hidden')"
+                        class="text-gray-500 hover:text-gray-700 text-xl">&times;</button>
+                </div>
+                <p class="text-gray-600">Apakah kamu yakin ingin menghapus kelas <span id="delete-nama-kelas"
+                        class="font-semibold"></span>?</p>
+                <div class="flex justify-end gap-2">
+                    <button type="button" onclick="document.getElementById('modal-delete').classList.add('hidden')"
+                        class="px-4 py-2 rounded-lg border border-gray-300 text-gray-600 hover:bg-gray-100">Batal</button>
+                    <button type="submit"
+                        class="px-4 py-2 rounded-lg bg-red-600 text-white hover:bg-red-700">Hapus</button>
+                </div>
+            </form>
+        </div>
+    </div>
 @endsection
 
 @push('js')
@@ -227,6 +247,12 @@
         document.getElementById('edit_nama_kelas').value = nama;
         document.getElementById('form-edit').action = `/kelas/${id}/update`;
         document.getElementById('modal-edit').classList.remove('hidden');
+    }
+
+    function openDeleteModal(id, nama) {
+        document.getElementById('delete-nama-kelas').innerText = nama;
+        document.getElementById('form-delete').action = `/kelas/${id}`;
+        document.getElementById('modal-delete').classList.remove('hidden');
     }
 </script>
 @endpush
