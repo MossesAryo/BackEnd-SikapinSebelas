@@ -50,7 +50,7 @@
         <div class="flex-1 ml-64">
             <!-- Top Navigation -->
             @include('layouts.navbar')
-            
+           
             <!-- Dashboard Content -->
             <div class="p-6">
                 @yield('content')

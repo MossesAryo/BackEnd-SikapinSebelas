@@ -20,8 +20,8 @@ Route::get('/gurubk', fn() => view('gurubk.dashboard'))->name('gurubk.dashboard'
 Route::get('/wakasek/kaprog/index', [KetuaProgramController::class, 'index'])->name('wakasek.kaprog.index');
 Route::get('/wakasek/kaprog/create', [KetuaProgramController::class, 'create'])->name('wakasek.kaprog.create');
 Route::post('/wakasek/kaprog/store', [KetuaProgramController::class, 'store'])->name('wakasek.kaprog.store');
-Route::get('/wakasek/kaprog/edit/{id}', [KetuaProgramController::class, 'edit'])->name('wakasek.kaprog.edit');
-Route::put('/wakasek/kaprog/update/{id}', [KetuaProgramController::class, 'update'])->name('wakasek.kaprog.update');
-Route::delete('/wakasek/kaprog/delete/{id}', [KetuaProgramController::class, 'destroy'])->name('wakasek.kaprog.delete');
+Route::get('/wakasek/kaprog/edit/{nip_kaprog}', [KetuaProgramController::class, 'edit'])->name('wakasek.kaprog.edit');
+Route::put('/wakasek/kaprog/update/{nip_kaprog}', [KetuaProgramController::class, 'update'])->name('wakasek.kaprog.update');
+Route::delete('/wakasek/kaprog/delete/{id}', [KetuaProgramController::class, 'destroy'])->name('wakasek.kaprog.destroy');
 
  

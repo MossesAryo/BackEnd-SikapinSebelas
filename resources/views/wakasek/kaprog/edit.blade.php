@@ -21,9 +21,10 @@
         <div class="mb-3">
             <label for="id_user">User</label>
             <select name="id_user" class="form-control" required>
+                <option value="">-- Pilih User --</option>
                 @foreach($users as $user)
                     <option value="{{ $user->id }}" {{ $kp->id_user == $user->id ? 'selected' : '' }}>
-                        {{ $user->name }}
+                        {{ $user->username }}
                     </option>
                 @endforeach
             </select>
