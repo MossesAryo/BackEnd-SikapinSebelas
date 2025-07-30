@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\LaporanController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\Guru_bkController;
 use App\Http\Controllers\KelasController;
 use App\Http\Controllers\PenilaianController;
 use App\Http\Controllers\SiswaController;
@@ -38,5 +39,9 @@ Route::post('/kelas/store', [KelasController::class, 'store'])->name('kelas.stor
 Route::put('/kelas/{id}/update', [KelasController::class, 'update'])->name('kelas.update');
 Route::delete('/kelas/{id}/destroy', [KelasController::class, 'destroy'])->name('kelas.destroy');
 
+Route::get('/gurubk', [Guru_bkController::class, 'index'])->name('gurubk.index');
+Route::post('/gurubk/store', [Guru_bkController::class, 'store'])->name('gurubk.store');
+Route::put('/gurubk/{nip}/update', [Guru_bkController::class, 'update'])->name('gurubk.update');
+Route::delete('/gurubk/{nip}', [Guru_bkController::class, 'destroy'])->name('gurubk.destroy');
 
 
