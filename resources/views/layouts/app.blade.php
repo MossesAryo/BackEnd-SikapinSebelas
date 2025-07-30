@@ -1,9 +1,12 @@
-@extends('layouts.app')
-
-@section('title', 'Manajemen Kategori')
-
-@section('content')
-    
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sikapin - Sistem Skoring</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.11.1/font/bootstrap-icons.min.css" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
     <style>
         .gradient-text {
             background: linear-gradient(135deg, #0083ee, #0a50c1);
@@ -13,6 +16,11 @@
         
         .stat-card-hover:hover {
             transform: translateY(-4px);
+        }
+        
+        .stat-card {
+            position: relative;
+            transition: transform 0.3s ease;
         }
         
         .stat-card::before {
@@ -36,25 +44,17 @@
 <body class="bg-gray-50">
     <!-- Dashboard Layout -->
     <div class="flex">
-        <!-- Sidebar Placeholder -->
-        <div class="w-64 h-screen bg-white border-r border-gray-200 fixed left-0 top-0">
-            <div class="p-6">
-                <div class="flex items-center gap-3">
-                    <div class="w-10 h-10 bg-blue-500 rounded-xl flex items-center justify-center text-white font-bold">
-                        <i class="bi bi-journal-check"></i>
-                    </div>
-                    <div>
-                        <h1 class="text-lg font-bold text-gray-900">Sikapin</h1>
-                        <p class="text-xs text-gray-500">Sistem Skoring</p>
-                    </div>
-                </div>
-            </div>
-        </div>
+        @include('layouts.sidebar')
         
-        @include('layouts.navbar')
-
+        <!-- Main Content -->
+        <div class="flex-1 ml-64">
+            <!-- Top Navigation -->
+            @include('layouts.navbar')
+            
             <!-- Dashboard Content -->
-        @yield('main')    
+            <div class="p-6">
+                @yield('content')
+            </div>
         </div>
     </div>
 
@@ -149,15 +149,15 @@
                     // Remove active state from all buttons in this container
                     buttons.forEach(button => {
                         button.classList.remove('bg-white', 'text-blue-500');
-                        button.classList.add('text-white');
+                        button.classList.add('text-gray-600');
                     });
                     
                     // Add active state to clicked button
                     this.classList.add('bg-white', 'text-blue-500');
-                    this.classList.remove('text-white');
+                    this.classList.remove('text-gray-600');
                 });
             });
         });
     </script>
 </body>
-
+</html>

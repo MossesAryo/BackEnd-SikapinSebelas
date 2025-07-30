@@ -1,138 +1,121 @@
 @extends('layouts.app')
 
+@section('content')
 
-
-@section('main')
-    
-     <div class="p-8 max-w-7xl">
-                <!-- Statistics Cards -->
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-                    <!-- Total Siswa -->
-                    <div class="stat-card relative bg-white rounded-2xl p-6 shadow-sm border border-gray-200 stat-card-hover transition-all duration-300 overflow-hidden">
-                        <div class="flex justify-between items-start mb-5">
-                            <div class="w-14 h-14 bg-gradient-to-br from-blue-500 to-blue-600 rounded-2xl flex items-center justify-center text-white shadow-lg">
-                                <i class="bi bi-mortarboard-fill text-xl"></i>
+<!-- Stats Cards -->
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+                    <div class="stat-card stat-card-hover bg-white p-6 rounded-xl shadow-sm border">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-gray-600 text-sm">Total Siswa</p>
+                                <p class="text-2xl font-bold text-gray-900">2,345</p>
                             </div>
-                            <div class="bg-green-100 text-green-600 px-3 py-1 rounded-full text-sm font-semibold flex items-center gap-1">
-                                <i class="bi bi-arrow-up"></i>
-                                12.5%
+                            <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
+                                <i class="bi bi-people text-blue-600 text-xl"></i>
                             </div>
                         </div>
-                        <div class="text-3xl font-bold text-gray-900 mb-2">1,580</div>
-                        <div class="text-gray-600 font-medium">Total Siswa</div>
                     </div>
-
-                    <!-- Siswa Apresiasi -->
-                    <div class="stat-card relative bg-white rounded-2xl p-6 shadow-sm border border-gray-200 stat-card-hover transition-all duration-300 overflow-hidden">
-                        <div class="flex justify-between items-start mb-5">
-                            <div class="w-14 h-14 bg-gradient-to-br from-green-500 to-green-600 rounded-2xl flex items-center justify-center text-white shadow-lg">
-                                <i class="bi bi-award-fill text-xl"></i>
+                    
+                    <div class="stat-card stat-card-hover bg-white p-6 rounded-xl shadow-sm border">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-gray-600 text-sm">Total Apresiasi</p>
+                                <p class="text-2xl font-bold text-green-600">1,234</p>
                             </div>
-                            <div class="bg-green-100 text-green-600 px-3 py-1 rounded-full text-sm font-semibold flex items-center gap-1">
-                                <i class="bi bi-arrow-up"></i>
-                                8.2%
+                            <div class="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center">
+                                <i class="bi bi-award text-green-600 text-xl"></i>
                             </div>
                         </div>
-                        <div class="text-3xl font-bold text-gray-900 mb-2">247</div>
-                        <div class="text-gray-600 font-medium">Siswa Apresiasi</div>
                     </div>
-
-                    <!-- Siswa Melanggar -->
-                    <div class="stat-card relative bg-white rounded-2xl p-6 shadow-sm border border-gray-200 stat-card-hover transition-all duration-300 overflow-hidden">
-                        <div class="flex justify-between items-start mb-5">
-                            <div class="w-14 h-14 bg-gradient-to-br from-red-500 to-red-600 rounded-2xl flex items-center justify-center text-white shadow-lg">
-                                <i class="bi bi-exclamation-triangle-fill text-xl"></i>
+                    
+                    <div class="stat-card stat-card-hover bg-white p-6 rounded-xl shadow-sm border">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-gray-600 text-sm">Total Pelanggaran</p>
+                                <p class="text-2xl font-bold text-red-600">567</p>
                             </div>
-                            <div class="bg-red-100 text-red-600 px-3 py-1 rounded-full text-sm font-semibold flex items-center gap-1">
-                                <i class="bi bi-arrow-up"></i>
-                                15.3%
+                            <div class="w-12 h-12 bg-red-100 rounded-lg flex items-center justify-center">
+                                <i class="bi bi-exclamation-triangle text-red-600 text-xl"></i>
                             </div>
                         </div>
-                        <div class="text-3xl font-bold text-gray-900 mb-2">92</div>
-                        <div class="text-gray-600 font-medium">Siswa Melanggar</div>
+                    </div>
+                    
+                    <div class="stat-card stat-card-hover bg-white p-6 rounded-xl shadow-sm border">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-gray-600 text-sm">Rata-rata Skor</p>
+                                <p class="text-2xl font-bold text-blue-600">85.2</p>
+                            </div>
+                            <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
+                                <i class="bi bi-bar-chart text-blue-600 text-xl"></i>
+                            </div>
+                        </div>
                     </div>
                 </div>
-
+                
                 <!-- Charts Section -->
-                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
                     <!-- Apresiasi Chart -->
-                    <div class="bg-white rounded-2xl p-6 shadow-sm border border-gray-200">
-                        <div class="flex justify-between items-center mb-6">
-                            <h3 class="text-lg font-bold text-gray-900">Grafik Apresiasi Siswa</h3>
-                            <div class="bg-blue-500 rounded-full p-1 flex">
-                                <button class="toggle-btn px-3 py-1 text-sm font-medium rounded-full transition-all bg-white text-blue-500">Minggu</button>
-                                <button class="toggle-btn px-3 py-1 text-sm font-medium rounded-full transition-all text-white">Bulan</button>
+                    <div class="bg-white p-6 rounded-xl shadow-sm border">
+                        <div class="flex items-center justify-between mb-6">
+                            <h3 class="text-lg font-semibold text-gray-900">Apresiasi per Jurusan</h3>
+                            <div class="flex bg-gray-100 rounded-lg p-1">
+                                <button class="toggle-btn px-3 py-1 rounded-md text-sm font-medium bg-white text-blue-500">Minggu</button>
+                                <button class="toggle-btn px-3 py-1 rounded-md text-sm font-medium text-gray-600">Bulan</button>
                             </div>
                         </div>
-                        <div class="h-64">
+                        <div style="height: 300px;">
                             <canvas id="revenueChart"></canvas>
                         </div>
                     </div>
-
+                    
                     <!-- Pelanggaran Chart -->
-                    <div class="bg-white rounded-2xl p-6 shadow-sm border border-gray-200">
-                        <div class="flex justify-between items-center mb-6">
-                            <h3 class="text-lg font-bold text-gray-900">Grafik Pelanggaran Siswa</h3>
-                            <div class="bg-blue-500 rounded-full p-1 flex">
-                                <button class="toggle-btn px-3 py-1 text-sm font-medium rounded-full transition-all bg-white text-blue-500">Minggu</button>
-                                <button class="toggle-btn px-3 py-1 text-sm font-medium rounded-full transition-all text-white">Bulan</button>
+                    <div class="bg-white p-6 rounded-xl shadow-sm border">
+                        <div class="flex items-center justify-between mb-6">
+                            <h3 class="text-lg font-semibold text-gray-900">Pelanggaran per Jurusan</h3>
+                            <div class="flex bg-gray-100 rounded-lg p-1">
+                                <button class="toggle-btn px-3 py-1 rounded-md text-sm font-medium bg-white text-blue-500">Minggu</button>
+                                <button class="toggle-btn px-3 py-1 rounded-md text-sm font-medium text-gray-600">Bulan</button>
                             </div>
                         </div>
-                        <div class="h-64">
+                        <div style="height: 300px;">
                             <canvas id="expenseChart"></canvas>
                         </div>
                     </div>
                 </div>
-
-                <!-- Activity Section -->
-                <div class="bg-white rounded-2xl p-6 shadow-sm border border-gray-200">
-                    <div class="mb-6 pb-4 border-b border-gray-100">
-                        <h3 class="text-lg font-bold text-gray-900">Aktivitas Sistem Skoring</h3>
-                    </div>
-                    <div class="space-y-4">
-                        <!-- Activity Item 1 -->
-                        <div class="flex items-center gap-4 p-4 hover:bg-gray-50 rounded-xl transition-colors cursor-pointer">
-                            <div class="w-10 h-10 bg-blue-100 rounded-xl flex items-center justify-center">
-                                <i class="bi bi-box-arrow-in-right text-blue-600"></i>
-                            </div>
-                            <div class="flex-1">
-                                <div class="text-sm font-medium text-gray-900">User <strong>Andi</strong> berhasil login</div>
-                                <div class="text-xs text-gray-500">5 menit lalu</div>
-                            </div>
+                
+                <!-- Recent Activity -->
+                <div class="mt-8">
+                    <div class="bg-white rounded-xl shadow-sm border">
+                        <div class="p-6 border-b border-gray-200">
+                            <h3 class="text-lg font-semibold text-gray-900">Aktivitas Terbaru</h3>
                         </div>
-
-                        <!-- Activity Item 2 -->
-                        <div class="flex items-center gap-4 p-4 hover:bg-gray-50 rounded-xl transition-colors cursor-pointer">
-                            <div class="w-10 h-10 bg-red-100 rounded-xl flex items-center justify-center">
-                                <i class="bi bi-exclamation-triangle-fill text-red-600"></i>
-                            </div>
-                            <div class="flex-1">
-                                <div class="text-sm font-medium text-gray-900">Pelanggaran oleh <strong>Rina</strong>: Datang terlambat</div>
-                                <div class="text-xs text-gray-500">20 menit lalu</div>
-                            </div>
-                        </div>
-
-                        <!-- Activity Item 3 -->
-                        <div class="flex items-center gap-4 p-4 hover:bg-gray-50 rounded-xl transition-colors cursor-pointer">
-                            <div class="w-10 h-10 bg-green-100 rounded-xl flex items-center justify-center">
-                                <i class="bi bi-award-fill text-green-600"></i>
-                            </div>
-                            <div class="flex-1">
-                                <div class="text-sm font-medium text-gray-900">Apresiasi untuk <strong>Budi</strong>: Disiplin dan aktif</div>
-                                <div class="text-xs text-gray-500">45 menit lalu</div>
-                            </div>
-                        </div>
-
-                        <!-- Activity Item 4 -->
-                        <div class="flex items-center gap-4 p-4 hover:bg-gray-50 rounded-xl transition-colors cursor-pointer">
-                            <div class="w-10 h-10 bg-blue-100 rounded-xl flex items-center justify-center">
-                                <i class="bi bi-box-arrow-in-right text-blue-600"></i>
-                            </div>
-                            <div class="flex-1">
-                                <div class="text-sm font-medium text-gray-900">User <strong>Siti</strong> berhasil login</div>
-                                <div class="text-xs text-gray-500">1 jam lalu</div>
+                        <div class="p-6">
+                            <div class="space-y-4">
+                                <div class="flex items-center gap-4">
+                                    <div class="w-2 h-2 bg-green-500 rounded-full"></div>
+                                    <div class="flex-1">
+                                        <p class="text-gray-900 font-medium">Ahmad Rizki mendapat apresiasi "Juara 1 Lomba Programming"</p>
+                                        <p class="text-gray-500 text-sm">2 menit yang lalu</p>
+                                    </div>
+                                </div>
+                                <div class="flex items-center gap-4">
+                                    <div class="w-2 h-2 bg-red-500 rounded-full"></div>
+                                    <div class="flex-1">
+                                        <p class="text-gray-900 font-medium">Siti Nurhaliza mendapat pelanggaran "Terlambat masuk kelas"</p>
+                                        <p class="text-gray-500 text-sm">5 menit yang lalu</p>
+                                    </div>
+                                </div>
+                                <div class="flex items-center gap-4">
+                                    <div class="w-2 h-2 bg-green-500 rounded-full"></div>
+                                    <div class="flex-1">
+                                        <p class="text-gray-900 font-medium">Budi Santoso mendapat apresiasi "Siswa Teladan Bulan Ini"</p>
+                                        <p class="text-gray-500 text-sm">10 menit yang lalu</p>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
+
+@endsection
