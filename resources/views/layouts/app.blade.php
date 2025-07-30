@@ -13,16 +13,16 @@
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
-        
+
         .stat-card-hover:hover {
             transform: translateY(-4px);
         }
-        
+
         .stat-card {
             position: relative;
             transition: transform 0.3s ease;
         }
-        
+
         .stat-card::before {
             content: '';
             position: absolute;
@@ -34,23 +34,24 @@
             transform: scaleX(0);
             transition: transform 0.3s ease;
         }
-        
+
         .stat-card:hover::before {
             transform: scaleX(1);
         }
     </style>
+    @stack('css')
 </head>
 
 <body class="bg-gray-50">
     <!-- Dashboard Layout -->
     <div class="flex">
         @include('layouts.sidebar')
-        
+
         <!-- Main Content -->
         <div class="flex-1 ml-64">
             <!-- Top Navigation -->
             @include('layouts.navbar')
-           
+
             <!-- Dashboard Content -->
             <div class="p-6">
                 @yield('content')
@@ -145,13 +146,13 @@
                     // Get the parent toggle container
                     const toggleContainer = this.parentElement;
                     const buttons = toggleContainer.querySelectorAll('.toggle-btn');
-                    
+
                     // Remove active state from all buttons in this container
                     buttons.forEach(button => {
                         button.classList.remove('bg-white', 'text-blue-500');
                         button.classList.add('text-gray-600');
                     });
-                    
+
                     // Add active state to clicked button
                     this.classList.add('bg-white', 'text-blue-500');
                     this.classList.remove('text-gray-600');
@@ -159,5 +160,6 @@
             });
         });
     </script>
+    @stack('js')
 </body>
 </html>
