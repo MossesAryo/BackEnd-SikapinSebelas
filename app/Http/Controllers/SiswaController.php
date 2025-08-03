@@ -25,7 +25,10 @@ class SiswaController extends Controller
      */
     public function create()
     {
-        
+        return view('wakasek.siswa.create', [
+            'siswa' => siswa::get(),
+          
+        ]);
     }
 
     /**

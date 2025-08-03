@@ -37,7 +37,7 @@
                 <p class="text-blue-100 mt-1">Daftar siswa dan informasi akademik</p>
 
                 <div class="mt-4">
-                    <a href="{{ url('siswa/create') }}" class="inline-block bg-white text-blue-600 px-4 py-2 rounded-lg shadow hover:bg-gray-100">
+                    <a href="{{ route('siswa.create') }}" class="inline-block bg-white text-blue-600 px-4 py-2 rounded-lg shadow hover:bg-gray-100">
                         <b> + Tambah Siswa</b>
                     </a>
                 </div>
