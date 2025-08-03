@@ -6,6 +6,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\Guru_bkController;
 use App\Http\Controllers\KelasController;
 use App\Http\Controllers\PenilaianController;
+use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SiswaController;
 
 Route::get('/', fn() => redirect('/login'));
@@ -24,6 +25,7 @@ Route::post('/login', [AuthController::class, 'login']);
 Route::get('/logout', [AuthController::class, 'logout']);
 Route::get('/wakasek/laporanjammalam', [LaporanController::class, 'index'])->name('wakasek.laporanjammalam');
 Route::get('/wakasek/penilaian', [PenilaianController::class, 'index'])->name('wakasek.penilaian');
+Route::get('/profile', [ProfileController::class, 'index'])->name('auth.profile');
 Route::get('/wakasek', fn() => view('wakasek.dashboard'))->name('wakasek.dashboard');
 Route::get('/gurubk', fn() => view('gurubk.dashboard'))->name('gurubk.dashboard');
 
