@@ -29,7 +29,7 @@ Route::get('/gurubk', fn() => view('gurubk.dashboard'))->name('gurubk.dashboard'
 
 
 Route::get('/siswa', [SiswaController::class, 'index'])->name('siswa.index');
-Route::get('/siswa/create', [SiswaController::class, 'create'])->name('siswa.create');
+Route::post('/siswa/store', [SiswaController::class, 'store'])->name('siswa.store');
 Route::put('/siswa/{nis}/update', [SiswaController::class, 'update'])->name('siswa.update');
 Route::delete('/siswa/{nis}', [SiswaController::class, 'destroy'])->name('siswa.destroy');
 

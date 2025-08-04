@@ -12,6 +12,7 @@ return new class extends Migration {
             $table->string('username');
             $table->string('nama_ketua_program');
             $table->string('jurusan');
+            $table->timestamps();
             
             $table->foreign('username')->references('username')->on('users')->onDelete('cascade');
         });

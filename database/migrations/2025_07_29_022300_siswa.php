@@ -11,7 +11,11 @@ return new class extends Migration {
             $table->integer('nis')->unique();
             $table->string('id_kelas');
             $table->string('nama_siswa');
-            $table->integer('point');
+            $table->integer('poin_apresiasi');
+            $table->integer('poin_pelanggaran');
+            $table->integer('poin_total');
+            $table->timestamps();
+
 
             $table->foreign('id_kelas')->references('id_kelas')->on('kelas')->onDelete('cascade');
         });

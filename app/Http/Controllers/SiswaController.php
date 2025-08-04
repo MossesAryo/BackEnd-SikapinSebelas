@@ -2,8 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\kelas;
 use Illuminate\Http\Request;
-use App\Models\siswa; // Pastikan model siswa sudah diimport
+use App\Models\siswa;
 
 class SiswaController extends Controller
 {
@@ -12,28 +13,46 @@ class SiswaController extends Controller
      */
     public function index()
     {
-        // Ambil semua data siswa dari database
-        $siswa = siswa::all(); // Atau gunakan paginate() jika ingin paginasi
-        // Kirim data siswa ke view
-        return view('wakasek.siswa.dashboard', compact('siswa'));
-
-      
-        
+        return view('wakasek.siswa.index', [
+            'siswa' => siswa::all(),
+            'kelas' => kelas::all()
+        ]);
     }
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
-    {
-        
-    }
+    public function create() {}
 
     /**
      * Store a newly created resource in storage.
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'nis' => 'required|string',
+            'id_kelas' =>'required',
+            'nama_siswa' => 'required|string',
+            'poin_apresiasi' => 'nullable|integer',
+            'poin_pelanggaran' => 'nullable|integer',
+        ]);
+
+        
+        $poin_apresiasi = $request->input('poin_apresiasi', 0);
+        $poin_pelanggaran = $request->input('poin_pelanggaran', 0);
+
+        
+        $poin_total = $poin_apresiasi - $poin_pelanggaran;
+
+        siswa::create([
+            'nis' => $request->nis,
+            'id_kelas' => $request -> id_kelas,
+            'nama_siswa' => $request->nama_siswa,
+            'poin_apresiasi' => $poin_apresiasi,
+            'poin_pelanggaran' => $poin_pelanggaran,
+            'poin_total' => $poin_total,
+        ]);
+
+        return redirect()->route('siswa.index')->with('success', 'Siswa berhasil ditambahkan');
     }
 
     /**

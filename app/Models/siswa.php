@@ -12,7 +12,9 @@ class siswa extends Model
         'nis',
         'id_kelas',
         'nama_siswa',
-        'point',
+        'poin_apresiasi',
+        'poin_pelanggaran',
+        'poin_total'
     ];
 
     public function kelas()

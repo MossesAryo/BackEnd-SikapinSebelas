@@ -11,6 +11,7 @@ return new class extends Migration {
             $table->integer('nip_wakasek')->unique();
             $table->string('username');
             $table->string('nama_wakasek');
+            $table->timestamps();
 
             $table->foreign('username')->references('username')->on('users')->onDelete('cascade');
         });
