@@ -166,7 +166,7 @@
                                     <span class="mx-2">•</span>
                                     <span>Kelas: </span><span id="previewKelas">-</span>
                                     <span class="mx-2">•</span>
-                                    <span>Poin: </span><span id="previewPoin">-</span>
+                                   
                                 </div>
                             </div>
                         </div>
