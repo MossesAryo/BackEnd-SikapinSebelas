@@ -8,8 +8,10 @@ use App\Http\Controllers\KelasController;
 use App\Http\Controllers\PenilaianController;
 use App\Http\Controllers\WalikelasController;
 use App\Http\Controllers\KetuaProgramController;
+use App\Http\Controllers\PenghargaanController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SiswaController;
+use App\Http\Controllers\SuratPeringatanController;
 
 Route::get('/', fn() => redirect('/login'));
 
@@ -60,3 +62,13 @@ Route::post('/walikelas/store', [WalikelasController::class, 'store'])->name('wa
 Route::put('/walikelas/{nip_walikelas}/update', [WalikelasController::class, 'update'])->name('walikelas.update');
 Route::delete('/walikelas/{nip_walikelas}', [WalikelasController::class, 'destroy'])->name('walikelas.destroy');
 
+
+Route::get('/penghargaan', [PenghargaanController::class, 'index'])->name('penghargaan.index');
+Route::post('/penghargaan/store', [PenghargaanController::class, 'store'])->name('penghargaan.store');
+Route::put('/penghargaan/{id}/update', [PenghargaanController::class, 'update'])->name('penghargaan.update');
+Route::delete('/penghargaan/{id}', [PenghargaanController::class, 'destroy'])->name('penghargaan.destroy');
+
+Route::get('/peringatan', [SuratPeringatanController::class, 'index'])->name('peringatan.index');
+Route::post('/peringatan/store', [SuratPeringatanController::class, 'store'])->name('peringatan.store');
+Route::put('/peringatan/{id}/update', [SuratPeringatanController::class, 'update'])->name('peringatan.update');
+Route::delete('/peringatan/{id}', [SuratPeringatanController::class, 'destroy'])->name('peringatan.destroy');
