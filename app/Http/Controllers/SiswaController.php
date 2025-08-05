@@ -30,22 +30,22 @@ class SiswaController extends Controller
     {
         $request->validate([
             'nis' => 'required|string',
-            'id_kelas' =>'required',
+            'id_kelas' => 'required',
             'nama_siswa' => 'required|string',
             'poin_apresiasi' => 'nullable|integer',
             'poin_pelanggaran' => 'nullable|integer',
         ]);
 
-        
+
         $poin_apresiasi = $request->input('poin_apresiasi', 0);
         $poin_pelanggaran = $request->input('poin_pelanggaran', 0);
 
-        
+
         $poin_total = $poin_apresiasi - $poin_pelanggaran;
 
         siswa::create([
             'nis' => $request->nis,
-            'id_kelas' => $request -> id_kelas,
+            'id_kelas' => $request->id_kelas,
             'nama_siswa' => $request->nama_siswa,
             'poin_apresiasi' => $poin_apresiasi,
             'poin_pelanggaran' => $poin_pelanggaran,
@@ -82,8 +82,16 @@ class SiswaController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(string $nis)
     {
-        //
+        $siswa = Siswa::where('nis', $nis)->first();
+
+        if (!$siswa) {
+            return redirect()->route('siswa.index')->with('error', 'Siswa tidak ditemukan');
+        }
+
+        $siswa->delete();
+
+        return redirect()->route('siswa.index')->with('success', 'Siswa berhasil dihapus');
     }
 }

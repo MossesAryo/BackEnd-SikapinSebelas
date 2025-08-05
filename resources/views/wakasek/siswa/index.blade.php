@@ -72,8 +72,12 @@
                 ✅ {{ session('success') }}
             </p>
         @endif
+        @if (session('error'))
+            <p class="mt-2 text-sm text-green-600 font-semibold">
+                ✅ {{ session('error') }}
+            </p>
+        @endif
         <div class="bg-white p-6 rounded-xl shadow-sm border">
-
             <div class="flex flex-col md:flex-row gap-2 items-center justify-between">
                 <div class="flex flex-col md:flex-row gap-2 flex-1">
                     <div class="relative w-full md:w-64">
@@ -142,6 +146,7 @@
                                 </th>
                             </tr>
                         </thead>
+
                         <tbody class="bg-white divide-y divide-gray-100">
                             @forelse ($siswa as $item)
                                 <tr class="table-row hover:bg-gray-50 group ">
@@ -155,7 +160,7 @@
                                     </td>
                                     <td class="px-14 py-4 whitespace-nowrap">
                                         <div class="flex items-center">
-                                           
+
                                             <div>
                                                 <div class="text-sm font-semibold text-gray-900">{{ $item->nama_siswa }}
                                                 </div>
@@ -213,18 +218,18 @@
                                         </div>
                                     </td>
                                 </tr>
+                                <!-- Empty State (if no data) -->
+                            @empty
+                                <div class="text-center py-12">
+                                    <div
+                                        class="mx-auto w-24 h-24 bg-gray-100 rounded-full flex items-center justify-center mb-4">
+                                        <i class="bi bi-people text-3xl text-gray-400"></i>
+                                    </div>
+                                    <h3 class="text-lg font-medium text-gray-900 mb-2">Belum ada data siswa</h3>
+                                </div>
                         </tbody>
                     </table>
                 </div>
-
-                <!-- Empty State (if no data) -->
-                @empty
-                    <div class="text-center py-12">
-                        <div class="mx-auto w-24 h-24 bg-gray-100 rounded-full flex items-center justify-center mb-4">
-                            <i class="bi bi-people text-3xl text-gray-400"></i>
-                        </div>
-                        <h3 class="text-lg font-medium text-gray-900 mb-2">Belum ada data siswa</h3>
-                    </div>
                 @endforelse
             </div>
         </div>
@@ -325,11 +330,11 @@
                 @csrf
                 @method('DELETE')
                 <div class="flex justify-between items-center">
-                    <h2 class="text-xl font-bold text-gray-700">Hapus Guru BK</h2>
+                    <h2 class="text-xl font-bold text-gray-700">Hapus Siswa</h2>
                     <button type="button" onclick="document.getElementById('modal-delete').classList.add('hidden')"
                         class="text-gray-500 hover:text-gray-700 text-xl">&times;</button>
                 </div>
-                <p class="text-gray-600">Apakah kamu yakin ingin menghapus guru <span id="delete-nama-guru"
+                <p class="text-gray-600">Apakah kamu yakin ingin menghapus siswa <span id="delete-nama-guru"
                         class="font-semibold"></span>?</p>
                 <div class="flex justify-end gap-2">
                     <button type="button" onclick="document.getElementById('modal-delete').classList.add('hidden')"
@@ -348,13 +353,13 @@
             document.getElementById('edit_nip').value = nip;
             document.getElementById('edit_username').value = username;
             document.getElementById('edit_nama').value = nama;
-            document.getElementById('form-edit').action = `/guru-bk/${nip}/update`;
+            document.getElementById('form-edit').action = `/siswa/${nip}/update`;
             document.getElementById('modal-edit').classList.remove('hidden');
         }
 
-        function openDeleteModal(nip, nama) {
+        function openDeleteModal(nis, nama) {
             document.getElementById('delete-nama-guru').innerText = nama;
-            document.getElementById('form-delete').action = `/guru-bk/${nip}`;
+            document.getElementById('form-delete').action = `/siswa/${nis}`;
             document.getElementById('modal-delete').classList.remove('hidden');
         }
     </script>

@@ -43,7 +43,7 @@
         <nav class="mt-8">
             <ul class="space-y-2">
                 <li>
-                    <a href="#" class="flex items-center gap-3 px-4 py-3 text-blue-600 bg-blue-50 rounded-lg menu-link" data-link="dashboard">
+                    <a href="{{ route('wakasek.dashboard') }}" class="flex items-center gap-3 px-4 py-3 text-blue-600 bg-blue-50 rounded-lg menu-link" data-link="dashboard">
                         <i class="bi bi-house"></i>
                         <span>Dashboard</span>
                     </a>
@@ -67,7 +67,7 @@
                                 </a>
                             </li>
                             <li>
-                                <a href="#" class="flex items-center gap-3 px-4 py-2 text-sm text-gray-600 hover:bg-gray-50 rounded-lg menu-link" data-link="guru-bk">
+                                <a href="{{ route('gurubk.index') }}" class="flex items-center gap-3 px-4 py-2 text-sm text-gray-600 hover:bg-gray-50 rounded-lg menu-link" data-link="guru-bk">
                                     <i class="bi bi-person-heart"></i>
                                     <span>Guru BK</span>
                                 </a>
@@ -83,7 +83,7 @@
                 </li>
 
                 <li>
-                    <a href="#" class="flex items-center gap-3 px-4 py-3 text-gray-600 hover:bg-gray-50 rounded-lg menu-link" data-link="siswa">
+                    <a href="{{ route('siswa.index') }}" class="flex items-center gap-3 px-4 py-3 text-gray-600 hover:bg-gray-50 rounded-lg menu-link" data-link="siswa">
                         <i class="bi bi-people"></i>
                         <span>Siswa</span>
                     </a>
@@ -158,7 +158,7 @@
 
     document.querySelectorAll('.menu-link').forEach(link => {
         link.addEventListener('click', function(e) {
-            e.preventDefault();
+            
 
             // Remove active from all
             document.querySelectorAll('.menu-link').forEach(item => {
@@ -171,4 +171,4 @@
             this.classList.remove('text-gray-600');
         });
     });
-</script>
+</script> 
