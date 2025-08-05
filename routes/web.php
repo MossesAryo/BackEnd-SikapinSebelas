@@ -29,17 +29,16 @@ Route::get('/wakasek', fn() => view('wakasek.dashboard'))->name('wakasek.dashboa
 Route::get('/gurubk', fn() => view('gurubk.dashboard'))->name('gurubk.dashboard');
 
 // Ketua Program (Kaprog)
-Route::get('/kaprog', [KetuaProgramController::class, 'index'])->name('wakasek.kaprog.index');
-Route::get('/kaprog/create', [KetuaProgramController::class, 'create'])->name('wakasek.kaprog.create');
-Route::post('/kaprog/store', [KetuaProgramController::class, 'store'])->name('wakasek.kaprog.store');
-Route::get('/kaprog/edit/{id}', [KetuaProgramController::class, 'edit'])->name('wakasek.kaprog.edit');
-Route::put('/wakasek/kaprog/{nip_kaprog}', [KetuaProgramController::class, 'update'])->name('wakasek.kaprog.update');
-Route::delete('/wakasek/kaprog/{nip_kaprog}', [KetuaProgramController::class, 'destroy'])->name('wakasek.kaprog.destroy');
+Route::get('/kaprog', [KetuaProgramController::class, 'index'])->name('kaprog.index');
+Route::post('/kaprog/store', [KetuaProgramController::class, 'store'])->name('kaprog.store');
+Route::get('/kaprog/edit/{id}', [KetuaProgramController::class, 'edit'])->name('kaprog.edit');
+Route::put('/wakasek/kaprog/{nip_kaprog}', [KetuaProgramController::class, 'update'])->name('kaprog.update');
+Route::delete('/wakasek/kaprog/{nip_kaprog}', [KetuaProgramController::class, 'destroy'])->name('kaprog.destroy');
 
 Route::get('/siswa', [SiswaController::class, 'index'])->name('siswa.index');
 Route::post('/siswa/store', [SiswaController::class, 'store'])->name('siswa.store');
 Route::put('/siswa/{nis}/update', [SiswaController::class, 'update'])->name('siswa.update');
-Route::delete('/kelas/{id}', [SiswaController::class, 'destroy'])->name('kelas.destroy');
+Route::delete('/siswa/{nis}', [SiswaController::class, 'destroy'])->name('siswa.destroy');
 
 
 Route::get('/kelas', [KelasController::class, 'index'])->name('kelas');

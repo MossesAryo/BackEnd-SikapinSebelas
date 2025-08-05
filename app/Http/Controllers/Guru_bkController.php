@@ -42,7 +42,7 @@ class Guru_bkController extends Controller
             'username' => $request->username,
             'email' => strtolower(Str::slug($request->username)) . '@gmail.com',
             'password' => bcrypt('password'),
-            'role' => 4
+            'role' => 2
         ]);
 
         guru_bk::create([
