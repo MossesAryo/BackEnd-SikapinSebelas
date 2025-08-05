@@ -12,6 +12,7 @@ return new class extends Migration {
             $table->enum('jenis_poin', ['Pelanggaran', 'Apresiasi']);
             $table->integer('indikator_poin');
             $table->string('uraian');
+            $table->timestamps();
         });
     }
     public function down() {

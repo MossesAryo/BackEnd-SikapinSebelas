@@ -13,6 +13,7 @@ return new class extends Migration {
             $table->date('tanggal_penghargaan');
             $table->enum('level_penghargaan', ['PH1', 'PH2', 'PH3']);
             $table->string('alasan');
+            $table->timestamps();
 
             $table->foreign('nis')->references('nis')->on('siswa')->onDelete('cascade');
         });

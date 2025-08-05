@@ -13,6 +13,7 @@ return new class extends Migration {
             $table->date('tanggal_sp');
             $table->enum('level_sp', ['SP1', 'SP2', 'SP3']);
             $table->string('alasan');
+            $table->timestamps();
 
             $table->foreign('nis')->references('nis')->on('siswa')->onDelete('cascade');
         });

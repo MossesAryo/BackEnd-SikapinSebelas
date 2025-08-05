@@ -14,7 +14,7 @@ return new class extends Migration {
             $table->Integer('nip_bk')->nullable();
             $table->integer('id_aspek_penilaian');
             $table->Integer('nis');
-            $table->date('tanggal');
+            $table->timestamps();
             
             $table->foreign('nip_wakasek')->references('nip_wakasek')->on('wakasek')->onDelete('cascade');
             $table->foreign('nip_walikelas')->references('nip_walikelas')->on('walikelas')->onDelete('cascade');
