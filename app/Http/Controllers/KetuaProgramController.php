@@ -75,6 +75,6 @@ public function update(Request $request, $nip_kaprog)
         $kp = ketua_program::where('nip_kaprog', $nip_kaprog)->firstOrFail();
         $kp->delete();
 
-        return redirect()->route('wakasek.kaprog.index')->with('success', 'Data Ketua Program berhasil dihapus.');
+        return redirect()->route('kaprog.index')->with('success', 'Data Ketua Program berhasil dihapus.');
     }
 }

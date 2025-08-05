@@ -157,9 +157,13 @@
         </div>
     </div>
 
-    @include('wakasek.kaprog.create')
-    @include('wakasek.kaprog.edit')
-    @include('wakasek.kaprog.delete')
+    
+
+   @include('wakasek.kaprog.create')
+   @include('wakasek.kaprog.edit')
+   @include('wakasek.kaprog.delete')
+
+   
 @endsection
 
 @push('js')
