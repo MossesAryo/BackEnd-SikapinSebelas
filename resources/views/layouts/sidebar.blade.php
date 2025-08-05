@@ -21,6 +21,12 @@
                             </a>
                         </li>
                         <li>
+                            <a href="{{ route('walikelas.index') }}" class="flex items-center gap-3 px-4 py-3 text-gray-600 hover:bg-gray-50 rounded-lg">
+                                <i class="bi bi-people"></i>
+                                <span>Walikelas</span>
+                            </a>
+                        </li>
+                        <li>
                             <a href="#" class="flex items-center gap-3 px-4 py-3 text-gray-600 hover:bg-gray-50 rounded-lg">
                                 <i class="bi bi-people"></i>
                                 <span>Siswa</span>
