@@ -20,7 +20,7 @@ class WalikelasController extends Controller
         $user = User::all(); 
 
         // Kirim data walikelas dan kelas ke view
-        return view('wakasek.walikelas.dashboard', compact('walikelas', 'kelas', 'user'));
+        return view('wakasek.walikelas.index', compact('walikelas', 'kelas', 'user'));
 
     }
 
