@@ -31,13 +31,13 @@
         <!-- Header -->
         <div class="flex justify-between items-center">
             <div>
-                <h1 class="text-2xl font-bold gradient-text">Data Pengharagaan</h1>
-                <p class="text-gray-600 mt-1">Kelola data Penghargaan</p>
+                <h1 class="text-2xl font-bold gradient-text">Data Peringatan</h1>
+                <p class="text-gray-600 mt-1">Kelola data Peringatan</p>
             </div>
             <button onclick="openCreateModal()"
                 class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg flex items-center gap-2 transition-colors">
                 <i class="bi bi-plus-lg"></i>
-                Tambah Penghargaan
+                Tambah Peringatan
             </button>
         </div>
 
@@ -78,7 +78,7 @@
         <!-- Data Table -->
         <div class="bg-white rounded-xl shadow-sm border overflow-hidden">
             <div class="px-6 py-4 border-b border-gray-200">
-                <h3 class="text-lg font-semibold text-gray-900">Daftar Penghargaan</h3>
+                <h3 class="text-lg font-semibold text-gray-900">Daftar Peringatan</h3>
             </div>
 
             <div class="overflow-x-auto">
@@ -88,19 +88,19 @@
                             <th class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
                                 <div class="flex items-center gap-2">
                                     <i class="bi bi-hash text-gray-400"></i>
-                                    ID Penghargaan
+                                    ID Peringatan
                                 </div>
                             </th>
                             <th class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
                                 <div class="flex items-center gap-2">
                                     <i class="bi bi-person text-gray-400"></i>
-                                    Tanggal Pengharagaan
+                                    Tanggal Peringatan
                                 </div>
                             </th>
                             <th class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
                                 <div class="flex items-center gap-2">
                                     <i class="bi bi-shield-check text-gray-400"></i>
-                                    Level Pengharagaan
+                                    Level Peringatan
                                 </div>
                             </th>
                             <th class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
@@ -119,21 +119,21 @@
                     </thead>
 
                     <tbody class="bg-white divide-y divide-gray-100">
-                        @forelse ($penghargaan as $item)
+                        @forelse ($peringatan as $item)
                             <tr class="hover:bg-gray-50 group">
                                 <td class="px-6 py-4 whitespace-nowrap">
                                     <div class="flex items-center">
                                         <div
                                             class="w-2 h-2 bg-blue-400 rounded-full mr-3 opacity-0 group-hover:opacity-100 transition-opacity">
                                         </div>
-                                        <span class="text-sm font-medium text-gray-900">{{ $item->id_penghargaan }}</span>
+                                        <span class="text-sm font-medium text-gray-900">{{ $item->id_sp }}</span>
                                     </div>
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap">
-                                    <div class="text-sm font-semibold text-gray-900">{{ $item->tanggal_penghargaan }}</div>
+                                    <div class="text-sm font-semibold text-gray-900">{{ $item->tanggal_sp }}</div>
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap">
-                                    <span class="text-lg font-bold text-black">{{ $item->level_penghargaan }}</span>
+                                    <span class="text-lg font-bold text-black">{{ $item->level_sp }}</span>
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap">
                                     <span class="text-lg font-bold text-black">{{ $item->alasan }}</span>
@@ -141,13 +141,13 @@
                                 <td class="px-6 py-4 whitespace-nowrap">
                                     <div class="flex items-center gap-1">
                                         <button
-                                            onclick="openEditModal('{{ $item->id_penghargaan }}', '{{ $item->tanggal_penghargaan }}', '{{ $item->level_penghargaan }}', '{{ $item->alasan }}')"
+                                            onclick="openEditModal('{{ $item->id_sp }}', '{{ $item->tanggal_sp }}', '{{ $item->level_sp }}', '{{ $item->alasan }}')"
                                             class="action-btn inline-flex items-center justify-center w-9 h-9 text-blue-600 hover:text-blue-800 hover:bg-blue-50 rounded-full"
                                             title="Edit Penghargaan">
                                             <i class="bi bi-pencil-square text-sm"></i>
                                         </button>
                                         <button
-                                            onclick="openDeleteModal('{{ $item->id_penghargaan }}', '{{ $item->level_penghargaan }}')"
+                                            onclick="openDeleteModal('{{ $item->id_sp}}', '{{ $item->level_sp }}')"
                                             class="action-btn inline-flex items-center justify-center w-9 h-9 text-red-600 hover:text-red-800 hover:bg-red-50 rounded-full"
                                             title="Hapus Penghargaan">
                                             <i class="bi bi-trash text-sm"></i>
@@ -162,8 +162,8 @@
                                         class="mx-auto w-24 h-24 bg-gray-100 rounded-full flex items-center justify-center mb-4">
                                         <i class="bi bi-people text-3xl text-gray-400"></i>
                                     </div>
-                                    <h3 class="text-lg font-medium text-gray-900 mb-2">Belum ada data Pengharagaan</h3>
-                                    <p class="text-gray-500">Tambahkan data penghargaan untuk memulai.</p>
+                                    <h3 class="text-lg font-medium text-gray-900 mb-2">Belum ada data peringatan </h3>
+                                    <p class="text-gray-500">Tambahkan data peringatan untuk memulai.</p>
                                 </td>
                             </tr>
                         @endforelse
@@ -172,9 +172,9 @@
             </div>
         </div>
     </div>
-    @include('wakasek.penghargaan.create')
-    @include('wakasek.penghargaan.edit')
-    @include('wakasek.penghargaan.delete')
+    @include('wakasek.peringatan.create')
+    @include('wakasek.peringatan.edit')
+    @include('wakasek.peringatan.delete')
 @endsection
 
 @push('js')
@@ -190,25 +190,25 @@
         }
 
         function openCreateModal() {
-            document.getElementById('id_penghargaan').value = '';
-            document.getElementById('tanggal_penghargaan').value = '';
-            document.getElementById('level_penghargaan').value = '';
+            document.getElementById('id_sp').value = '';
+            document.getElementById('tanggal_sp').value = '';
+            document.getElementById('level_sp').value = '';
             document.getElementById('alasan').value = '';
             openModal('modal-create');
         }
 
-        function openEditModal(id_penghargaan, tanggal_penghargaan, level_penghargaan, alasan) {
-            document.getElementById('edit_tanggal_penghargaan').value = tanggal_penghargaan;
-            document.getElementById('edit_level_penghargaan').value = level_penghargaan;
+        function openEditModal(id_sp, tanggal_sp, level_sp, alasan) {
+            document.getElementById('edit_tanggal_sp').value = tanggal_sp;
+            document.getElementById('edit_level_sp').value = level_sp;
             document.getElementById('edit_alasan').value = alasan;
-            document.getElementById('form-edit').action = `/penghargaan/${id_penghargaan}/update`;
+            document.getElementById('form-edit').action = `/peringatan/${id_sp}/update`;
             openModal('modal-edit');
         }
 
 
-        function openDeleteModal(id_penghargaan, nama) {
-            document.getElementById('delete-penghargaan').innerText = nama;
-            document.getElementById('form-delete').action = `/penghargaan/${id_penghargaan}`;
+        function openDeleteModal(id_sp, nama) {
+            document.getElementById('delete-sp').innerText = nama;
+            document.getElementById('form-delete').action = `/peringatan/${id_sp}`;
             openModal('modal-delete');
         }
 
