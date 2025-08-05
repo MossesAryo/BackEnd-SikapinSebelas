@@ -14,7 +14,7 @@ class Guru_bkController extends Controller
      */
     public function index()
     {
-        return view('wakasek.guru_bk.guru_bk', [
+        return view('wakasek.guru_bk.index', [
             'guru_bk' => guru_bk::get(),
         ]);
     }
@@ -81,7 +81,7 @@ class Guru_bkController extends Controller
         ]);
 
         guru_bk::find($id)->update($data);
-        return redirect()->route('gurubk')->with('success', 'Guru BK berhasil diedit');
+        return redirect()->route('gurubk.index')->with('success', 'Guru BK berhasil diedit');
     }
 
     /**
@@ -91,6 +91,6 @@ class Guru_bkController extends Controller
     {
         $data = guru_bk::find($id)->delete();
 
-        return redirect()->route('gurubk')->with('success', 'Guru BK berhasil dihapus');
+        return redirect()->route('gurubk.index')->with('success', 'Guru BK berhasil dihapus');
     }
 }

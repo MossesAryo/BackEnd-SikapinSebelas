@@ -12,8 +12,9 @@ class KetuaProgramController extends Controller
 {
     public function index()
     {
-        $ketua_program = ketua_program::with('user')->get();
-        return view('wakasek.kaprog.index', compact('ketua_program'));
+        return view('wakasek.kaprog.', [
+            'ketua_program' => ketua_program::get(),
+        ]);
     }
 
     public function create()
