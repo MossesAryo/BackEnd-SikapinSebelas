@@ -40,20 +40,20 @@
                 Tambah Ketua Program
             </button>
         </div>
-        
+
         <!-- Flash Messages -->
         @if (session('success'))
             <p class="mt-2 text-sm text-green-600 font-semibold">
                 ✅ {{ session('success') }}
             </p>
         @endif
-        
+
         @if (session('error'))
             <p class="mt-2 text-sm text-red-600 font-semibold">
                 ❌ {{ session('error') }}
             </p>
         @endif
-        
+
         <!-- Search and Filter -->
         <div class="bg-white p-6 rounded-xl shadow-sm border">
             <div class="flex flex-col md:flex-row gap-2 items-center justify-between">
@@ -63,10 +63,12 @@
                         class="pl-10 pr-4 py-1.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent w-full">
                 </div>
                 <div class="flex gap-2">
-                    <button class="px-3 py-1.5 border border-gray-300 rounded-lg hover:bg-gray-50 flex items-center gap-1.5">
+                    <button
+                        class="px-3 py-1.5 border border-gray-300 rounded-lg hover:bg-gray-50 flex items-center gap-1.5">
                         <i class="bi bi-funnel"></i> Filter
                     </button>
-                    <button class="px-3 py-1.5 border border-gray-300 rounded-lg hover:bg-gray-50 flex items-center gap-1.5">
+                    <button
+                        class="px-3 py-1.5 border border-gray-300 rounded-lg hover:bg-gray-50 flex items-center gap-1.5">
                         <i class="bi bi-download"></i> Export
                     </button>
                 </div>
@@ -97,6 +99,12 @@
                             </th>
                             <th class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
                                 <div class="flex items-center gap-2">
+                                    <i class="bi bi-person text-gray-400"></i>
+                                    Email
+                                </div>
+                            </th>
+                            <th class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                                <div class="flex items-center gap-2">
                                     <i class="bi bi-shield-check text-gray-400"></i>
                                     Jurusan
                                 </div>
@@ -115,7 +123,9 @@
                             <tr class="hover:bg-gray-50 group">
                                 <td class="px-6 py-4 whitespace-nowrap">
                                     <div class="flex items-center">
-                                        <div class="w-2 h-2 bg-blue-400 rounded-full mr-3 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                                        <div
+                                            class="w-2 h-2 bg-blue-400 rounded-full mr-3 opacity-0 group-hover:opacity-100 transition-opacity">
+                                        </div>
                                         <span class="text-sm font-medium text-gray-900">{{ $item->nip_kaprog }}</span>
                                     </div>
                                 </td>
@@ -123,16 +133,21 @@
                                     <div class="text-sm font-semibold text-gray-900">{{ $item->nama_ketua_program }}</div>
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap">
+                                    <div class="text-sm font-semibold text-gray-900">{{ $item->user->email }}</div>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap">
                                     <span class="text-lg font-bold text-black">{{ $item->jurusan }}</span>
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap">
                                     <div class="flex items-center gap-1">
-                                        <button onclick="openEditModal('{{ $item->nip_kaprog }}', '{{ $item->nama_ketua_program }}', '{{ $item->jurusan }}')"
+                                        <button
+                                            onclick="openEditModal('{{ $item->nip_kaprog }}', '{{ $item->nama_ketua_program }}', '{{ $item->jurusan }}','{{ $item->username }}')"
                                             class="action-btn inline-flex items-center justify-center w-9 h-9 text-blue-600 hover:text-blue-800 hover:bg-blue-50 rounded-full"
                                             title="Edit Ketua Program">
                                             <i class="bi bi-pencil-square text-sm"></i>
                                         </button>
-                                        <button onclick="openDeleteModal('{{ $item->nip_kaprog }}', '{{ $item->nama_ketua_program }}')"
+                                        <button
+                                            onclick="openDeleteModal('{{ $item->nip_kaprog }}', '{{ $item->nama_ketua_program }}')"
                                             class="action-btn inline-flex items-center justify-center w-9 h-9 text-red-600 hover:text-red-800 hover:bg-red-50 rounded-full"
                                             title="Hapus Ketua Program">
                                             <i class="bi bi-trash text-sm"></i>
@@ -143,7 +158,8 @@
                         @empty
                             <tr>
                                 <td colspan="4" class="px-6 py-12 text-center">
-                                    <div class="mx-auto w-24 h-24 bg-gray-100 rounded-full flex items-center justify-center mb-4">
+                                    <div
+                                        class="mx-auto w-24 h-24 bg-gray-100 rounded-full flex items-center justify-center mb-4">
                                         <i class="bi bi-people text-3xl text-gray-400"></i>
                                     </div>
                                     <h3 class="text-lg font-medium text-gray-900 mb-2">Belum ada data Ketua Program</h3>
@@ -157,13 +173,9 @@
         </div>
     </div>
 
-    
-
-   @include('wakasek.kaprog.create')
-   @include('wakasek.kaprog.edit')
-   @include('wakasek.kaprog.delete')
-
-   
+    @include('wakasek.kaprog.create')
+    @include('wakasek.kaprog.edit')
+    @include('wakasek.kaprog.delete')
 @endsection
 
 @push('js')
@@ -172,34 +184,35 @@
             document.getElementById(modalId).classList.remove('hidden');
             document.body.classList.add('modal-open');
         }
+
         function closeModal(modalId) {
             document.getElementById(modalId).classList.add('hidden');
             document.body.classList.remove('modal-open');
         }
+
         function openCreateModal() {
-            document.getElementById('nip_kaprog').value = '';
-            document.getElementById('nama_ketua_program').value = '';
-            document.getElementById('jurusan').value = '';
+
             openModal('modal-create');
         }
 
-        
-        function openEditModal(nip, nama, jurusan) {
+        function openEditModal(nip, nama, jurusan, username) {
             document.getElementById('edit_nip').value = nip;
             document.getElementById('edit_nama').value = nama;
             document.getElementById('edit_jurusan').value = jurusan;
-            document.getElementById('form-edit').action = `/kaprog/${nip}/update`;
+            document.getElementById('username').value = username;
+
+            document.getElementById('form-edit').action = `/kaprog/${nip}/${username}/update`;
             openModal('modal-edit');
         }
 
-        
+
         function openDeleteModal(nip, nama) {
             document.getElementById('delete-nama-ketua').innerText = nama;
             document.getElementById('form-delete').action = `/kaprog/${nip}`;
             openModal('modal-delete');
         }
 
-        
+
         document.addEventListener('click', function(event) {
             ['modal-create', 'modal-edit', 'modal-delete'].forEach(modalId => {
                 const modal = document.getElementById(modalId);

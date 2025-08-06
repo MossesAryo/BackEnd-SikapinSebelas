@@ -13,7 +13,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SiswaController;
 use App\Http\Controllers\SuratPeringatanController;
 
-Route::get('/', fn() => redirect('/login'));
+Route::get('/', fn() => redirect('/wakasek'));
 
 // Route::get('/siswa/dashboard', function () {
 //     return view('wakasek.siswa.dashboard');
@@ -31,11 +31,11 @@ Route::get('/profile', [ProfileController::class, 'index'])->name('auth.profile'
 Route::get('/wakasek', fn() => view('wakasek.dashboard'))->name('wakasek.dashboard');
 Route::get('/gurubk', fn() => view('gurubk.dashboard'))->name('gurubk.dashboard');
 
-// Ketua Program (Kaprog)
+
 Route::get('/kaprog', [KetuaProgramController::class, 'index'])->name('kaprog.index');
 Route::post('/kaprog/store', [KetuaProgramController::class, 'store'])->name('kaprog.store');
 Route::get('/kaprog/edit/{id}', [KetuaProgramController::class, 'edit'])->name('kaprog.edit');
-Route::put('/kaprog/{nip_kaprog}/update', [KetuaProgramController::class, 'update'])->name('kaprog.update');
+Route::put('/kaprog/{nip_kaprog}/{username}/update', [KetuaProgramController::class, 'update'])->name('kaprog.update');
 Route::delete('/kaprog/{nip_kaprog}', [KetuaProgramController::class, 'destroy'])->name('kaprog.destroy');
 
 Route::get('/siswa', [SiswaController::class, 'index'])->name('siswa.index');
