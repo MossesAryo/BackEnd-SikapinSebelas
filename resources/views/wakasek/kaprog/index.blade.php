@@ -191,7 +191,7 @@
         }
 
         function openCreateModal() {
-
+            
             openModal('modal-create');
         }
 
