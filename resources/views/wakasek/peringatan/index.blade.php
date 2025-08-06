@@ -197,7 +197,8 @@
             openModal('modal-create');
         }
 
-        function openEditModal(id_sp, tanggal_sp, level_sp, alasan) {
+    function openEditModal(id_sp, tanggal_sp, level_sp, alasan) {
+            document.getElementById('edit_id_sp').value = id_sp;
             document.getElementById('edit_tanggal_sp').value = tanggal_sp;
             document.getElementById('edit_level_sp').value = level_sp;
             document.getElementById('edit_alasan').value = alasan;

@@ -66,7 +66,7 @@ Route::delete('/walikelas/{nip_walikelas}', [WalikelasController::class, 'destro
 
 Route::get('/penghargaan', [PenghargaanController::class, 'index'])->name('penghargaan.index');
 Route::post('/penghargaan/store', [PenghargaanController::class, 'store'])->name('penghargaan.store');
-Route::put('/penghargaan/{id}/update', [PenghargaanController::class, 'update'])->name('penghargaan.update');
+Route::put('/penghargaan/{id_penghargaan}/update', [PenghargaanController::class, 'update'])->name('penghargaan.update');
 Route::delete('/penghargaan/{id}', [PenghargaanController::class, 'destroy'])->name('penghargaan.destroy');
 
 Route::get('/peringatan', [SuratPeringatanController::class, 'index'])->name('peringatan.index');

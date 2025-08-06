@@ -31,7 +31,7 @@
         <!-- Header -->
         <div class="flex justify-between items-center">
             <div>
-                <h1 class="text-2xl font-bold gradient-text">Data Pengharagaan</h1>
+                <h1 class="text-2xl font-bold gradient-text">Data Penghargaan</h1>
                 <p class="text-gray-600 mt-1">Kelola data Penghargaan</p>
             </div>
             <button onclick="openCreateModal()"
@@ -94,13 +94,13 @@
                             <th class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
                                 <div class="flex items-center gap-2">
                                     <i class="bi bi-person text-gray-400"></i>
-                                    Tanggal Pengharagaan
+                                    Tanggal Penghargaan
                                 </div>
                             </th>
                             <th class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
                                 <div class="flex items-center gap-2">
                                     <i class="bi bi-shield-check text-gray-400"></i>
-                                    Level Pengharagaan
+                                    Level Penghargaan
                                 </div>
                             </th>
                             <th class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
@@ -162,8 +162,8 @@
                                         class="mx-auto w-24 h-24 bg-gray-100 rounded-full flex items-center justify-center mb-4">
                                         <i class="bi bi-people text-3xl text-gray-400"></i>
                                     </div>
-                                    <h3 class="text-lg font-medium text-gray-900 mb-2">Belum ada data Pengharagaan</h3>
-                                    <p class="text-gray-500">Tambahkan data penghargaan untuk memulai.</p>
+                                    <h3 class="text-lg font-medium text-gray-900 mb-2">Belum ada data Penghargaan</h3>
+                                    <p class="text-gray-500">Tambahkan data Penghargaan untuk memulai.</p>
                                 </td>
                             </tr>
                         @endforelse
@@ -198,6 +198,7 @@
         }
 
         function openEditModal(id_penghargaan, tanggal_penghargaan, level_penghargaan, alasan) {
+            document.getElementById('edit_id_penghargaan').value = id_penghargaan;
             document.getElementById('edit_tanggal_penghargaan').value = tanggal_penghargaan;
             document.getElementById('edit_level_penghargaan').value = level_penghargaan;
             document.getElementById('edit_alasan').value = alasan;
