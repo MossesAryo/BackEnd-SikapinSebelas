@@ -20,17 +20,13 @@
                             class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-transparent">
                     </div>
                     <div>
-
-
-                        <label for="kelas" class="block text-sm font-medium text-gray-700 mb-1">Kelas</label>
-                        <select  class="form-select" id="kelas" name="kelas">
+                        <label for="id_kelas" class="block text-sm font-medium text-gray-700 mb-1">Kelas</label>
+                        <select  class="form-select" id="id_kelas" name="id_kelas">
                             <option value="" selected disabled >Pilih Kelas</option>
-                             @foreach ($walikelas as $item)
-                                <option value="{{ $item->kelas}}"> {{ $item->kelas->nama_kelas}}</option>
+                             @foreach ($kelas as $item)
+                                <option value="{{ $item->id_kelas}}"> {{ $item->nama_kelas}}</option>
                             @endforeach
                         </select>
-                      
-
                     </div>
                 </div>
                 <div class="flex justify-end gap-2 pt-4">

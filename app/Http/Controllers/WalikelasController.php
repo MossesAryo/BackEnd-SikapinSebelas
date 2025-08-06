@@ -50,10 +50,10 @@ class WalikelasController extends Controller
         'username' => $request->nama_walikelas,
         'email' => $request->nama_walikelas . '@gmail.com',
         'password' => bcrypt('password'), // Gantilah dengan password yang sesuai
-        'role' => 'walikelas',
+        'role' => 3,
     ]);
     
-     walikelas::create([
+     Walikelas::create([
         'nip_walikelas' => $request->nip_walikelas,
         'username' => $user->username,
         'nama_walikelas' => $request->nama_walikelas,
@@ -75,24 +75,57 @@ class WalikelasController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit($nip_walikelas)
     {
-        //
+       
+
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
+public function update(Request $request, $nip_walikelas, $username)
+{
+ 
+    $request->validate([
+        'nip_walikelas' => 'required|integer',
+        'username' => 'required|string',
+        'id_kelas' => 'required|string',
+        'nama_walikelas' => 'required|string',
+    ]);
+  
+
+    $walikelas = Walikelas::where('nip_walikelas', $nip_walikelas)->firstOrFail();
+    $user = User::where('username', $username)->first();
+
+
+    $user->update([
+        'username' => $request->username,
+        'email' => $request->nama_walikelas . '@gmail.com',
+    ]);
+    
+    $walikelas->update([
+        'nip_walikelas' => $request->nip_walikelas,
+        'username' => $user->username, // Tetap gunakan username yang sudah ada
+        'nama_walikelas' => $request->nama_walikelas,
+        'id_kelas' => $request->id_kelas,
+        
+    ]);
+
+
+
+    return redirect()->route('walikelas.index')->with('success', 'Data berhasil diperbarui.');
+}
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy($nip_walikelas)
     {
-        //
+        $walikelas = Walikelas::where('nip_walikelas', $nip_walikelas)->firstOrFail();
+        
+        $walikelas->delete();
+
+        return redirect()->route('walikelas.index')->with('success', 'Data Walikelas berhasil dihapus.');
     }
 }

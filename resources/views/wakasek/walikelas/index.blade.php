@@ -34,25 +34,30 @@
                 <h1 class="text-2xl font-bold gradient-text">Data Walikelas</h1>
                 <p class="text-gray-600 mt-1">Kelola data walikelas</p>
             </div>
-             <button onclick="openCreateModal()"
+            <button onclick="openCreateModal()"
                 class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg flex items-center gap-2 transition-colors">
                 <i class="bi bi-plus-lg"></i>
                 Tambah Walikelas
             </button>
         </div>
         
-        <!-- Flash Messages -->
+      
         @if (session('success'))
             <p class="mt-2 text-sm text-green-600 font-semibold">
                 ✅ {{ session('success') }}
             </p>
         @endif
         
-        @if (session('error'))
-            <p class="mt-2 text-sm text-red-600 font-semibold">
-                ❌ {{ session('error') }}
-            </p>
-        @endif
+        @if ($errors->any())
+    <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-2 rounded mb-4">
+        <ul class="list-disc pl-5 text-sm">
+            @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+    </div>
+@endif
+
         
         <!-- Search and Filter -->
         <div class="bg-white p-6 rounded-xl shadow-sm border">
@@ -129,7 +134,7 @@
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap">
                                     <div class="flex items-center gap-1">
-                                        <button onclick="openEditModal('{{ $item->nip_walikelas }}', '{{ $item->nama_walikelas}}', '{{ $item->kelas->nama_kelas }}')"
+                                        <button onclick="openEditModal('{{ $item->nip_walikelas }}', '{{ $item->username }}', '{{ $item->nama_walikelas}}', '{{ $item->id_kelas }}')"
                                             class="action-btn inline-flex items-center justify-center w-9 h-9 text-blue-600 hover:text-blue-800 hover:bg-blue-50 rounded-full"
                                             title="Edit Walikelas">
                                             <i class="bi bi-pencil-square text-sm"></i>
@@ -181,23 +186,22 @@
             document.getElementById(modalId).classList.add('hidden');
             document.body.classList.remove('modal-open');
         }
-
         function openCreateModal() {
             document.getElementById('nip_walikelas').value = '';
             document.getElementById('nama_walikelas').value = '';
-            document.getElementById('kelas').value = '';
+            document.getElementById('id_kelas').value = '';
             openModal('modal-create');
         }
 
 
-        function openEditModal(nip_walikelas, nama_walikelas, kelas) {
+        function openEditModal(nip_walikelas, username, nama_walikelas, id_kelas) {
             document.getElementById('edit_nip_walikelas').value = nip_walikelas;
+            document.getElementById('edit_username').value = username;
             document.getElementById('edit_nama_walikelas').value = nama_walikelas;
-            document.getElementById('edit_nama_kelas').value = kelas->nama_kelas;
-            document.getElementById('form-edit').action = `/walikelas/${nip_walikelas}/update`;
+            document.getElementById('edit_id_kelas').value = id_kelas;
+            document.getElementById('form-edit').action = `/walikelas/${nip_walikelas}/${username}/update`;
             openModal('modal-edit');
         }
-
 
 
         function openDeleteModal(nip_walikelas, nama_walikelas) {

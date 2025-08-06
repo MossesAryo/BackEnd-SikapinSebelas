@@ -56,6 +56,6 @@ Route::delete('/gurubk/{nip}', [Guru_bkController::class, 'destroy'])->name('gur
  
 Route::get('/walikelas', [WalikelasController::class, 'index'])->name('walikelas.index');
 Route::post('/walikelas/store', [WalikelasController::class, 'store'])->name('walikelas.store');
-Route::put('/walikelas/{nip_walikelas}/update', [WalikelasController::class, 'update'])->name('walikelas.update');
+Route::put('/walikelas/{nip_walikelas}/{username}/update', [WalikelasController::class, 'update'])->name('walikelas.update');
 Route::delete('/walikelas/{nip_walikelas}', [WalikelasController::class, 'destroy'])->name('walikelas.destroy');
 
