@@ -67,7 +67,7 @@ class Guru_bkController extends Controller
 
         User::where('username', $bk->username)->update([
             'username' => $request->username
-        ]); 
+        ]);
 
         $bk->update([
             'nip_bk' => $request->nip_bk,
@@ -81,10 +81,15 @@ class Guru_bkController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
-    {
-        $data = guru_bk::find($id)->delete();
+public function destroy(string $id)
+{
+    $bk = guru_bk::findOrFail($id);
 
-        return redirect()->route('gurubk.index')->with('success', 'Guru BK berhasil dihapus');
-    }
+    User::where('username', $bk->username)->delete();
+
+    $bk->delete();
+
+    return redirect()->route('gurubk.index')->with('success', 'Guru BK dan user berhasil dihapus');
+}
+
 }
