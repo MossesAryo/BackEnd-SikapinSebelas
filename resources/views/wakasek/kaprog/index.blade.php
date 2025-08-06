@@ -136,12 +136,12 @@
                                     <div class="text-sm font-semibold text-gray-900">{{ $item->user->email }}</div>
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap">
-                                    <span class="text-lg font-bold text-black">{{ $item->jurusan }}</span>
+                                    <span class="text-lg font-bold text-black">{{ $item->jurusan->nama_jurusan }}</span>
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap">
                                     <div class="flex items-center gap-1">
                                         <button
-                                            onclick="openEditModal('{{ $item->nip_kaprog }}', '{{ $item->nama_ketua_program }}', '{{ $item->jurusan }}','{{ $item->username }}')"
+                                            onclick="openEditModal('{{ $item->nip_kaprog }}', '{{ $item->nama_ketua_program }}', '{{ $item->id_jurusan }}','{{ $item->username }}')"
                                             class="action-btn inline-flex items-center justify-center w-9 h-9 text-blue-600 hover:text-blue-800 hover:bg-blue-50 rounded-full"
                                             title="Edit Ketua Program">
                                             <i class="bi bi-pencil-square text-sm"></i>
@@ -194,14 +194,15 @@
 
             openModal('modal-create');
         }
+        
 
-        function openEditModal(nip, nama, jurusan, username) {
-            document.getElementById('edit_nip').value = nip;
-            document.getElementById('edit_nama').value = nama;
-            document.getElementById('edit_jurusan').value = jurusan;
+        function openEditModal(nip_kaprog, nama_ketua_program, id_jurusan, username) {
+            document.getElementById('edit_nip').value = nip_kaprog;
+            document.getElementById('edit_nama').value = nama_ketua_program;
+            document.getElementById('edit_id_jurusan').value = id_jurusan;
             document.getElementById('username').value = username;
 
-            document.getElementById('form-edit').action = `/kaprog/${nip}/${username}/update`;
+            document.getElementById('form-edit').action = `/kaprog/${nip_kaprog}/${username}/update`;
             openModal('modal-edit');
         }
 

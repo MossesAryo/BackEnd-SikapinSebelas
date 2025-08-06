@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\LaporanController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\Guru_bkController;
+use App\Http\Controllers\JurusanController;
 use App\Http\Controllers\KelasController;
 use App\Http\Controllers\PenilaianController;
 use App\Http\Controllers\WalikelasController;
@@ -50,6 +51,11 @@ Route::get('/kelas', [KelasController::class, 'index'])->name('kelas');
 Route::post('/kelas/store', [KelasController::class, 'store'])->name('kelas.store');
 Route::put('/kelas/{id}/update', [KelasController::class, 'update'])->name('kelas.update');
 Route::delete('/kelas/{id}', [KelasController::class, 'destroy'])->name('kelas.destroy');
+
+Route::get('/jurusan', [JurusanController::class, 'index'])->name('jurusan');
+Route::post('/jurusan/store', [JurusanController::class, 'store'])->name('jurusan.store');
+Route::put('/jurusan/{id_jurusan}/update', [JurusanController::class, 'update'])->name('jurusan.update');
+Route::delete('/jurusan/{id_jurusan}/delete', [JurusanController::class, 'destroy'])->name('jurusan.destroy');
 
 Route::get('/gurubk', [Guru_bkController::class, 'index'])->name('gurubk.index');
 Route::post('/gurubk/store', [Guru_bkController::class, 'store'])->name('gurubk.store');

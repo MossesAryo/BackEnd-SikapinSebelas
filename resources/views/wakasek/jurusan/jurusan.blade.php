@@ -214,6 +214,7 @@
 
 @section('content')
     <div class="min-h-screen bg-gray-50">
+
         <!-- Header Section -->
         <div class="gradient-bg px-6 py-8 mb-8">
             <div class="max-w-7xl mx-auto">
@@ -221,10 +222,10 @@
                     <div class="text-white">
                         <h1 class="text-3xl md:text-4xl font-bold mb-2">
                             <i class="bi bi-collection text-white/80 mr-3"></i>
-                            Data Kelas
+                            Data Jurusan
                         </h1>
                         <p class="text-white/80 text-lg">
-                            Kelola dan organisir data kelas dengan mudah dan efisien
+                            Kelola dan organisir data jurusan dengan mudah dan efisien
                         </p>
                         <div class="flex items-center gap-4 mt-3 text-sm text-white/70">
                             <span><i class="bi bi-calendar3 mr-1"></i> {{ date('d M Y') }}</span>
@@ -234,7 +235,7 @@
                     <button onclick="document.getElementById('modal-create').classList.remove('hidden')"
                         class="btn-primary text-[#0083ee] px-6 py-3 rounded-xl flex items-center gap-3 font-medium shadow-lg">
                         <i class="bi bi-plus-circle text-lg"></i>
-                        <span>Tambah Kelas Baru</span>
+                        <span>Tambah Jurusan Baru</span>
                     </button>
                 </div>
             </div>
@@ -297,8 +298,8 @@
                 <div class="px-6 py-5 border-b border-gray-100 bg-gray-50/50">
                     <div class="flex items-center justify-between">
                         <div>
-                            <h3 class="text-xl font-bold text-gray-900">Daftar Kelas</h3>
-                            <p class="text-gray-500 text-sm mt-1">Menampilkan {{ count($kelas) }} kelas yang tersedia</p>
+                            <h3 class="text-xl font-bold text-gray-900">Daftar Jurusan</h3>
+                            <p class="text-gray-500 text-sm mt-1">Menampilkan {{ count($jurusan) }} jurusan yang tersedia</p>
                         </div>
                         <div class="flex items-center gap-2 text-sm text-gray-500">
                             <i class="bi bi-info-circle"></i>
@@ -308,21 +309,17 @@
                 </div>
 
                 <div class="overflow-x-auto">
-                    @if (count($kelas) > 0)
+                    @if (count($jurusan) > 0)
                         <table class="w-full table-hover">
                             <thead class="bg-gradient-to-r from-gray-50 to-gray-100">
                                 <tr>
                                     <th
                                         class="w-1/6 px-6 py-4 text-left text-xs font-bold text-gray-600 uppercase tracking-wider">
-                                        <i class="bi bi-hash mr-2"></i>ID Kelas
+                                        <i class="bi bi-hash mr-2"></i>ID Jurusan
                                     </th>
                                     <th
                                         class="w-2/3 px-6 py-4 text-left text-xs font-bold text-gray-600 uppercase tracking-wider">
-                                        <i class="bi bi-tag mr-2"></i>Nama Kelas
-                                    </th>
-                                    <th
-                                        class="w-2/3 px-6 py-4 text-left text-xs font-bold text-gray-600 uppercase tracking-wider">
-                                        <i class="bi bi-tag mr-2"></i>Jurusan
+                                        <i class="bi bi-tag mr-2"></i>Nama Jurusan
                                     </th>
                                     <th
                                         class="w-1/6 px-6 py-4 text-center text-xs font-bold text-gray-600 uppercase tracking-wider">
@@ -331,23 +328,23 @@
                                 </tr>
                             </thead>
                             <tbody class="bg-white divide-y divide-gray-100">
-                                @foreach ($kelas as $item)
+                                @foreach ($jurusan as $item)
                                     <tr class="group">
                                         <td class="px-6 py-4">
                                             <div class="flex items-center">
                                                 <div
                                                     class="w-10 h-10 bg-gradient-to-br from-blue-500 to-purple-600 rounded-lg flex items-center justify-center text-white font-bold text-sm mr-3">
-                                                    {{ substr($item->id_kelas, 0, 1) }}
+                                                    {{ substr($item->id_jurusan, 0, 1) }}
                                                 </div>
                                                 <span
-                                                    class="text-sm font-semibold text-gray-900">{{ $item->id_kelas }}</span>
+                                                    class="text-sm font-semibold text-gray-900">{{ $item->id_jurusan }}</span>
                                             </div>
                                         </td>
                                         <td class="px-6 py-4">
                                             <div class="flex flex-col">
                                                 <span
                                                     class="text-base font-medium text-gray-900 group-hover:text-blue-600 transition-colors">
-                                                    {{ $item->nama_kelas }}
+                                                    {{ $item->nama_jurusan }}
                                                 </span>
                                                 <span class="text-sm text-gray-500 mt-1">
                                                     <i class="bi bi-calendar3 mr-1"></i>
@@ -355,21 +352,16 @@
                                                 </span>
                                             </div>
                                         </td>
-
-                                          <td class="px-6 py-4 whitespace-nowrap">
-                                               <span class="text-lg font-bold text-black">{{ $item->jurusan->nama_jurusan}}</span>
-                                          </td>
-
                                         <td class="px-6 py-4">
                                             <div class="flex justify-center gap-2">
                                                 <a href="javascript:void(0)" class="action-btn action-btn-edit"
-                                                    onclick="openEditModal('{{ $item->id_kelas }}', '{{ $item->nama_kelas }}')"
-                                                    title="Edit Kelas">
+                                                    onclick="openEditModal('{{ $item->id_jurusan }}', '{{ $item->nama_jurusan }}')"
+                                                    title="Edit Jurusan">
                                                     <i class="bi bi-pencil-square text-sm"></i>
                                                 </a>
                                                 <a href="javascript:void(0)" class="action-btn action-btn-delete"
-                                                    onclick="openDeleteModal('{{ $item->id_kelas }}', '{{ $item->nama_kelas }}')"
-                                                    title="Hapus Kelas">
+                                                    onclick="openDeleteModal('{{ $item->id_jurusan }}', '{{ $item->nama_jurusan }}')"
+                                                    title="Hapus Jurusan">
                                                     <i class="bi bi-trash text-sm"></i>
                                                 </a>
                                             </div>
@@ -383,12 +375,12 @@
                             <div class="w-24 h-24 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
                                 <i class="bi bi-collection text-4xl text-gray-400"></i>
                             </div>
-                            <h3 class="text-lg font-semibold text-gray-900 mb-2">Belum Ada Data Kelas</h3>
-                            <p class="text-gray-500 mb-6">Mulai dengan menambahkan kelas pertama Anda</p>
+                            <h3 class="text-lg font-semibold text-gray-900 mb-2">Belum Ada Data Jurusan</h3>
+                            <p class="text-gray-500 mb-6">Mulai dengan menambahkan jurusan pertama Anda</p>
                             <button onclick="document.getElementById('modal-create').classList.remove('hidden')"
                                 class="btn-custom text-white px-6 py-3 rounded-xl font-medium">
                                 <i class="bi bi-plus-circle mr-2"></i>
-                                Tambah Kelas Pertama
+                                Tambah Jurusan Pertama
                             </button>
                         </div>
                     @endif
@@ -397,25 +389,27 @@
         </div>
     </div>
 
-   @include('wakasek.kelas.create')
-   @include('wakasek.kelas.edit')
-   @include('wakasek.kelas.delete')
+
+@include('wakasek.jurusan.create')
+@include('wakasek.jurusan.edit')
+@include('wakasek.jurusan.delete')
    
+
 @endsection
 
 @push('js')
     <script>
-        function openEditModal(id, nama, jurusan) {
-            document.getElementById('edit_id_kelas').value = id;
-            document.getElementById('edit_nama_kelas').value = nama;
-            document.getElementById('edit_id_jurusan').value = jurusan;
-            document.getElementById('form-edit').action = `/kelas/${id}/update`;
+
+        function openEditModal(id_jurusan, nama_jurusan) {
+            document.getElementById('edit_id_jurusan').value = id_jurusan;
+            document.getElementById('edit_nama_jurusan').value = nama_jurusan;
+            document.getElementById('form-edit').action = `/jurusan/${id_jurusan}/update`;
             document.getElementById('modal-edit').classList.remove('hidden');
         }
 
-        function openDeleteModal(id, nama) {
-            document.getElementById('delete-nama-kelas').innerText = nama;
-            document.getElementById('form-delete').action = `/kelas/${id}`;
+        function openDeleteModal(id_jurusan, nama_jurusan) {
+            document.getElementById('delete-nama-jurusan').innerText = nama_jurusan;
+            document.getElementById('form-delete').action = `/jurusan/${id_jurusan}/delete`;
             document.getElementById('modal-delete').classList.remove('hidden');
         }
 
@@ -427,8 +421,6 @@
                 });
             }
         });
-
-        
 
         // Enhanced UX: Click outside to close modal
         document.querySelectorAll('[id^="modal-"]').forEach(modal => {
