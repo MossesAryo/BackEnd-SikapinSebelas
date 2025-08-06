@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Aspek_penilaianController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\LaporanController;
 use App\Http\Controllers\AuthController;
@@ -12,6 +13,7 @@ use App\Http\Controllers\PenghargaanController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SiswaController;
 use App\Http\Controllers\SuratPeringatanController;
+use Illuminate\Routing\RouteUri;
 
 Route::get('/', fn() => redirect('/wakasek'));
 
@@ -55,7 +57,7 @@ Route::put('/gurubk/{nip}/update', [Guru_bkController::class, 'update'])->name('
 Route::delete('/gurubk/{nip}', [Guru_bkController::class, 'destroy'])->name('gurubk.destroy');
 
 
- 
+
 Route::get('/walikelas', [WalikelasController::class, 'index'])->name('walikelas.index');
 Route::post('/walikelas/store', [WalikelasController::class, 'store'])->name('walikelas.store');
 Route::put('/walikelas/{nip_walikelas}/{username}/update', [WalikelasController::class, 'update'])->name('walikelas.update');
@@ -71,3 +73,8 @@ Route::get('/peringatan', [SuratPeringatanController::class, 'index'])->name('pe
 Route::post('/peringatan/store', [SuratPeringatanController::class, 'store'])->name('peringatan.store');
 Route::put('/peringatan/{id}/update', [SuratPeringatanController::class, 'update'])->name('peringatan.update');
 Route::delete('/peringatan/{id}', [SuratPeringatanController::class, 'destroy'])->name('peringatan.destroy');
+
+Route::get('/aspekpenilaian', [Aspek_penilaianController::class, 'index'])->name('aspekpenilaian');
+Route::post('/aspekpenilaian/store', [Aspek_penilaianController::class, 'store'])->name('aspekpenilaian.store');
+Route::put('/aspekpenilaian/{id}/update', [Aspek_penilaianController::class, 'update'])->name('aspekpenilaian.update');
+Route::delete('/aspekpenilaian/{id}/destroy', [Aspek_penilaianController::class, 'destroy'])->name('aspekpenilaian.destroy');
