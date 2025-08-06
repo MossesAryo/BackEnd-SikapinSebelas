@@ -26,7 +26,7 @@ class SuratPeringatanController extends Controller
         return redirect()->back()->with('success', 'Data berhasil disimpan');
     }
 
-    public function update(Request $request, $id)
+     public function update(Request $request, $id_sp)
     {
         $request->validate([
             'id_sp' => 'required',
@@ -35,11 +35,17 @@ class SuratPeringatanController extends Controller
             'alasan' => 'required|string|max:255',
         ]);
 
-        $peringatan = surat_peringatan::findOrFail($id);
-        $peringatan->update($request->all());
+        $data = [
+            'id_sp' => $request->id_sp,
+            'tanggal_sp' => $request->tanggal_sp,
+            'level_sp' => $request->level_sp,
+            'alasan' => $request->alasan,
+        ];
 
-        return redirect()->route('peringatan.index')->with('success', 'Data surat peringatan berhasil diubah.');
+        $updated = surat_peringatan::where('id_sp', $id_sp)->update($data);
+        return redirect()->route('peringatan.index')->with('success', 'Peringatan berhasil diedit.');
     }
+
 
     public function destroy($id)
     {
