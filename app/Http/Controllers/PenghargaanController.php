@@ -13,33 +13,40 @@ class PenghargaanController extends Controller
         return view('wakasek.penghargaan.index', compact('penghargaan'));
     }
 
-  
-public function store(Request $request)
-{
-     $request->validate([
-            'id_penghargaan' => 'required',
-            'tanggal_penghargaan' => 'required|date',
-            'level_penghargaan' => 'required|in:PH1,PH2,PH3',
-            'alasan' => 'required|string|max:255',
-        ]);
-    Penghargaan::create($request->all());
-    return redirect()->back()->with('success', 'Data berhasil disimpan');
-}
-    public function update(Request $request, $id)
+
+    public function store(Request $request)
     {
         $request->validate([
+            'id_penghargaan' => 'required',
+            'tanggal_penghargaan' => 'required|date',
+            'level_penghargaan' => 'required|in:PH1,PH2,PH3',
+            'alasan' => 'required|string|max:255',
+        ]);
+        Penghargaan::create($request->all());
+        return redirect()->back()->with('success', 'Data berhasil disimpan');
+    }
 
+    public function update(Request $request, $id_penghargaan)
+    {
+        $request->validate([
             'id_penghargaan' => 'required',
             'tanggal_penghargaan' => 'required|date',
             'level_penghargaan' => 'required|in:PH1,PH2,PH3',
             'alasan' => 'required|string|max:255',
         ]);
 
-        $penghargaan = Penghargaan::findOrFail($id);
-        $penghargaan->update($request->all());
+        $data = [
+            'id_penghargaan' => $request->id_penghargaan,
+            'tanggal_penghargaan' => $request->tanggal_penghargaan,
+            'level_penghargaan' => $request->level_penghargaan,
+            'alasan' => $request->alasan,
+        ];
 
-        return redirect()->route('penghargaan.index')->with('success', 'Data penghargaan berhasil diubah.');
+        $updated = Penghargaan::where('id_penghargaan', $id_penghargaan)->update($data);
+       
+        return redirect()->route('penghargaan.index')->with('success', 'Penghargaan berhasil diedit.');
     }
+
 
     public function destroy($id)
     {
