@@ -53,44 +53,43 @@ class Guru_bkController extends Controller
 
         return redirect()->route('gurubk.index')->with('success', 'Guru BK berhasil ditambahkan');
     }
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
+    public function update(Request $request, $nip_bk)
     {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        $data = $request->validate([
+        $request->validate([
             'nip_bk' => 'required',
             'username' => 'required',
             'nama_guru_bk' => 'required',
         ]);
 
-        guru_bk::find($id)->update($data);
-        return redirect()->route('gurubk.index')->with('success', 'Guru BK berhasil diedit');
+        $bk = guru_bk::where('nip_bk', $nip_bk)->firstOrFail();
+
+
+        User::where('username', $bk->username)->update([
+            'username' => $request->username
+        ]);
+
+        $bk->update([
+            'nip_bk' => $request->nip_bk,
+            'username' => $request->username,
+            'nama_guru_bk' => $request->nama_guru_bk,
+        ]);
+
+        return redirect()->route('gurubk.index')->with('success', 'Data berhasil diperbarui.');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
-    {
-        $data = guru_bk::find($id)->delete();
+public function destroy(string $id)
+{
+    $bk = guru_bk::findOrFail($id);
 
-        return redirect()->route('gurubk.index')->with('success', 'Guru BK berhasil dihapus');
-    }
+    User::where('username', $bk->username)->delete();
+
+    $bk->delete();
+
+    return redirect()->route('gurubk.index')->with('success', 'Guru BK dan user berhasil dihapus');
+}
+
 }

@@ -12,8 +12,8 @@ return new class extends Migration {
             $table->string('username');
             $table->string('nama_guru_bk');
             $table->timestamps();
-            
-            $table->foreign('username')->references('username')->on('users')->onDelete('cascade');
+
+            $table->foreign('username')->references('username')->on('users')->onDelete('cascade')->onUpdate('cascade');
         });
     }
     public function down() {

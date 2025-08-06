@@ -56,6 +56,7 @@
 
 @section('content')
     <div class="space-y-6">
+        <!-- Header -->
         <div class="flex justify-between items-center">
             <div>
                 <h1 class="text-2xl font-bold gradient-text">Data Guru BK</h1>
@@ -68,189 +69,148 @@
             </button>
         </div>
 
+        <!-- Flash Messages -->
+        @if (session('success'))
+            <p class="mt-2 text-sm text-green-600 font-semibold">
+                ✅ {{ session('success') }}
+            </p>
+        @endif
+
+        @if (session('error'))
+            <p class="mt-2 text-sm text-red-600 font-semibold">
+                ❌ {{ session('error') }}
+            </p>
+        @endif
+
+        <!-- Search and Filter -->
         <div class="bg-white p-6 rounded-xl shadow-sm border">
             <div class="flex flex-col md:flex-row gap-2 items-center justify-between">
-                <div class="flex flex-col md:flex-row gap-2 flex-1">
-                    <div class="relative w-full md:w-64">
-                        <i class="bi bi-search absolute left-3 top-2.5 text-gray-400"></i>
-                        <input type="text" placeholder="Cari Guru BK..."
-                            class="pl-10 pr-4 py-1.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent w-full">
-                    </div>
+                <div class="relative w-full md:w-64">
+                    <i class="bi bi-search absolute left-3 top-2.5 text-gray-400"></i>
+                    <input type="text" placeholder="Cari Guru BK..."
+                        class="pl-10 pr-4 py-1.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent w-full">
                 </div>
                 <div class="flex gap-2">
-                    <button class="px-3 py-1.5 border border-gray-300 rounded-lg hover:bg-gray-50 flex items-center gap-1.5">
+                    <button
+                        class="px-3 py-1.5 border border-gray-300 rounded-lg hover:bg-gray-50 flex items-center gap-1.5">
                         <i class="bi bi-funnel"></i> Filter
                     </button>
-                    <button class="px-3 py-1.5 border border-gray-300 rounded-lg hover:bg-gray-50 flex items-center gap-1.5">
+                    <button
+                        class="px-3 py-1.5 border border-gray-300 rounded-lg hover:bg-gray-50 flex items-center gap-1.5">
                         <i class="bi bi-download"></i> Export
                     </button>
                 </div>
             </div>
         </div>
 
+        <!-- Data Table -->
         <div class="bg-white rounded-xl shadow-sm border overflow-hidden">
             <div class="px-6 py-4 border-b border-gray-200">
                 <h3 class="text-lg font-semibold text-gray-900">Daftar Guru BK</h3>
             </div>
 
-            <div class="overflow-hidden">
-                <table class="w-full table-hover table-fixed">
-                    <thead class="bg-gray-50">
+            <div class="overflow-x-auto">
+                <table class="w-full">
+                    <thead class="bg-gray-50 border-b border-gray-200">
                         <tr>
-                            <th class="w-1/3 px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase">NIP</th>
-                            <th class="w-1/3 px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase">Username</th>
-                            <th class="w-1/3 px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase">Nama</th>
-                            <th class="w-1/3 px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase">Aksi</th>
+                            <th class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                                <div class="flex items-center gap-2">
+                                    <i class="bi bi-hash text-gray-400"></i>
+                                    NIP
+                                </div>
+                            </th>
+                            <th class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                                <div class="flex items-center gap-2">
+                                    <i class="bi bi-person text-gray-400"></i>
+                                    Username
+                                </div>
+                            </th>
+                            <th class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                                <div class="flex items-center gap-2">
+                                    <i class="bi bi-person text-gray-400"></i>
+                                    Nama
+                                </div>
+                            </th>
+                            <th class="px-5 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                                <div class="flex items-center gap-2">
+                                    <i class="bi bi-gear text-gray-400"></i>
+                                    Aksi
+                                </div>
+                            </th>
                         </tr>
                     </thead>
-                    <tbody class="bg-white divide-y divide-gray-200">
-                        @foreach ($guru_bk as $item)
-                            <tr>
-                                <td class="px-3 py-2 text-sm text-gray-700 truncate-cell">{{ $item->nip }}</td>
-                                <td class="px-3 py-2 text-sm text-gray-700 truncate-cell">{{ $item->username }}</td>
-                                <td class="px-3 py-2 text-sm text-gray-700 truncate-cell">{{ $item->nama }}</td>
-                                <td class="px-3 py-2">
-                                    <div class="flex gap-2">
-                                        <a href="javascript:void(0)"
-                                            class="text-blue-600 hover:text-blue-800 action-btn"
-                                            onclick="openEditModal('{{ $item->nip }}', '{{ $item->username }}', '{{ $item->nama }}')"
-                                            title="Edit">
-                                            <i class="bi bi-pencil-square"></i>
-                                        </a>
-                                        <a href="javascript:void(0)"
-                                            class="text-red-600 hover:text-red-800 action-btn"
-                                            onclick="openDeleteModal('{{ $item->nip }}', '{{ $item->nama }}')"
-                                            title="Hapus">
-                                            <i class="bi bi-trash"></i>
-                                        </a>
+
+                    <tbody class="bg-white divide-y divide-gray-100">
+                        @forelse ($guru_bk as $item)
+                            <tr class="hover:bg-gray-50 group">
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <div class="flex items-center">
+                                        <div
+                                            class="w-2 h-2 bg-blue-400 rounded-full mr-3 opacity-0 group-hover:opacity-100 transition-opacity">
+                                        </div>
+                                        <span class="text-sm font-medium text-gray-900">{{ $item->nip_bk }}</span>
+                                    </div>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <div class="text-sm font-semibold text-gray-900">{{ $item->user->username }}</div>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <div class="text-sm font-semibold text-gray-900">{{ $item->nama_guru_bk }}</div>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <div class="flex items-center gap-1">
+                                        <button
+                                            onclick="openEditModal('{{ $item->nip_bk }}', '{{ $item->username }}', '{{ $item->nama_guru_bk }}')"
+                                            class="action-btn inline-flex items-center justify-center w-9 h-9 text-blue-600 hover:text-blue-800 hover:bg-blue-50 rounded-full"
+                                            title="Edit Guru BK">
+                                            <i class="bi bi-pencil-square text-sm"></i>
+                                        </button>
+                                        <button
+                                            onclick="openDeleteModal('{{ $item->nip_bk }}', '{{ $item->nama_guru_bk }}')"
+                                            class="action-btn inline-flex items-center justify-center w-9 h-9 text-red-600 hover:text-red-800 hover:bg-red-50 rounded-full"
+                                            title="Hapus Guru BK">
+                                            <i class="bi bi-trash text-sm"></i>
+                                        </button>
                                     </div>
                                 </td>
                             </tr>
-                        @endforeach
+                        @empty
+                            <tr>
+                                <td colspan="4" class="px-6 py-12 text-center">
+                                    <div
+                                        class="mx-auto w-24 h-24 bg-gray-100 rounded-full flex items-center justify-center mb-4">
+                                        <i class="bi bi-people text-3xl text-gray-400"></i>
+                                    </div>
+                                    <h3 class="text-lg font-medium text-gray-900 mb-2">Belum ada data Guru BK</h3>
+                                    <p class="text-gray-500">Tambahkan data Guru BK untuk memulai.</p>
+                                </td>
+                            </tr>
+                        @endforelse
                     </tbody>
                 </table>
             </div>
         </div>
     </div>
 
-    <!-- Modal Create Guru BK -->
-    <div id="modal-create" class="fixed inset-0 bg-black bg-opacity-40 z-50 flex items-center justify-center hidden">
-        <div class="bg-white rounded-xl shadow-xl w-full max-w-xl mx-4">
-            <form action="{{ route('gurubk.store') }}" method="POST" class="p-6 space-y-4">
-                @csrf
-                <div class="flex justify-between items-center">
-                    <h2 class="text-xl font-bold text-gray-700">Tambah Guru BK</h2>
-                    <button type="button" onclick="document.getElementById('modal-create').classList.add('hidden')"
-                        class="text-gray-500 hover:text-gray-700 text-xl">&times;</button>
-                </div>
-                <div class="space-y-2">
-                    <div>
-                        <label for="nip" class="block text-sm font-medium text-gray-700">NIP</label>
-                        <input type="text" id="nip" name="nip_bk"
-                            class="mt-1 block w-full border border-gray-300 rounded-lg shadow-sm px-3 py-1.5 focus:ring focus:ring-blue-200 focus:outline-none "
-                            required>
-                    </div>
-                    <div>
-                        <label for="username" class="block text-sm font-medium text-gray-700">Username</label>
-                        <input type="text" id="username" name="username"
-                            class="mt-1 block w-full border border-gray-300 rounded-lg shadow-sm px-3 py-1.5 focus:ring focus:ring-blue-200 focus:outline-none" required>
-                    </div>
-                    <div>
-                        <label for="nama" class="block text-sm font-medium text-gray-700">Nama</label>
-                        <input type="text" id="nama" name="nama_guru_bk"
-                            class="mt-1 block w-full border border-gray-300 rounded-lg shadow-sm px-3 py-1.5 focus:ring focus:ring-blue-200 focus:outline-none "
-                            required>
-                    </div>
-                </div>
-                <div class="flex justify-end gap-2">
-                    <button type="button" onclick="document.getElementById('modal-create').classList.add('hidden')"
-                        class="px-4 py-2 rounded-lg border border-gray-300 text-gray-600 hover:bg-gray-100">Batal</button>
-                    <button type="submit"
-                        class="px-4 py-2 rounded-lg bg-blue-600 text-white hover:bg-blue-700">Simpan</button>
-                </div>
-            </form>
-        </div>
-    </div>
-
-    <!-- Modal Edit Guru BK -->
-    <div id="modal-edit" class="fixed inset-0 bg-black bg-opacity-40 z-50 flex items-center justify-center hidden">
-        <div class="bg-white rounded-xl shadow-xl w-full max-w-xl mx-4">
-            <form id="form-edit" method="POST" class="p-6 space-y-4">
-                @csrf
-                @method('PUT')
-                <div class="flex justify-between items-center">
-                    <h2 class="text-xl font-bold text-gray-700">Edit Guru BK</h2>
-                    <button type="button" onclick="document.getElementById('modal-edit').classList.add('hidden')"
-                        class="text-gray-500 hover:text-gray-700 text-xl ">&times;</button>
-                </div>
-                <div class="space-y-2">
-                    <div>
-                        <label for="edit_nip" class="block text-sm font-medium text-gray-700">NIP</label>
-                        <input type="text" id="edit_nip" name="nip_bk"
-                            class=" mt-1 block w-full border border-gray-300 rounded-lg shadow-sm px-3 py-1.5 focus:ring focus:ring-blue-200 focus:outline-none"
-                            readonly>
-                    </div>
-                    <div>
-                        <label for="edit_username" class="block text-sm font-medium text-gray-700">Username</label>
-                        <input type="text" id="edit_username" name="username"
-                            class="mt-1 block w-full border border-gray-300 rounded-lg shadow-sm px-3 py-1.5 focus:ring focus:ring-blue-200 focus:outline-none"
-                            required>
-                    </div>
-                    <div>
-                        <label for="edit_nama" class="block text-sm font-medium text-gray-700">Nama</label>
-                        <input type="text" id="edit_nama" name="nama_guru_bk"
-                            class=" mt-1 block w-full border border-gray-300 rounded-lg shadow-sm px-3 py-1.5 focus:ring focus:ring-blue-200 focus:outline-none"
-                            required>
-                    </div>
-                </div>
-                <div class="flex justify-end gap-2">
-                    <button type="button" onclick="document.getElementById('modal-edit').classList.add('hidden')"
-                        class="px-4 py-2 rounded-lg border border-gray-300 text-gray-600 hover:bg-gray-100">Batal</button>
-                    <button type="submit"
-                        class="px-4 py-2 rounded-lg bg-blue-600 text-white hover:bg-blue-700">Update</button>
-                </div>
-            </form>
-        </div>
-    </div>
-
-    <!-- Modal Delete Guru BK -->
-    <div id="modal-delete" class="fixed inset-0 bg-black bg-opacity-40 z-50 flex items-center justify-center hidden">
-        <div class="bg-white rounded-xl shadow-xl w-full max-w-md mx-4">
-            <form id="form-delete" method="POST" class="p-6 space-y-4">
-                @csrf
-                @method('DELETE')
-                <div class="flex justify-between items-center">
-                    <h2 class="text-xl font-bold text-gray-700">Hapus Guru BK</h2>
-                    <button type="button" onclick="document.getElementById('modal-delete').classList.add('hidden')"
-                        class="text-gray-500 hover:text-gray-700 text-xl">&times;</button>
-                </div>
-                <p class="text-gray-600">Apakah kamu yakin ingin menghapus guru <span id="delete-nama-guru"
-                        class="font-semibold"></span>?</p>
-                <div class="flex justify-end gap-2">
-                    <button type="button" onclick="document.getElementById('modal-delete').classList.add('hidden')"
-                        class="px-4 py-2 rounded-lg border border-gray-300 text-gray-600 hover:bg-gray-100">Batal</button>
-                    <button type="submit"
-                        class="px-4 py-2 rounded-lg bg-red-600 text-white hover:bg-red-700">Hapus</button>
-                </div>
-            </form>
-        </div>
-    </div>
+    @include('wakasek.guru_bk.create')
+    @include('wakasek.guru_bk.edit')
+    @include('wakasek.guru_bk.delete')
 @endsection
 
 @push('js')
-<script>
-    function openEditModal(nip, username, nama) {
-        document.getElementById('edit_nip').value = nip;
-        document.getElementById('edit_username').value = username;
-        document.getElementById('edit_nama').value = nama;
-        document.getElementById('form-edit').action = `/guru-bk/${nip}/update`;
-        document.getElementById('modal-edit').classList.remove('hidden');
-    }
+    <script>
+        function openEditModal(nip, username, nama) {
+            document.getElementById('edit_nip_bk').value = nip;
+            document.getElementById('edit_username').value = username;
+            document.getElementById('edit_nama_guru_bk').value = nama;
+            document.getElementById('form-edit').action = `/gurubk/${nip}/update`;
+            document.getElementById('modal-edit').classList.remove('hidden');
+        }
 
-    function openDeleteModal(nip, nama) {
-        document.getElementById('delete-nama-guru').innerText = nama;
-        document.getElementById('form-delete').action = `/guru-bk/${nip}`;
-        document.getElementById('modal-delete').classList.remove('hidden');
-    }
-</script>
+        function openDeleteModal(nip, nama) {
+            document.getElementById('delete-nama-guru').innerText = nama;
+            document.getElementById('form-delete').action = `/gurubk/${nip}/destroy`;
+            document.getElementById('modal-delete').classList.remove('hidden');
+        }
+    </script>
 @endpush
