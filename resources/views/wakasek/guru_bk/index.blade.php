@@ -106,20 +106,20 @@
                     <tbody class="bg-white divide-y divide-gray-200">
                         @foreach ($guru_bk as $item)
                             <tr>
-                                <td class="px-3 py-2 text-sm text-gray-700 truncate-cell">{{ $item->nip }}</td>
+                                <td class="px-3 py-2 text-sm text-gray-700 truncate-cell">{{ $item->nip_bk   }}</td>
                                 <td class="px-3 py-2 text-sm text-gray-700 truncate-cell">{{ $item->username }}</td>
-                                <td class="px-3 py-2 text-sm text-gray-700 truncate-cell">{{ $item->nama }}</td>
+                                <td class="px-3 py-2 text-sm text-gray-700 truncate-cell">{{ $item->nama_guru_bk }}</td>
                                 <td class="px-3 py-2">
                                     <div class="flex gap-2">
                                         <a href="javascript:void(0)"
                                             class="text-blue-600 hover:text-blue-800 action-btn"
-                                            onclick="openEditModal('{{ $item->nip }}', '{{ $item->username }}', '{{ $item->nama }}')"
+                                            onclick="openEditModal('{{ $item->nip_bk }}', '{{ $item->username }}', '{{ $item->nama_guru_bk }}')"
                                             title="Edit">
                                             <i class="bi bi-pencil-square"></i>
                                         </a>
                                         <a href="javascript:void(0)"
                                             class="text-red-600 hover:text-red-800 action-btn"
-                                            onclick="openDeleteModal('{{ $item->nip }}', '{{ $item->nama }}')"
+                                            onclick="openDeleteModal('{{ $item->nip_bk }}', '{{ $item->nama_guru_bk }}')"
                                             title="Hapus">
                                             <i class="bi bi-trash"></i>
                                         </a>
@@ -185,10 +185,9 @@
                 </div>
                 <div class="space-y-2">
                     <div>
-                        <label for="edit_nip" class="block text-sm font-medium text-gray-700">NIP</label>
-                        <input type="text" id="edit_nip" name="nip_bk"
-                            class=" mt-1 block w-full border border-gray-300 rounded-lg shadow-sm px-3 py-1.5 focus:ring focus:ring-blue-200 focus:outline-none"
-                            readonly>
+                        <label for="edit_nip_bk" class="block text-sm font-medium text-gray-700">NIP</label>
+                        <input type="text" id="edit_nip_bk" name="nip_bk"
+                            class=" mt-1 block w-full border border-gray-300 rounded-lg shadow-sm px-3 py-1.5 focus:ring focus:ring-blue-200 focus:outline-none">
                     </div>
                     <div>
                         <label for="edit_username" class="block text-sm font-medium text-gray-700">Username</label>
@@ -197,8 +196,8 @@
                             required>
                     </div>
                     <div>
-                        <label for="edit_nama" class="block text-sm font-medium text-gray-700">Nama</label>
-                        <input type="text" id="edit_nama" name="nama_guru_bk"
+                        <label for="edit_nama_guru_bk" class="block text-sm font-medium text-gray-700">Nama</label>
+                        <input type="text" id="edit_nama_guru_bk" name="nama_guru_bk"
                             class=" mt-1 block w-full border border-gray-300 rounded-lg shadow-sm px-3 py-1.5 focus:ring focus:ring-blue-200 focus:outline-none"
                             required>
                     </div>
@@ -240,16 +239,16 @@
 @push('js')
 <script>
     function openEditModal(nip, username, nama) {
-        document.getElementById('edit_nip').value = nip;
+        document.getElementById('edit_nip_bk').value = nip;
         document.getElementById('edit_username').value = username;
-        document.getElementById('edit_nama').value = nama;
-        document.getElementById('form-edit').action = `/guru-bk/${nip}/update`;
+        document.getElementById('edit_nama_guru_bk').value = nama;
+        document.getElementById('form-edit').action = `/gurubk/${nip}/update`;
         document.getElementById('modal-edit').classList.remove('hidden');
     }
 
     function openDeleteModal(nip, nama) {
         document.getElementById('delete-nama-guru').innerText = nama;
-        document.getElementById('form-delete').action = `/guru-bk/${nip}`;
+        document.getElementById('form-delete').action = `/gurubk/${nip}/destroy`;
         document.getElementById('modal-delete').classList.remove('hidden');
     }
 </script>

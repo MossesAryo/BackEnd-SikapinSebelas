@@ -52,10 +52,10 @@ Route::delete('/kelas/{id}', [KelasController::class, 'destroy'])->name('kelas.d
 Route::get('/gurubk', [Guru_bkController::class, 'index'])->name('gurubk.index');
 Route::post('/gurubk/store', [Guru_bkController::class, 'store'])->name('gurubk.store');
 Route::put('/gurubk/{nip}/update', [Guru_bkController::class, 'update'])->name('gurubk.update');
-Route::delete('/gurubk/{nip}', [Guru_bkController::class, 'destroy'])->name('gurubk.destroy');
+Route::delete('/gurubk/{nip}/destroy', [Guru_bkController::class, 'destroy'])->name('gurubk.destroy');
 
 
- 
+
 Route::get('/walikelas', [WalikelasController::class, 'index'])->name('walikelas.index');
 Route::get('/walikelas/create', [WalikelasController::class, 'create'])->name('walikelas.create');
 Route::post('/walikelas/store', [WalikelasController::class, 'store'])->name('walikelas.store');
