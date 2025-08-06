@@ -12,35 +12,27 @@ class KetuaProgramController extends Controller
 {
     public function index()
     {
-        return view('wakasek.kaprog.', [
+        return view('wakasek.kaprog.index', [
             'ketua_program' => ketua_program::get(),
         ]);
     }
-
-    public function create()
-    {
-        $users = User::all();
-        return view('wakasek.kaprog.create', compact('users'));
-    }
-
     public function store(Request $request)
     {
         $request->validate([
             'nip_kaprog' => 'required|unique:ketua_program,nip_kaprog',
             'nama_ketua_program' => 'required|string|max:255',
             'jurusan' => 'required|string|max:255',
-            'username' => 'required|string|max:255',
         ]);
 
 
         $user = User::create([
-            'username' => $request->username,
-            'email' => strtolower(Str::slug($request->username)) . '@gmail.com',
+            'username' => $request->nama_ketua_program,
+            'email' => strtolower(Str::slug($request->nama_ketua_program)) . '@gmail.com',
             'password' => bcrypt('password'),
-            'role' => 3,
+            'role' => 4,
         ]);
 
-        // Buat ketua program
+
         ketua_program::create([
             'nip_kaprog' => $request->nip_kaprog,
             'nama_ketua_program' => $request->nama_ketua_program,
@@ -48,33 +40,45 @@ class KetuaProgramController extends Controller
             'username' => $user->username,
         ]);
 
-        return redirect()->route('wakasek.kaprog.index')->with('success', 'Data Ketua Program berhasil disimpan.');
+        return redirect()->route('kaprog.index')->with('success', 'Data Ketua Program berhasil disimpan.');
     }
 
 
 
 
-  public function edit($nip_kaprog)
-{
-    $kp = ketua_program::where('nip_kaprog', $nip_kaprog)->firstOrFail();
-    $users = User::all(); // Dikirim ke view
-    return view('wakasek.kaprog.edit', compact('kp', 'users'));
-}
+    public function edit($nip_kaprog,)
+    {
+        $kp = ketua_program::where('nip_kaprog', $nip_kaprog)->firstOrFail();
+        $users = User::all();
+        return view('wakasek.kaprog.edit', compact('kp', 'users'));
+    }
 
-public function update(Request $request, $nip_kaprog)
+    public function update(Request $request, $nip_kaprog, $username)
 {
+    
     $request->validate([
+        'nip_kaprog' => 'required|unique:ketua_program,nip_kaprog,' . $nip_kaprog . ',nip_kaprog',
         'nama_ketua_program' => 'required|string|max:255',
+        'username' => 'required|string|max:255',
         'jurusan' => 'required|string|max:255',
     ]);
 
+
     $kp = ketua_program::where('nip_kaprog', $nip_kaprog)->firstOrFail();
-    $kp->update([
-        'nama_ketua_program' => $request->nama_ketua_program,
-        'jurusan' => $request->jurusan,
+
+    
+    User::where('username', $username)->update([
+        'username' => $request->username
     ]);
 
-    return redirect()->route('wakasek.kaprog.index')->with('success', 'Data berhasil diperbarui.');
+    $kp->update([
+        'nip_kaprog' => $request->nip_kaprog,
+        'nama_ketua_program' => $request->nama_ketua_program,
+        'jurusan' => $request->jurusan,
+        'username' => $request->username
+    ]);
+
+    return redirect()->route('kaprog.index')->with('success', 'Data berhasil diperbarui.');
 }
 
 
@@ -83,6 +87,6 @@ public function update(Request $request, $nip_kaprog)
         $kp = ketua_program::where('nip_kaprog', $nip_kaprog)->firstOrFail();
         $kp->delete();
 
-        return redirect()->route('wakasek.kaprog.index')->with('success', 'Data Ketua Program berhasil dihapus.');
+        return redirect()->route('kaprog.index')->with('success', 'Data Ketua Program berhasil dihapus.');
     }
 }

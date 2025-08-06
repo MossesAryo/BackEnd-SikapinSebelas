@@ -61,7 +61,7 @@
                     <div id="userDropdown" class="dropdown-content ml-4 mt-1">
                         <ul class="space-y-1">
                             <li>
-                                <a href="#" class="flex items-center gap-3 px-4 py-2 text-sm text-gray-600 hover:bg-gray-50 rounded-lg menu-link" data-link="wali-kelas">
+                                <a href="{{ route('walikelas.index') }}" class="flex items-center gap-3 px-4 py-2 text-sm text-gray-600 hover:bg-gray-50 rounded-lg menu-link" data-link="wali-kelas">
                                     <i class="bi bi-person-check"></i>
                                     <span>Wali Kelas</span>
                                 </a>
@@ -73,7 +73,7 @@
                                 </a>
                             </li>
                             <li>
-                                <a href="#" class="flex items-center gap-3 px-4 py-2 text-sm text-gray-600 hover:bg-gray-50 rounded-lg menu-link" data-link="kaprog">
+                                <a href="{{ route('kaprog.index') }}" class="flex items-center gap-3 px-4 py-2 text-sm text-gray-600 hover:bg-gray-50 rounded-lg menu-link" data-link="kaprog">
                                     <i class="bi bi-person-badge"></i>
                                     <span>Kaprog</span>
                                 </a>
