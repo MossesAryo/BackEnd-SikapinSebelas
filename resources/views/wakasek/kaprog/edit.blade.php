@@ -12,12 +12,17 @@
                 <div class="space-y-4">
                     <div>
                         <label for="edit_nip" class="block text-sm font-medium text-gray-700 mb-1">NIP</label>
-                        <input type="text" id="edit_nip" name="nip_kaprog" readonly
+                        <input type="text" id="edit_nip" name="nip_kaprog" required
                             class="w-full border border-gray-300 rounded-lg px-3 py-2 bg-gray-50">
                     </div>
                     <div>
                         <label for="edit_nama" class="block text-sm font-medium text-gray-700 mb-1">Nama Ketua Program</label>
                         <input type="text" id="edit_nama" name="nama_ketua_program" required
+                            class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                    </div>
+                    <div>
+                        <label for="username" class="block text-sm font-medium text-gray-700 mb-1">Username</label>
+                        <input type="text" id="username" name="username" required
                             class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-transparent">
                     </div>
                     <div>
