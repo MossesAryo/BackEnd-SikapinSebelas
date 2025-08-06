@@ -54,37 +54,39 @@ class KetuaProgramController extends Controller
     }
 
     public function update(Request $request, $nip_kaprog, $username)
-{
-    
-    $request->validate([
-        'nip_kaprog' => 'required|unique:ketua_program,nip_kaprog,' . $nip_kaprog . ',nip_kaprog',
-        'nama_ketua_program' => 'required|string|max:255',
-        'username' => 'required|string|max:255',
-        'jurusan' => 'required|string|max:255',
-    ]);
+    {
+
+        $request->validate([
+            'nip_kaprog' => 'required|unique:ketua_program,nip_kaprog,' . $nip_kaprog . ',nip_kaprog',
+            'nama_ketua_program' => 'required|string|max:255',
+            'username' => 'required|string|max:255',
+            'jurusan' => 'required|string|max:255',
+        ]);
 
 
-    $kp = ketua_program::where('nip_kaprog', $nip_kaprog)->firstOrFail();
+        $kp = ketua_program::where('nip_kaprog', $nip_kaprog)->firstOrFail();
 
-    
-    User::where('username', $username)->update([
-        'username' => $request->username
-    ]);
 
-    $kp->update([
-        'nip_kaprog' => $request->nip_kaprog,
-        'nama_ketua_program' => $request->nama_ketua_program,
-        'jurusan' => $request->jurusan,
-        'username' => $request->username
-    ]);
+        User::where('username', $username)->update([
+            'username' => $request->username
+        ]);
 
-    return redirect()->route('kaprog.index')->with('success', 'Data berhasil diperbarui.');
-}
+        $kp->update([
+            'nip_kaprog' => $request->nip_kaprog,
+            'nama_ketua_program' => $request->nama_ketua_program,
+            'jurusan' => $request->jurusan,
+            'username' => $request->username
+        ]);
+
+        return redirect()->route('kaprog.index')->with('success', 'Data berhasil diperbarui.');
+    }
 
 
     public function destroy($nip_kaprog)
     {
         $kp = ketua_program::where('nip_kaprog', $nip_kaprog)->firstOrFail();
+        User::where('username', $kp->username)->delete();
+
         $kp->delete();
 
         return redirect()->route('kaprog.index')->with('success', 'Data Ketua Program berhasil dihapus.');
