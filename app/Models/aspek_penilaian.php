@@ -7,7 +7,8 @@ use Illuminate\Database\Eloquent\Model;
 class aspek_penilaian extends Model
 {
     protected $table = 'aspek_penilaian';
+    protected $primaryKey = 'id_aspekpenilaian';
     protected $fillable = ['id_aspekpenilaian', 'jenis_poin', 'indikator_poin', 'uraian'];
 
- 
+
 }
