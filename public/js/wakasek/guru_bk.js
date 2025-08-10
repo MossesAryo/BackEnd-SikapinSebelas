@@ -11,3 +11,4 @@ function openEditModal(nip, username, nama) {
             document.getElementById('form-delete').action = `/gurubk/${nip}/destroy`;
             document.getElementById('modal-delete').classList.remove('hidden');
         }
+        
