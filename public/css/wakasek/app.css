@@ -1,0 +1,30 @@
+        .gradient-text {
+            background: linear-gradient(135deg, #0083ee, #0a50c1);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .stat-card-hover:hover {
+            transform: translateY(-4px);
+        }
+
+        .stat-card {
+            position: relative;
+            transition: transform 0.3s ease;
+        }
+
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: #0083ee;
+            transform: scaleX(0);
+            transition: transform 0.3s ease;
+        }
+
+        .stat-card:hover::before {
+            transform: scaleX(1);
+        }

@@ -1,29 +1,7 @@
 @extends('layouts.app')
 
 @push('css')
-    <style>
-        .table-hover tbody tr:hover {
-            background-color: rgba(59, 130, 246, 0.05);
-            transform: translateY(-1px);
-            transition: all 0.2s ease;
-        }
-
-        .action-btn {
-            transition: all 0.2s ease;
-        }
-
-        .action-btn:hover {
-            transform: scale(1.1);
-        }
-
-        .modal-overlay {
-            z-index: 9999 !important;
-        }
-
-        body.modal-open {
-            overflow: hidden;
-        }
-    </style>
+    <link rel="stylesheet" href="{{ asset('css/wakasek/ketua_program.css') }}">
 @endpush
 
 @section('content')
@@ -136,12 +114,12 @@
                                     <div class="text-sm font-semibold text-gray-900">{{ $item->user->email }}</div>
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap">
-                                    <span class="text-lg font-bold text-black">{{ $item->jurusan->nama_jurusan }}</span>
+                                    <span class="text-lg font-bold text-black">{{ $item->jurusan }}</span>
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap">
                                     <div class="flex items-center gap-1">
                                         <button
-                                            onclick="openEditModal('{{ $item->nip_kaprog }}', '{{ $item->nama_ketua_program }}', '{{ $item->id_jurusan }}','{{ $item->username }}')"
+                                            onclick="openEditModal('{{ $item->nip_kaprog }}', '{{ $item->nama_ketua_program }}', '{{ $item->jurusan }}','{{ $item->username }}')"
                                             class="action-btn inline-flex items-center justify-center w-9 h-9 text-blue-600 hover:text-blue-800 hover:bg-blue-50 rounded-full"
                                             title="Edit Ketua Program">
                                             <i class="bi bi-pencil-square text-sm"></i>
@@ -179,59 +157,6 @@
 @endsection
 
 @push('js')
-    <script>
-        function openModal(modalId) {
-            document.getElementById(modalId).classList.remove('hidden');
-            document.body.classList.add('modal-open');
-        }
+    <script src="{{ asset('js/wakasek/ketua_program.js') }}"></script>
 
-        function closeModal(modalId) {
-            document.getElementById(modalId).classList.add('hidden');
-            document.body.classList.remove('modal-open');
-        }
-
-        function openCreateModal() {
-
-            openModal('modal-create');
-        }
-        
-
-        function openEditModal(nip_kaprog, nama_ketua_program, id_jurusan, username) {
-            document.getElementById('edit_nip').value = nip_kaprog;
-            document.getElementById('edit_nama').value = nama_ketua_program;
-            document.getElementById('edit_id_jurusan').value = id_jurusan;
-            document.getElementById('username').value = username;
-
-            document.getElementById('form-edit').action = `/kaprog/${nip_kaprog}/${username}/update`;
-            openModal('modal-edit');
-        }
-
-
-        function openDeleteModal(nip, nama) {
-            document.getElementById('delete-nama-ketua').innerText = nama;
-            document.getElementById('form-delete').action = `/kaprog/${nip}`;
-            openModal('modal-delete');
-        }
-
-
-        document.addEventListener('click', function(event) {
-            ['modal-create', 'modal-edit', 'modal-delete'].forEach(modalId => {
-                const modal = document.getElementById(modalId);
-                if (modal && !modal.classList.contains('hidden') && event.target === modal) {
-                    closeModal(modalId);
-                }
-            });
-        });
-
-        document.addEventListener('keydown', function(event) {
-            if (event.key === 'Escape') {
-                ['modal-create', 'modal-edit', 'modal-delete'].forEach(modalId => {
-                    const modal = document.getElementById(modalId);
-                    if (modal && !modal.classList.contains('hidden')) {
-                        closeModal(modalId);
-                    }
-                });
-            }
-        });
-    </script>
 @endpush

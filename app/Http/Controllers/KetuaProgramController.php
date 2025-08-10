@@ -6,25 +6,22 @@ use App\Models\User;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Models\ketua_program;
-use App\Models\jurusan;
 use Illuminate\Routing\Controller;
 
 class KetuaProgramController extends Controller
 {
     public function index()
     {
-        $ketua_program = ketua_program::all();
-        $jurusan = Jurusan::all();
-
-        return view('wakasek.kaprog.index', compact('ketua_program', 'jurusan'));
+      return view('wakasek.kaprog.index', [
+            'ketua_program' => ketua_program::get(),
+        ]);
     }
-    
     public function store(Request $request)
     {
         $request->validate([
             'nip_kaprog' => 'required|unique:ketua_program,nip_kaprog',
-            'nama_ketua_program' => 'required|string',
-            'id_jurusan' => 'required|string',
+            'nama_ketua_program' => 'required|string|max:255',
+            'jurusan' => 'required|string|max:255',
         ]);
 
 
@@ -39,7 +36,7 @@ class KetuaProgramController extends Controller
         ketua_program::create([
             'nip_kaprog' => $request->nip_kaprog,
             'nama_ketua_program' => $request->nama_ketua_program,
-            'id_jurusan' => $request->id_jurusan,
+            'jurusan' => $request->jurusan,
             'username' => $user->username,
         ]);
 
@@ -57,40 +54,39 @@ class KetuaProgramController extends Controller
     }
 
     public function update(Request $request, $nip_kaprog, $username)
-{
-    
-    $request->validate([
-        'nip_kaprog' => 'required|unique:ketua_program,nip_kaprog,' . $nip_kaprog . ',nip_kaprog',
-        'nama_ketua_program' => 'required|string',
-        'username' => 'required|string',
-        'id_jurusan' => 'required|string',
-    ]);
+    {
+
+        $request->validate([
+            'nip_kaprog' => 'required|unique:ketua_program,nip_kaprog,' . $nip_kaprog . ',nip_kaprog',
+            'nama_ketua_program' => 'required|string|max:255',
+            'username' => 'required|string|max:255',
+            'jurusan' => 'required|string|max:255',
+        ]);
 
 
-    $kp = ketua_program::where('nip_kaprog', $nip_kaprog)->firstOrFail();
+        $kp = ketua_program::where('nip_kaprog', $nip_kaprog)->firstOrFail();
 
-    
-    $user = User::where('username', $username)->update([
-        'username' => $request->username,
-        'email' => $request->username . '@gmail.com',
-    ]);
 
-  
+        User::where('username', $username)->update([
+            'username' => $request->username
+        ]);
 
-    $kp->update([
-        'nip_kaprog' => $request->nip_kaprog,
-        'nama_ketua_program' => $request->nama_ketua_program,
-        'id_jurusan' => $request->id_jurusan,
-        'username' => $request->username
-    ]);
+        $kp->update([
+            'nip_kaprog' => $request->nip_kaprog,
+            'nama_ketua_program' => $request->nama_ketua_program,
+            'jurusan' => $request->jurusan,
+            'username' => $request->username
+        ]);
 
-    return redirect()->route('kaprog.index')->with('success', 'Data berhasil diperbarui.');
-}
+        return redirect()->route('kaprog.index')->with('success', 'Data berhasil diperbarui.');
+    }
 
 
     public function destroy($nip_kaprog)
     {
         $kp = ketua_program::where('nip_kaprog', $nip_kaprog)->firstOrFail();
+        User::where('username', $kp->username)->delete();
+
         $kp->delete();
 
         return redirect()->route('kaprog.index')->with('success', 'Data Ketua Program berhasil dihapus.');

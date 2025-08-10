@@ -101,13 +101,19 @@
                     </a>
                 </li>
                 <li>
-                    <a href="#" class="flex items-center gap-3 px-4 py-3 text-gray-600 hover:bg-gray-50 rounded-lg menu-link" data-link="penghargaan">
+                    <a href="#" class="flex items-center gap-3 px-4 py-3 text-gray-600 hover:bg-gray-50 rounded-lg menu-link" data-link="kelas">
+                        <i class="bi bi-door-closed"></i>
+                        <span>Jurusan</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ route('penghargaan.index') }}" class="flex items-center gap-3 px-4 py-3 text-gray-600 hover:bg-gray-50 rounded-lg menu-link" data-link="penghargaan">
                         <i class="bi bi-award"></i>
                         <span>Penghargaan</span>
                     </a>
                 </li>
                 <li>
-                    <a href="#" class="flex items-center gap-3 px-4 py-3 text-gray-600 hover:bg-gray-50 rounded-lg menu-link" data-link="pelanggaran">
+                    <a href="{{ route('peringatan.index') }}" class="flex items-center gap-3 px-4 py-3 text-gray-600 hover:bg-gray-50 rounded-lg menu-link" data-link="pelanggaran">
                         <i class="bi bi-exclamation-triangle"></i>
                         <span>Pelanggaran</span>
                     </a>
