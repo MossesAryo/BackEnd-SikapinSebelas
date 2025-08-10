@@ -6,7 +6,6 @@ use App\Models\User;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Models\ketua_program;
-use Yajra\DataTables\Facades\DataTables;
 use Illuminate\Routing\Controller;
 
 class KetuaProgramController extends Controller
