@@ -2,21 +2,19 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\kelas;
-use Illuminate\Http\Request;
 use App\Models\jurusan;
+use Illuminate\Http\Request;
 
-class KelasController extends Controller
+class JurusanController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        $kelas = kelas::all();
-        $jurusan = Jurusan::all();
-
-        return view('wakasek.kelas.kelas', compact('kelas', 'jurusan'));
+        return view('wakasek.jurusan.jurusan', [
+            'jurusan' => jurusan::get(),
+        ]);
     }
 
     /**
@@ -33,14 +31,12 @@ class KelasController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'id_kelas' => 'required',
-            'nama_kelas' => 'required',
             'id_jurusan' => 'required',
+            'nama_jurusan' => 'required',
         ]);
 
-        kelas::create($request->all());
-
-        return redirect()->route('kelas')->with('success', 'Kelas berhasil ditambahkan');
+        jurusan::create($request->all());
+        return redirect()->route('jurusan')->with('success', 'Jurusan berhasil ditambahkan');
     }
 
     /**
@@ -62,25 +58,24 @@ class KelasController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, string $id_jurusan)
     {
         $data = $request->validate([
-            'id_kelas' => 'required',
-            'nama_kelas' => 'required',
             'id_jurusan' => 'required',
+            'nama_jurusan' => 'required',
         ]);
 
-        kelas::where('id_kelas', $id)->update($data);
-        return redirect()->route('kelas')->with('success', 'kelas berhasil diedit');
+        jurusan::where('id_jurusan', $id_jurusan)->update($data);
+        return redirect()->route('jurusan')->with('success', 'jurusan berhasil diedit');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(string $id_jurusan)
     {
-        $data = kelas::where('id_kelas', $id)->delete();
+        $data= jurusan::where('id_jurusan', $id_jurusan)->delete();
 
-        return redirect()->route('kelas')->with('success', 'kelas berhasil dihapus');
+        return redirect()->route('jurusan')->with('success', 'jurusan berhasil dihapus');
     }
 }

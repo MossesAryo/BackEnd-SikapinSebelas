@@ -16,6 +16,8 @@ return new class extends Migration {
 
             $table->foreign('username')->references('username')->on('users')->onDelete('cascade')->onUpdate('cascade');
             $table->foreign('id_kelas')->references('id_kelas')->on('kelas')->onDelete('cascade')->onUpdate('cascade');
+
+            
         });
     }
     public function down() {

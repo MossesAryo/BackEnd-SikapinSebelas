@@ -14,12 +14,16 @@ class ketua_program extends Model
         'nip_kaprog',
         'username',
         'nama_ketua_program',
-        'jurusan',
+        'id_jurusan',
     ];
 
     public function user()
     {
         return $this->belongsTo(User::class, 'username', 'username');
+    }
+    public function jurusan()
+    {
+        return $this->belongsTo(jurusan::class, 'id_jurusan', 'id_jurusan');
     }
 
 }
