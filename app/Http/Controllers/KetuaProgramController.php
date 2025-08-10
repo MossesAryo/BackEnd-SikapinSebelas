@@ -6,15 +6,52 @@ use App\Models\User;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Models\ketua_program;
+use Yajra\DataTables\Facades\DataTables;
 use Illuminate\Routing\Controller;
 
 class KetuaProgramController extends Controller
 {
     public function index()
     {
-        return view('wakasek.kaprog.index', [
-            'ketua_program' => ketua_program::get(),
-        ]);
+        if (request()->ajax()) {
+            $query = ketua_program::with('user')->latest();
+
+            // Handle search
+            if ($search = request('search.value')) {
+                $query->where(function ($q) use ($search) {
+                    $q->where('nip', 'like', "%{$search}%")
+                      ->orWhere('nama_ketua_program', 'like', "%{$search}%")
+                      ->orWhereHas('user', function ($q2) use ($search) {
+                          $q2->where('email', 'like', "%{$search}%");
+                      });
+                });
+            }
+
+            return DataTables::of($query)
+                ->addIndexColumn()
+                ->addColumn('nip', fn($kaprog) => $kaprog->nip)
+                ->addColumn('nama_ketua_program', fn($kaprog) => $kaprog->nama_ketua_program)
+                ->addColumn('email', fn($kaprog) => $kaprog->user->email ?? '-')
+                ->addColumn('jurusan', fn($kaprog) => $kaprog->jurusan)
+                ->addColumn('aksi', function ($kaprog) {
+                    return '
+                        <div class="flex justify-center space-x-2">
+                            <button class="text-blue-600 hover:text-blue-900" title="Edit"
+                                onclick="openEditModal(\'' . $kaprog->nip . '\', \'' . e($kaprog->nama_ketua_program) . '\', \'' . e($kaprog->jurusan) . '\', \'' . e($kaprog->user->username ?? '') . '\')">
+                                ✏️
+                            </button>
+                            <button class="text-red-600 hover:text-red-900" title="Hapus"
+                                onclick="openDeleteModal(\'' . $kaprog->nip . '\', \'' . e($kaprog->nama_ketua_program) . '\')">
+                                🗑️
+                            </button>
+                        </div>
+                    ';
+                })
+                ->rawColumns(['aksi'])
+                ->make(true);
+        }
+
+        return view('wakasek.kaprog.index');
     }
     public function store(Request $request)
     {
