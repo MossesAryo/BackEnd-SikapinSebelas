@@ -801,7 +801,7 @@
             <div class="form-group">
                 <label class="form-label">NIP</label>
                 <div class="input-wrapper">
-                    <input type="text" name="nip_wakasek" class="form-input" placeholder="yourname@email.com"
+                    <input type="text" name="nip" class="form-input" placeholder="NIP"
                         required>
                 </div>
             </div>
