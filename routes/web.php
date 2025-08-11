@@ -1,9 +1,9 @@
 <?php
 
 use App\Http\Controllers\Aspek_penilaianController;
+use App\Http\Controllers\Auth\AuthController as AController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\LaporanController;
-use App\Http\Controllers\AuthController;
 use App\Http\Controllers\Guru_bkController;
 use App\Http\Controllers\JurusanController;
 use App\Http\Controllers\KelasController;
@@ -25,9 +25,9 @@ Route::get('/siswa/create', function () {
     return view('wakasek.siswa.create');
 });
 
-Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
-Route::post('/login', [AuthController::class, 'login']);
-Route::get('/logout', [AuthController::class, 'logout']);
+// Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
+// Route::post('/login', [AuthController::class, 'login']);
+// Route::get('/logout', [AuthController::class, 'logout']);
 Route::get('/wakasek/laporanjammalam', [LaporanController::class, 'index'])->name('wakasek.laporanjammalam');
 Route::get('/wakasek/penilaian', [PenilaianController::class, 'index'])->name('wakasek.penilaian');
 Route::get('/profile', [ProfileController::class, 'index'])->name('auth.profile');
@@ -82,3 +82,7 @@ Route::get('/aspekpenilaian', [Aspek_penilaianController::class, 'index'])->name
 Route::post('/aspekpenilaian/store', [Aspek_penilaianController::class, 'store'])->name('aspekpenilaian.store');
 Route::put('/aspekpenilaian/{id}/update', [Aspek_penilaianController::class, 'update'])->name('aspekpenilaian.update');
 Route::delete('/aspekpenilaian/{id}/destroy', [Aspek_penilaianController::class, 'destroy'])->name('aspekpenilaian.destroy');
+
+Route::get('/login', [AController::class, 'index'])->name('login');
+Route::post('/login', [AController::class, 'login'])->name('login.submit');
+Route::get('/logout', [AController::class, 'logout'])->name('logout');
