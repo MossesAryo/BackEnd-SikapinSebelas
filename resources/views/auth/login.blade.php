@@ -796,11 +796,13 @@
         </div>
 
         <!-- Login Form -->
-        <form method="POST" action="/login" class="login-form" id="loginForm">
+        <form method="POST" action="{{ route('login.submit') }}" class="login-form">
+            @csrf
             <div class="form-group">
-                <label class="form-label">Email Address</label>
+                <label class="form-label">NIP</label>
                 <div class="input-wrapper">
-                    <input type="email" name="email" class="form-input" placeholder="yourname@email.com" required>
+                    <input type="text" name="nip_wakasek" class="form-input" placeholder="yourname@email.com"
+                        required>
                 </div>
             </div>
 
