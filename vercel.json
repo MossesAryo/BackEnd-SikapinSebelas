@@ -28,7 +28,8 @@
         "DB_CONNECTION": "mysql",
         "DB_HOST": "4gg.h.filess.io",
         "DB_PORT": "3306",
-        "DB_DATABASE": "sikapinsabelas_db",
-        "DB_USERNAME": "root"
+        "DB_DATABASE": "sikapinsebelasdb_bridgepot",
+        "DB_USERNAME": "sikapinsebelasdb_bridgepot",
+        "DB_PASSWORD": "0e1c308f7464c578cc6b7706b1f808ffd5ce51d3"
     }
 }
