@@ -94,19 +94,7 @@
                                     <i class="bi bi-person text-gray-400"></i>
                                     Nama Siswa
                                 </div>
-                            </th>
-                            <th class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                                <div class="flex items-center gap-2">
-                                    <i class="bi bi-award text-gray-400"></i>
-                                    Total Poin
-                                </div>
-                            </th>
-                            <th class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                                <div class="flex items-center gap-2">
-                                    <i class="bi bi-shield-check text-gray-400"></i>
-                                    Status
-                                </div>
-                            </th>
+                            </th>         
                             <th class="px-5 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
                                 <div class="flex items-center gap-2">
                                     <i class="bi bi-gear text-gray-400"></i>
@@ -128,32 +116,7 @@
                                 <td class="px-6 py-4 whitespace-nowrap">
                                     <div class="text-sm font-semibold text-gray-900">{{ $item->nama_siswa }}</div>
                                 </td>
-                                <td class="px-6 py-4 whitespace-nowrap">
-                                    <span class="text-lg font-bold text-black">{{ $item->poin_total }}</span>
-                                </td>
-                                <td class="px-6 py-4 whitespace-nowrap">
-                                    @if ($item->poin_total >= 100)
-                                        <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-bold bg-blue-100 text-blue-800">
-                                            <i class="bi bi-star-fill mr-2"></i>
-                                            Berprestasi
-                                        </span>
-                                    @elseif ($item->poin_total == 0)
-                                        <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-bold bg-green-100 text-green-800">
-                                            <i class="bi bi-check-circle-fill mr-2"></i>
-                                            Aman
-                                        </span>
-                                    @elseif ($item->poin_total > -30)
-                                        <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-bold bg-yellow-100 text-yellow-800">
-                                            <i class="bi bi-exclamation-triangle-fill mr-2"></i>
-                                            Bermasalah
-                                        </span>
-                                    @else
-                                        <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-bold bg-red-100 text-red-800">
-                                            <i class="bi bi-shield-exclamation mr-2"></i>
-                                            Prioritas
-                                        </span>
-                                    @endif
-                                </td>
+                               
                                 <td class="px-6 py-4 whitespace-nowrap">
                                     <div class="flex items-center gap-1">
                                         <button onclick="openEditModal('{{ $item->nis }}', '{{ $item->nama_siswa }}', '{{ $item->id_kelas }}')"
@@ -204,7 +167,7 @@
             document.body.classList.remove('modal-open');
         }
 
-        // Create modal
+        
         function openCreateModal() {
             document.getElementById('nis').value = '';
             document.getElementById('nama_siswa').value = '';
@@ -212,7 +175,7 @@
             openModal('modal-create');
         }
 
-        // Edit modal
+       
         function openEditModal(nis, nama_siswa, id_kelas) {
             document.getElementById('edit_nis').value = nis;
             document.getElementById('edit_nama_siswa').value = nama_siswa;

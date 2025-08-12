@@ -156,5 +156,5 @@
 @endsection
 
 @push('js')
-    <script src="{{ asset('js/wakasek/peringatan.js') }}"></script>
+    <script src="{{ asset('js/wakasek/pelanggaran.js') }}"></script>
 @endpush
