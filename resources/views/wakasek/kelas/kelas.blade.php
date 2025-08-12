@@ -320,10 +320,7 @@
                                         class="w-2/3 px-6 py-4 text-left text-xs font-bold text-gray-600 uppercase tracking-wider">
                                         <i class="bi bi-tag mr-2"></i>Nama Kelas
                                     </th>
-                                    <th
-                                        class="w-2/3 px-6 py-4 text-left text-xs font-bold text-gray-600 uppercase tracking-wider">
-                                        <i class="bi bi-tag mr-2"></i>Jurusan
-                                    </th>
+                                   
                                     <th
                                         class="w-1/6 px-6 py-4 text-center text-xs font-bold text-gray-600 uppercase tracking-wider">
                                         <i class="bi bi-gear mr-2"></i>Aksi
@@ -400,7 +397,7 @@
    @include('wakasek.kelas.create')
    @include('wakasek.kelas.edit')
    @include('wakasek.kelas.delete')
-   
+
 @endsection
 
 @push('js')
@@ -428,7 +425,7 @@
             }
         });
 
-        
+
 
         // Enhanced UX: Click outside to close modal
         document.querySelectorAll('[id^="modal-"]').forEach(modal => {

@@ -88,24 +88,14 @@
                         <span>Siswa</span>
                     </a>
                 </li>
-                <li>
-                    <a href="{{ route('jurusan') }}" class="flex items-center gap-3 px-4 py-3 text-gray-600 hover:bg-gray-50 rounded-lg menu-link" data-link="kelas">
-                        <i class="bi bi-door-open"></i>
-                        <span>Jurusan</span>
-                    </a>
-                </li>
+
                 <li>
                     <a href="{{ route('kelas') }}" class="flex items-center gap-3 px-4 py-3 text-gray-600 hover:bg-gray-50 rounded-lg menu-link" data-link="kelas">
                         <i class="bi bi-door-open"></i>
                         <span>Kelas</span>
                     </a>
                 </li>
-                <li>
-                    <a href="#" class="flex items-center gap-3 px-4 py-3 text-gray-600 hover:bg-gray-50 rounded-lg menu-link" data-link="kelas">
-                        <i class="bi bi-door-closed"></i>
-                        <span>Jurusan</span>
-                    </a>
-                </li>
+            
                 <li>
                     <a href="{{ route('penghargaan.index') }}" class="flex items-center gap-3 px-4 py-3 text-gray-600 hover:bg-gray-50 rounded-lg menu-link" data-link="penghargaan">
                         <i class="bi bi-award"></i>
@@ -155,7 +145,7 @@
         }
     }
 
-    
+
     document.addEventListener('click', function(event) {
     const dropdown = document.getElementById('userDropdown');
     const userButton = event.target.closest('button');
@@ -170,7 +160,7 @@
 
     document.querySelectorAll('.menu-link').forEach(link => {
         link.addEventListener('click', function(e) {
-            
+
 
             // Remove active from all
             document.querySelectorAll('.menu-link').forEach(item => {
@@ -183,4 +173,4 @@
             this.classList.remove('text-gray-600');
         });
     });
-</script> 
+</script>

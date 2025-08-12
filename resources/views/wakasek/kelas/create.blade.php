@@ -35,16 +35,8 @@
                             placeholder="Contoh: 12 RPL 1, 11 TKJ 2" required>
                         <p class="text-xs text-gray-500 mt-1">Nama kelas yang mudah dikenali</p>
                     </div>
-                    
-                     <div>
-                        <label for="id_jurusan" class="block text-sm font-medium text-gray-700 mb-1">Jurusan</label>
-                        <select  class="form-select" id="id_jurusan" name="id_jurusan">
-                            <option value="" selected disabled >Pilih Jurusan</option>
-                             @foreach ($jurusan as $item)
-                                <option value="{{ $item->id_jurusan}}">{{ $item->nama_jurusan}}</option>
-                            @endforeach
-                        </select>
-                    </div>
+
+                     
 
                 </div>
 

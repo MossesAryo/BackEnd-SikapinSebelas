@@ -15,7 +15,7 @@ class KelasController extends Controller
     {
         $kelas = kelas::all();
 
-        return view('wakasek.kelas.kelas', compact('kelas', 'jurusan'));
+        return view('wakasek.kelas.kelas', compact('kelas'));
     }
 
     /**
@@ -23,7 +23,7 @@ class KelasController extends Controller
      */
     public function create()
     {
-        
+
     }
 
     /**

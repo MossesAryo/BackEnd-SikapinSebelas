@@ -36,17 +36,7 @@
                             required>
                     </div>
 
-                     <div>
-                       <label for="edit_id_jurusan" class="block text-sm font-medium text-gray-700 mb-1">Jurusan</label>
-                            <select class="form-select" id="edit_id_jurusan" name="id_jurusan">
-                                <option value="">Pilih Jurusan</option>
-                                @foreach ($jurusan as $j)
-                                    <option value="{{ $j->id_jurusan }}" {{ isset($kelas->id_jurusan) && $j->id_jurusan == $kelas->id_jurusan ? 'selected' : '' }}>
-                                        {{ $j->nama_jurusan }}
-                                    </option>
-                                @endforeach
-                            </select>      
-                    </div>
+                     
 
                 </div>
 
