@@ -9,8 +9,8 @@ return new class extends Migration {
     public function up() {
         Schema::create('siswa', function (Blueprint $table) {
             $table->integer('nis')->unique();
-            $table->string('id_penghargaan');
-            $table->string('id_sp');
+            $table->string('id_penghargaan')->nullable();
+            $table->string('id_sp')->nullable();
             $table->string('id_kelas');
             $table->string('nama_siswa');
             $table->integer('poin_apresiasi');

@@ -12,7 +12,7 @@
                 <div class="space-y-4">
                     <div>
                         <label for="edit_nis" class="block text-sm font-medium text-gray-700 mb-1">NIS</label>
-                        <input type="text" id="edit_nis" name="nis" readonly
+                        <input type="text" id="edit_nis" name="nis" required
                             class="w-full border border-gray-300 rounded-lg px-3 py-2 bg-gray-50">
                     </div>
                     <div>

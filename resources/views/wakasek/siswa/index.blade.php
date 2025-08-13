@@ -35,7 +35,7 @@
         <!-- Search and Filter -->
         <div class="bg-white p-6 rounded-xl shadow-sm border">
             <div class="flex flex-col md:flex-row gap-2 items-center justify-between">
-                <div class="relative w-full md:w-64">
+                <div id="searchSiswa" class="relative w-full md:w-64">
                     <i class="bi bi-search absolute left-3 top-2.5 text-gray-400"></i>
                     <input type="text" placeholder="Cari Siswa..."
                         class="pl-10 pr-4 py-1.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent w-full">
@@ -51,7 +51,7 @@
             </div>
         </div>
 
-        <!-- Data Table -->
+       <!-- Data Table -->
         <div class="bg-white rounded-xl shadow-sm border overflow-hidden">
             <div class="px-6 py-4 border-b border-gray-200">
                 <h3 class="text-lg font-semibold text-gray-900">Daftar Siswa</h3>
@@ -73,18 +73,14 @@
                                     Nama Siswa
                                 </div>
                             </th>
+                  
                             <th class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
                                 <div class="flex items-center gap-2">
-                                    <i class="bi bi-award text-gray-400"></i>
-                                    Total Poin
+                                    <i class="bi bi-person text-gray-400"></i>
+                                Kelas
                                 </div>
                             </th>
-                            <th class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                                <div class="flex items-center gap-2">
-                                    <i class="bi bi-shield-check text-gray-400"></i>
-                                    Status
-                                </div>
-                            </th>
+                  
                             <th class="px-5 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
                                 <div class="flex items-center gap-2">
                                     <i class="bi bi-gear text-gray-400"></i>
@@ -107,9 +103,11 @@
                                     <div class="text-sm font-semibold text-gray-900">{{ $item->nama_siswa }}</div>
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap">
-                                    <span class="text-lg font-bold text-black">{{ $item->poin_total }}</span>
+                                    <div class="text-sm font-semibold text-gray-900">{{ $item->kelas->nama_kelas }}</div>
                                 </td>
-                                <td class="px-6 py-4 whitespace-nowrap">
+
+                                
+                                {{-- <td class="px-6 py-4 whitespace-nowrap">
                                     @if ($item->poin_total >= 100)
                                         <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-bold bg-blue-100 text-blue-800">
                                             <i class="bi bi-star-fill mr-2"></i>
@@ -131,13 +129,20 @@
                                             Prioritas
                                         </span>
                                     @endif
-                                </td>
+                                </td> --}}
+
+
                                 <td class="px-6 py-4 whitespace-nowrap">
                                     <div class="flex items-center gap-1">
                                         <button onclick="openEditModal('{{ $item->nis }}', '{{ $item->nama_siswa }}', '{{ $item->id_kelas }}')"
                                             class="action-btn inline-flex items-center justify-center w-9 h-9 text-blue-600 hover:text-blue-800 hover:bg-blue-50 rounded-full"
                                             title="Edit Siswa">
                                             <i class="bi bi-pencil-square text-sm"></i>
+                                        </button>
+                                        <button onclick="window.location='{{ route('siswa.show', $item->nis) }}'"
+                                            class="action-btn inline-flex items-center justify-center w-9 h-9 text-yellow-600 hover:text-yellow-800 hover:bg-orange-50 rounded-full"
+                                            title="Edit Siswa">
+                                            <i class="bi bi-eye text-sm"></i>
                                         </button>
                                         <button onclick="openDeleteModal('{{ $item->nis }}', '{{ $item->nama_siswa }}')"
                                             class="action-btn inline-flex items-center justify-center w-9 h-9 text-red-600 hover:text-red-800 hover:bg-red-50 rounded-full"
@@ -166,6 +171,7 @@
     @include('wakasek.siswa.create')
     @include('wakasek.siswa.edit')
     @include('wakasek.siswa.delete')
+
     
 @endsection
 

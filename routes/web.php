@@ -49,6 +49,7 @@ Route::middleware('auth')->group(function () {
         Route::post('/siswa/store', [SiswaController::class, 'store'])->name('siswa.store');
         Route::put('/siswa/{nis}/update', [SiswaController::class, 'update'])->name('siswa.update');
         Route::delete('/siswa/{nis}', [SiswaController::class, 'destroy'])->name('siswa.destroy');
+        Route::get('/siswa/{nis}/show', [SiswaController::class, 'show'])->name('siswa.show');
 
 
         Route::get('/kelas', [KelasController::class, 'index'])->name('kelas');

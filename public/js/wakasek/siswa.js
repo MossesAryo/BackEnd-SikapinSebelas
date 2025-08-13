@@ -54,4 +54,30 @@
                 });
             }
         });
+  
+  // Search functionality
+  document.addEventListener("DOMContentLoaded", function () {
+    const searchInput = document.querySelector("#searchSiswa input");
+    const tableRows = document.querySelectorAll("tbody tr");
+
+    searchInput.addEventListener("keyup", function () {
+        const searchText = this.value.toLowerCase();
+
+        tableRows.forEach(row => {
+            // Skip "empty data" row
+            if (row.querySelector("td[colspan]")) {
+                row.style.display = searchText === "" ? "" : "none";
+                return;
+            }
+
+            const rowText = row.innerText.toLowerCase();
+            if (rowText.includes(searchText)) {
+                row.style.display = "";
+            } else {
+                row.style.display = "none";
+            }
+        });
+    });
+});
+
     
