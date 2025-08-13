@@ -14,12 +14,12 @@
 <body class="bg-gray-50">
     <!-- Dashboard Layout -->
     <div class="flex">
-        @include('layouts.sidebar')
+        @include('layouts.wakasek.sidebar')
 
         <!-- Main Content -->
         <div class="flex-1 ml-64">
             <!-- Top Navigation -->
-            @include('layouts.navbar')
+            @include('layouts.wakasek.navbar')
 
             <!-- Dashboard Content -->
             <div class="p-6">

@@ -13,6 +13,8 @@ use App\Http\Controllers\KetuaProgramController;
 use App\Http\Controllers\PenghargaanController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SiswaController;
+use App\Http\Controllers\Skoring_PenghargaanController;
+use App\Http\Controllers\Skoring_PelanggaranController;
 use App\Http\Controllers\SuratPeringatanController;
 use Illuminate\Routing\RouteUri;
 
@@ -32,7 +34,9 @@ Route::get('/wakasek/laporanjammalam', [LaporanController::class, 'index'])->nam
 Route::get('/wakasek/penilaian', [PenilaianController::class, 'index'])->name('wakasek.penilaian');
 Route::get('/profile', [ProfileController::class, 'index'])->name('auth.profile');
 Route::get('/wakasek', fn() => view('wakasek.dashboard'))->name('wakasek.dashboard');
+
 Route::get('/gurubk', fn() => view('gurubk.dashboard'))->name('gurubk.dashboard');
+Route::get('/gurubk/siswa', [SiswaController::class, 'siswaGuruBk'])->name('gurubk.siswa');
 
 
 Route::get('/kaprog', [KetuaProgramController::class, 'index'])->name('kaprog.index');
@@ -52,12 +56,8 @@ Route::post('/kelas/store', [KelasController::class, 'store'])->name('kelas.stor
 Route::put('/kelas/{id}/update', [KelasController::class, 'update'])->name('kelas.update');
 Route::delete('/kelas/{id}', [KelasController::class, 'destroy'])->name('kelas.destroy');
 
-Route::get('/jurusan', [JurusanController::class, 'index'])->name('jurusan');
-Route::post('/jurusan/store', [JurusanController::class, 'store'])->name('jurusan.store');
-Route::put('/jurusan/{id_jurusan}/update', [JurusanController::class, 'update'])->name('jurusan.update');
-Route::delete('/jurusan/{id_jurusan}/delete', [JurusanController::class, 'destroy'])->name('jurusan.destroy');
 
-Route::get('/gurubk', [Guru_bkController::class, 'index'])->name('gurubk.index');
+Route::get('/grbk', [Guru_bkController::class, 'index'])->name('gurubk.index');
 Route::post('/gurubk/store', [Guru_bkController::class, 'store'])->name('gurubk.store');
 Route::put('/gurubk/{nip}/update', [Guru_bkController::class, 'update'])->name('gurubk.update');
 Route::delete('/gurubk/{nip}/destroy', [Guru_bkController::class, 'destroy'])->name('gurubk.destroy');
@@ -82,3 +82,13 @@ Route::get('/aspekpenilaian', [Aspek_penilaianController::class, 'index'])->name
 Route::post('/aspekpenilaian/store', [Aspek_penilaianController::class, 'store'])->name('aspekpenilaian.store');
 Route::put('/aspekpenilaian/{id}/update', [Aspek_penilaianController::class, 'update'])->name('aspekpenilaian.update');
 Route::delete('/aspekpenilaian/{id}/destroy', [Aspek_penilaianController::class, 'destroy'])->name('aspekpenilaian.destroy');
+
+Route::get('/skoring_penghargaan', [Skoring_PenghargaanController::class, 'index'])->name('skoring_penghargaan.index');
+Route::post('/skoring_penghargaan/store', [Skoring_PenghargaanController::class, 'store'])->name('skoring_penghargaan.store');
+Route::put('/skoring_penghargaan/{id}/update', [Skoring_PenghargaanController::class, 'update'])->name('skoring_penghargaan.update');
+Route::delete('/skoring_penghargaan/{id}/destroy', [Skoring_PenghargaanController::class, 'destroy'])->name('skoring_penghargaan.destroy');
+
+Route::get('/skoring_pelanggaran', [Skoring_PelanggaranController::class, 'index'])->name('skoring_pelanggaran.index');
+Route::post('/skoring_pelanggaran/store', [Skoring_PelanggaranController::class, 'store'])->name('skoring_pelanggaran.store');
+Route::put('/skoring_pelanggaran/{id}/update', [Skoring_PelanggaranController::class, 'update'])->name('skoring_pelanggaran.update');
+Route::delete('/skoring_pelanggaran/{id}/destroy', [Skoring_PelanggaranController::class, 'destroy'])->name('skoring_pelanggaran.destroy');

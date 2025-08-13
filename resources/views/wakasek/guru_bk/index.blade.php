@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.wakasek.app')
 
 @push('css')
     <style>

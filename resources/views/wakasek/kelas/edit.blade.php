@@ -35,18 +35,18 @@
                             class="form-input w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:ring-0 focus:outline-none uppercase"
                             required>
                     </div>
+                   
 
-                     <div>
-                       <label for="edit_id_jurusan" class="block text-sm font-medium text-gray-700 mb-1">Jurusan</label>
-                            <select class="form-select" id="edit_id_jurusan" name="id_jurusan">
-                                <option value="">Pilih Jurusan</option>
-                                @foreach ($jurusan as $j)
-                                    <option value="{{ $j->id_jurusan }}" {{ isset($kelas->id_jurusan) && $j->id_jurusan == $kelas->id_jurusan ? 'selected' : '' }}>
-                                        {{ $j->nama_jurusan }}
-                                    </option>
-                                @endforeach
-                            </select>      
+                    <div>
+                        <label for="jurusan" class="block text-sm font-semibold text-gray-700 mb-2">
+                            <i class="bi bi-tag mr-1"></i>Nama Jurusan
+                        </label>
+                        <input type="text" id="jurusan" name="jurusan"
+                            class="form-input w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:ring-0 focus:outline-none uppercase"
+                            required>
                     </div>
+
+                  
 
                 </div>
 

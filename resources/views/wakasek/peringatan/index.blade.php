@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.wakasek.app')
 
 @push('css')
     <style>
@@ -31,13 +31,13 @@
         <!-- Header -->
         <div class="flex justify-between items-center">
             <div>
-                <h1 class="text-2xl font-bold gradient-text">Data Peringatan</h1>
-                <p class="text-gray-600 mt-1">Kelola data Peringatan</p>
+                <h1 class="text-2xl font-bold gradient-text">Data Pelanggaran</h1>
+                <p class="text-gray-600 mt-1">Kelola data Pelanggaran</p>
             </div>
             <button onclick="openCreateModal()"
                 class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg flex items-center gap-2 transition-colors">
                 <i class="bi bi-plus-lg"></i>
-                Tambah Peringatan
+                Tambah Pelanggaran
             </button>
         </div>
 
@@ -78,7 +78,7 @@
         <!-- Data Table -->
         <div class="bg-white rounded-xl shadow-sm border overflow-hidden">
             <div class="px-6 py-4 border-b border-gray-200">
-                <h3 class="text-lg font-semibold text-gray-900">Daftar Peringatan</h3>
+                <h3 class="text-lg font-semibold text-gray-900">Daftar Pelanggaran</h3>
             </div>
 
             <div class="overflow-x-auto">
@@ -88,25 +88,49 @@
                             <th class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
                                 <div class="flex items-center gap-2">
                                     <i class="bi bi-hash text-gray-400"></i>
-                                    ID Peringatan
+                                     NIS
+                                </div>
+                            </th>
+                            <th class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                                <div class="flex items-center gap-2">
+                                    <i class="bi bi-hash text-gray-400"></i>
+                                     Nama Siswa
                                 </div>
                             </th>
                             <th class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
                                 <div class="flex items-center gap-2">
                                     <i class="bi bi-person text-gray-400"></i>
-                                    Tanggal Peringatan
+                                    Tanggal Pelanggaran
                                 </div>
                             </th>
                             <th class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
                                 <div class="flex items-center gap-2">
                                     <i class="bi bi-shield-check text-gray-400"></i>
-                                    Level Peringatan
+                                    Jenis Pelanggaran
                                 </div>
                             </th>
                             <th class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
                                 <div class="flex items-center gap-2">
                                     <i class="bi bi-shield-check text-gray-400"></i>
-                                    alasan
+                                    Skor
+                                </div>
+                            </th>
+                            <th class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                                <div class="flex items-center gap-2">
+                                    <i class="bi bi-shield-check text-gray-400"></i>
+                                    Penanganan Pelanggaran
+                                </div>
+                            </th>
+                            <th class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                                <div class="flex items-center gap-2">
+                                    <i class="bi bi-shield-check text-gray-400"></i>
+                                  Kesepakatan waktu perbaikan
+                                </div>
+                            </th>
+                            <th class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                                <div class="flex items-center gap-2">
+                                    <i class="bi bi-shield-check text-gray-400"></i>
+                                Perubahan setelah Penanganan
                                 </div>
                             </th>
                             <th class="px-5 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
@@ -157,7 +181,7 @@
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="4" class="px-6 py-12 text-center">
+                                <td colspan="9" class="px-6 py-12 text-center">
                                     <div
                                         class="mx-auto w-24 h-24 bg-gray-100 rounded-full flex items-center justify-center mb-4">
                                         <i class="bi bi-people text-3xl text-gray-400"></i>

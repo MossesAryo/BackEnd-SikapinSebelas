@@ -10,8 +10,10 @@ return new class extends Migration {
         Schema::create('aspek_penilaian', function (Blueprint $table) {
             $table->integer('id_aspekpenilaian')->unique();
             $table->enum('jenis_poin', ['Pelanggaran', 'Apresiasi']);
-            $table->integer('indikator_poin');
+            $table->string('kategori');
             $table->string('uraian');
+            $table->string('pelanggaran_ke');
+            $table->integer('indikator_poin');
             $table->timestamps();
         });
     }

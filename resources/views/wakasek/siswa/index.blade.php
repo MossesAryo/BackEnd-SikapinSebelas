@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.wakasek.app')
 
 @push('css')
     <style>
@@ -95,18 +95,14 @@
                                     Nama Siswa
                                 </div>
                             </th>
+                  
                             <th class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
                                 <div class="flex items-center gap-2">
-                                    <i class="bi bi-award text-gray-400"></i>
-                                    Total Poin
+                                    <i class="bi bi-person text-gray-400"></i>
+                                Kelas
                                 </div>
                             </th>
-                            <th class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                                <div class="flex items-center gap-2">
-                                    <i class="bi bi-shield-check text-gray-400"></i>
-                                    Status
-                                </div>
-                            </th>
+                  
                             <th class="px-5 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
                                 <div class="flex items-center gap-2">
                                     <i class="bi bi-gear text-gray-400"></i>
@@ -129,9 +125,11 @@
                                     <div class="text-sm font-semibold text-gray-900">{{ $item->nama_siswa }}</div>
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap">
-                                    <span class="text-lg font-bold text-black">{{ $item->poin_total }}</span>
+                                    <div class="text-sm font-semibold text-gray-900">{{ $item->kelas->nama_kelas }}</div>
                                 </td>
-                                <td class="px-6 py-4 whitespace-nowrap">
+
+                                
+                                {{-- <td class="px-6 py-4 whitespace-nowrap">
                                     @if ($item->poin_total >= 100)
                                         <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-bold bg-blue-100 text-blue-800">
                                             <i class="bi bi-star-fill mr-2"></i>
@@ -153,7 +151,9 @@
                                             Prioritas
                                         </span>
                                     @endif
-                                </td>
+                                </td> --}}
+
+
                                 <td class="px-6 py-4 whitespace-nowrap">
                                     <div class="flex items-center gap-1">
                                         <button onclick="openEditModal('{{ $item->nis }}', '{{ $item->nama_siswa }}', '{{ $item->id_kelas }}')"

@@ -15,7 +15,7 @@ class KelasController extends Controller
     {
         $kelas = kelas::all();
 
-        return view('wakasek.kelas.kelas', compact('kelas', 'jurusan'));
+        return view('wakasek.kelas.kelas', compact('kelas'));
     }
 
     /**
@@ -34,6 +34,7 @@ class KelasController extends Controller
         $request->validate([
             'id_kelas' => 'required',
             'nama_kelas' => 'required',
+            'jurusan' => 'required',
         ]);
 
         kelas::create($request->all());
@@ -65,6 +66,7 @@ class KelasController extends Controller
         $data = $request->validate([
             'id_kelas' => 'required',
             'nama_kelas' => 'required',
+            'jurusan' => 'required',
         ]);
 
         kelas::where('id_kelas', $id)->update($data);

@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.wakasek.app')
 
 @push('css')
     <style>
@@ -88,31 +88,44 @@
                             <th class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
                                 <div class="flex items-center gap-2">
                                     <i class="bi bi-hash text-gray-400"></i>
-                                    ID Penghargaan
+                                    NIS
                                 </div>
                             </th>
                             <th class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
                                 <div class="flex items-center gap-2">
                                     <i class="bi bi-person text-gray-400"></i>
+                                    Nama Siswa
+                                </div>
+                            </th>
+                            <th class="px-2 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                                <div class="flex items-center gap-2">
+                                    <i class="bi bi-person text-gray-400"></i>
                                     Tanggal Penghargaan
                                 </div>
                             </th>
-                            <th class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                            <th class="px-2 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
                                 <div class="flex items-center gap-2">
                                     <i class="bi bi-shield-check text-gray-400"></i>
-                                    Level Penghargaan
+                                    Jenis Penghargaan
                                 </div>
                             </th>
                             <th class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
                                 <div class="flex items-center gap-2">
                                     <i class="bi bi-shield-check text-gray-400"></i>
-                                    alasan
+                                    Skor
                                 </div>
                             </th>
-                            <th class="px-5 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                            <th class="px-2 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
                                 <div class="flex items-center gap-2">
                                     <i class="bi bi-gear text-gray-400"></i>
-                                    Aksi
+                                    Pemberian Penghargaan
+                                </div>
+                            </th>
+                            <th class="px-5
+                             py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                                <div class="flex items-center gap-2">
+                                    <i class="bi bi-gear text-gray-400"></i>
+                                 Aksi
                                 </div>
                             </th>
                         </tr>
@@ -157,7 +170,7 @@
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="4" class="px-6 py-12 text-center">
+                                <td colspan="6" class="px-6 py-12 text-center">
                                     <div
                                         class="mx-auto w-24 h-24 bg-gray-100 rounded-full flex items-center justify-center mb-4">
                                         <i class="bi bi-people text-3xl text-gray-400"></i>
