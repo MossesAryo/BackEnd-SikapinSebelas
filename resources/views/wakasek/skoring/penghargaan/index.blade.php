@@ -31,13 +31,13 @@
         <!-- Header -->
         <div class="flex justify-between items-center">
             <div>
-                <h1 class="text-2xl font-bold gradient-text">Data Penghargaan</h1>
-                <p class="text-gray-600 mt-1">Kelola data Penghargaan</p>
+                <h1 class="text-2xl font-bold gradient-text">Skoring Penghargaan</h1>
+                <p class="text-gray-600 mt-1">Kelola Skoring Penghargaan</p>
             </div>
             <button onclick="openCreateModal()"
                 class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg flex items-center gap-2 transition-colors">
                 <i class="bi bi-plus-lg"></i>
-                Tambah Penghargaan
+                Tambah Skoring Penghargaan
             </button>
         </div>
 
@@ -78,7 +78,7 @@
         <!-- Data Table -->
         <div class="bg-white rounded-xl shadow-sm border overflow-hidden">
             <div class="px-6 py-4 border-b border-gray-200">
-                <h3 class="text-lg font-semibold text-gray-900">Daftar Penghargaan</h3>
+                <h3 class="text-lg font-semibold text-gray-900">Skoring Penghargaan</h3>
             </div>
 
             <div class="overflow-x-auto">
@@ -88,32 +88,38 @@
                             <th class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
                                 <div class="flex items-center gap-2">
                                     <i class="bi bi-hash text-gray-400"></i>
-                                    NO
+                                    NIS
                                 </div>
                             </th>
                             <th class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
                                 <div class="flex items-center gap-2">
                                     <i class="bi bi-person text-gray-400"></i>
-                                    KODE
+                                    Nama Siswa
                                 </div>
                             </th>
                            
                             <th class="px-2 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
                                 <div class="flex items-center gap-2">
                                     <i class="bi bi-shield-check text-gray-400"></i>
-                                 Kategori
+                               Tanggal Penghargaan
                                 </div>
                             </th>
                             <th class="px-2 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
                                 <div class="flex items-center gap-2">
                                     <i class="bi bi-shield-check text-gray-400"></i>
-                                 Uraian
+                              Jenis Penghargaan
                                 </div>
                             </th>
                             <th class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
                                 <div class="flex items-center gap-2">
                                     <i class="bi bi-shield-check text-gray-400"></i>
-                                    Poin
+                                    Skor
+                                </div>
+                            </th>
+                            <th class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                                <div class="flex items-center gap-2">
+                                    <i class="bi bi-shield-check text-gray-400"></i>
+                                    Pemberian Penghargaan
                                 </div>
                             </th>
                        

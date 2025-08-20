@@ -75,7 +75,7 @@
             </div>
         </div>
 
-        <!-- Data Table -->
+          <!-- Data Table -->
         <div class="bg-white rounded-xl shadow-sm border overflow-hidden">
             <div class="px-6 py-4 border-b border-gray-200">
                 <h3 class="text-lg font-semibold text-gray-900">Daftar Penghargaan</h3>
@@ -88,44 +88,32 @@
                             <th class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
                                 <div class="flex items-center gap-2">
                                     <i class="bi bi-hash text-gray-400"></i>
-                                    NIS
+                                     KODE
+                                </div>
+                            </th>
+                            <th class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                                <div class="flex items-center gap-2">
+                                    <i class="bi bi-hash text-gray-400"></i>
+                                     Tanggal Surat Penghargaan
                                 </div>
                             </th>
                             <th class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
                                 <div class="flex items-center gap-2">
                                     <i class="bi bi-person text-gray-400"></i>
-                                    Nama Siswa
-                                </div>
-                            </th>
-                            <th class="px-2 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                                <div class="flex items-center gap-2">
-                                    <i class="bi bi-person text-gray-400"></i>
-                                    Tanggal Penghargaan
-                                </div>
-                            </th>
-                            <th class="px-2 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                                <div class="flex items-center gap-2">
-                                    <i class="bi bi-shield-check text-gray-400"></i>
-                                    Jenis Penghargaan
+                                    Level Penghargaan
                                 </div>
                             </th>
                             <th class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
                                 <div class="flex items-center gap-2">
                                     <i class="bi bi-shield-check text-gray-400"></i>
-                                    Skor
+                                    Alasan
                                 </div>
                             </th>
-                            <th class="px-2 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                        
+                            <th class="px-5 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
                                 <div class="flex items-center gap-2">
                                     <i class="bi bi-gear text-gray-400"></i>
-                                    Pemberian Penghargaan
-                                </div>
-                            </th>
-                            <th class="px-5
-                             py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                                <div class="flex items-center gap-2">
-                                    <i class="bi bi-gear text-gray-400"></i>
-                                 Aksi
+                                    Aksi
                                 </div>
                             </th>
                         </tr>

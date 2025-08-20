@@ -94,25 +94,25 @@
                     <div id="faqDropdown" class="dropdown-content ml-4 mt-1">
                         <ul class="space-y-1">
                             <li>
-                                <a href="{{ route('aspekpenilaian') }}" class="flex items-center gap-3 px-4 py-2 text-sm text-gray-600 hover:bg-gray-50 rounded-lg menu-link" data-link="wali-kelas">
+                                <a href="{{ route('penghargaan.index') }}" class="flex items-center gap-3 px-4 py-2 text-sm text-gray-600 hover:bg-gray-50 rounded-lg menu-link" data-link="wali-kelas">
                                     <i class="bi bi-person-check"></i>
                                     <span>Penghargaan</span>
                                 </a>
                             </li>
                             <li>
-                                <a href="{{ route('aspekpenilaian') }}" class="flex items-center gap-3 px-4 py-2 text-sm text-gray-600 hover:bg-gray-50 rounded-lg menu-link" data-link="guru-bk">
+                                <a href="{{ route('peringatan.index') }}" class="flex items-center gap-3 px-4 py-2 text-sm text-gray-600 hover:bg-gray-50 rounded-lg menu-link" data-link="guru-bk">
                                     <i class="bi bi-person-heart"></i>
                                     <span>Pelanggaran</span>
                                 </a>
                             </li>
                             <li>
-                                <a href="{{ route('skoring_penghargaan.index') }}" class="flex items-center gap-3 px-4 py-2 text-sm text-gray-600 hover:bg-gray-50 rounded-lg menu-link" data-link="guru-bk">
+                                <a href="{{ route('aspek_penghargaan.index') }}" class="flex items-center gap-3 px-4 py-2 text-sm text-gray-600 hover:bg-gray-50 rounded-lg menu-link" data-link="guru-bk">
                                     <i class="bi bi-person-heart"></i>
                                     <span>Aspek Penghargaan</span>
                                 </a>
                             </li>
                             <li>
-                                <a href="{{ route('skoring_pelanggaran.index') }}" class="flex items-center gap-3 px-4 py-2 text-sm text-gray-600 hover:bg-gray-50 rounded-lg menu-link" data-link="guru-bk">
+                                <a href="{{ route('aspek_pelanggaran.index') }}" class="flex items-center gap-3 px-4 py-2 text-sm text-gray-600 hover:bg-gray-50 rounded-lg menu-link" data-link="guru-bk">
                                     <i class="bi bi-person-heart"></i>
                                     <span>Aspek Pelanggaran</span>
                                 </a>
@@ -124,13 +124,13 @@
 
                          
                 <li>
-                    <a href="{{ route('penghargaan.index') }}" class="flex items-center gap-3 px-3 py-3 text-gray-600 hover:bg-gray-50 rounded-lg menu-link" data-link="siswa">
+                    <a href="{{ route('skoring_penghargaan.index') }}" class="flex items-center gap-3 px-3 py-3 text-gray-600 hover:bg-gray-50 rounded-lg menu-link" data-link="siswa">
                         <i class="bi bi-people"></i>
                         <span>Skoring Penghargaan</span>
                     </a>
                 </li>
                 <li>
-                    <a href="{{ route('peringatan.index') }}" class="flex items-center gap-3 px-4 py-3 text-gray-600 hover:bg-gray-50 rounded-lg menu-link" data-link="siswa">
+                    <a href="{{ route('skoring_pelanggaran.index') }}" class="flex items-center gap-3 px-4 py-3 text-gray-600 hover:bg-gray-50 rounded-lg menu-link" data-link="siswa">
                         <i class="bi bi-people"></i>
                         <span>Skoring Pelanggaran</span>
                     </a>

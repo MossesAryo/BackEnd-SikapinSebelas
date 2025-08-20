@@ -12,9 +12,9 @@ return new class extends Migration {
             $table->string('id_kelas');
     
             $table->string('nama_siswa');
-            $table->integer('poin_apresiasi');
-            $table->integer('poin_pelanggaran');
-            $table->integer('poin_total');
+            $table->integer('poin_apresiasi')->nullable();
+            $table->integer('poin_pelanggaran')->nullable();
+            $table->integer('poin_total')->nullable();
             $table->timestamps();
 
 
