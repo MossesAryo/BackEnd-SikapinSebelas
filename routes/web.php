@@ -29,6 +29,12 @@ Route::get('/login', [AController::class, 'index'])->name('login');
 Route::post('/login', [AController::class, 'login'])->name('login.submit');
 Route::get('/logout', [AController::class, 'logout'])->name('logout');
 
+Route::get('/siswa', [SiswaController::class, 'index'])->name('siswa.index');
+Route::post('/siswa/store', [SiswaController::class, 'store'])->name('siswa.store');
+Route::put('/siswa/{nis}/update', [SiswaController::class, 'update'])->name('siswa.update');
+Route::delete('/siswa/{nis}', [SiswaController::class, 'destroy'])->name('siswa.destroy');
+Route::get('/siswa/{nis}/show', [SiswaController::class, 'show'])->name('siswa.show');
+
 Route::middleware('auth')->group(function () {
 
     Route::middleware('UserAccess:1')->group(function () {
@@ -45,11 +51,7 @@ Route::middleware('auth')->group(function () {
         Route::put('/kaprog/{nip_kaprog}/{username}/update', [KetuaProgramController::class, 'update'])->name('kaprog.update');
         Route::delete('/kaprog/{nip_kaprog}', [KetuaProgramController::class, 'destroy'])->name('kaprog.destroy');
 
-        Route::get('/siswa', [SiswaController::class, 'index'])->name('siswa.index');
-        Route::post('/siswa/store', [SiswaController::class, 'store'])->name('siswa.store');
-        Route::put('/siswa/{nis}/update', [SiswaController::class, 'update'])->name('siswa.update');
-        Route::delete('/siswa/{nis}', [SiswaController::class, 'destroy'])->name('siswa.destroy');
-        Route::get('/siswa/{nis}/show', [SiswaController::class, 'show'])->name('siswa.show');
+
 
 
         Route::get('/kelas', [KelasController::class, 'index'])->name('kelas');
