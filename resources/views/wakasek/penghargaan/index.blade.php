@@ -1,34 +1,11 @@
 @extends('layouts.wakasek.app')
 
 @push('css')
-    <style>
-        .table-hover tbody tr:hover {
-            background-color: rgba(59, 130, 246, 0.05);
-            transform: translateY(-1px);
-            transition: all 0.2s ease;
-        }
-
-        .action-btn {
-            transition: all 0.2s ease;
-        }
-
-        .action-btn:hover {
-            transform: scale(1.1);
-        }
-
-        .modal-overlay {
-            z-index: 9999 !important;
-        }
-
-        body.modal-open {
-            overflow: hidden;
-        }
-    </style>
+    <link rel="stylesheet" href="{{ asset('css/wakasek/penghargaan.css') }}">
 @endpush
 
 @section('content')
     <div class="space-y-6">
-        <!-- Header -->
         <div class="flex justify-between items-center">
             <div>
                 <h1 class="text-2xl font-bold gradient-text">Data Penghargaan</h1>
@@ -41,7 +18,7 @@
             </button>
         </div>
 
-        <!-- Flash Messages -->
+ 
         @if (session('success'))
             <p class="mt-2 text-sm text-green-600 font-semibold">
                 ✅ {{ session('success') }}
@@ -54,7 +31,7 @@
             </p>
         @endif
 
-        <!-- Search and Filter -->
+ 
         <div class="bg-white p-6 rounded-xl shadow-sm border">
             <div class="flex flex-col md:flex-row gap-2 items-center justify-between">
                 <div class="relative w-full md:w-64">
@@ -179,59 +156,5 @@
 @endsection
 
 @push('js')
-    <script>
-        function openModal(modalId) {
-            document.getElementById(modalId).classList.remove('hidden');
-            document.body.classList.add('modal-open');
-        }
-
-        function closeModal(modalId) {
-            document.getElementById(modalId).classList.add('hidden');
-            document.body.classList.remove('modal-open');
-        }
-
-        function openCreateModal() {
-            document.getElementById('id_penghargaan').value = '';
-            document.getElementById('tanggal_penghargaan').value = '';
-            document.getElementById('level_penghargaan').value = '';
-            document.getElementById('alasan').value = '';
-            openModal('modal-create');
-        }
-
-        function openEditModal(id_penghargaan, tanggal_penghargaan, level_penghargaan, alasan) {
-            document.getElementById('edit_id_penghargaan').value = id_penghargaan;
-            document.getElementById('edit_tanggal_penghargaan').value = tanggal_penghargaan;
-            document.getElementById('edit_level_penghargaan').value = level_penghargaan;
-            document.getElementById('edit_alasan').value = alasan;
-            document.getElementById('form-edit').action = `/penghargaan/${id_penghargaan}/update`;
-            openModal('modal-edit');
-        }
-
-
-        function openDeleteModal(id_penghargaan, nama) {
-            document.getElementById('delete-penghargaan').innerText = nama;
-            document.getElementById('form-delete').action = `/penghargaan/${id_penghargaan}`;
-            openModal('modal-delete');
-        }
-
-        document.addEventListener('click', function(event) {
-            ['modal-create', 'modal-edit', 'modal-delete'].forEach(modalId => {
-                const modal = document.getElementById(modalId);
-                if (modal && !modal.classList.contains('hidden') && event.target === modal) {
-                    closeModal(modalId);
-                }
-            });
-        });
-
-        document.addEventListener('keydown', function(event) {
-            if (event.key === 'Escape') {
-                ['modal-create', 'modal-edit', 'modal-delete'].forEach(modalId => {
-                    const modal = document.getElementById(modalId);
-                    if (modal && !modal.classList.contains('hidden')) {
-                        closeModal(modalId);
-                    }
-                });
-            }
-        });
-    </script>
+   <script src="{{ asset('js/wakasek/penghargaan.js') }}"></script>
 @endpush
