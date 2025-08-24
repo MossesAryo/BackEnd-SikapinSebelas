@@ -12,9 +12,9 @@ return new class extends Migration {
             $table->Integer('nip_wakasek')->nullable();
             $table->Integer('nip_walikelas')->nullable();
             $table->Integer('nip_bk')->nullable();
-            $table->integer('id_aspek_penilaian');
+            $table->string('id_aspek_penilaian');
             $table->Integer('nis');
-            $table->date('tanggal');
+            $table->timestamps();
             
             $table->foreign('nip_wakasek')->references('nip_wakasek')->on('wakasek')->onDelete('cascade');
             $table->foreign('nip_walikelas')->references('nip_walikelas')->on('walikelas')->onDelete('cascade');
@@ -22,6 +22,7 @@ return new class extends Migration {
             $table->foreign('id_aspek_penilaian')->references('id_aspekpenilaian')->on('aspek_penilaian')->onDelete('cascade');
             $table->foreign('nis')->references('nis')->on('siswa')->onDelete('cascade');
         });
+        
     }
     public function down() {
         Schema::dropIfExists('penilaian');

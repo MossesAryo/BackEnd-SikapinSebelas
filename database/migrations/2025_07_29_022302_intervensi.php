@@ -14,6 +14,7 @@ return new class extends Migration {
             $table->string('nama_intervensi');
             $table->enum('status', ['Dalam Bimbingan', 'Selesai']);
             $table->date('tanggal');
+            $table->timestamps();
             
             $table->foreign('nip_bk')->references('nip_bk')->on('guru_bk')->onDelete('cascade');
             $table->foreign('nis')->references('nis')->on('siswa')->onDelete('cascade');

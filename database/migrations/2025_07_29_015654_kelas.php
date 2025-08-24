@@ -8,9 +8,15 @@ use Illuminate\Support\Facades\Schema;
 return new class extends Migration {
     public function up() {
         Schema::create('kelas', function (Blueprint $table) {
-            $table->integer('id_kelas')->unique();
+            $table->string('id_kelas')->unique();
             $table->string('nama_kelas');
+            $table->string('jurusan');
+            $table->timestamps();
+        
         });
+
+
+    
     }
     public function down() {
         Schema::dropIfExists('kelas');

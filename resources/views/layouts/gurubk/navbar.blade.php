@@ -1,7 +1,7 @@
-<div class="bg-white border-b border-gray-200 px-6 py-4">
+ <div class="bg-white border-b border-gray-200 px-6 py-4">
                 <div class="flex items-center justify-between">
                     <div>
-                        <h1 class="text-2xl font-bold text-gray-900">Dashboard</h1>
+                        <h1 class="text-2xl font-bold text-gray-900">SIKAPIN SEBELAS</h1>
                         <p class="text-gray-600">Selamat datang di Sistem Skoring Sikapin</p>
                     </div>
                     <div class="flex items-center gap-4">
@@ -10,9 +10,9 @@
                         </button>
                         <div class="flex items-center gap-3">
                             <div class="w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center text-white text-sm font-bold">
-                                A
+                                W
                             </div>
-                            <span class="text-gray-700">Admin</span>
+                            <span class="text-gray-700">Guru BK</span>
                         </div>
                     </div>
                 </div>

@@ -12,14 +12,15 @@ class ketua_program extends Model
 
     protected $fillable = [
         'nip_kaprog',
-        'id_user',
+        'username',
         'nama_ketua_program',
         'jurusan',
     ];
 
     public function user()
     {
-        return $this->belongsTo(User::class, 'id_user', 'id');
+        return $this->belongsTo(User::class, 'username', 'username');
     }
+   
 
 }
