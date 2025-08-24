@@ -17,7 +17,18 @@ class SiswaController extends Controller
             'siswa' => siswa::all(),
             'kelas' => kelas::all()
         ]);
+
     }
+
+
+    public function siswaGuruBk()
+    {
+        return view('gurubk.siswa', [
+            'siswa' => Siswa::all(),
+            'kelas' => Kelas::all()
+        ]);
+    }
+
     /**
      * Show the form for creating a new resource.
      */
@@ -30,26 +41,21 @@ class SiswaController extends Controller
     {
         $request->validate([
             'nis' => 'required|string',
-            'id_kelas' => 'required',
             'nama_siswa' => 'required|string',
-            'poin_apresiasi' => 'nullable|integer',
-            'poin_pelanggaran' => 'nullable|integer',
+            'id_kelas' => 'required',
+        
         ]);
 
 
-        $poin_apresiasi = $request->input('poin_apresiasi', 0);
-        $poin_pelanggaran = $request->input('poin_pelanggaran', 0);
-
-
-        $poin_total = $poin_apresiasi - $poin_pelanggaran;
+        // $poin_apresiasi = $request->input('poin_apresiasi', 0);
+        // $poin_pelanggaran = $request->input('poin_pelanggaran', 0);
+        // $poin_total = $poin_apresiasi - $poin_pelanggaran;
 
         siswa::create([
             'nis' => $request->nis,
-            'id_kelas' => $request->id_kelas,
             'nama_siswa' => $request->nama_siswa,
-            'poin_apresiasi' => $poin_apresiasi,
-            'poin_pelanggaran' => $poin_pelanggaran,
-            'poin_total' => $poin_total,
+            'id_kelas' => $request->id_kelas,
+          
         ]);
 
         return redirect()->route('siswa.index')->with('success', 'Siswa berhasil ditambahkan');
@@ -74,10 +80,28 @@ class SiswaController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
+    public function update(Request $request, $nis)
+{
+ 
+    $request->validate([
+        'nis' => 'required|integer',
+        'nama_siswa' => 'required|string',
+        'id_kelas' => 'required|string',
+    ]);
+  
+
+    $siswa = Siswa::where('nis', $nis)->firstOrFail();
+
+    $siswa->update([
+        'nis' => $request->nis,
+        'nama_siswa' => $request->nama_siswa,
+        'id_kelas' => $request->id_kelas,
+        
+    ]);
+
+    return redirect()->route('siswa.index')->with('success', 'Data berhasil diperbarui.');
+}
+
 
     /**
      * Remove the specified resource from storage.

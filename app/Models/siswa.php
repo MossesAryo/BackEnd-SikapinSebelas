@@ -13,6 +13,7 @@ class siswa extends Model
     protected $fillable = [
         'nis',
         'id_kelas',
+        'id_aspekpenilaian',
         'nama_siswa',
         'poin_apresiasi',
         'poin_pelanggaran',
@@ -22,5 +23,10 @@ class siswa extends Model
     public function kelas()
     {
         return $this->belongsTo(kelas::class, 'id_kelas', 'id_kelas');
-    }       
+    }
+
+    public function aspekPenilaian()
+    {
+        return $this->belongsTo(aspek_penilaian::class, 'id_aspekpenilaian', 'id_aspekpenilaian');
+    }
 }

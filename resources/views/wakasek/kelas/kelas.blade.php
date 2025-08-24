@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.wakasek.app')
 
 @push('css')
     <style>
@@ -354,7 +354,7 @@
                                         </td>
 
                                           <td class="px-6 py-4 whitespace-nowrap">
-                                               <span class="text-lg font-bold text-black">{{ $item->jurusan->nama_jurusan}}</span>
+                                               <span class="text-lg font-bold text-black">{{ $item->jurusan}}</span>
                                           </td>
 
                                         <td class="px-6 py-4">
@@ -402,10 +402,10 @@
 
 @push('js')
     <script>
-        function openEditModal(id, nama, jurusan) {
+        function openEditModal(id, nama, jurusann) {
             document.getElementById('edit_id_kelas').value = id;
             document.getElementById('edit_nama_kelas').value = nama;
-            document.getElementById('edit_id_jurusan').value = jurusan;
+            document.getElementById('jurusan').value = jurusann;
             document.getElementById('form-edit').action = `/kelas/${id}/update`;
             document.getElementById('modal-edit').classList.remove('hidden');
         }

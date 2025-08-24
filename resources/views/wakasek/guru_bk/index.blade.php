@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.wakasek.app')
 
 @push('css')
     <link rel="stylesheet" href="{{ asset('css/wakasek/guru_bk.css') }}">

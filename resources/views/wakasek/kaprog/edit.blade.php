@@ -25,19 +25,12 @@
                         <input type="text" id="username" name="username" required
                             class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-transparent">
                     </div>
-                    <div>
-                       <label for="edit_id_jurusan" class="block text-sm font-medium text-gray-700 mb-1">Jurusan</label>
-                            <select class="form-select" id="edit_id_jurusan" name="id_jurusan">
-                                <option value="">Pilih Jurusan</option>
-                                @foreach ($jurusan as $j)
-                                    <option value="{{ $j->id_jurusan }}" {{ isset($ketua_program->id_jurusan) && $j->id_jurusan == $ketua_program->id_jurusan ? 'selected' : '' }}>
-                                        {{ $j->nama_jurusan }}
-                                    </option>
-                                @endforeach
-                            </select>
-
-                            
+                     <div>
+                        <label for="edit_jurusan" class="block text-sm font-medium text-gray-700 mb-1">Jurusan</label>
+                        <input type="text" id="edit_jurusan" name="jurusan" required
+                            class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-transparent">
                     </div>
+
                 </div>
                 <div class="flex justify-end gap-2 pt-4">
                     <button type="button" onclick="closeModal('modal-edit')"

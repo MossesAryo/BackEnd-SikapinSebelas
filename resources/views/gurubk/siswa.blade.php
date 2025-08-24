@@ -1,4 +1,4 @@
-@extends('layouts.wakasek.app')
+@extends('layouts.gurubk.app')
 
 @push('css')
     <style>
@@ -34,11 +34,7 @@
                 <h1 class="text-2xl font-bold gradient-text">Data Siswa</h1>
                 <p class="text-gray-600 mt-1">Kelola data Siswa</p>
             </div>
-            <button onclick="openCreateModal()"
-                class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg flex items-center gap-2 transition-colors">
-                <i class="bi bi-plus-lg"></i>
-                Tambah Siswa
-            </button>
+           
         </div>
         
         <!-- Flash Messages -->
@@ -83,7 +79,7 @@
                 <table class="w-full">
                     <thead class="bg-gray-50 border-b border-gray-200">
                         <tr>
-                            <th class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                            <th class="px-12 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
                                 <div class="flex items-center gap-2">
                                     <i class="bi bi-hash text-gray-400"></i>
                                     NIS
@@ -103,19 +99,14 @@
                                 </div>
                             </th>
                   
-                            <th class="px-5 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                                <div class="flex items-center gap-2">
-                                    <i class="bi bi-gear text-gray-400"></i>
-                                    Aksi
-                                </div>
-                            </th>
+                           
                         </tr>
                     </thead>
 
                     <tbody class="bg-white divide-y divide-gray-100">
                         @forelse ($siswa as $item)
                             <tr class="hover:bg-gray-50 group">
-                                <td class="px-6 py-4 whitespace-nowrap">
+                                <td class="px-12 py-4 whitespace-nowrap">
                                     <div class="flex items-center">
                                         <div class="w-2 h-2 bg-blue-400 rounded-full mr-3 opacity-0 group-hover:opacity-100 transition-opacity"></div>
                                         <span class="text-sm font-medium text-gray-900">{{ $item->nis }}</span>
@@ -154,20 +145,7 @@
                                 </td> --}}
 
 
-                                <td class="px-6 py-4 whitespace-nowrap">
-                                    <div class="flex items-center gap-1">
-                                        <button onclick="openEditModal('{{ $item->nis }}', '{{ $item->nama_siswa }}', '{{ $item->id_kelas }}')"
-                                            class="action-btn inline-flex items-center justify-center w-9 h-9 text-blue-600 hover:text-blue-800 hover:bg-blue-50 rounded-full"
-                                            title="Edit Siswa">
-                                            <i class="bi bi-pencil-square text-sm"></i>
-                                        </button>
-                                        <button onclick="openDeleteModal('{{ $item->nis }}', '{{ $item->nama_siswa }}')"
-                                            class="action-btn inline-flex items-center justify-center w-9 h-9 text-red-600 hover:text-red-800 hover:bg-red-50 rounded-full"
-                                            title="Hapus Siswa">
-                                            <i class="bi bi-trash text-sm"></i>
-                                        </button>
-                                    </div>
-                                </td>
+                               
                             </tr>
                         @empty
                             <tr>
@@ -176,7 +154,7 @@
                                         <i class="bi bi-people text-3xl text-gray-400"></i>
                                     </div>
                                     <h3 class="text-lg font-medium text-gray-900 mb-2">Belum ada data siswa</h3>
-                                    <p class="text-gray-500">Tambahkan data siswa untuk memulai.</p>
+                              
                                 </td>
                             </tr>
                         @endforelse
@@ -185,9 +163,7 @@
             </div>
         </div>
     </div>
-    @include('wakasek.siswa.create')
-    @include('wakasek.siswa.edit')
-    @include('wakasek.siswa.delete')
+
     
 @endsection
 
