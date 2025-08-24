@@ -88,13 +88,13 @@
                             <th class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
                                 <div class="flex items-center gap-2">
                                     <i class="bi bi-hash text-gray-400"></i>
-                                     NIS
+                                    NIS
                                 </div>
                             </th>
                             <th class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
                                 <div class="flex items-center gap-2">
                                     <i class="bi bi-hash text-gray-400"></i>
-                                     Nama Siswa
+                                    Nama Siswa
                                 </div>
                             </th>
                             <th class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
@@ -115,7 +115,7 @@
                                     Skor
                                 </div>
                             </th>
-                            <th class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                            {{-- <th class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
                                 <div class="flex items-center gap-2">
                                     <i class="bi bi-shield-check text-gray-400"></i>
                                     Penanganan Pelanggaran
@@ -132,7 +132,7 @@
                                     <i class="bi bi-shield-check text-gray-400"></i>
                                 Perubahan setelah Penanganan
                                 </div>
-                            </th>
+                            </th> --}}
                             <th class="px-5 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
                                 <div class="flex items-center gap-2">
                                     <i class="bi bi-gear text-gray-400"></i>
@@ -143,26 +143,52 @@
                     </thead>
 
                     <tbody class="bg-white divide-y divide-gray-100">
-                   
+                        @forelse ($penilaian as $item)
+                            <tr>
+                                <td class="px-6 py-4 text-sm text-gray-900">{{ $item->siswa->nis ?? '-' }}</td>
+                                <td class="px-6 py-4 text-sm text-gray-900">{{ $item->siswa->nama_siswa ?? '-' }}</td>
+                                <td class="px-6 py-4 text-sm text-gray-900">{{ $item->created_at }}</td>
+                                <td class="px-6 py-4 text-sm text-gray-900">{{ $item->aspek_penilaian->uraian ?? '-' }}
+                                </td>
+                                <td class="px-6 py-4 text-sm text-gray-900">
+                                    {{ $item->aspek_penilaian->indikator_poin ?? 0 }}</td>
+                                <td class="px-6 py-4 text-sm">
+                                    <div class="flex gap-2">
+                                        <button
+                                            onclick="openEditModal('{{ $item->id_penilaian }}', '{{ $item->created_at }}', '{{ $item->aspek_penilaian->n }}', '{{ $item->aspek_penilaian->indikator_poin }}')"
+                                            class="text-blue-600 hover:text-blue-800 action-btn">
+                                            <i class="bi bi-pencil-square"></i>
+                                        </button>
+                                        <button
+                                            onclick="openDeleteModal('{{ $item->id_penilaian }}', '{{ $item->siswa->nama_siswa }}')"
+                                            class="text-red-600 hover:text-red-800 action-btn">
+                                            <i class="bi bi-trash"></i>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                        @empty
                             <tr>
                                 <td colspan="6" class="px-6 py-12 text-center">
                                     <div
                                         class="mx-auto w-24 h-24 bg-gray-100 rounded-full flex items-center justify-center mb-4">
                                         <i class="bi bi-people text-3xl text-gray-400"></i>
                                     </div>
-                                    <h3 class="text-lg font-medium text-gray-900 mb-2">Belum ada data Skoring Pelanggaran</h3>
+                                    <h3 class="text-lg font-medium text-gray-900 mb-2">Belum ada data Skoring Pelanggaran
+                                    </h3>
                                     <p class="text-gray-500">Tambahkan data Pelanggaran untuk memulai.</p>
                                 </td>
                             </tr>
-                    
+                        @endforelse
                     </tbody>
+
                 </table>
             </div>
         </div>
     </div>
-    @include('wakasek.penghargaan.create')
-    @include('wakasek.penghargaan.edit')
-    @include('wakasek.penghargaan.delete')
+    @include('wakasek.skoring.pelanggaran.create')
+    @include('wakasek.skoring.pelanggaran.edit')
+    @include('wakasek.skoring.pelanggaran.delete')
 @endsection
 
 @push('js')
@@ -178,10 +204,7 @@
         }
 
         function openCreateModal() {
-            document.getElementById('id_penghargaan').value = '';
-            document.getElementById('tanggal_penghargaan').value = '';
-            document.getElementById('level_penghargaan').value = '';
-            document.getElementById('alasan').value = '';
+
             openModal('modal-create');
         }
 
@@ -195,9 +218,9 @@
         }
 
 
-        function openDeleteModal(id_penghargaan, nama) {
-            document.getElementById('delete-penghargaan').innerText = nama;
-            document.getElementById('form-delete').action = `/penghargaan/${id_penghargaan}`;
+        function openDeleteModal(id_penilaian, nama_siswa) {
+            document.getElementById('delete-penghargaan').innerText = nama_siswa;
+            document.getElementById('form-delete').action = `/skoring_pelanggaran/${id_penilaian}/destroy`;
             openModal('modal-delete');
         }
 
