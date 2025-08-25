@@ -15,7 +15,9 @@ class Skoring_PelanggaranController extends Controller
     public function index()
     {
         return view('wakasek.skoring.pelanggaran.index', [
-            "penilaian" => penilaian::all(),
+            "penilaian" => penilaian::whereHas('aspek_penilaian', function ($q) {
+                $q->where('jenis_poin', 'Pelanggaran');
+            })->get(),
             "siswa" => siswa::all(),
             "aspekPel" => aspek_penilaian::where('jenis_poin', 'Pelanggaran')->get()
 
