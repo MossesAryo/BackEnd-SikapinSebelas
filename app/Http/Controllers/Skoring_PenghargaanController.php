@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\aspek_penilaian;
+use App\Models\siswa;
+use App\Models\penilaian;
 use Illuminate\Http\Request;
 
 class Skoring_PenghargaanController extends Controller
@@ -11,7 +14,13 @@ class Skoring_PenghargaanController extends Controller
      */
     public function index()
     {
-        return view('wakasek.skoring.penghargaan.index');
+        return view('wakasek.skoring.penghargaan.index', [
+            "penilaian" => penilaian::whereHas('aspek_penilaian', function ($q) {
+                $q->where('jenis_poin', 'Apresiasi');
+            })->get(),
+            "siswa" => siswa::all(),
+            "aspekPel" => aspek_penilaian::where('jenis_poin', 'Apresiasi')->get()
+        ]);
     }
 
     /**
@@ -27,7 +36,32 @@ class Skoring_PenghargaanController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'id_penilaian' => 'required|unique:penilaian,id_penilaian',
+            'nis' => 'required',
+            'id_aspekpenilaian' => 'required',
+            'skor' => 'required|numeric',
+        ]);
+
+        Penilaian::create([
+            'id_penilaian' => $request->id_penilaian,
+            'nis' => $request->nis,
+            'id_aspekpenilaian' => $request->id_aspekpenilaian,
+            'nip_wakasek' => null,
+            'nip_walikelas' => null,
+            'nip_bk' =>  null,
+            'created_at' => now(),
+        ]);
+
+        $siswa = Siswa::where('nis', $request->nis)->first();
+        if ($siswa) {
+            $siswa->poin_apresiasi += $request->skor;
+            $siswa->poin_total += $request->skor;
+            $siswa->save();
+        }
+
+        return redirect()->route('skoring_penghargaan.index')
+            ->with('success', 'Data Skoring Penghargaan berhasil ditambahkan.');
     }
 
     /**
@@ -59,6 +93,18 @@ class Skoring_PenghargaanController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $skoring = penilaian::findOrFail($id);
+        $siswa = $skoring->siswa;
+
+        $skor = $skoring->aspek_penilaian->indikator_poin ?? 0;
+
+        if ($siswa) {
+            $siswa->poin_apresiasi -= $skor;
+            $siswa->poin_total -= $skor;
+            $siswa->save();
+        }
+        $skoring->delete();
+
+        return redirect()->back()->with('success', 'Skoring berhasil dihapus!');
     }
 }

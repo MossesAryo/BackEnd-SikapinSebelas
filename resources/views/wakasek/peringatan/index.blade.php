@@ -12,7 +12,7 @@
                 <h1 class="text-2xl font-bold gradient-text">Data Pelanggaran</h1>
                 <p class="text-gray-600 mt-1">Kelola data Pelanggaran</p>
             </div>
-            <button onclick="openCreateModal()"
+            <button onclick="document.getElementById('modal-create').classList.remove('hidden')"
                 class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg flex items-center gap-2 transition-colors">
                 <i class="bi bi-plus-lg"></i>
                 Tambah Pelanggaran
@@ -157,5 +157,5 @@
 @endsection
 
 @push('js')
-    <script src="{{ asset('js/wakasek/peringatan.js') }}"></script>
+    <script src="{{ asset('js/wakasek/pelanggaran.js') }}"></script>
 @endpush

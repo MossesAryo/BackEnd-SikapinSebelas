@@ -31,13 +31,13 @@
         <!-- Header -->
         <div class="flex justify-between items-center">
             <div>
-                <h1 class="text-2xl font-bold gradient-text">Skoring Pelanggaran</h1>
-                <p class="text-gray-600 mt-1">Kelola Skoring Pelanggaran</p>
+                <h1 class="text-2xl font-bold gradient-text">Jam malam</h1>
+                <p class="text-gray-600 mt-1">Kelola Skoring Jam Malam</p>
             </div>
             <button onclick="openCreateModal()"
                 class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg flex items-center gap-2 transition-colors">
                 <i class="bi bi-plus-lg"></i>
-                Tambah Skoring Pelanggaran
+                Tambah Skoring Penghargaan
             </button>
         </div>
 
@@ -78,7 +78,7 @@
         <!-- Data Table -->
         <div class="bg-white rounded-xl shadow-sm border overflow-hidden">
             <div class="px-6 py-4 border-b border-gray-200">
-                <h3 class="text-lg font-semibold text-gray-900">Skoring Pelanggaran</h3>
+                <h3 class="text-lg font-semibold text-gray-900">Skoring Penghargaan</h3>
             </div>
 
             <div class="overflow-x-auto">
@@ -100,13 +100,13 @@
                             <th class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
                                 <div class="flex items-center gap-2">
                                     <i class="bi bi-person text-gray-400"></i>
-                                    Tanggal Pelanggaran
+                                    Tanggal Penghargaan
                                 </div>
                             </th>
                             <th class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
                                 <div class="flex items-center gap-2">
                                     <i class="bi bi-shield-check text-gray-400"></i>
-                                    Jenis Pelanggaran
+                                    Jenis Penghargaan
                                 </div>
                             </th>
                             <th class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
@@ -174,9 +174,9 @@
                                         class="mx-auto w-24 h-24 bg-gray-100 rounded-full flex items-center justify-center mb-4">
                                         <i class="bi bi-people text-3xl text-gray-400"></i>
                                     </div>
-                                    <h3 class="text-lg font-medium text-gray-900 mb-2">Belum ada data Skoring Pelanggaran
+                                    <h3 class="text-lg font-medium text-gray-900 mb-2">Belum ada data Skoring penghargaan
                                     </h3>
-                                    <p class="text-gray-500">Tambahkan data Pelanggaran untuk memulai.</p>
+                                    <p class="text-gray-500">Tambahkan data penghargaan untuk memulai.</p>
                                 </td>
                             </tr>
                         @endforelse
@@ -186,9 +186,9 @@
             </div>
         </div>
     </div>
-    @include('wakasek.skoring.pelanggaran.create')
-    @include('wakasek.skoring.pelanggaran.edit')
-    @include('wakasek.skoring.pelanggaran.delete')
+    @include('wakasek.skoring.penghargaan.create')
+    @include('wakasek.skoring.penghargaan.edit')
+    @include('wakasek.skoring.penghargaan.delete')
 @endsection
 
 @push('js')
