@@ -12,14 +12,14 @@ return new class extends Migration {
             $table->Integer('nip_wakasek')->nullable();
             $table->Integer('nip_walikelas')->nullable();
             $table->Integer('nip_bk')->nullable();
-            $table->string('id_aspek_penilaian');
+            $table->string('id_aspekpenilaian');
             $table->Integer('nis');
             $table->timestamps();
             
             $table->foreign('nip_wakasek')->references('nip_wakasek')->on('wakasek')->onDelete('cascade');
             $table->foreign('nip_walikelas')->references('nip_walikelas')->on('walikelas')->onDelete('cascade');
             $table->foreign('nip_bk')->references('nip_bk')->on('guru_bk')->onDelete('cascade');
-            $table->foreign('id_aspek_penilaian')->references('id_aspekpenilaian')->on('aspek_penilaian')->onDelete('cascade');
+            $table->foreign('id_aspekpenilaian')->references('id_aspekpenilaian')->on('aspek_penilaian')->onDelete('cascade');
             $table->foreign('nis')->references('nis')->on('siswa')->onDelete('cascade');
         });
         
