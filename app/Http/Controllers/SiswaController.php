@@ -43,7 +43,7 @@ class SiswaController extends Controller
             'nis' => 'required|string',
             'nama_siswa' => 'required|string',
             'id_kelas' => 'required',
-        
+
         ]);
 
 
@@ -55,7 +55,7 @@ class SiswaController extends Controller
             'nis' => $request->nis,
             'nama_siswa' => $request->nama_siswa,
             'id_kelas' => $request->id_kelas,
-          
+
         ]);
 
         return redirect()->route('siswa.index')->with('success', 'Siswa berhasil ditambahkan');
@@ -66,7 +66,16 @@ class SiswaController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $siswa = siswa::where('nis', $id)->first();
+
+        if (!$siswa) {
+            return redirect()->route('siswa.index')->with('error', 'Siswa tidak ditemukan');
+        }
+
+        return view('wakasek.siswa.show', [
+            'siswa' => $siswa,
+            'kelas' => kelas::all()
+        ]);
     }
 
     /**
@@ -82,13 +91,13 @@ class SiswaController extends Controller
      */
     public function update(Request $request, $nis)
 {
- 
+
     $request->validate([
         'nis' => 'required|integer',
         'nama_siswa' => 'required|string',
         'id_kelas' => 'required|string',
     ]);
-  
+
 
     $siswa = Siswa::where('nis', $nis)->firstOrFail();
 
@@ -96,7 +105,7 @@ class SiswaController extends Controller
         'nis' => $request->nis,
         'nama_siswa' => $request->nama_siswa,
         'id_kelas' => $request->id_kelas,
-        
+
     ]);
 
     return redirect()->route('siswa.index')->with('success', 'Data berhasil diperbarui.');
