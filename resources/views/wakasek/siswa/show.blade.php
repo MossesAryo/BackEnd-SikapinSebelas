@@ -324,11 +324,6 @@
                 <i class="bi bi-trash"></i>
                 Hapus Siswa
             </button>
-            <button onclick="window.print()"
-                class="bg-gray-600 hover:bg-gray-700 text-white px-4 py-2 rounded-lg flex items-center justify-center gap-2 transition-colors order-1 sm:order-2">
-                <i class="bi bi-printer"></i>
-                Cetak Data
-            </button>
         </div>
     </div>
 
