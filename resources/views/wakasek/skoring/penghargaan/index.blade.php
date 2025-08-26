@@ -160,7 +160,7 @@
                                             <i class="bi bi-pencil-square"></i>
                                         </button>
                                         <button
-                                            onclick="openDeleteModal('{{ $item->id_penilaian }}', '{{ $item->siswa->nama_siswa }}')"
+                                            onclick="openDeleteModalPenghargaan('{{ $item->id_penilaian }}', '{{ $item->siswa->nama_siswa }}')"
                                             class="text-red-600 hover:text-red-800 action-btn">
                                             <i class="bi bi-trash"></i>
                                         </button>
@@ -217,12 +217,12 @@
             openModal('modal-edit');
         }
 
-
-        function openDeleteModal(id_penilaian, nama_siswa) {
-            document.getElementById('delete-penghargaan').innerText = nama_siswa;
-            document.getElementById('form-delete').action = `/skoring_pelanggaran/${id_penilaian}/destroy`;
-            openModal('modal-delete');
+        function openDeleteModalPenghargaan(id_penghargaan, nama) {
+            document.getElementById('delete-penghargaan').innerText = nama;
+            document.getElementById('form-delete-penghargaan').action = `/skoring_penghargaan/${id_penghargaan}/destroy`;
+            openModal('modal-delete-penghargaan');
         }
+
 
         document.addEventListener('click', function(event) {
             ['modal-create', 'modal-edit', 'modal-delete'].forEach(modalId => {

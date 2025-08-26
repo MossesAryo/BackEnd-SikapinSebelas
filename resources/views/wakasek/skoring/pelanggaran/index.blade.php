@@ -160,10 +160,11 @@
                                             <i class="bi bi-pencil-square"></i>
                                         </button>
                                         <button
-                                            onclick="openDeleteModal('{{ $item->id_penilaian }}', '{{ $item->siswa->nama_siswa }}')"
+                                            onclick="openDeleteModalPelanggaran('{{ $item->id_penilaian }}', '{{ $item->siswa->nama_siswa }}')"
                                             class="text-red-600 hover:text-red-800 action-btn">
                                             <i class="bi bi-trash"></i>
                                         </button>
+
                                     </div>
                                 </td>
                             </tr>
@@ -218,14 +219,14 @@
         }
 
 
-        function openDeleteModal(id_penilaian, nama_siswa) {
-            document.getElementById('delete-penghargaan').innerText = nama_siswa;
-            document.getElementById('form-delete').action = `/skoring_pelanggaran/${id_penilaian}/destroy`;
-            openModal('modal-delete');
+        function openDeleteModalPelanggaran(id_pelanggaran, nama) {
+            document.getElementById('delete-pelanggaran').innerText = nama;
+            document.getElementById('form-delete-pelanggaran').action = `/skoring_pelanggaran/${id_pelanggaran}/destroy`;
+            openModal('modal-delete-pelanggaran');
         }
 
         document.addEventListener('click', function(event) {
-            ['modal-create', 'modal-edit', 'modal-delete'].forEach(modalId => {
+            ['modal-create', 'modal-edit', 'modal-delete-pelanggaran'].forEach(modalId => {
                 const modal = document.getElementById(modalId);
                 if (modal && !modal.classList.contains('hidden') && event.target === modal) {
                     closeModal(modalId);
@@ -235,7 +236,7 @@
 
         document.addEventListener('keydown', function(event) {
             if (event.key === 'Escape') {
-                ['modal-create', 'modal-edit', 'modal-delete'].forEach(modalId => {
+                ['modal-create', 'modal-edit', 'modal-delete-pelanggaran'].forEach(modalId => {
                     const modal = document.getElementById(modalId);
                     if (modal && !modal.classList.contains('hidden')) {
                         closeModal(modalId);

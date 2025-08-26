@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\aspek_penilaian;
-use App\Models\penilaian;
-use App\Models\siswa;
+use App\Models\Siswa;
+use App\Models\Penilaian;
+use App\Models\ActivityLog;
 use Illuminate\Http\Request;
+use App\Models\Aspek_Penilaian;
 
 class Skoring_PelanggaranController extends Controller
 {
@@ -15,12 +16,11 @@ class Skoring_PelanggaranController extends Controller
     public function index()
     {
         return view('wakasek.skoring.pelanggaran.index', [
-            "penilaian" => penilaian::whereHas('aspek_penilaian', function ($q) {
+            "penilaian" => Penilaian::whereHas('aspek_penilaian', function ($q) {
                 $q->where('jenis_poin', 'Pelanggaran');
             })->get(),
-            "siswa" => siswa::all(),
-            "aspekPel" => aspek_penilaian::where('jenis_poin', 'Pelanggaran')->get()
-
+            "siswa" => Siswa::all(),
+            "aspekPel" => Aspek_Penilaian::where('jenis_poin', 'Pelanggaran')->get()
         ]);
     }
 
@@ -51,6 +51,14 @@ class Skoring_PelanggaranController extends Controller
             $siswa->poin_pelanggaran += $request->skor;
             $siswa->poin_total -= $request->skor;
             $siswa->save();
+
+            // 🔹 Tambahkan log aktivitas
+            ActivityLog::create([
+                'user_id'    => auth()->id(),
+                'nis'        => $siswa->nis, // simpan NIS siswa
+                'activity'   => 'Tambah Pelanggaran',
+                'description' => "Pelanggaran dicatat untuk {$siswa->nama_siswa} (NIS: {$siswa->nis}) dengan skor {$request->skor}",
+            ]);
         }
 
         return redirect()->route('skoring_pelanggaran.index')
@@ -58,24 +66,47 @@ class Skoring_PelanggaranController extends Controller
     }
 
     /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id) {}
-
-    /**
      * Update the specified resource in storage.
      */
     public function update(Request $request, string $id)
     {
-        //
+        $request->validate([
+            'id_aspekpenilaian' => 'required',
+            'skor' => 'required|numeric',
+        ]);
+
+        $penilaian = Penilaian::findOrFail($id);
+        $siswa = $penilaian->siswa;
+
+        $oldSkor = $penilaian->aspek_penilaian->indikator_poin ?? 0;
+
+        if ($siswa) {
+            // rollback poin lama
+            $siswa->poin_pelanggaran -= $oldSkor;
+            $siswa->poin_total += $oldSkor;
+        }
+
+        // update data penilaian
+        $penilaian->id_aspekpenilaian = $request->id_aspekpenilaian;
+        $penilaian->save();
+
+        // tambahkan poin baru
+        if ($siswa) {
+            $siswa->poin_pelanggaran += $request->skor;
+            $siswa->poin_total -= $request->skor;
+            $siswa->save();
+
+            // log aktivitas
+            ActivityLog::create([
+                'user_id'    => auth()->id(),
+                'nis'        => $siswa->nis, // simpan NIS siswa
+                'activity'   => 'Update Pelanggaran',
+                'description' => "Pelanggaran untuk {$siswa->nama_siswa} (NIS: {$siswa->nis}) diubah. Skor lama {$oldSkor}, skor baru {$request->skor}",
+            ]);
+        }
+
+        return redirect()->route('skoring_pelanggaran.index')
+            ->with('success', 'Data pelanggaran berhasil diperbarui.');
     }
 
     /**
@@ -83,19 +114,25 @@ class Skoring_PelanggaranController extends Controller
      */
     public function destroy(string $id)
     {
-        $skoring = penilaian::findOrFail($id);
+        $skoring = Penilaian::findOrFail($id);
         $siswa = $skoring->siswa;
 
+        $skor = $skoring->aspek_penilaian->indikator_poin ?? 0;
 
+        if ($siswa) {
+            $siswa->poin_pelanggaran -= $skor;
+            $siswa->poin_total += $skor;
+            $siswa->save();
 
-        
-    $skor = $skoring->aspek_penilaian->indikator_poin ?? 0;  
+            // log aktivitas
+            ActivityLog::create([
+                'user_id'    => auth()->id(),
+                'nis'        => $siswa->nis, // simpan NIS siswa
+                'activity'   => 'Hapus Pelanggaran',
+                'description' => "Pelanggaran untuk {$siswa->nama_siswa} (NIS: {$siswa->nis}) dengan skor {$skor} dihapus",
+            ]);
+        }
 
-    if ($siswa) {
-        $siswa->poin_pelanggaran -= $skor;
-        $siswa->poin_total += $skor;
-        $siswa->save();
-    }
         $skoring->delete();
 
         return redirect()->back()->with('success', 'Skoring berhasil dihapus!');
