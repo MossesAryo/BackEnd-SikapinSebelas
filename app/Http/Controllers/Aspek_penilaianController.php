@@ -2,8 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\Aspek_Penghargaan_ExportExcel;
+use App\Imports\Aspek_Penghargaan_Import;
 use App\Models\aspek_penilaian;
 use Illuminate\Http\Request;
+
+use Barryvdh\DomPDF\Facade\Pdf;
+use Maatwebsite\Excel\Facades\Excel;
 
 class Aspek_penilaianController extends Controller
 {
@@ -126,14 +131,39 @@ class Aspek_penilaianController extends Controller
         
         return redirect()->route('aspek_penghargaan.index')->with('success', 'Aspek Penilaian berhasil dihapus');
     }
+
+    public function export_pdf()
+    {
+        $aspek_penilaian = aspek_penilaian::where('jenis_poin', 'Apresiasi')->get();
+
+        $pdf = PDF::loadView('export.aspek_penghargaan.pdf', compact('aspek_penilaian'));
+        return $pdf->download('aspek_penghargaan.pdf');
+
+    }
+
+    public function export_excel()
+    {
+        return Excel::download(new Aspek_Penghargaan_ExportExcel, 'aspek_penghargaan.xlsx');
+    }
     
-    
-    
+      public function import(Request $request)
+    {
+        $aspek_penilaian = aspek_penilaian::where('jenis_poin', 'Apresiasi')->get();
+       
+
+        $request->validate([
+            'file' => 'required|mimes:xlsx,xls,csv|max:10240',
+            
+        ]);
+
+        Excel::import(new Aspek_Penghargaan_Import, $request->file('file'));
+
+        return redirect()->back()->with('success', 'Data Aspek Penghargaan berhasil diimport!');
+    }
     
 
-    
-    
-    
+
+
     public function indexPelanggaran()
     {
         $aspek_penilaian = aspek_penilaian::where('jenis_poin', 'Pelanggaran')->get();

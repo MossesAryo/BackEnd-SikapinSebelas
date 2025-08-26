@@ -68,19 +68,23 @@
                         <i class="bi bi-funnel"></i> Filter
                     </button>
                     <button
-                        class="px-3 py-1.5 border border-gray-300 rounded-lg hover:bg-gray-50 flex items-center gap-1.5">
-                        <i class="bi bi-download"></i> Export
-                    </button>
-                </div>
+                    id="exportImportBtn" class="px-3 py-1.5 border border-gray-300 rounded-lg hover:bg-gray-50 flex items-center gap-1.5">
+                    <i class="bi bi-download"></i> Export / Import
+                </button>
             </div>
         </div>
-
+    </div>
+    
+    @include('wakasek.aspek_penilaian.aspek_penghargaan.modalExportImport')
+        
+        
+        
         <!-- Data Table -->
         <div class="bg-white rounded-xl shadow-sm border overflow-hidden">
             <div class="px-6 py-4 border-b border-gray-200">
                 <h3 class="text-lg font-semibold text-gray-900">Daftar Aspek Penghargaan</h3>
             </div>
-
+            
             <div class="overflow-x-auto">
                 <table class="w-full">
                     <thead class="bg-gray-50 border-b border-gray-200">
@@ -112,7 +116,7 @@
                             <th class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
                                 <div class="flex items-center gap-2">
                                     <i class="bi bi-shield-check text-gray-400"></i>
-                                  Poin
+                                    Poin
                                 </div>
                             </th>
                             <th class="px-5 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
@@ -123,70 +127,70 @@
                             </th>
                         </tr>
                     </thead>
-
+                    
                     <tbody class="bg-white divide-y divide-gray-100">
                         @forelse ($aspek_penilaian as $item)
-                            <tr class="hover:bg-gray-50 group">
-                                <td class="px-6 py-4 whitespace-nowrap">
-                                    <div class="flex items-center">
-                                        <div
-                                            class="w-2 h-2 bg-blue-400 rounded-full mr-3 opacity-0 group-hover:opacity-100 transition-opacity">
-                                        </div>
-                                        <span
-                                            class="text-sm font-medium text-gray-900">{{ $item->id_aspekpenilaian }}</span>
-                                    </div>
-                                </td>
-                                <td class="px-6 py-4 whitespace-nowrap">
-                                    <div class="text-sm font-semibold text-gray-900">{{ $item->jenis_poin }}</div>
-                                </td>
-                                <td class="px-6 py-4 whitespace-nowrap">
-                                    <div class="text-sm font-semibold text-gray-900">{{ $item->kategori }}</div>
-                                </td>
-                                <td class="px-6 py-4 whitespace-nowrap">
-                                    <div class="text-sm font-semibold text-gray-900">{{ $item->uraian }}</div>
-                                </td>
-                                <td class="px-6 py-4 whitespace-nowrap">
+                        <tr class="hover:bg-gray-50 group">
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <div class="flex items-center">
+                                    <div
+                                    class="w-2 h-2 bg-blue-400 rounded-full mr-3 opacity-0 group-hover:opacity-100 transition-opacity">
+                                </div>
+                                <span
+                                class="text-sm font-medium text-gray-900">{{ $item->id_aspekpenilaian }}</span>
+                            </div>
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            <div class="text-sm font-semibold text-gray-900">{{ $item->jenis_poin }}</div>
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            <div class="text-sm font-semibold text-gray-900">{{ $item->kategori }}</div>
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            <div class="text-sm font-semibold text-gray-900">{{ $item->uraian }}</div>
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap">
                                     <span class="text-sm font-semibold text-gray-900">{{ $item->indikator_poin }}</span>
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap">
                                     <div class="flex items-center gap-1">
                                         <button
-                                            onclick="openEditModal('{{ $item->id_aspekpenilaian }}','{{ $item->jenis_poin }}', '{{ $item->kategori }}', '{{ $item->uraian }}', '{{ $item->indikator_poin }}')"
-                                            class="action-btn inline-flex items-center justify-center w-9 h-9 text-blue-600 hover:text-blue-800 hover:bg-blue-50 rounded-full"
-                                            title="Edit Aspek Penghargaan">
-                                            <i class="bi bi-pencil-square text-sm"></i>
-                                        </button>
-                                        <button onclick="openDeleteModal('{{ $item->id_aspekpenilaian }}')"
-                                            class="action-btn inline-flex items-center justify-center w-9 h-9 text-red-600 hover:text-red-800 hover:bg-red-50 rounded-full"
-                                            title="Hapus Aspek Penghargaan">
-                                            <i class="bi bi-trash text-sm"></i>
-                                        </button>
-                                    </div>
+                                        onclick="openEditModal('{{ $item->id_aspekpenilaian }}','{{ $item->jenis_poin }}', '{{ $item->kategori }}', '{{ $item->uraian }}', '{{ $item->indikator_poin }}')"
+                                        class="action-btn inline-flex items-center justify-center w-9 h-9 text-blue-600 hover:text-blue-800 hover:bg-blue-50 rounded-full"
+                                        title="Edit Aspek Penghargaan">
+                                        <i class="bi bi-pencil-square text-sm"></i>
+                                    </button>
+                                    <button onclick="openDeleteModal('{{ $item->id_aspekpenilaian }}')"
+                                        class="action-btn inline-flex items-center justify-center w-9 h-9 text-red-600 hover:text-red-800 hover:bg-red-50 rounded-full"
+                                        title="Hapus Aspek Penghargaan">    
+                                        <i class="bi bi-trash text-sm"></i>
+                                    </button>
+                                </div>
                                 </td>
                             </tr>
-                        @empty
+                            @empty
                             <tr>
                                 <td colspan="4" class="px-6 py-12 text-center">
                                     <div
-                                        class="mx-auto w-24 h-24 bg-gray-100 rounded-full flex items-center justify-center mb-4">
-                                        <i class="bi bi-people text-3xl text-gray-400"></i>
-                                    </div>
-                                    <h3 class="text-lg font-medium text-gray-900 mb-2">Belum ada data Aspek Penghargaan</h3>
-                                    <p class="text-gray-500">Tambahkan data Aspek Penghargaan untuk memulai.</p>
-                                </td>
-                            </tr>
+                                    class="mx-auto w-24 h-24 bg-gray-100 rounded-full flex items-center justify-center mb-4">
+                                    <i class="bi bi-people text-3xl text-gray-400"></i>
+                                </div>
+                                <h3 class="text-lg font-medium text-gray-900 mb-2">Belum ada data Aspek Penghargaan</h3>
+                                <p class="text-gray-500">Tambahkan data Aspek Penghargaan untuk memulai.</p>
+                            </td>
+                        </tr>
                         @endforelse
                     </tbody>
                 </table>
             </div>
         </div>
     </div>
-
+    
     @include('wakasek.aspek_penilaian.aspek_penghargaan.create')
     @include('wakasek.aspek_penilaian.aspek_penghargaan.edit')
     @include('wakasek.aspek_penilaian.aspek_penghargaan.delete')
-@endsection
-
+    @endsection
+    
 @push('js')
     <script>
         function openModal(modalId) {
