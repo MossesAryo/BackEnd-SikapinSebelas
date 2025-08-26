@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Aspek_penilaianController;
 use App\Http\Controllers\Auth\AuthController as AController;
+use App\Http\Controllers\DashboardController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\LaporanController;
 use App\Http\Controllers\Guru_bkController;
@@ -31,7 +32,8 @@ Route::get('/siswa/create', function () {
 Route::get('/wakasek/laporanjammalam', [LaporanController::class, 'index'])->name('wakasek.laporanjammalam');
 Route::get('/wakasek/penilaian', [PenilaianController::class, 'index'])->name('wakasek.penilaian');
 Route::get('/profile', [ProfileController::class, 'index'])->name('auth.profile');
-Route::get('/wakasek', fn() => view('wakasek.dashboard'))->name('wakasek.dashboard');
+
+Route::get('/wakasek', [DashboardController::class, 'index'])->name('wakasek.dashboard');
 
 Route::get('/gurubk', fn() => view('gurubk.dashboard'))->name('gurubk.dashboard');
 Route::get('/gurubk/siswa', [SiswaController::class, 'siswaGuruBk'])->name('gurubk.siswa');
