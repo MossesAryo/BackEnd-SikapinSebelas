@@ -164,72 +164,69 @@
             </div>
         </div>
 
-        {{-- Statistics Card --}}
-        <div class="bg-white rounded-xl shadow-sm border overflow-hidden">
-            <div class="px-4 sm:px-6 py-4 border-b border-gray-200">
-                <h3 class="text-base sm:text-lg font-semibold text-gray-900 flex items-center gap-2">
-                    <i class="bi bi-bar-chart text-blue-600"></i>
-                    Statistik Poin
-                </h3>
-            </div>
-            <div class="p-4 sm:p-6">
-                <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                    @php
-                        $statistics = [
-                            [
-                                'icon' => 'bi-plus-circle-fill',
-                                'label' => 'Poin Penghargaan',
-                                'value' => $siswa->poin_positif ?? 0,
-                                'bgColor' => 'from-green-50 to-emerald-50',
-                                'borderColor' => 'border-green-200',
-                                'iconBg' => 'bg-green-100',
-                                'iconColor' => 'text-green-600',
-                                'textColor' => 'text-green-600',
-                                'valueColor' => 'text-green-700',
-                            ],
-                            [
-                                'icon' => 'bi-dash-circle-fill',
-                                'label' => 'Poin Pelanggaran',
-                                'value' => $siswa->poin_negatif ?? 0,
-                                'bgColor' => 'from-red-50 to-rose-50',
-                                'borderColor' => 'border-red-200',
-                                'iconBg' => 'bg-red-100',
-                                'iconColor' => 'text-red-600',
-                                'textColor' => 'text-red-600',
-                                'valueColor' => 'text-red-700',
-                            ],
-                            [
-                                'icon' => 'bi-calculator-fill',
-                                'label' => 'Poin Total',
-                                'value' => $siswa->poin_total ?? 0,
-                                'bgColor' => 'from-blue-50 to-indigo-50',
-                                'borderColor' => 'border-blue-200',
-                                'iconBg' => 'bg-blue-100',
-                                'iconColor' => 'text-blue-600',
-                                'textColor' => 'text-blue-600',
-                                'valueColor' => 'text-blue-700',
-                            ],
-                        ];
-                    @endphp
+{{-- Statistics Card --}}
+<div class="bg-white rounded-xl shadow-sm border overflow-hidden">
+    <div class="px-4 sm:px-6 py-4 border-b border-gray-200">
+        <h3 class="text-base sm:text-lg font-semibold text-gray-900 flex items-center gap-2">
+            <i class="bi bi-bar-chart text-blue-600"></i>
+            Statistik Poin
+        </h3>
+    </div>
+    <div class="p-4 sm:p-6">
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+            @php
+                $statistics = [
+                    [
+                        'icon' => 'bi-plus-circle-fill',
+                        'label' => 'Poin Penghargaan',
+                        'value' => $poinPositif ?? 0,
+                        'bgColor' => 'from-green-50 to-emerald-50',
+                        'borderColor' => 'border-green-200',
+                        'iconBg' => 'bg-green-100',
+                        'iconColor' => 'text-green-600',
+                        'textColor' => 'text-green-600',
+                        'valueColor' => 'text-green-700',
+                    ],
+                    [
+                        'icon' => 'bi-dash-circle-fill',
+                        'label' => 'Poin Pelanggaran',
+                        'value' => $poinNegatif ?? 0,
+                        'bgColor' => 'from-red-50 to-rose-50',
+                        'borderColor' => 'border-red-200',
+                        'iconBg' => 'bg-red-100',
+                        'iconColor' => 'text-red-600',
+                        'textColor' => 'text-red-600',
+                        'valueColor' => 'text-red-700',
+                    ],
+                    [
+                        'icon' => 'bi-calculator-fill',
+                        'label' => 'Poin Total',
+                        'value' => $poinTotal ?? 0,
+                        'bgColor' => 'from-blue-50 to-indigo-50',
+                        'borderColor' => 'border-blue-200',
+                        'iconBg' => 'bg-blue-100',
+                        'iconColor' => 'text-blue-600',
+                        'textColor' => 'text-blue-600',
+                        'valueColor' => 'text-blue-700',
+                    ],
+                ];
+            @endphp
 
-                    @foreach ($statistics as $stat)
-                        <div
-                            class="bg-gradient-to-r {{ $stat['bgColor'] }} p-3 sm:p-4 rounded-lg border {{ $stat['borderColor'] }}">
-                            <div class="text-center">
-                                <div
-                                    class="w-10 h-10 sm:w-12 sm:h-12 {{ $stat['iconBg'] }} rounded-full flex items-center justify-center mx-auto mb-2">
-                                    <i class="bi {{ $stat['icon'] }} {{ $stat['iconColor'] }} text-lg sm:text-xl"></i>
-                                </div>
-                                <p class="{{ $stat['textColor'] }} text-xs sm:text-sm font-medium">{{ $stat['label'] }}
-                                </p>
-                                <p class="text-xl sm:text-2xl font-bold {{ $stat['valueColor'] }}">{{ $stat['value'] }}
-                                </p>
-                            </div>
+            @foreach ($statistics as $stat)
+                <div class="bg-gradient-to-r {{ $stat['bgColor'] }} p-3 sm:p-4 rounded-lg border {{ $stat['borderColor'] }}">
+                    <div class="text-center">
+                        <div class="w-10 h-10 sm:w-12 sm:h-12 {{ $stat['iconBg'] }} rounded-full flex items-center justify-center mx-auto mb-2">
+                            <i class="bi {{ $stat['icon'] }} {{ $stat['iconColor'] }} text-lg sm:text-xl"></i>
                         </div>
-                    @endforeach
+                        <p class="{{ $stat['textColor'] }} text-xs sm:text-sm font-medium">{{ $stat['label'] }}</p>
+                        <p class="text-xl sm:text-2xl font-bold {{ $stat['valueColor'] }}">{{ $stat['value'] }}</p>
+                    </div>
                 </div>
-            </div>
+            @endforeach
         </div>
+    </div>
+</div>
+
 
         {{-- Activities Card --}}
         <div class="bg-white rounded-xl shadow-sm border overflow-hidden">

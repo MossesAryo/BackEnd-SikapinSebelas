@@ -52,26 +52,34 @@ class SiswaController extends Controller
      */
     public function show(string $id)
     {
+        // Ambil data siswa
         $siswa = Siswa::where('nis', $id)->first();
 
         if (!$siswa) {
             return redirect()->route('siswa.index')->with('error', 'Siswa tidak ditemukan');
         }
 
-        // Ambil aktivitas terakhir siswa (activity_logs)
+        // Ambil langsung dari tabel siswa
+        $poinPositif = $siswa->poin_apresiasi ?? 0;
+        $poinNegatif = $siswa->poin_pelanggaran ?? 0;
+        $poinTotal   = $siswa->poin_total ?? 0;
+
+        // Ambil aktivitas terakhir siswa
         $activities = ActivityLog::where('nis', $siswa->nis)
             ->orderBy('created_at', 'desc')
-            ->take(10) // misalnya hanya tampilkan 10 terakhir
+            ->take(10)
             ->get();
 
         return view('wakasek.siswa.show', [
             'siswa' => $siswa,
             'kelas' => Kelas::all(),
             'activities' => $activities,
+            'poinPositif' => $poinPositif,
+            'poinNegatif' => $poinNegatif,
+            'poinTotal'   => $poinTotal,
         ]);
     }
 
-    public function edit(string $id) {}
 
     public function update(Request $request, $nis)
     {
