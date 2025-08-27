@@ -18,7 +18,7 @@ class SuratPeringatanController extends Controller
         $peringatan = surat_peringatan::all();
         return response()->json([
             'success' => true,
-            'message' => 'Data Penghargaan berhasil diambil',
+            'message' => 'Data Peringatan berhasil diambil',
             'data'    => $peringatan
         ], 200);
     }
