@@ -192,7 +192,7 @@
         }
     }
 
-    
+
     document.addEventListener('click', function(event) {
     const dropdown = document.getElementById('userDropdown');
     const userButton = event.target.closest('button');
@@ -231,7 +231,7 @@ if (!userButton && !insideDropdown) {
 });
     document.querySelectorAll('.menu-link').forEach(link => {
         link.addEventListener('click', function(e) {
-            
+
 
             // Remove active from all
             document.querySelectorAll('.menu-link').forEach(item => {
@@ -244,4 +244,4 @@ if (!userButton && !insideDropdown) {
             this.classList.remove('text-gray-600');
         });
     });
-</script> 
+</script>

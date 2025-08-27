@@ -2,9 +2,9 @@
 
 use App\Http\Controllers\AkumulasiContoller;
 use App\Http\Controllers\Aspek_penilaianController;
+use App\Http\Controllers\Auth\AuthController as AController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\LaporanController;
-use App\Http\Controllers\AuthController;
 use App\Http\Controllers\Guru_bkController;
 use App\Http\Controllers\JurusanController;
 use App\Http\Controllers\KelasController;
@@ -31,14 +31,27 @@ Route::get('/', fn() => redirect('/wakasek'));
 Route::get('/siswa/create', function () {
     return view('wakasek.siswa.create');
 });
-// WAKASEKK
-Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
-Route::post('/login', [AuthController::class, 'login']);
-Route::get('/logout', [AuthController::class, 'logout']);
+
+
+
+
 Route::get('/wakasek/laporanjammalam', [LaporanController::class, 'index'])->name('wakasek.laporanjammalam');
 Route::get('/wakasek/penilaian', [PenilaianController::class, 'index'])->name('wakasek.penilaian');
 Route::get('/profile', [ProfileController::class, 'index'])->name('auth.profile');
 Route::get('/wakasek', fn() => view('wakasek.dashboard'))->name('wakasek.dashboard');
+
+
+Route::get('/gurubk', fn() => view('gurubk.dashboard'))->name('gurubk.dashboard');
+Route::get('/gurubk/siswa', [SiswaController::class, 'siswaGuruBk'])->name('gurubk.siswa');
+Route::get('/login', [AController::class, 'index'])->name('login');
+Route::post('/login', [AController::class, 'login'])->name('login.submit');
+Route::get('/logout', [AController::class, 'logout'])->name('logout');
+
+Route::get('/wakasek/laporanjammalam', [LaporanController::class, 'index'])->name('wakasek.laporanjammalam');
+Route::get('/wakasek/penilaian', [PenilaianController::class, 'index'])->name('wakasek.penilaian');
+Route::get('/profile', [ProfileController::class, 'index'])->name('auth.profile');
+Route::get('/gurubk', fn() => view('gurubk.dashboard'))->name('gurubk.dashboard');
+
 
 Route::get('/kaprog', [KetuaProgramController::class, 'index'])->name('kaprog.index');
 Route::post('/kaprog/store', [KetuaProgramController::class, 'store'])->name('kaprog.store');
@@ -59,6 +72,15 @@ Route::delete('/kelas/{id}', [KelasController::class, 'destroy'])->name('kelas.d
 
 
 Route::get('/grbk', [Guru_bkController::class, 'index'])->name('gurubk.index');
+Route::post('/gurubk/store', [Guru_bkController::class, 'store'])->name('gurubk.store');
+Route::put('/gurubk/{nip}/update', [Guru_bkController::class, 'update'])->name('gurubk.update');
+Route::delete('/gurubk/{nip}/destroy', [Guru_bkController::class, 'destroy'])->name('gurubk.destroy');
+
+Route::get('/walikelas', [WalikelasController::class, 'index'])->name('walikelas.index');
+Route::post('/walikelas/store', [WalikelasController::class, 'store'])->name('walikelas.store');
+Route::put('/walikelas/{nip_walikelas}/{username}/update', [WalikelasController::class, 'update'])->name('walikelas.update');
+Route::delete('/walikelas/{nip_walikelas}', [WalikelasController::class, 'destroy'])->name('walikelas.destroy');
+Route::get('/gurubk', [Guru_bkController::class, 'index'])->name('gurubk.index');
 Route::post('/gurubk/store', [Guru_bkController::class, 'store'])->name('gurubk.store');
 Route::put('/gurubk/{nip}/update', [Guru_bkController::class, 'update'])->name('gurubk.update');
 Route::delete('/gurubk/{nip}/destroy', [Guru_bkController::class, 'destroy'])->name('gurubk.destroy');
@@ -112,6 +134,7 @@ Route::put('/skoring_pelanggaran/{id}/update', [Skoring_PelanggaranController::c
 Route::delete('/skoring_pelanggaran/{id}/destroy', [Skoring_PelanggaranController::class, 'destroy'])->name('skoring_pelanggaran.destroy');
 
 
+
 Route::get('/akumulasi', [AkumulasiContoller::class, 'index'])->name('akumulasi.index');
 Route::post('/akumulasi/store', [AkumulasiContoller::class, 'store'])->name('akumulasi.store');
 Route::put('/akumulasi/{nis}/update', [AkumulasiContoller::class, 'update'])->name('akumulasi.update');
@@ -149,3 +172,4 @@ Route::get('/peringatanbk', [SuratPeringatanController::class, 'indexBK'])->name
 Route::post('/peringatanbk/store', [SuratPeringatanController::class, 'storeBK'])->name('peringatanbk.store');
 Route::put('/peringatanbk/{id}/update', [SuratPeringatanController::class, 'updateBK'])->name('peringatanbk.update');
 Route::delete('/peringatanbk/{id}', [SuratPeringatanController::class, 'destroyBK'])->name('peringatanbk.destroy');
+

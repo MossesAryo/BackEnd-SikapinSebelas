@@ -13,6 +13,16 @@ class SuratPeringatanController extends Controller
         return view('wakasek.peringatan.index', compact('peringatan'));
     }
 
+    public function fetchApi()
+    {
+        $peringatan = surat_peringatan::all();
+        return response()->json([
+            'success' => true,
+            'message' => 'Data Peringatan berhasil diambil',
+            'data'    => $peringatan
+        ], 200);
+    }
+
     public function store(Request $request)
     {
         $request->validate([
@@ -26,7 +36,7 @@ class SuratPeringatanController extends Controller
         return redirect()->back()->with('success', 'Data berhasil disimpan');
     }
 
-     public function update(Request $request, $id_sp)
+    public function update(Request $request, $id_sp)
     {
         $request->validate([
             'id_sp' => 'required',

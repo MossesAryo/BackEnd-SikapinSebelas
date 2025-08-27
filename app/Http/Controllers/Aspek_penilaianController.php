@@ -23,6 +23,16 @@ class Aspek_penilaianController extends Controller
             'aspek_penilaian' => aspek_penilaian::get(),
         ]);
     }
+     public function FetchApi()
+    {
+         $aspek_penilaian = aspek_penilaian::all();
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Data Aspek Penilaian berhasil diambil',
+            'data'    => $aspek_penilaian
+        ], 200);
+    }
 
     
     
