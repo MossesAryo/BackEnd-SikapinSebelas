@@ -15,16 +15,20 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('user_id')->nullable();
             $table->string('nis')->nullable();
+            $table->enum('kategori', ['Apresiasi', 'Pelanggaran']);
             $table->string('activity');
             $table->text('description')->nullable();
+            $table->integer('point')->default(0);
             $table->timestamps();
+
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('set null');
         });
     }
 
     /**
      * Reverse the migrations.
      */
-    public function down()
+    public function down(): void
     {
         Schema::dropIfExists('activity_logs');
     }

@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\kelas;
+use App\Models\Kelas;
+use App\Models\Siswa;
+use App\Models\ActivityLog;
 use Illuminate\Http\Request;
-use App\Models\siswa;
 
 class SiswaController extends Controller
 {
@@ -14,12 +15,10 @@ class SiswaController extends Controller
     public function index()
     {
         return view('wakasek.siswa.index', [
-            'siswa' => siswa::all(),
-            'kelas' => kelas::all()
+            'siswa' => Siswa::all(),
+            'kelas' => Kelas::all()
         ]);
-
     }
-
 
     public function siswaGuruBk()
     {
@@ -29,92 +28,70 @@ class SiswaController extends Controller
         ]);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create() {}
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
         $request->validate([
             'nis' => 'required|string',
             'nama_siswa' => 'required|string',
             'id_kelas' => 'required',
-
         ]);
 
-
-        // $poin_apresiasi = $request->input('poin_apresiasi', 0);
-        // $poin_pelanggaran = $request->input('poin_pelanggaran', 0);
-        // $poin_total = $poin_apresiasi - $poin_pelanggaran;
-
-        siswa::create([
+        Siswa::create([
             'nis' => $request->nis,
             'nama_siswa' => $request->nama_siswa,
             'id_kelas' => $request->id_kelas,
-
         ]);
 
         return redirect()->route('siswa.index')->with('success', 'Siswa berhasil ditambahkan');
     }
 
     /**
-     * Display the specified resource.
+     * Show the detail of the student
      */
     public function show(string $id)
     {
-        $siswa = siswa::where('nis', $id)->first();
+        $siswa = Siswa::where('nis', $id)->first();
 
         if (!$siswa) {
             return redirect()->route('siswa.index')->with('error', 'Siswa tidak ditemukan');
         }
 
+        // Ambil aktivitas terakhir siswa (activity_logs)
+        $activities = ActivityLog::where('nis', $siswa->nis)
+            ->orderBy('created_at', 'desc')
+            ->take(10) // misalnya hanya tampilkan 10 terakhir
+            ->get();
+
         return view('wakasek.siswa.show', [
             'siswa' => $siswa,
-            'kelas' => kelas::all()
+            'kelas' => Kelas::all(),
+            'activities' => $activities,
         ]);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
+    public function edit(string $id) {}
+
+    public function update(Request $request, $nis)
     {
-        //
+        $request->validate([
+            'nis' => 'required|integer',
+            'nama_siswa' => 'required|string',
+            'id_kelas' => 'required|string',
+        ]);
+
+        $siswa = Siswa::where('nis', $nis)->firstOrFail();
+
+        $siswa->update([
+            'nis' => $request->nis,
+            'nama_siswa' => $request->nama_siswa,
+            'id_kelas' => $request->id_kelas,
+        ]);
+
+        return redirect()->route('siswa.index')->with('success', 'Data berhasil diperbarui.');
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, $nis)
-{
-
-    $request->validate([
-        'nis' => 'required|integer',
-        'nama_siswa' => 'required|string',
-        'id_kelas' => 'required|string',
-    ]);
-
-
-    $siswa = Siswa::where('nis', $nis)->firstOrFail();
-
-    $siswa->update([
-        'nis' => $request->nis,
-        'nama_siswa' => $request->nama_siswa,
-        'id_kelas' => $request->id_kelas,
-
-    ]);
-
-    return redirect()->route('siswa.index')->with('success', 'Data berhasil diperbarui.');
-}
-
-
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(string $nis)
     {
         $siswa = Siswa::where('nis', $nis)->first();

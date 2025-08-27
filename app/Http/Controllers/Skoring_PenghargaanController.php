@@ -4,9 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\Siswa;
 use App\Models\Penilaian;
-use App\Models\ActivityLog;
 use Illuminate\Http\Request;
 use App\Models\Aspek_Penilaian;
+use Illuminate\Support\Facades\DB;
 
 class Skoring_PenghargaanController extends Controller
 {
@@ -16,11 +16,13 @@ class Skoring_PenghargaanController extends Controller
     public function index()
     {
         return view('wakasek.skoring.penghargaan.index', [
-            "penilaian" => Penilaian::whereHas('aspek_penilaian', function ($q) {
+            // Ambil semua penilaian yang aspek- nya bertipe Apresiasi
+            "penilaian"   => Penilaian::whereHas('aspek_penilaian', function ($q) {
                 $q->where('jenis_poin', 'Apresiasi');
             })->get(),
-            "siswa" => Siswa::all(),
-            "aspekPel" => Aspek_Penilaian::where('jenis_poin', 'Apresiasi')->get()
+            "siswa"       => Siswa::all(),
+            // Kirim dengan nama aspekPel agar view tidak error
+            "aspekPel"    => Aspek_Penilaian::where('jenis_poin', 'Apresiasi')->get()
         ]);
     }
 
@@ -30,39 +32,49 @@ class Skoring_PenghargaanController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'id_penilaian' => 'required|unique:penilaian,id_penilaian',
-            'nis' => 'required',
+            'id_penilaian'      => 'required|unique:penilaian,id_penilaian',
+            'nis'               => 'required',
             'id_aspekpenilaian' => 'required',
-            'skor' => 'required|numeric',
         ]);
 
+        // Ambil skor & uraian dari aspek_penilaian
+        $aspek  = Aspek_Penilaian::findOrFail($request->id_aspekpenilaian);
+        $skor   = (int) $aspek->indikator_poin;
+        $uraian = $aspek->uraian;
+
+        // Simpan penilaian
         Penilaian::create([
-            'id_penilaian' => $request->id_penilaian,
-            'nis' => $request->nis,
+            'id_penilaian'      => $request->id_penilaian,
+            'nis'               => $request->nis,
             'id_aspekpenilaian' => $request->id_aspekpenilaian,
-            'nip_wakasek' => null,
-            'nip_walikelas' => null,
-            'nip_bk' =>  null,
-            'created_at' => now(),
+            'nip_wakasek'       => null,
+            'nip_walikelas'     => null,
+            'nip_bk'            => null,
+            'created_at'        => now(),
         ]);
 
+        // Update poin siswa
         $siswa = Siswa::where('nis', $request->nis)->first();
         if ($siswa) {
-            $siswa->poin_apresiasi += $request->skor;
-            $siswa->poin_total += $request->skor;
+            $siswa->poin_apresiasi += $skor;
+            $siswa->poin_total     += $skor;
             $siswa->save();
 
-            // 🔹 Tambahkan log aktivitas
-            ActivityLog::create([
-                'user_id'    => auth()->id(),
-                'nis'        => $siswa->nis, // simpan NIS siswa
-                'activity'   => 'Tambah Penghargaan',
-                'description' => "Penghargaan diberikan kepada {$siswa->nama_siswa} (NIS: {$siswa->nis}) dengan skor {$request->skor}",
+            // Simpan log aktivitas (pakai query builder agar kategori pasti tersimpan)
+            DB::table('activity_logs')->insert([
+                'user_id'     => auth()->id(),
+                'nis'         => $siswa->nis,
+                'kategori'    => 'Apresiasi',
+                'activity'    => 'Tambah Penghargaan',
+                'description' => $uraian,   // uraian dari aspek_penilaian
+                'point'       => $skor,
+                'created_at'  => now(),
+                'updated_at'  => now(),
             ]);
         }
 
         return redirect()->route('skoring_penghargaan.index')
-            ->with('success', 'Data Skoring Penghargaan berhasil ditambahkan.');
+            ->with('success', 'Data penghargaan berhasil ditambahkan.');
     }
 
     /**
@@ -72,41 +84,49 @@ class Skoring_PenghargaanController extends Controller
     {
         $request->validate([
             'id_aspekpenilaian' => 'required',
-            'skor' => 'required|numeric',
         ]);
 
         $penilaian = Penilaian::findOrFail($id);
-        $siswa = $penilaian->siswa;
+        $siswa     = $penilaian->siswa;
 
+        // Skor lama (ambil dari aspek yang saat ini terhubung)
         $oldSkor = $penilaian->aspek_penilaian->indikator_poin ?? 0;
-
         if ($siswa) {
-            // rollback poin lama
+            // rollback nilai lama
             $siswa->poin_apresiasi -= $oldSkor;
-            $siswa->poin_total -= $oldSkor;
+            $siswa->poin_total     -= $oldSkor;
         }
 
-        // update data penilaian
+        // Ambil aspek baru & uraian
+        $aspekBaru = Aspek_Penilaian::findOrFail($request->id_aspekpenilaian);
+        $newSkor   = (int) $aspekBaru->indikator_poin;
+        $uraian    = $aspekBaru->uraian;
+
+        // Update penilaian
         $penilaian->id_aspekpenilaian = $request->id_aspekpenilaian;
         $penilaian->save();
 
-        // tambahkan poin baru
         if ($siswa) {
-            $siswa->poin_apresiasi += $request->skor;
-            $siswa->poin_total += $request->skor;
+            // tambahkan skor baru
+            $siswa->poin_apresiasi += $newSkor;
+            $siswa->poin_total     += $newSkor;
             $siswa->save();
 
-            // log aktivitas
-            ActivityLog::create([
-                'user_id'    => auth()->id(),
-                'nis'        => $siswa->nis, // simpan NIS siswa
-                'activity'   => 'Update Penghargaan',
-                'description' => "Penghargaan untuk {$siswa->nama_siswa} (NIS: {$siswa->nis}) diubah. Skor lama {$oldSkor}, skor baru {$request->skor}",
+            // simpan log update
+            DB::table('activity_logs')->insert([
+                'user_id'     => auth()->id(),
+                'nis'         => $siswa->nis,
+                'kategori'    => 'Apresiasi',
+                'activity'    => 'Update Penghargaan',
+                'description' => $uraian,
+                'point'       => $newSkor,
+                'created_at'  => now(),
+                'updated_at'  => now(),
             ]);
         }
 
         return redirect()->route('skoring_penghargaan.index')
-            ->with('success', 'Data Skoring Penghargaan berhasil diperbarui.');
+            ->with('success', 'Data penghargaan berhasil diperbarui.');
     }
 
     /**
@@ -115,26 +135,32 @@ class Skoring_PenghargaanController extends Controller
     public function destroy(string $id)
     {
         $skoring = Penilaian::findOrFail($id);
-        $siswa = $skoring->siswa;
+        $siswa   = $skoring->siswa;
 
-        $skor = $skoring->aspek_penilaian->indikator_poin ?? 0;
+        $skor   = $skoring->aspek_penilaian->indikator_poin ?? 0;
+        $uraian = $skoring->aspek_penilaian->uraian ?? '-';
 
         if ($siswa) {
             $siswa->poin_apresiasi -= $skor;
-            $siswa->poin_total -= $skor;
+            $siswa->poin_total     -= $skor;
             $siswa->save();
 
-            // log aktivitas
-            ActivityLog::create([
-                'user_id'    => auth()->id(),
-                'nis'        => $siswa->nis, // simpan NIS siswa
-                'activity'   => 'Hapus Penghargaan',
-                'description' => "Penghargaan untuk {$siswa->nama_siswa} (NIS: {$siswa->nis}) dengan skor {$skor} dihapus",
+            // simpan log hapus
+            DB::table('activity_logs')->insert([
+                'user_id'     => auth()->id(),
+                'nis'         => $siswa->nis,
+                'kategori'    => 'Apresiasi',
+                'activity'    => 'Hapus Penghargaan',
+                'description' => $uraian,
+                'point'       => $skor,
+                'created_at'  => now(),
+                'updated_at'  => now(),
             ]);
         }
 
+        // hapus penilaian
         $skoring->delete();
 
-        return redirect()->back()->with('success', 'Skoring berhasil dihapus!');
+        return redirect()->back()->with('success', 'Penghargaan berhasil dihapus!');
     }
 }

@@ -11,6 +11,7 @@ class ActivityLog extends Model
         'nis',
         'activity',
         'description',
+        'point',
     ];
 
     public function user()

@@ -249,73 +249,60 @@
             </div>
 
             <div class="p-4 sm:p-6">
-                @php
-                    $activities = [
-                        [
-                            'title' => 'Prestasi Akademik (JUDUL)',
-                            'description' => 'Mendapat peringkat 1 di kelas (URAIAN)',
-                            'points' => '+50',
-                            'type' => 'plus',
-                            'time' => '2025-08-20',
-                        ],
-                        [
-                            'title' => 'Pelanggaran Kedisiplinan',
-                            'description' => 'Terlambat masuk sekolah',
-                            'points' => '-10',
-                            'type' => 'minus',
-                            'time' => '2025-08-17',
-                        ],
-                        [
-                            'title' => 'Kegiatan Ekstrakurikuler',
-                            'description' => 'Mengikuti lomba pramuka tingkat kota',
-                            'points' => '+30',
-                            'type' => 'plus',
-                            'time' => '2025-08-10',
-                        ],
-                    ];
-                @endphp
+                @if ($activities->count() > 0)
+                    <div class="space-y-3">
+                        @foreach ($activities as $activity)
+                            @php
+                                $isNegative = $activity->kategori === 'Pelanggaran';
+                                $point = $isNegative ? "-{$activity->point}" : "+{$activity->point}";
 
-                <div class="space-y-4">
-                    @foreach ($activities as $activity)
-                        <div
-                            class="flex items-center justify-between p-5 rounded-lg border transition
-                        @if ($activity['type'] === 'plus') bg-green-50 border-green-200 hover:bg-green-100
-                        @else
-                            bg-red-50 border-red-200 hover:bg-red-100 @endif">
+                                $bgColor = $isNegative
+                                    ? 'bg-red-50 border-red-200 hover:bg-red-100'
+                                    : 'bg-green-50 border-green-200 hover:bg-green-100';
 
-                            {{-- Kiri: Informasi --}}
-                            <div class="flex-1 min-w-0">
-                                {{-- Judul --}}
-                                <p
-                                    class="text-base font-semibold break-words
-                            {{ $activity['type'] === 'plus' ? 'text-green-800' : 'text-red-800' }}">
-                                    {{ $activity['title'] }}
-                                </p>
-                                {{-- Deskripsi --}}
-                                <p
-                                    class="text-sm break-words
-                            {{ $activity['type'] === 'plus' ? 'text-green-700' : 'text-red-700' }}">
-                                    {{ $activity['description'] }}
-                                </p>
-                                {{-- Waktu --}}
-                                <p class="text-xs mt-1 text-gray-500">
-                                    {{ $activity['time'] }}
-                                </p>
+                                $titleColor = $isNegative ? 'text-red-800' : 'text-green-800';
+                                $textColor = $isNegative ? 'text-red-700' : 'text-green-700';
+                                $pointColor = $isNegative ? 'text-red-600' : 'text-green-600';
+                            @endphp
+
+                            <div
+                                class="flex items-center justify-between p-3 rounded-lg border transition {{ $bgColor }}">
+                                {{-- Kiri: Informasi --}}
+                                <div class="flex-1 min-w-0">
+                                    {{-- Judul --}}
+                                    <p class="text-base font-bold break-words {{ $titleColor }}">
+                                        {{ $activity->activity }}
+                                    </p>
+                                    {{-- Kategori --}}
+                                    <p class="text-xs font-semibold {{ $textColor }}">
+                                        {{ $activity->kategori }}
+                                    </p>
+                                    {{-- Uraian --}}
+                                    <p class="text-sm break-words {{ $textColor }}">
+                                        {{ $activity->description }}
+                                    </p>
+                                    {{-- Waktu --}}
+                                    <p class="text-xs mt-1 text-gray-500">
+                                        {{ $activity->created_at->format('Y-m-d') }}
+                                    </p>
+                                </div>
+
+                                {{-- Kanan: Poin --}}
+                                <div class="ml-3">
+                                    <span class="text-base font-bold {{ $pointColor }}">
+                                        {{ $point }}
+                                    </span>
+                                </div>
                             </div>
-
-                            {{-- Kanan: Poin --}}
-                            <div class="ml-4">
-                                <span
-                                    class="text-lg font-bold
-                                {{ $activity['type'] === 'plus' ? 'text-green-600' : 'text-red-600' }}">
-                                    {{ $activity['points'] }}
-                                </span>
-                            </div>
-                        </div>
-                    @endforeach
-                </div>
+                        @endforeach
+                    </div>
+                @else
+                    <p class="text-sm text-gray-500 italic">Belum ada aktivitas tercatat</p>
+                @endif
             </div>
+
         </div>
+
 
         {{-- Action Buttons --}}
         <div class="flex flex-col sm:flex-row justify-end gap-3 pt-4 sm:pt-6 border-t border-gray-200">
