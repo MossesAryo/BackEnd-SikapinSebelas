@@ -22,7 +22,7 @@ class Aspek_penilaianController extends Controller
 
         return response()->json([
             'success' => true,
-            'message' => 'Data kelas berhasil diambil',
+            'message' => 'Data Aspek Penilaian berhasil diambil',
             'data'    => $aspek_penilaian
         ], 200);
     }

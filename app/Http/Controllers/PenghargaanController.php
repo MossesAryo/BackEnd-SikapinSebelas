@@ -13,6 +13,15 @@ class PenghargaanController extends Controller
         return view('wakasek.penghargaan.index', compact('penghargaan'));
     }
 
+    public function fetchApi(){
+        $penghargaan = Penghargaan::all();
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Data Penghargaan berhasil diambil',
+            'data'    => $penghargaan
+        ], 200);
+    }
 
     public function store(Request $request)
     {
