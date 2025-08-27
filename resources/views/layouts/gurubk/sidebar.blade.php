@@ -49,26 +49,63 @@
                     </a>
                 </li>
 
+                 <!-- FAQ Dropdown -->
+                <li>
+                    <button onclick="toggleDropdown('faqDropdown')" class="flex items-center justify-between w-full px-4 py-3 text-gray-600 hover:bg-gray-50 rounded-lg">
+                        <div class="flex items-center gap-3">
+                            <i class="bi bi-person-gear"></i>
+                            <span>FAQ</span>
+                        </div>
+                        <i class="bi bi-chevron-down dropdown-arrow text-sm" id="faqArrow"></i>
+                    </button>
+                    <div id="faqDropdown" class="dropdown-content ml-4 mt-1">
+                        <ul class="space-y-1">
+                            <li>
+                                <a href="{{ route('penghargaanbk.index') }}" class="flex items-center gap-3 px-4 py-2 text-sm text-gray-600 hover:bg-gray-50 rounded-lg menu-link" data-link="wali-kelas">
+                                    <i class="bi bi-person-check"></i>
+                                    <span>Penghargaan</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{{ route('peringatanbk.index') }}" class="flex items-center gap-3 px-4 py-2 text-sm text-gray-600 hover:bg-gray-50 rounded-lg menu-link" data-link="guru-bk">
+                                    <i class="bi bi-person-heart"></i>
+                                    <span>Pelanggaran</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{{ route('aspek_penghargaanBK.index') }}" class="flex items-center gap-3 px-4 py-2 text-sm text-gray-600 hover:bg-gray-50 rounded-lg menu-link" data-link="guru-bk">
+                                    <i class="bi bi-person-heart"></i>
+                                    <span>Aspek Penghargaan</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{{ route('aspek_pelanggaranBK.index') }}" class="flex items-center gap-3 px-4 py-2 text-sm text-gray-600 hover:bg-gray-50 rounded-lg menu-link" data-link="guru-bk">
+                                    <i class="bi bi-person-heart"></i>
+                                    <span>Aspek Pelanggaran</span>
+                                </a>
+                            </li>
+                        </div>
 
+
+
+
+                         
                 <li>
-                    <a href="{{ route('gurubk.siswa') }}" class="flex items-center gap-3 px-4 py-3 text-gray-600 hover:bg-gray-50 rounded-lg menu-link" data-link="siswa">
+                    <a href="" class="flex items-center gap-3 px-3 py-3 text-gray-600 hover:bg-gray-50 rounded-lg menu-link" data-link="siswa">
                         <i class="bi bi-people"></i>
-                        <span>Siswa</span>
+                        <span>Skoring Penghargaan</span>
                     </a>
                 </li>
+                <li>
+                    <a href="" class="flex items-center gap-3 px-4 py-3 text-gray-600 hover:bg-gray-50 rounded-lg menu-link" data-link="siswa">
+                        <i class="bi bi-people"></i>
+                        <span>Skoring Pelanggaran</span>
+                    </a>
+                </li>
+
+
               
-                <li>
-                    <a href="{{ route('penghargaan.index') }}" class="flex items-center gap-3 px-4 py-3 text-gray-600 hover:bg-gray-50 rounded-lg menu-link" data-link="penghargaan">
-                        <i class="bi bi-award"></i>
-                        <span>Penghargaan</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="{{ route('peringatan.index') }}" class="flex items-center gap-3 px-4 py-3 text-gray-600 hover:bg-gray-50 rounded-lg menu-link" data-link="pelanggaran">
-                        <i class="bi bi-exclamation-triangle"></i>
-                        <span>Pelanggaran</span>
-                    </a>
-                </li>
+               
                 <li>
                     <a href="" class="flex items-center gap-3 px-4 py-3 text-gray-600 hover:bg-gray-50 rounded-lg menu-link" data-link="pelanggaran">
                         <i class="bi bi-exclamation-triangle"></i>
@@ -76,17 +113,14 @@
                     </a>
                 </li>
                 <li>
-                    <a href="#" class="flex items-center gap-3 px-4 py-3 text-gray-600 hover:bg-gray-50 rounded-lg menu-link" data-link="laporan">
+                    <a href="" class="flex items-center gap-3 px-4 py-3 text-gray-600 hover:bg-gray-50 rounded-lg menu-link" data-link="pelanggaran">
                         <i class="bi bi-bar-chart"></i>
-                        <span>Laporan</span>
+                        <span>Akumulasi</span>
                     </a>
                 </li>
-                <li>
-                    <a href="#" class="flex items-center gap-3 px-4 py-3 text-gray-600 hover:bg-gray-50 rounded-lg menu-link" data-link="laporan-jam-malam">
-                        <i class="bi bi-moon"></i>
-                        <span>Laporan Jam Malam</span>
-                    </a>
-                </li>
+
+          
+        
                 <li>
                     <a href="#" class="flex items-center gap-3 px-4 py-3 text-gray-600 hover:bg-gray-50 rounded-lg menu-link" data-link="aktivitas">
                         <i class="bi bi-activity"></i>

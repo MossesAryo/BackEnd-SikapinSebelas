@@ -142,7 +142,7 @@
                     </a>
                 </li>
                 <li>
-                    <a href="" class="flex items-center gap-3 px-4 py-3 text-gray-600 hover:bg-gray-50 rounded-lg menu-link" data-link="siswa">
+                    <a href="{{ route('akumulasi.index') }}" class="flex items-center gap-3 px-4 py-3 text-gray-600 hover:bg-gray-50 rounded-lg menu-link" data-link="siswa">
                         <i class="bi bi-bar-chart"></i>
                         <span>Akumulasi</span>
                     </a>
