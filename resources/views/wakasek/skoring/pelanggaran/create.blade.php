@@ -3,7 +3,7 @@
         <form action="{{ route('skoring_pelanggaran.store') }}" method="POST" class="p-6 space-y-4">
             @csrf
             <div class="flex justify-between items-center">
-                <h2 class="text-xl font-bold text-gray-700">Tambah Penghargaan</h2>
+                <h2 class="text-xl font-bold text-gray-700">Tambah Pelanggaran</h2>
                 <button type="button" onclick="closeModal('modal-create')"
                     class="text-gray-500 hover:text-gray-700 text-xl">&times;</button>
             </div>
@@ -18,6 +18,7 @@
                     <label for="nis" class="block text-sm font-medium text-gray-700 mb-1">Pilih Siswa</label>
                     <select id="nis" name="nis" required
                         class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                        <option value="" disabled selected>Pilih Siswa</option>
                         @foreach ($siswa as $item)
                             <option value="{{ $item->nis }}">{{ $item->nama_siswa }}</option>
                         @endforeach
@@ -30,6 +31,7 @@
                     <select id="id_aspekpenilaian" name="id_aspekpenilaian" required
                         class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                         onchange="updateSkor(this)">
+                        <option value="" disabled selected>Pilih Jenis Pelanggaran</option>
                         @foreach ($aspekPel as $item)
                             <option value="{{ $item->id_aspekpenilaian }}" data-skor="{{ $item->indikator_poin }}">
                                 {{ $item->indikator_poin }} - {{ $item->uraian }}
