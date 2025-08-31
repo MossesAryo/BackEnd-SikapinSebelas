@@ -3,8 +3,9 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\KelasController;
-use App\Http\Controllers\Aspek_penilaianController;
+use App\Http\Controllers\SiswaController;
 use App\Http\Controllers\PenghargaanController;
+use App\Http\Controllers\Aspek_penilaianController;
 use App\Http\Controllers\SuratPeringatanController;
 
 Route::get('/kelas', [KelasController::class, 'FetchApi'])->name('api.kelas');
