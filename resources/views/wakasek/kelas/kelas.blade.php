@@ -353,9 +353,7 @@
                                             </div>
                                         </td>
 
-                                          <td class="px-6 py-4 whitespace-nowrap">
-                                               <span class="text-lg font-bold text-black">{{ $item->jurusan}}</span>
-                                          </td>
+
 
                                         <td class="px-6 py-4">
                                             <div class="flex justify-center gap-2">

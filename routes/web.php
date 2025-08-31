@@ -3,6 +3,7 @@
 use App\Http\Controllers\AkumulasiContoller;
 use App\Http\Controllers\Aspek_penilaianController;
 use App\Http\Controllers\Auth\AuthController as AController;
+use App\Http\Controllers\DashboardController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\LaporanController;
 use App\Http\Controllers\Guru_bkController;
@@ -38,7 +39,8 @@ Route::get('/siswa/create', function () {
 Route::get('/wakasek/laporanjammalam', [LaporanController::class, 'index'])->name('wakasek.laporanjammalam');
 Route::get('/wakasek/penilaian', [PenilaianController::class, 'index'])->name('wakasek.penilaian');
 Route::get('/profile', [ProfileController::class, 'index'])->name('auth.profile');
-Route::get('/wakasek', fn() => view('wakasek.dashboard'))->name('wakasek.dashboard');
+
+Route::get('/wakasek', [DashboardController::class, 'index'])->name('wakasek.dashboard');
 
 
 Route::get('/gurubk', fn() => view('gurubk.dashboard'))->name('gurubk.dashboard');
@@ -63,6 +65,7 @@ Route::get('/siswa', [SiswaController::class, 'index'])->name('siswa.index');
 Route::post('/siswa/store', [SiswaController::class, 'store'])->name('siswa.store');
 Route::put('/siswa/{nis}/update', [SiswaController::class, 'update'])->name('siswa.update');
 Route::delete('/siswa/{nis}', [SiswaController::class, 'destroy'])->name('siswa.destroy');
+Route::get('/siswa/{nis}/show', [SiswaController::class, 'show'])->name('siswa.show');
 
 
 Route::get('/kelas', [KelasController::class, 'index'])->name('kelas');
@@ -135,6 +138,7 @@ Route::delete('/skoring_pelanggaran/{id}/destroy', [Skoring_PelanggaranControlle
 
 
 
+
 Route::get('/akumulasi', [AkumulasiContoller::class, 'index'])->name('akumulasi.index');
 Route::post('/akumulasi/store', [AkumulasiContoller::class, 'store'])->name('akumulasi.store');
 Route::put('/akumulasi/{nis}/update', [AkumulasiContoller::class, 'update'])->name('akumulasi.update');
@@ -172,4 +176,5 @@ Route::get('/peringatanbk', [SuratPeringatanController::class, 'indexBK'])->name
 Route::post('/peringatanbk/store', [SuratPeringatanController::class, 'storeBK'])->name('peringatanbk.store');
 Route::put('/peringatanbk/{id}/update', [SuratPeringatanController::class, 'updateBK'])->name('peringatanbk.update');
 Route::delete('/peringatanbk/{id}', [SuratPeringatanController::class, 'destroyBK'])->name('peringatanbk.destroy');
+
 
