@@ -64,7 +64,7 @@
         const searchText = this.value.toLowerCase();
 
         tableRows.forEach(row => {
-            // Skip "empty data" row
+            
             if (row.querySelector("td[colspan]")) {
                 row.style.display = searchText === "" ? "" : "none";
                 return;
