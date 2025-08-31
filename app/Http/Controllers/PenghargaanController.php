@@ -5,6 +5,11 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Penghargaan;
 
+use App\Exports\Penghargaan_ExportExcel;
+use App\Imports\Penghargaan_Import;
+use Barryvdh\DomPDF\Facade\Pdf;
+use Maatwebsite\Excel\Facades\Excel;
+
 class PenghargaanController extends Controller
 {
     public function index()
@@ -55,4 +60,33 @@ class PenghargaanController extends Controller
 
         return redirect()->route('penghargaan.index')->with('success', 'Data penghargaan berhasil dihapus.');
     }
+
+          public function export_pdf()
+    {
+        $penghargaan = penghargaan::all();
+
+        $pdf = PDF::loadView('export.penghargaan.pdf', compact('penghargaan'));
+        return $pdf->download('penghargaan.pdf');
+
+    }
+
+    public function export_excel()
+    {
+        return Excel::download(new Penghargaan_ExportExcel, 'penghargaan.xlsx');
+    }
+    
+      public function import(Request $request)
+    {
+        $penghargaan = penghargaan::all();
+
+        $request->validate([
+            'file' => 'required|mimes:xlsx,xls,csv|max:10240',
+            
+        ]);
+
+        Excel::import(new Penghargaan_Import, $request->file('file'));
+
+        return redirect()->back()->with('success', 'Data penghargaan berhasil diimport!');
+    }
+    
 }

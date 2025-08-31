@@ -46,12 +46,14 @@
                         <i class="bi bi-funnel"></i> Filter
                     </button>
                     <button
-                        class="px-3 py-1.5 border border-gray-300 rounded-lg hover:bg-gray-50 flex items-center gap-1.5">
-                        <i class="bi bi-download"></i> Export
-                    </button>
+                    id="exportImportBtn" class="px-3 py-1.5 border border-gray-300 rounded-lg hover:bg-gray-50 flex items-center gap-1.5">
+                    <i class="bi bi-download"></i> Export / Import
+                </button>
                 </div>
             </div>
         </div>
+
+        @include('wakasek.kaprog.modalExportImport')
 
         <!-- Data Table -->
         <div class="bg-white rounded-xl shadow-sm border overflow-hidden">

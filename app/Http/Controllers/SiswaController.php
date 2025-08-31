@@ -6,6 +6,11 @@ use App\Models\kelas;
 use Illuminate\Http\Request;
 use App\Models\siswa;
 
+use App\Exports\Siswa_ExportExcel;
+use App\Imports\Siswa_Import;
+use Barryvdh\DomPDF\Facade\Pdf;
+use Maatwebsite\Excel\Facades\Excel;
+
 class SiswaController extends Controller
 {
     /**
@@ -118,4 +123,33 @@ class SiswaController extends Controller
 
         return redirect()->route('siswa.index')->with('success', 'Siswa berhasil dihapus');
     }
+      public function export_pdf()
+    {
+        $siswa = siswa::all();
+
+        $pdf = PDF::loadView('export.siswa.pdf', compact('siswa'));
+        return $pdf->download('siswa.pdf');
+
+    }
+
+    public function export_excel()
+    {
+        return Excel::download(new Siswa_ExportExcel, 'siswa.xlsx');
+    }
+    
+      public function import(Request $request)
+    {
+        $siswa = siswa::all();
+
+        $request->validate([
+            'file' => 'required|mimes:xlsx,xls,csv|max:10240',
+            
+        ]);
+
+        Excel::import(new Siswa_Import, $request->file('file'));
+
+        return redirect()->back()->with('success', 'Data Siswa berhasil diimport!');
+    }
+    
 }
+
