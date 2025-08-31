@@ -19,6 +19,15 @@ class SiswaController extends Controller
             'kelas' => Kelas::all()
         ]);
     }
+    public function fetchAPI(){
+        $siswa = siswa::all();
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Data siswa berhasil diambil',
+            'data'    => $siswa
+        ], 200);
+    }
 
     public function siswaGuruBk()
     {

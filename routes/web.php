@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AkumulasiContoller;
 use App\Http\Controllers\Aspek_penilaianController;
 use App\Http\Controllers\Auth\AuthController as AController;
 use App\Http\Controllers\DashboardController;
@@ -14,9 +15,13 @@ use App\Http\Controllers\KetuaProgramController;
 use App\Http\Controllers\PenghargaanController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SiswaController;
+use App\Http\Controllers\AkumulasiController;
+
+
 use App\Http\Controllers\Skoring_PenghargaanController;
 use App\Http\Controllers\Skoring_PelanggaranController;
 use App\Http\Controllers\SuratPeringatanController;
+
 use Illuminate\Routing\RouteUri;
 
 Route::get('/', fn() => redirect('/wakasek'));
@@ -29,11 +34,14 @@ Route::get('/siswa/create', function () {
 });
 
 
+
+
 Route::get('/wakasek/laporanjammalam', [LaporanController::class, 'index'])->name('wakasek.laporanjammalam');
 Route::get('/wakasek/penilaian', [PenilaianController::class, 'index'])->name('wakasek.penilaian');
 Route::get('/profile', [ProfileController::class, 'index'])->name('auth.profile');
 
 Route::get('/wakasek', [DashboardController::class, 'index'])->name('wakasek.dashboard');
+
 
 Route::get('/gurubk', fn() => view('gurubk.dashboard'))->name('gurubk.dashboard');
 Route::get('/gurubk/siswa', [SiswaController::class, 'siswaGuruBk'])->name('gurubk.siswa');
@@ -101,10 +109,16 @@ Route::post('/aspekpenilaian/store', [Aspek_penilaianController::class, 'store']
 Route::put('/aspekpenilaian/{id}/update', [Aspek_penilaianController::class, 'update'])->name('aspekpenilaian.update');
 Route::delete('/aspekpenilaian/{id}/destroy', [Aspek_penilaianController::class, 'destroy'])->name('aspekpenilaian.destroy');
 
+
 Route::get('/aspek_penghargaan', [Aspek_penilaianController::class, 'indexPenghargaan'])->name('aspek_penghargaan.index');
 Route::post('/aspek_penghargaan/store', [Aspek_penilaianController::class, 'storePenghargaan'])->name('aspek_penghargaan.store');
 Route::put('/aspek_penghargaan/{id}/update', [Aspek_penilaianController::class, 'updatePenghargaan'])->name('aspek_penghargaan.update');
 Route::delete('/aspek_penghargaan/{id}/destroy', [Aspek_penilaianController::class, 'destroyPenghargaan'])->name('aspek_penghargaan.destroy');
+Route::get('/aspek_penghargaan/export_pdf', [Aspek_penilaianController::class, 'export_pdf'])->name('aspek_penghargaan.export.pdf');
+Route::get('/aspek_penghargaan/export_excel', [Aspek_penilaianController::class, 'export_excel'])->name('aspek_penghargaan.export.excel');
+Route::post('/import', [Aspek_penilaianController::class, 'import'])->name('aspek_penghargaan.import');
+
+
 
 Route::get('/aspek_pelanggaran', [Aspek_penilaianController::class, 'indexPelanggaran'])->name('aspek_pelanggaran.index');
 Route::post('/aspek_pelanggaran/store', [Aspek_penilaianController::class, 'storePelanggaran'])->name('aspek_pelanggaran.store');
@@ -122,7 +136,45 @@ Route::post('/skoring_pelanggaran/store', [Skoring_PelanggaranController::class,
 Route::put('/skoring_pelanggaran/{id}/update', [Skoring_PelanggaranController::class, 'update'])->name('skoring_pelanggaran.update');
 Route::delete('/skoring_pelanggaran/{id}/destroy', [Skoring_PelanggaranController::class, 'destroy'])->name('skoring_pelanggaran.destroy');
 
-Route::get('/aspekpenilaian', [Aspek_penilaianController::class, 'index'])->name('aspekpenilaian');
-Route::post('/aspekpenilaian/store', [Aspek_penilaianController::class, 'store'])->name('aspekpenilaian.store');
-Route::put('/aspekpenilaian/{id}/update', [Aspek_penilaianController::class, 'update'])->name('aspekpenilaian.update');
-Route::delete('/aspekpenilaian/{id}/destroy', [Aspek_penilaianController::class, 'destroy'])->name('aspekpenilaian.destroy');
+
+
+
+Route::get('/akumulasi', [AkumulasiContoller::class, 'index'])->name('akumulasi.index');
+Route::post('/akumulasi/store', [AkumulasiContoller::class, 'store'])->name('akumulasi.store');
+Route::put('/akumulasi/{nis}/update', [AkumulasiContoller::class, 'update'])->name('akumulasi.update');
+Route::delete('/akumulasi/{nis}', [AkumulasiContoller::class, 'destroy'])->name('akumulasi.destroy');
+
+
+
+// WAKASEKKKKK //
+
+
+
+
+// GURU BKKKKK
+Route::get('/gurubk', fn() => view('gurubk.dashboard'))->name('gurubk.dashboard');
+Route::get('/gurubk/siswa', [SiswaController::class, 'siswaGuruBk'])->name('gurubk.siswa');
+
+Route::get('/aspek_penghargaanbk', [Aspek_penilaianController::class, 'indexPenghargaanBK'])->name('aspek_penghargaanBK.index');
+Route::post('/aspek_penghargaanbk/store', [Aspek_penilaianController::class, 'storePenghargaanBK'])->name('aspek_penghargaanBK.store');
+Route::put('/aspek_penghargaanbk/{id}/update', [Aspek_penilaianController::class, 'updatePenghargaanBK'])->name('aspek_penghargaanBK.update');
+Route::delete('/aspek_penghargaanbk/{id}/destroy', [Aspek_penilaianController::class, 'destroyPenghargaanBK'])->name('aspek_penghargaanBK.destroy');
+
+
+Route::get('/aspek_pelanggaranbk', [Aspek_penilaianController::class, 'indexPelanggaranBK'])->name('aspek_pelanggaranBK.index');
+Route::post('/aspek_pelanggaranbk/store', [Aspek_penilaianController::class, 'storePelanggaranBK'])->name('aspek_pelanggaranBK.store');
+Route::put('/aspek_pelanggaranbk/{id}/update', [Aspek_penilaianController::class, 'updatePelanggaranBK'])->name('aspek_pelanggaranBK.update');
+Route::delete('/aspek_pelanggaranbk/{id}/destroy', [Aspek_penilaianController::class, 'destroyPelanggaranBK'])->name('aspek_pelanggaranBK.destroy');
+
+
+Route::get('/penghargaanbk', [PenghargaanController::class, 'indexBK'])->name('penghargaanbk.index');
+Route::post('/penghargaanbk/store', [PenghargaanController::class, 'storeBK'])->name('penghargaanbk.store');
+Route::put('/penghargaanbk/{id_penghargaan}/update', [PenghargaanController::class, 'updateBK'])->name('penghargaanbk.update');
+Route::delete('/penghargaanbk/{id}/destroy', [PenghargaanController::class, 'destroyBK'])->name('penghargaanbk.destroy');
+
+Route::get('/peringatanbk', [SuratPeringatanController::class, 'indexBK'])->name('peringatanbk.index');
+Route::post('/peringatanbk/store', [SuratPeringatanController::class, 'storeBK'])->name('peringatanbk.store');
+Route::put('/peringatanbk/{id}/update', [SuratPeringatanController::class, 'updateBK'])->name('peringatanbk.update');
+Route::delete('/peringatanbk/{id}', [SuratPeringatanController::class, 'destroyBK'])->name('peringatanbk.destroy');
+
+

@@ -1,4 +1,4 @@
-@extends('layouts.wakasek.app')
+@extends('layouts.gurubk.app')
 
 @push('css')
     <style>
@@ -75,7 +75,7 @@
         </div>
     </div>
     
-    @include('wakasek.aspek_penilaian.aspek_penghargaan.modalExportImport')
+    {{-- @include('gurubk.aspek_penilaian.aspek_penghargaan.modalExportImport') --}}
         
         
         
@@ -186,9 +186,9 @@
         </div>
     </div>
     
-    @include('wakasek.aspek_penilaian.aspek_penghargaan.create')
-    @include('wakasek.aspek_penilaian.aspek_penghargaan.edit')
-    @include('wakasek.aspek_penilaian.aspek_penghargaan.delete')
+    @include('gurubk.aspek_penilaian.aspek_penghargaan.create')
+    @include('gurubk.aspek_penilaian.aspek_penghargaan.edit')
+    @include('gurubk.aspek_penilaian.aspek_penghargaan.delete')
     @endsection
     
 @push('js')
