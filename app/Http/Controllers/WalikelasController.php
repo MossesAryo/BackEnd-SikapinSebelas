@@ -4,8 +4,13 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Walikelas; 
-use App\Models\Kelas; // Pastikan model Kelas sudah diimport
-use App\Models\User; // Pastikan model Kelas sudah diimport
+use App\Models\Kelas; 
+use App\Models\User; 
+
+use App\Exports\Walikelas_ExportExcel;
+use App\Imports\Walikelas_Import;
+use Barryvdh\DomPDF\Facade\Pdf;
+use Maatwebsite\Excel\Facades\Excel;
 
 class WalikelasController extends Controller
 {
@@ -128,4 +133,33 @@ public function update(Request $request, $nip_walikelas, $username)
 
         return redirect()->route('walikelas.index')->with('success', 'Data Walikelas berhasil dihapus.');
     }
+
+      public function export_pdf()
+    {
+        $walikelas = walikelas::all();
+
+        $pdf = PDF::loadView('export.walikelas.pdf', compact('walikelas'));
+        return $pdf->download('walikelas.pdf');
+
+    }
+
+    public function export_excel()
+    {
+        return Excel::download(new Walikelas_ExportExcel, 'walikelas.xlsx');
+    }
+    
+      public function import(Request $request)
+    {
+        $walikelas = walikelas::all();
+
+        $request->validate([
+            'file' => 'required|mimes:xlsx,xls,csv|max:10240',
+            
+        ]);
+
+        Excel::import(new Walikelas_Import, $request->file('file'));
+
+        return redirect()->back()->with('success', 'Data Walikelas berhasil diimport!');
+    }
+    
 }

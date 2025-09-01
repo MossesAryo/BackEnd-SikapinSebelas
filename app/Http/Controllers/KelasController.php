@@ -28,6 +28,7 @@ class KelasController extends Controller
             'data'    => $kelas
         ], 200);
     }
+    
     /**
      * Show the form for creating a new resource.
      */
@@ -44,7 +45,7 @@ class KelasController extends Controller
         $request->validate([
             'id_kelas' => 'required',
             'nama_kelas' => 'required',
-            'jurusan' => 'required',
+
         ]);
 
         kelas::create($request->all());
@@ -76,7 +77,7 @@ class KelasController extends Controller
         $data = $request->validate([
             'id_kelas' => 'required',
             'nama_kelas' => 'required',
-            'jurusan' => 'required',
+        
         ]);
 
         kelas::where('id_kelas', $id)->update($data);

@@ -26,7 +26,7 @@
                         <select id="edit_id_kelas" name="id_kelas" required
                             class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-transparent">
                             <option value="" disabled>Pilih Kelas</option>
-                            @foreach ($kelas as $item)
+                            @foreach ($kelasList as $item)
                                 <option value="{{ $item->id_kelas }}">{{ $item->nama_kelas }}</option>
                             @endforeach
                         </select>

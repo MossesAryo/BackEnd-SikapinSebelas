@@ -36,15 +36,7 @@
                         <p class="text-xs text-gray-500 mt-1">Nama kelas yang mudah dikenali</p>
                     </div>
 
-                    <div>
-                        <label for="jurusan" class="block text-sm font-semibold text-gray-700 mb-2">
-                            <i class="bi bi-tag mr-1"></i>Jurusan
-                        </label>
-                        <input type="text" id="jurusan" name="jurusan"
-                            class="form-input w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:ring-0 focus:outline-none uppercase placeholder-gray-400"
-                            placeholder="Contoh: RPL, TKJ" required>
-                        <p class="text-xs text-gray-500 mt-1">Jurusan yang sesuai dengan kelas</p>
-                    </div>
+                   
 
                 </div>
 

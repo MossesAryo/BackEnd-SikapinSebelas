@@ -12,11 +12,12 @@ return new class extends Migration {
             $table->string('nama_kelas');
             $table->string('jurusan');
             $table->timestamps();
-        
+
+
         });
 
 
-    
+
     }
     public function down() {
         Schema::dropIfExists('kelas');

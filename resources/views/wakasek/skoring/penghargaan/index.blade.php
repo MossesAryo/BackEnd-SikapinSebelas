@@ -57,7 +57,7 @@
         <!-- Search and Filter -->
         <div class="bg-white p-6 rounded-xl shadow-sm border">
             <div class="flex flex-col md:flex-row gap-2 items-center justify-between">
-                <div class="relative w-full md:w-64">
+                <div id="searchPenghargaan" class="relative w-full md:w-64">
                     <i class="bi bi-search absolute left-3 top-2.5 text-gray-400"></i>
                     <input type="text" placeholder="Cari Ketua Program..."
                         class="pl-10 pr-4 py-1.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent w-full">
@@ -160,7 +160,7 @@
                                             <i class="bi bi-pencil-square"></i>
                                         </button>
                                         <button
-                                            onclick="openDeleteModal('{{ $item->id_penilaian }}', '{{ $item->siswa->nama_siswa }}')"
+                                            onclick="openDeleteModalPenghargaan('{{ $item->id_penilaian }}', '{{ $item->siswa->nama_siswa }}')"
                                             class="text-red-600 hover:text-red-800 action-btn">
                                             <i class="bi bi-trash"></i>
                                         </button>
@@ -217,12 +217,12 @@
             openModal('modal-edit');
         }
 
-
-        function openDeleteModal(id_penilaian, nama_siswa) {
-            document.getElementById('delete-penghargaan').innerText = nama_siswa;
-            document.getElementById('form-delete').action = `/skoring_pelanggaran/${id_penilaian}/destroy`;
-            openModal('modal-delete');
+        function openDeleteModalPenghargaan(id_penghargaan, nama) {
+            document.getElementById('delete-penghargaan').innerText = nama;
+            document.getElementById('form-delete-penghargaan').action = `/skoring_penghargaan/${id_penghargaan}/destroy`;
+            openModal('modal-delete-penghargaan');
         }
+
 
         document.addEventListener('click', function(event) {
             ['modal-create', 'modal-edit', 'modal-delete'].forEach(modalId => {
@@ -243,5 +243,28 @@
                 });
             }
         });
+         document.addEventListener("DOMContentLoaded", function () {
+    const searchInput = document.querySelector("#searchPenghargaan input");
+    const tableRows = document.querySelectorAll("tbody tr");
+
+    searchInput.addEventListener("keyup", function () {
+        const searchText = this.value.toLowerCase();
+
+        tableRows.forEach(row => {
+            
+            if (row.querySelector("td[colspan]")) {
+                row.style.display = searchText === "" ? "" : "none";
+                return;
+            }
+
+            const rowText = row.innerText.toLowerCase();
+            if (rowText.includes(searchText)) {
+                row.style.display = "";
+            } else {
+                row.style.display = "none";
+            }
+        });
+    });
+});
     </script>
 @endpush
