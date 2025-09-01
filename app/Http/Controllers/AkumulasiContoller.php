@@ -15,6 +15,15 @@ class AkumulasiContoller extends Controller
     {
         return view('wakasek.akumulasi.index', [
             'siswa' => siswa::all(),
+            
+        ]);
+    }
+
+    public function indexBK()
+    {
+        return view('gurubk.akumulasi.index', [
+            'siswa' => siswa::all(),
+            
         ]);
     }
 
