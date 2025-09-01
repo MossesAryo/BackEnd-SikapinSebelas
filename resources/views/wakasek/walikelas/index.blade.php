@@ -1,29 +1,8 @@
 @extends('layouts.wakasek.app')
 
 @push('css')
-    <style>
-        .table-hover tbody tr:hover {
-            background-color: rgba(59, 130, 246, 0.05);
-            transform: translateY(-1px);
-            transition: all 0.2s ease;
-        }
-
-        .action-btn {
-            transition: all 0.2s ease;
-        }
-
-        .action-btn:hover {
-            transform: scale(1.1);
-        }
-
-        .modal-overlay {
-            z-index: 9999 !important;
-        }
-
-        body.modal-open {
-            overflow: hidden;
-        }
-    </style>
+    <link rel="stylesheet" href="{{ asset('css/wakasek/walikelas.css') }}">
+    
 @endpush
 
 @section('content')
@@ -62,7 +41,7 @@
         <!-- Search and Filter -->
         <div class="bg-white p-6 rounded-xl shadow-sm border">
             <div class="flex flex-col md:flex-row gap-2 items-center justify-between">
-                <div class="relative w-full md:w-64">
+                <div id="searchWalikelas" class="relative w-full md:w-64">
                     <i class="bi bi-search absolute left-3 top-2.5 text-gray-400"></i>
                     <input type="text" placeholder="Cari Walikelas..."
                         class="pl-10 pr-4 py-1.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent w-full">
@@ -180,58 +159,5 @@
 @endsection
 
 @push('js')
-    <script>
-        function openModal(modalId) {
-            document.getElementById(modalId).classList.remove('hidden');
-            document.body.classList.add('modal-open');
-        }
-        function closeModal(modalId) {
-            document.getElementById(modalId).classList.add('hidden');
-            document.body.classList.remove('modal-open');
-        }
-        function openCreateModal() {
-            document.getElementById('nip_walikelas').value = '';
-            document.getElementById('nama_walikelas').value = '';
-            document.getElementById('id_kelas').value = '';
-            openModal('modal-create');
-        }
-
-
-        function openEditModal(nip_walikelas, username, nama_walikelas, id_kelas) {
-            document.getElementById('edit_nip_walikelas').value = nip_walikelas;
-            document.getElementById('edit_username').value = username;
-            document.getElementById('edit_nama_walikelas').value = nama_walikelas;
-            document.getElementById('edit_id_kelas').value = id_kelas;
-            document.getElementById('form-edit').action = `/walikelas/${nip_walikelas}/${username}/update`;
-            openModal('modal-edit');
-        }
-
-
-        function openDeleteModal(nip_walikelas, nama_walikelas) {
-            document.getElementById('delete-nama-walikelas').innerText = nama_walikelas;
-            document.getElementById('form-delete').action = `/walikelas/${nip_walikelas}`;
-            openModal('modal-delete');
-        }
-
-        
-        document.addEventListener('click', function(event) {
-            ['modal-create', 'modal-edit', 'modal-delete'].forEach(modalId => {
-                const modal = document.getElementById(modalId);
-                if (modal && !modal.classList.contains('hidden') && event.target === modal) {
-                    closeModal(modalId);
-                }
-            });
-        });
-
-        document.addEventListener('keydown', function(event) {
-            if (event.key === 'Escape') {
-                ['modal-create', 'modal-edit', 'modal-delete'].forEach(modalId => {
-                    const modal = document.getElementById(modalId);
-                    if (modal && !modal.classList.contains('hidden')) {
-                        closeModal(modalId);
-                    }
-                });
-            }
-        });
-    </script>
+    <script src="{{ asset('js/wakasek/walikelas.js') }}"></script>
 @endpush

@@ -11,19 +11,30 @@ class KelasController extends Controller
     /**
      * Display a listing of the resource.
      */
+    
     public function index()
     {
         $kelas = kelas::all();
 
         return view('wakasek.kelas.kelas', compact('kelas'));
     }
+    public function FetchApi()
+    {
+         $kelas = kelas::all();
 
+        return response()->json([
+            'success' => true,
+            'message' => 'Data kelas berhasil diambil',
+            'data'    => $kelas
+        ], 200);
+    }
+    
     /**
      * Show the form for creating a new resource.
      */
     public function create()
     {
-        
+
     }
 
     /**
@@ -34,7 +45,7 @@ class KelasController extends Controller
         $request->validate([
             'id_kelas' => 'required',
             'nama_kelas' => 'required',
-            'jurusan' => 'required',
+
         ]);
 
         kelas::create($request->all());
@@ -66,7 +77,7 @@ class KelasController extends Controller
         $data = $request->validate([
             'id_kelas' => 'required',
             'nama_kelas' => 'required',
-            'jurusan' => 'required',
+        
         ]);
 
         kelas::where('id_kelas', $id)->update($data);

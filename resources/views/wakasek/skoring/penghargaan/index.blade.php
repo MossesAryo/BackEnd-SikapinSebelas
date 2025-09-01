@@ -57,7 +57,7 @@
         <!-- Search and Filter -->
         <div class="bg-white p-6 rounded-xl shadow-sm border">
             <div class="flex flex-col md:flex-row gap-2 items-center justify-between">
-                <div class="relative w-full md:w-64">
+                <div id="searchPenghargaan" class="relative w-full md:w-64">
                     <i class="bi bi-search absolute left-3 top-2.5 text-gray-400"></i>
                     <input type="text" placeholder="Cari Ketua Program..."
                         class="pl-10 pr-4 py-1.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent w-full">
@@ -93,21 +93,20 @@
                             </th>
                             <th class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
                                 <div class="flex items-center gap-2">
-                                    <i class="bi bi-person text-gray-400"></i>
+                                    <i class="bi bi-hash text-gray-400"></i>
                                     Nama Siswa
                                 </div>
                             </th>
-                           
-                            <th class="px-2 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                            <th class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
                                 <div class="flex items-center gap-2">
-                                    <i class="bi bi-shield-check text-gray-400"></i>
-                               Tanggal Penghargaan
+                                    <i class="bi bi-person text-gray-400"></i>
+                                    Tanggal Penghargaan
                                 </div>
                             </th>
-                            <th class="px-2 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                            <th class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
                                 <div class="flex items-center gap-2">
                                     <i class="bi bi-shield-check text-gray-400"></i>
-                              Jenis Penghargaan
+                                    Jenis Penghargaan
                                 </div>
                             </th>
                             <th class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
@@ -116,44 +115,80 @@
                                     Skor
                                 </div>
                             </th>
+                            {{-- <th class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                                <div class="flex items-center gap-2">
+                                    <i class="bi bi-shield-check text-gray-400"></i>
+                                    Penanganan Pelanggaran
+                                </div>
+                            </th>
                             <th class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
                                 <div class="flex items-center gap-2">
                                     <i class="bi bi-shield-check text-gray-400"></i>
-                                    Pemberian Penghargaan
+                                  Kesepakatan waktu perbaikan
                                 </div>
                             </th>
-                       
-                            <th class="px-5
-                             py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                            <th class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                                <div class="flex items-center gap-2">
+                                    <i class="bi bi-shield-check text-gray-400"></i>
+                                Perubahan setelah Penanganan
+                                </div>
+                            </th> --}}
+                            <th class="px-5 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
                                 <div class="flex items-center gap-2">
                                     <i class="bi bi-gear text-gray-400"></i>
-                                 Aksi
+                                    Aksi
                                 </div>
                             </th>
                         </tr>
                     </thead>
 
                     <tbody class="bg-white divide-y divide-gray-100">
-                   
+                        @forelse ($penilaian as $item)
+                            <tr>
+                                <td class="px-6 py-4 text-sm text-gray-900">{{ $item->siswa->nis ?? '-' }}</td>
+                                <td class="px-6 py-4 text-sm text-gray-900">{{ $item->siswa->nama_siswa ?? '-' }}</td>
+                                <td class="px-6 py-4 text-sm text-gray-900">{{ $item->created_at }}</td>
+                                <td class="px-6 py-4 text-sm text-gray-900">{{ $item->aspek_penilaian->uraian ?? '-' }}
+                                </td>
+                                <td class="px-6 py-4 text-sm text-gray-900">
+                                    {{ $item->aspek_penilaian->indikator_poin ?? 0 }}</td>
+                                <td class="px-6 py-4 text-sm">
+                                    <div class="flex gap-2">
+                                        <button
+                                            onclick="openEditModal('{{ $item->id_penilaian }}', '{{ $item->created_at }}', '{{ $item->aspek_penilaian->n }}', '{{ $item->aspek_penilaian->indikator_poin }}')"
+                                            class="text-blue-600 hover:text-blue-800 action-btn">
+                                            <i class="bi bi-pencil-square"></i>
+                                        </button>
+                                        <button
+                                            onclick="openDeleteModalPenghargaan('{{ $item->id_penilaian }}', '{{ $item->siswa->nama_siswa }}')"
+                                            class="text-red-600 hover:text-red-800 action-btn">
+                                            <i class="bi bi-trash"></i>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                        @empty
                             <tr>
                                 <td colspan="6" class="px-6 py-12 text-center">
                                     <div
                                         class="mx-auto w-24 h-24 bg-gray-100 rounded-full flex items-center justify-center mb-4">
                                         <i class="bi bi-people text-3xl text-gray-400"></i>
                                     </div>
-                                    <h3 class="text-lg font-medium text-gray-900 mb-2">Belum ada data Skoring Penghargaan</h3>
-                                    <p class="text-gray-500">Tambahkan data Penghargaan untuk memulai.</p>
+                                    <h3 class="text-lg font-medium text-gray-900 mb-2">Belum ada data Skoring penghargaan
+                                    </h3>
+                                    <p class="text-gray-500">Tambahkan data penghargaan untuk memulai.</p>
                                 </td>
                             </tr>
-                    
+                        @endforelse
                     </tbody>
+
                 </table>
             </div>
         </div>
     </div>
-    @include('wakasek.penghargaan.create')
-    @include('wakasek.penghargaan.edit')
-    @include('wakasek.penghargaan.delete')
+    @include('wakasek.skoring.penghargaan.create')
+    @include('wakasek.skoring.penghargaan.edit')
+    @include('wakasek.skoring.penghargaan.delete')
 @endsection
 
 @push('js')
@@ -169,10 +204,7 @@
         }
 
         function openCreateModal() {
-            document.getElementById('id_penghargaan').value = '';
-            document.getElementById('tanggal_penghargaan').value = '';
-            document.getElementById('level_penghargaan').value = '';
-            document.getElementById('alasan').value = '';
+
             openModal('modal-create');
         }
 
@@ -185,12 +217,12 @@
             openModal('modal-edit');
         }
 
-
-        function openDeleteModal(id_penghargaan, nama) {
+        function openDeleteModalPenghargaan(id_penghargaan, nama) {
             document.getElementById('delete-penghargaan').innerText = nama;
-            document.getElementById('form-delete').action = `/penghargaan/${id_penghargaan}`;
-            openModal('modal-delete');
+            document.getElementById('form-delete-penghargaan').action = `/skoring_penghargaan/${id_penghargaan}/destroy`;
+            openModal('modal-delete-penghargaan');
         }
+
 
         document.addEventListener('click', function(event) {
             ['modal-create', 'modal-edit', 'modal-delete'].forEach(modalId => {
@@ -211,5 +243,28 @@
                 });
             }
         });
+         document.addEventListener("DOMContentLoaded", function () {
+    const searchInput = document.querySelector("#searchPenghargaan input");
+    const tableRows = document.querySelectorAll("tbody tr");
+
+    searchInput.addEventListener("keyup", function () {
+        const searchText = this.value.toLowerCase();
+
+        tableRows.forEach(row => {
+            
+            if (row.querySelector("td[colspan]")) {
+                row.style.display = searchText === "" ? "" : "none";
+                return;
+            }
+
+            const rowText = row.innerText.toLowerCase();
+            if (rowText.includes(searchText)) {
+                row.style.display = "";
+            } else {
+                row.style.display = "none";
+            }
+        });
+    });
+});
     </script>
 @endpush

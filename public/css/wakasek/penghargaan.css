@@ -1,0 +1,22 @@
+
+.table-hover tbody tr:hover {
+            background-color: rgba(59, 130, 246, 0.05);
+            transform: translateY(-1px);
+            transition: all 0.2s ease;
+        }
+
+        .action-btn {
+            transition: all 0.2s ease;
+        }
+
+        .action-btn:hover {
+            transform: scale(1.1);
+        }
+
+        .modal-overlay {
+            z-index: 9999 !important;
+        }
+
+        body.modal-open {
+            overflow: hidden;
+        }

@@ -15,9 +15,10 @@ class penilaian extends Model
         'nip_wakasek',
         'nip_walikelas',
         'nip_bk',
-        'id_aspek_penilaian',
+        'id_aspekpenilaian',
         'nis',
-        'tanggal'
+        'created_at',
+        
     ];
 
     public function wakasek()
@@ -31,7 +32,7 @@ class penilaian extends Model
 
     public function aspek_penilaian()
     {
-        return $this->belongsTo(Aspek_Penilaian::class, 'id_aspek_penilaian', 'id_aspek_penilaian');
+        return $this->belongsTo(Aspek_Penilaian::class, 'id_aspekpenilaian', 'id_aspekpenilaian');
     }
 
 
@@ -43,5 +44,16 @@ class penilaian extends Model
     public function guruBk()
     {
         return $this->belongsTo(guru_bk::class, 'nip_bk', 'nip_bk');
+    }
+
+     public function aspekApresiasi()
+    {
+        return $this->belongsTo(Aspek_Penilaian::class, 'id_aspek_penilaian', 'id_aspek_penilaian')
+                    ->where('jenis_poin', 'Apresiasi');
+    }
+    public function aspekPelanggaran()
+    {
+        return $this->belongsTo(Aspek_Penilaian::class, 'id_aspek_penilaian', 'id_aspek_penilaian')
+                    ->where('jenis_poin', 'Pelanggaran');
     }
 }

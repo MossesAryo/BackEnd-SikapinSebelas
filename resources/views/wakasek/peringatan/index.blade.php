@@ -1,29 +1,7 @@
 @extends('layouts.wakasek.app')
 
 @push('css')
-    <style>
-        .table-hover tbody tr:hover {
-            background-color: rgba(59, 130, 246, 0.05);
-            transform: translateY(-1px);
-            transition: all 0.2s ease;
-        }
-
-        .action-btn {
-            transition: all 0.2s ease;
-        }
-
-        .action-btn:hover {
-            transform: scale(1.1);
-        }
-
-        .modal-overlay {
-            z-index: 9999 !important;
-        }
-
-        body.modal-open {
-            overflow: hidden;
-        }
-    </style>
+    <link rel="stylesheet" href="{{ asset('css/wakasek/peringatan.css') }}">
 @endpush
 
 @section('content')
@@ -34,7 +12,7 @@
                 <h1 class="text-2xl font-bold gradient-text">Data Pelanggaran</h1>
                 <p class="text-gray-600 mt-1">Kelola data Pelanggaran</p>
             </div>
-            <button onclick="openCreateModal()"
+            <button onclick="document.getElementById('modal-create').classList.remove('hidden')"
                 class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg flex items-center gap-2 transition-colors">
                 <i class="bi bi-plus-lg"></i>
                 Tambah Pelanggaran
@@ -57,7 +35,7 @@
         <!-- Search and Filter -->
         <div class="bg-white p-6 rounded-xl shadow-sm border">
             <div class="flex flex-col md:flex-row gap-2 items-center justify-between">
-                <div class="relative w-full md:w-64">
+                <div id="searchPeringatan" class="relative w-full md:w-64">
                     <i class="bi bi-search absolute left-3 top-2.5 text-gray-400"></i>
                     <input type="text" placeholder="Cari Ketua Program..."
                         class="pl-10 pr-4 py-1.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent w-full">
@@ -181,59 +159,5 @@
 @endsection
 
 @push('js')
-    <script>
-        function openModal(modalId) {
-            document.getElementById(modalId).classList.remove('hidden');
-            document.body.classList.add('modal-open');
-        }
-
-        function closeModal(modalId) {
-            document.getElementById(modalId).classList.add('hidden');
-            document.body.classList.remove('modal-open');
-        }
-
-        function openCreateModal() {
-            document.getElementById('id_sp').value = '';
-            document.getElementById('tanggal_sp').value = '';
-            document.getElementById('level_sp').value = '';
-            document.getElementById('alasan').value = '';
-            openModal('modal-create');
-        }
-
-    function openEditModal(id_sp, tanggal_sp, level_sp, alasan) {
-            document.getElementById('edit_id_sp').value = id_sp;
-            document.getElementById('edit_tanggal_sp').value = tanggal_sp;
-            document.getElementById('edit_level_sp').value = level_sp;
-            document.getElementById('edit_alasan').value = alasan;
-            document.getElementById('form-edit').action = `/peringatan/${id_sp}/update`;
-            openModal('modal-edit');
-        }
-
-
-        function openDeleteModal(id_sp, nama) {
-            document.getElementById('delete-sp').innerText = nama;
-            document.getElementById('form-delete').action = `/peringatan/${id_sp}`;
-            openModal('modal-delete');
-        }
-
-        document.addEventListener('click', function(event) {
-            ['modal-create', 'modal-edit', 'modal-delete'].forEach(modalId => {
-                const modal = document.getElementById(modalId);
-                if (modal && !modal.classList.contains('hidden') && event.target === modal) {
-                    closeModal(modalId);
-                }
-            });
-        });
-
-        document.addEventListener('keydown', function(event) {
-            if (event.key === 'Escape') {
-                ['modal-create', 'modal-edit', 'modal-delete'].forEach(modalId => {
-                    const modal = document.getElementById(modalId);
-                    if (modal && !modal.classList.contains('hidden')) {
-                        closeModal(modalId);
-                    }
-                });
-            }
-        });
-    </script>
+    <script src="{{ asset('js/wakasek/pelanggaran.js') }}"></script>
 @endpush
