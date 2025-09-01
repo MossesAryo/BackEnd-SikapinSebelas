@@ -3,7 +3,9 @@
         <form action="{{ route('skoring_pelanggaran.store') }}" method="POST" class="p-6 space-y-4">
             @csrf
             <div class="flex justify-between items-center">
+
                 <h2 class="text-xl font-bold text-gray-700">Tambah Pelanggaran</h2>
+
                 <button type="button" onclick="closeModal('modal-create')"
                     class="text-gray-500 hover:text-gray-700 text-xl">&times;</button>
             </div>

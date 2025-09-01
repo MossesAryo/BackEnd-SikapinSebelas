@@ -46,10 +46,12 @@ class Skoring_PelanggaranController extends Controller
             'id_penilaian'      => $request->id_penilaian,
             'nis'               => $request->nis,
             'id_aspekpenilaian' => $request->id_aspekpenilaian,
+
             'nip_wakasek'       => null,
             'nip_walikelas'     => null,
             'nip_bk'            => null,
             'created_at'        => now(),
+
         ]);
 
         // Update poin siswa
