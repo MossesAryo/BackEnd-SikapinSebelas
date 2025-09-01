@@ -5,6 +5,11 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\surat_peringatan;
 
+use App\Exports\Surat_Peringatan_ExportExcel;
+use App\Imports\Surat_Peringatan_Import;
+use Barryvdh\DomPDF\Facade\Pdf;
+use Maatwebsite\Excel\Facades\Excel;
+
 class SuratPeringatanController extends Controller
 {
     public function index()
@@ -66,6 +71,33 @@ class SuratPeringatanController extends Controller
     }
 
 
+    public function export_pdf()
+    {
+        $peringatan = surat_peringatan::all(); // ganti nama variabel jadi $peringatan
+
+        $pdf = PDF::loadView('export.peringatan.pdf', compact('peringatan'));
+        return $pdf->download('peringatan.pdf');
+    }
+
+    public function export_excel()
+    {
+        return Excel::download(new Surat_Peringatan_ExportExcel, 'surat_peringatan.xlsx');
+    }
+
+    public function import(Request $request)
+    {
+        $surat_peringatan = surat_peringatan::all();
+
+        $request->validate([
+            'file' => 'required|mimes:xlsx,xls,csv|max:10240',
+
+        ]);
+
+        Excel::import(new Surat_Peringatan_Import, $request->file('file'));
+
+        return redirect()->back()->with('success', 'Data Surat Peringatan berhasil diimport!');
+
+
 
 
     public function indexBK()
@@ -114,5 +146,6 @@ class SuratPeringatanController extends Controller
         $peringatan->delete();
     
         return redirect()->route('peringatanbk.index')->with('success', 'Data surat peringatan berhasil dihapus.');
+
     }
 }
