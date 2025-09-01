@@ -134,6 +134,7 @@ Route::put('/skoring_pelanggaran/{id}/update', [Skoring_PelanggaranController::c
 Route::delete('/skoring_pelanggaran/{id}/destroy', [Skoring_PelanggaranController::class, 'destroy'])->name('skoring_pelanggaran.destroy');
 
 
+Route::get('/akumulasibk', [AkumulasiContoller::class, 'indexBK'])->name('akumulasiBK');
 
 Route::get('/akumulasi', [AkumulasiContoller::class, 'index'])->name('akumulasi.index');
 Route::post('/akumulasi/store', [AkumulasiContoller::class, 'store'])->name('akumulasi.store');
