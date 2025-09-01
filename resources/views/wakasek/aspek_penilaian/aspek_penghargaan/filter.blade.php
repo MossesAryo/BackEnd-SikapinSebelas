@@ -10,7 +10,7 @@
                     <i class="bi bi-funnel text-blue-600"></i>
                 </div>
                 <h2 class="text-xl font-semibold text-gray-800">
-                    Filter Aspek Pelanggaran
+                    Filter Aspek Penghargaan
                 </h2>
             </div>
             <button onclick="closeModal('modal-filter')"
@@ -20,7 +20,7 @@
         </div>
 
         <!-- Form -->
-        <form method="GET" action="{{ route('aspek_pelanggaran.index') }}"
+        <form method="GET" action="{{ route('aspek_penghargaan.index') }}"
               class="p-6 space-y-6">
            
             <!-- Kategori -->
@@ -31,35 +31,11 @@
                 </label>
                 <input type="text" name="kategori"
                        value="{{ request('kategori') }}"
-                       placeholder="Misalnya: Terlambat, Tidak hadir, dll..."
+                       placeholder="Misalnya: Pengembangan Keagamaan, Kejujuran, dll..."
                        class="w-full rounded-xl border-2 border-gray-200 px-4 py-3 text-sm placeholder-gray-400 focus:ring-4 focus:ring-blue-100 focus:border-blue-500 transition-all duration-200 hover:border-gray-300">
             </div>
 
-            <!-- Pelanggaran Ke -->
-            <div class="space-y-2">
-                <label class="block text-sm font-semibold text-gray-700 flex items-center gap-2">
-                    <i class="bi bi-list-ol text-gray-500"></i>
-                    Pelanggaran Ke
-                </label>
-                <div class="relative">
-                    <select name="pelanggaran_ke"
-                            class="w-full rounded-xl border-2 border-gray-200 px-4 py-3 text-sm focus:ring-4 focus:ring-blue-100 focus:border-blue-500 transition-all duration-200 hover:border-gray-300 appearance-none bg-white cursor-pointer">
-                        <option value="">🔍 Pilih semua tingkat pelanggaran</option>
-                        <option value="I" {{ request('pelanggaran_ke') == 'I' ? 'selected' : '' }}>
-                            ⚠️ Tingkat I (Ringan)
-                        </option>
-                        <option value="II" {{ request('pelanggaran_ke') == 'II' ? 'selected' : '' }}>
-                            🚨 Tingkat II (Sedang)
-                        </option>
-                        <option value="III" {{ request('pelanggaran_ke') == 'III' ? 'selected' : '' }}>
-                            🔴 Tingkat III (Berat)
-                        </option>
-                    </select>
-                    <div class="absolute inset-y-0 right-0 flex items-center pr-4 pointer-events-none">
-                        <i class="bi bi-chevron-down text-gray-400"></i>
-                    </div>
-                </div>
-            </div>
+         
 
             <!-- Filter Status Info -->
             @if(request('kategori') || request('pelanggaran_ke'))
@@ -72,9 +48,7 @@
                             @if(request('kategori'))
                             <li>• Kategori: <span class="font-medium">{{ request('kategori') }}</span></li>
                             @endif
-                            @if(request('pelanggaran_ke'))
-                            <li>• Pelanggaran: <span class="font-medium">Tingkat {{ request('pelanggaran_ke') }}</span></li>
-                            @endif
+                           
                         </ul>
                     </div>
                 </div>
@@ -112,7 +86,7 @@ function resetForm() {
     const form = document.querySelector('#modal-filter form');
     form.reset(); // reset all inputs
     
-    // optional: also clear query params and reload the page
-    window.location.href = "{{ route('aspek_pelanggaran.index') }}";
+    
+    window.location.href = "{{ route('aspek_penghargaan.index') }}";
 }
 </script>

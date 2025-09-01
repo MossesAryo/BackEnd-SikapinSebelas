@@ -12,14 +12,27 @@ class SiswaController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        return view('wakasek.siswa.index', [
-            'siswa' => Siswa::all(),
-            'kelas' => Kelas::all()
-        ]);
+        $jurusanList = Kelas::select('jurusan')->distinct()->pluck('jurusan');
+        $kelasList   = Kelas::all();
+
+        $query = Siswa::query();
+
+        if ($request->filled('jurusan')) {
+            $query->whereHas('kelas', fn($q) => $q->where('jurusan', $request->jurusan));
+        }
+        if ($request->filled('kelas')) {
+            $query->whereHas('kelas', fn($q) => $q->where('nama_kelas', $request->kelas));
+        }
+
+        $siswa = $query->get();
+
+        return view('wakasek.siswa.index', compact('siswa', 'jurusanList', 'kelasList'));
     }
-    public function fetchAPI(){
+
+    public function fetchAPI()
+    {
         $siswa = siswa::all();
 
         return response()->json([

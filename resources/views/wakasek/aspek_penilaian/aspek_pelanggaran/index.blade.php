@@ -37,7 +37,7 @@
             <button onclick="openCreateModal()"
                 class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg flex items-center gap-2 transition-colors">
                 <i class="bi bi-plus-lg"></i>
-                Tambah Aspek Pelanggaran  
+                Tambah Aspek Pelanggaran
             </button>
         </div>
 
@@ -63,10 +63,11 @@
                         class="pl-10 pr-4 py-1.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent w-full">
                 </div>
                 <div class="flex gap-2">
-                    <button
+                    <button onclick="openfilterModal()"
                         class="px-3 py-1.5 border border-gray-300 rounded-lg hover:bg-gray-50 flex items-center gap-1.5">
                         <i class="bi bi-funnel"></i> Filter
                     </button>
+
                     <button
                         class="px-3 py-1.5 border border-gray-300 rounded-lg hover:bg-gray-50 flex items-center gap-1.5">
                         <i class="bi bi-download"></i> Export
@@ -85,18 +86,8 @@
                 <table class="w-full">
                     <thead class="bg-gray-50 border-b border-gray-200">
                         <tr>
-                            <th class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                                <div class="flex items-center gap-2">
-                                    <i class="bi bi-hash text-gray-400"></i>
-                                    KODE
-                                </div>
-                            </th>
-                            <th class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                                <div class="flex items-center gap-2">
-                                    <i class="bi bi-person text-gray-400"></i>
-                                    Jenis Poin
-                                </div>
-                            </th>
+                            
+                           
                             <th class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
                                 <div class="flex items-center gap-2">
                                     <i class="bi bi-person text-gray-400"></i>
@@ -118,7 +109,7 @@
                             <th class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
                                 <div class="flex items-center gap-2">
                                     <i class="bi bi-shield-check text-gray-400"></i>
-                                  Poin
+                                    Poin
                                 </div>
                             </th>
                             <th class="px-5 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
@@ -133,18 +124,7 @@
                     <tbody class="bg-white divide-y divide-gray-100">
                         @forelse ($aspek_penilaian as $item)
                             <tr class="hover:bg-gray-50 group">
-                                <td class="px-6 py-4 whitespace-nowrap">
-                                    <div class="flex items-center">
-                                        <div
-                                            class="w-2 h-2 bg-blue-400 rounded-full mr-3 opacity-0 group-hover:opacity-100 transition-opacity">
-                                        </div>
-                                        <span
-                                            class="text-sm font-medium text-gray-900">{{ $item->id_aspekpenilaian }}</span>
-                                    </div>
-                                </td>
-                                <td class="px-6 py-4 whitespace-nowrap">
-                                    <div class="text-sm font-semibold text-gray-900">{{ $item->jenis_poin }}</div>
-                                </td>
+                                
                                 <td class="px-6 py-4 whitespace-nowrap">
                                     <div class="text-sm font-semibold text-gray-900">{{ $item->kategori }}</div>
                                 </td>
@@ -194,6 +174,7 @@
     @include('wakasek.aspek_penilaian.aspek_pelanggaran.create')
     @include('wakasek.aspek_penilaian.aspek_pelanggaran.edit')
     @include('wakasek.aspek_penilaian.aspek_pelanggaran.delete')
+    @include('wakasek.aspek_penilaian.aspek_pelanggaran.filter')
 @endsection
 
 @push('js')
@@ -211,6 +192,11 @@
         function openCreateModal() {
 
             openModal('modal-create');
+        }
+
+        function openfilterModal() {
+
+            openModal('modal-filter');
         }
 
         function openEditModal(id, jenis, kategori, uraian, pelanggaran_ke, indikator_poin) {
@@ -234,7 +220,7 @@
 
 
         document.addEventListener('click', function(event) {
-            ['modal-create', 'modal-edit', 'modal-delete'].forEach(modalId => {
+            ['modal-create', 'modal-edit', 'modal-delete', 'modal-filter'].forEach(modalId => {
                 const modal = document.getElementById(modalId);
                 if (modal && !modal.classList.contains('hidden') && event.target === modal) {
                     closeModal(modalId);
@@ -244,7 +230,7 @@
 
         document.addEventListener('keydown', function(event) {
             if (event.key === 'Escape') {
-                ['modal-create', 'modal-edit', 'modal-delete'].forEach(modalId => {
+                ['modal-create', 'modal-edit', 'modal-delete', 'modal-filter'].forEach(modalId => {
                     const modal = document.getElementById(modalId);
                     if (modal && !modal.classList.contains('hidden')) {
                         closeModal(modalId);

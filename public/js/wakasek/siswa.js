@@ -4,6 +4,10 @@
             document.getElementById(modalId).classList.remove('hidden');
             document.body.classList.add('modal-open');
         }
+         function openfilterModal() {
+
+            openModal('modal-filter');
+        }
 
         function closeModal(modalId) {
             document.getElementById(modalId).classList.add('hidden');
@@ -36,7 +40,7 @@
 
         // Event listeners
         document.addEventListener('click', function(event) {
-            ['modal-create', 'modal-edit', 'modal-delete'].forEach(modalId => {
+            ['modal-create', 'modal-edit', 'modal-delete','modal-filter'].forEach(modalId => {
                 const modal = document.getElementById(modalId);
                 if (modal && !modal.classList.contains('hidden') && event.target === modal) {
                     closeModal(modalId);
@@ -46,7 +50,7 @@
 
         document.addEventListener('keydown', function(event) {
             if (event.key === 'Escape') {
-                ['modal-create', 'modal-edit', 'modal-delete'].forEach(modalId => {
+                ['modal-create', 'modal-edit', 'modal-delete','modal-filter'].forEach(modalId => {
                     const modal = document.getElementById(modalId);
                     if (modal && !modal.classList.contains('hidden')) {
                         closeModal(modalId);
