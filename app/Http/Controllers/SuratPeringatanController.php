@@ -97,10 +97,8 @@ class SuratPeringatanController extends Controller
 
         return redirect()->back()->with('success', 'Data Surat Peringatan berhasil diimport!');
 
-
-
-
-    public function indexBK()
+    }
+   public function indexBK()
     {
         $peringatan = surat_peringatan::all();
         return view('gurubk.peringatan.index', compact('peringatan'));
@@ -148,4 +146,6 @@ class SuratPeringatanController extends Controller
         return redirect()->route('peringatanbk.index')->with('success', 'Data surat peringatan berhasil dihapus.');
 
     }
+
+    
 }

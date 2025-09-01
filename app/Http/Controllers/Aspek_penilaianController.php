@@ -293,17 +293,7 @@ class Aspek_penilaianController extends Controller
 
         return redirect()->back()->with('success', 'Data Aspek Pelanggaran berhasil diimport!');
     }
-    
-}
-
-
-
-
-
-
-
-    // GURUUU BK
-    public function indexPenghargaanBK()
+     public function indexPenghargaanBK()
     {
         $aspek_penilaian = aspek_penilaian::where('jenis_poin', 'Apresiasi')->get();
 
@@ -438,5 +428,7 @@ class Aspek_penilaianController extends Controller
 
         return redirect()->route('aspek_pelanggaranBK.index')->with('success', 'Aspek Penilaian berhasil dihapus');
     }
+    
 }
+
 
