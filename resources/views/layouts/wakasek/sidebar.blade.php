@@ -48,6 +48,22 @@
                         <span>Dashboard</span>
                     </a>
                 </li>
+                <li>
+                    <a href="{{ route('siswa.index') }}" 
+                       class="flex items-center gap-3 px-3 py-3 rounded-lg menu-link 
+                       {{ request()->routeIs('siswa.*') ? 'active-link' : 'text-gray-600 hover:bg-gray-50' }}">
+                        <i class="bi bi-person"></i>
+                        <span>Siswa</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ route('kelas') }}" 
+                       class="flex items-center gap-3 px-3 py-3 rounded-lg menu-link 
+                       {{ request()->routeIs('kelas*') ? 'active-link' : 'text-gray-600 hover:bg-gray-50' }}">
+                        <i class="bi bi-people"></i>
+                        <span>Kelas</span>
+                    </a>
+                </li>
 
                 <!-- User Dropdown -->
                 <li>
@@ -156,14 +172,7 @@
                         <span>Skoring Pelanggaran</span>
                     </a>
                 </li>
-                <li>
-                    <a href="{{ route('siswa.index') }}" 
-                       class="flex items-center gap-3 px-3 py-3 rounded-lg menu-link 
-                       {{ request()->routeIs('siswa.*') ? 'active-link' : 'text-gray-600 hover:bg-gray-50' }}">
-                        <i class="bi bi-person"></i>
-                        <span>Siswa</span>
-                    </a>
-                </li>
+                
                 <li>
                     <a href="{{ route('akumulasi.index') }}" 
                        class="flex items-center gap-3 px-3 py-3 rounded-lg menu-link 

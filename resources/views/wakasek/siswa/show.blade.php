@@ -141,10 +141,7 @@
                                     ['label' => 'NIS', 'value' => $siswa->nis],
                                     ['label' => 'Nama Lengkap', 'value' => $siswa->nama_siswa],
                                     ['label' => 'Kelas', 'value' => $siswa->kelas->nama_kelas],
-                                    [
-                                        'label' => 'Wali Kelas',
-                                        'value' => $siswa->kelas->wali_kelas ?? 'Belum ditentukan',
-                                    ],
+                                    
                                     ['label' => 'Tahun Masuk', 'value' => $siswa->tahun_masuk ?? '2023'],
                                     ['label' => 'Status', 'value' => 'Aktif'],
                                 ];

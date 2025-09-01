@@ -31,7 +31,7 @@ class SiswaController extends Controller
             $query->whereHas('kelas', fn($q) => $q->where('nama_kelas', $request->kelas));
         }
 
-        $siswa = $query->get();
+        $siswa = $query->paginate(2);
 
         return view('wakasek.siswa.index', compact('siswa', 'jurusanList', 'kelasList'));
     }
@@ -55,7 +55,7 @@ class SiswaController extends Controller
         ]);
     }
 
-    public function create() {}
+ 
 
     public function store(Request $request)
     {
@@ -99,7 +99,7 @@ class SiswaController extends Controller
 
         return view('wakasek.siswa.show', [
             'siswa' => $siswa,
-            'kelas' => Kelas::all(),
+            'kelasList' => Kelas::all(),
             'activities' => $activities,
             'poinPositif' => $poinPositif,
             'poinNegatif' => $poinNegatif,

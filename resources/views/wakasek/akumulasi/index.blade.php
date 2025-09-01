@@ -34,11 +34,6 @@
                 <h1 class="text-2xl font-bold gradient-text">Data Akumulasi</h1>
                 <p class="text-gray-600 mt-1">Kelola data Akumulasi</p>
             </div>
-            <button onclick="openCreateModal()"
-                class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg flex items-center gap-2 transition-colors">
-                <i class="bi bi-plus-lg"></i>
-                Tambah Akumulasi
-            </button>
         </div>
         
         <!-- Flash Messages -->
@@ -63,7 +58,8 @@
                         class="pl-10 pr-4 py-1.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent w-full">
                 </div>
                 <div class="flex gap-2">
-                    <button class="px-3 py-1.5 border border-gray-300 rounded-lg hover:bg-gray-50 flex items-center gap-1.5">
+                    <button onclick="openfilterModal()"
+                        class="px-3 py-1.5 border border-gray-300 rounded-lg hover:bg-gray-50 flex items-center gap-1.5">
                         <i class="bi bi-funnel"></i> Filter
                     </button>
                     <button class="px-3 py-1.5 border border-gray-300 rounded-lg hover:bg-gray-50 flex items-center gap-1.5">
@@ -99,7 +95,7 @@
                             <th class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
                                 <div class="flex items-center gap-2">
                                     <i class="bi bi-person text-gray-400"></i>
-                                L/P
+                                Kelas
                                 </div>
                             </th>
                   
@@ -123,12 +119,7 @@
                                 </div>
                             </th>
                   
-                            <th class="px-5 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                                <div class="flex items-center gap-2">
-                                    <i class="bi bi-gear text-gray-400"></i>
-                                    Aksi
-                                </div>
-                            </th>
+                           
                         </tr>
                     </thead>
 
@@ -145,17 +136,38 @@
                                     <div class="text-sm font-semibold text-gray-900">{{ $item->nama_siswa }}</div>
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap">
-                                    <div class="text-sm font-semibold text-gray-900"></div>
+                                    <div class="text-sm font-semibold text-gray-900">{{ $item->kelas->nama_kelas }}</div>
                                 </td>
+                                @if ($item->poin_pelanggaran === null) 
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="text-sm font-semibold text-gray-900">0</div>
+                                    </td>
+                                @else
+                                    
                                 <td class="px-6 py-4 whitespace-nowrap">
                                     <div class="text-sm font-semibold text-gray-900">{{ $item->poin_pelanggaran}}</div>
                                 </td>
+                                @endif
+                                @if ($item->poin_apresiasi === null) 
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="text-sm font-semibold text-gray-900">0</div>
+                                    </td>
+                                @else
+                                    
                                 <td class="px-6 py-4 whitespace-nowrap">
                                     <div class="text-sm font-semibold text-gray-900">{{ $item->poin_apresiasi}}</div>
                                 </td>
+                                @endif
+                                @if ($item->poin_total === null) 
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="text-sm font-semibold text-gray-900">0</div>
+                                    </td>
+                                @else
+                                    
                                 <td class="px-6 py-4 whitespace-nowrap">
-                                    <div class="text-sm font-semibold text-gray-900">{{ $item->poin_apresiasi - $item->poin_pelanggaran}}</div>
+                                    <div class="text-sm font-semibold text-gray-900">{{ $item->poin_total}}</div>
                                 </td>
+                                @endif
 
                                 
                                 {{-- <td class="px-6 py-4 whitespace-nowrap">
@@ -183,20 +195,7 @@
                                 </td> --}}
 
 
-                                <td class="px-6 py-4 whitespace-nowrap">
-                                    <div class="flex items-center gap-1">
-                                        <button onclick="openEditModal('{{ $item->nis }}', '{{ $item->nama_siswa }}', '{{ $item->id_kelas }}')"
-                                            class="action-btn inline-flex items-center justify-center w-9 h-9 text-blue-600 hover:text-blue-800 hover:bg-blue-50 rounded-full"
-                                            title="Edit Akumulasi">
-                                            <i class="bi bi-pencil-square text-sm"></i>
-                                        </button>
-                                        <button onclick="openDeleteModal('{{ $item->nis }}', '{{ $item->nama_siswa }}')"
-                                            class="action-btn inline-flex items-center justify-center w-9 h-9 text-red-600 hover:text-red-800 hover:bg-red-50 rounded-full"
-                                            title="Hapus Akumulasi">
-                                            <i class="bi bi-trash text-sm"></i>
-                                        </button>
-                                    </div>
-                                </td>
+                                
                             </tr>
                         @empty
                             <tr>
@@ -214,6 +213,8 @@
             </div>
         </div>
     </div>
+        @include('wakasek.akumulasi.filter')
+
     
 @endsection
 
@@ -230,33 +231,19 @@
             document.body.classList.remove('modal-open');
         }
 
-        // Create modal
-        function openCreateModal() {
-            document.getElementById('nis').value = '';
-            document.getElementById('nama_siswa').value = '';
-            document.getElementById('id_kelas').value = '';
-            openModal('modal-create');
+      
+        function openfilterModal() {
+
+            openModal('modal-filter');
         }
 
-        // Edit modal
-        function openEditModal(nis, nama_siswa, id_kelas) {
-            document.getElementById('edit_nis').value = nis;
-            document.getElementById('edit_nama_siswa').value = nama_siswa;
-            document.getElementById('edit_id_kelas').value = id_kelas;
-            document.getElementById('form-edit').action = `/siswa/${nis}/update`;
-            openModal('modal-edit');
-        }
+    
 
-        // Delete modal
-        function openDeleteModal(nis, nama_siswa) {
-            document.getElementById('delete-nama-siswa').innerText = nama_siswa;
-            document.getElementById('form-delete').action = `/siswa/${nis}`;
-            openModal('modal-delete');
-        }
+       
 
         // Event listeners
         document.addEventListener('click', function(event) {
-            ['modal-create', 'modal-edit', 'modal-delete'].forEach(modalId => {
+            ['modal-filter'].forEach(modalId => {
                 const modal = document.getElementById(modalId);
                 if (modal && !modal.classList.contains('hidden') && event.target === modal) {
                     closeModal(modalId);
@@ -266,7 +253,7 @@
 
         document.addEventListener('keydown', function(event) {
             if (event.key === 'Escape') {
-                ['modal-create', 'modal-edit', 'modal-delete'].forEach(modalId => {
+                ['modal-filter'].forEach(modalId => {
                     const modal = document.getElementById(modalId);
                     if (modal && !modal.classList.contains('hidden')) {
                         closeModal(modalId);
