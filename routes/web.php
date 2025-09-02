@@ -212,3 +212,5 @@ Route::delete('/peringatanbk/{id}', [SuratPeringatanController::class, 'destroyB
 
 
 Route::get('/laporan', [LaporanController::class, 'view'])->name('laporan.index');
+Route::get('/laporan/export', [LaporanController::class, 'export'])->name('laporan.export');
+

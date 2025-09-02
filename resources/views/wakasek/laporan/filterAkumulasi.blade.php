@@ -11,17 +11,17 @@
                     <i class="bi bi-funnel text-blue-600"></i>
                 </div>
                 <h2 class="text-xl font-semibold text-gray-800">
-                    Ekspor Akumulasi Siswa
+                    Ekspor Laporan Siswa
                 </h2>
             </div>
-            <button onclick="closeModal('modal-filter')"
+            <button type="button" onclick="closeModal('modal-filter')"
                 class="text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded-full p-2 transition-all duration-200">
                 <i class="bi bi-x-lg text-lg"></i>
             </button>
         </div>
 
         <!-- Form -->
-        <form method="GET" action="{{ route('laporan.index') }}" class="p-6 space-y-6">
+        <form method="GET" action="{{ route('laporan.export') }}" class="p-6 space-y-6">
 
             <!-- Jurusan -->
             <div class="space-y-2">
@@ -61,23 +61,24 @@
             <!-- Action Buttons -->
             <div class="flex flex-col sm:flex-row justify-end gap-3 pt-6 border-t border-gray-100">
                 <button type="button" onclick="closeModal('modal-filter')"
-                    class="px-6 py-3 text-sm font-medium rounded-xl border-2 border-gray-200 text-gray-600 hover:bg-gray-50 hover:border-gray-300 transition-all duration-200 flex items-center justify-center gap-2">
+                    class="px-6 py-3 text-sm font-medium rounded-xl border-2 border-gray-300 text-gray-700 hover:bg-gray-100 transition-all duration-200 flex items-center justify-center gap-2">
                     <i class="bi bi-x-circle"></i>
                     Batal
                 </button>
 
-                <button type="button" onclick="resetForm()"
-                    class="px-6 py-3 text-sm font-medium rounded-xl border-2 border-orange-200 text-orange-600 hover:bg-orange-50 hover:border-orange-300 transition-all duration-200 flex items-center justify-center gap-2">
-                    <i class="bi bi-arrow-counterclockwise"></i>
-                    Reset
+                <button type="submit" name="format" value="pdf"
+                    class="px-6 py-3 text-sm font-medium rounded-xl bg-gradient-to-r from-red-600 to-red-700 text-white hover:from-red-700 hover:to-red-800 shadow-md hover:shadow-lg transform hover:-translate-y-0.5 transition-all duration-200 flex items-center justify-center gap-2">
+                    <i class="bi bi-file-earmark-pdf"></i>
+                    Ekspor PDF
                 </button>
 
-                <button type="submit"
-                    class="px-6 py-3 text-sm font-medium rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 text-white hover:from-blue-700 hover:to-indigo-700 transition-all duration-200 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 flex items-center justify-center gap-2">
-                    <i class="bi bi-check-circle"></i>
-                    Ekspor
+                <button type="submit" name="format" value="excel"
+                    class="px-6 py-3 text-sm font-medium rounded-xl bg-gradient-to-r from-green-500 to-green-600 text-white hover:from-green-600 hover:to-green-700 shadow-md hover:shadow-lg transform hover:-translate-y-0.5 transition-all duration-200 flex items-center justify-center gap-2">
+                    <i class="bi bi-file-earmark-excel"></i>
+                    Ekspor Excel
                 </button>
             </div>
+
         </form>
     </div>
 </div>
@@ -108,4 +109,8 @@
     document.addEventListener('DOMContentLoaded', function() {
         document.getElementById('jurusan').dispatchEvent(new Event('change'));
     });
+
+    function closeModal(id) {
+        document.getElementById(id).classList.add('hidden');
+    }
 </script>

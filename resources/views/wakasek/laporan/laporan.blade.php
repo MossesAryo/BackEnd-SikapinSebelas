@@ -6,7 +6,7 @@
 @section('content')
     <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
         <a href="javascript:void(0);" onclick="openfilterModal()"
-            class="block p-6 bg-[#3b82f6] text-white border border-gray-200 rounded-lg shadow-md hover:shadow-lg transition-shadow">
+            class="block p-6 bg-gradient-to-r from-blue-600 to-indigo-600 text-white border border-gray-200 rounded-lg shadow-md hover:shadow-lg transition-all duration-200">
             <h5 class="mb-2 text-2xl font-bold tracking-tight">
                 Akumulasi
             </h5>
@@ -14,6 +14,7 @@
                 Ekspor data akumulasi
             </p>
         </a>
+
     </div>
 
 
