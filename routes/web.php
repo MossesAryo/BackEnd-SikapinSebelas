@@ -175,6 +175,8 @@ Route::post('/akumulasi/store', [AkumulasiContoller::class, 'store'])->name('aku
 Route::put('/akumulasi/{nis}/update', [AkumulasiContoller::class, 'update'])->name('akumulasi.update');
 Route::delete('/akumulasi/{nis}', [AkumulasiContoller::class, 'destroy'])->name('akumulasi.destroy');
 
+Route::get('/akumulasi/export_pdf', [AkumulasiContoller::class, 'export_pdf'])->name('akumulasi.export.pdf');
+Route::get('/akumulasi/export_excel', [AkumulasiContoller::class, 'export_excel'])->name('akumulasi.export.excel');
 
 
 // WAKASEKKKKK //
