@@ -209,3 +209,4 @@ Route::put('/peringatanbk/{id}/update', [SuratPeringatanController::class, 'upda
 Route::delete('/peringatanbk/{id}', [SuratPeringatanController::class, 'destroyBK'])->name('peringatanbk.destroy');
 
 
+Route::get('/laporan', [LaporanController::class, 'view'])->name('laporan.index');

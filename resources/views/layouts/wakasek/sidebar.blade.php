@@ -42,23 +42,23 @@
                 <!-- Dashboard -->
                 <li>
                     <a href="{{ route('wakasek.dashboard') }}"
-                       class="flex items-center gap-3 px-4 py-3 rounded-lg menu-link 
+                       class="flex items-center gap-3 px-4 py-3 rounded-lg menu-link
                        {{ request()->routeIs('wakasek.dashboard') ? 'active-link' : 'text-gray-600 hover:bg-gray-50' }}">
                         <i class="bi bi-house"></i>
                         <span>Dashboard</span>
                     </a>
                 </li>
                 <li>
-                    <a href="{{ route('siswa.index') }}" 
-                       class="flex items-center gap-3 px-3 py-3 rounded-lg menu-link 
+                    <a href="{{ route('siswa.index') }}"
+                       class="flex items-center gap-3 px-3 py-3 rounded-lg menu-link
                        {{ request()->routeIs('siswa.*') ? 'active-link' : 'text-gray-600 hover:bg-gray-50' }}">
                         <i class="bi bi-person"></i>
                         <span>Siswa</span>
                     </a>
                 </li>
                 <li>
-                    <a href="{{ route('kelas') }}" 
-                       class="flex items-center gap-3 px-3 py-3 rounded-lg menu-link 
+                    <a href="{{ route('kelas') }}"
+                       class="flex items-center gap-3 px-3 py-3 rounded-lg menu-link
                        {{ request()->routeIs('kelas*') ? 'active-link' : 'text-gray-600 hover:bg-gray-50' }}">
                         <i class="bi bi-people"></i>
                         <span>Kelas</span>
@@ -67,7 +67,7 @@
 
                 <!-- User Dropdown -->
                 <li>
-                    <button onclick="toggleDropdown('userDropdown','userArrow')" 
+                    <button onclick="toggleDropdown('userDropdown','userArrow')"
                             class="flex items-center justify-between w-full px-4 py-3 text-gray-600 hover:bg-gray-50 rounded-lg">
                         <div class="flex items-center gap-3">
                             <i class="bi bi-person-gear"></i>
@@ -75,28 +75,28 @@
                         </div>
                         <i class="bi bi-chevron-down dropdown-arrow text-sm" id="userArrow"></i>
                     </button>
-                    <div id="userDropdown" class="dropdown-content ml-4 mt-1 
+                    <div id="userDropdown" class="dropdown-content ml-4 mt-1
                         {{ request()->routeIs('walikelas.*') || request()->routeIs('gurubk.*') || request()->routeIs('kaprog.*') ? 'show' : '' }}">
                         <ul class="space-y-1">
                             <li>
-                                <a href="{{ route('walikelas.index') }}" 
-                                   class="flex items-center gap-3 px-4 py-2 text-sm rounded-lg menu-link 
+                                <a href="{{ route('walikelas.index') }}"
+                                   class="flex items-center gap-3 px-4 py-2 text-sm rounded-lg menu-link
                                    {{ request()->routeIs('walikelas.*') ? 'active-link' : 'text-gray-600 hover:bg-gray-50' }}">
                                     <i class="bi bi-person-check"></i>
                                     <span>Wali Kelas</span>
                                 </a>
                             </li>
                             <li>
-                                <a href="{{ route('gurubk.index') }}" 
-                                   class="flex items-center gap-3 px-4 py-2 text-sm rounded-lg menu-link 
+                                <a href="{{ route('gurubk.index') }}"
+                                   class="flex items-center gap-3 px-4 py-2 text-sm rounded-lg menu-link
                                    {{ request()->routeIs('gurubk.*') ? 'active-link' : 'text-gray-600 hover:bg-gray-50' }}">
                                     <i class="bi bi-person-heart"></i>
                                     <span>Guru BK</span>
                                 </a>
                             </li>
                             <li>
-                                <a href="{{ route('kaprog.index') }}" 
-                                   class="flex items-center gap-3 px-4 py-2 text-sm rounded-lg menu-link 
+                                <a href="{{ route('kaprog.index') }}"
+                                   class="flex items-center gap-3 px-4 py-2 text-sm rounded-lg menu-link
                                    {{ request()->routeIs('kaprog.*') ? 'active-link' : 'text-gray-600 hover:bg-gray-50' }}">
                                     <i class="bi bi-person-badge"></i>
                                     <span>Kaprog</span>
@@ -108,7 +108,7 @@
 
                 <!-- FAQ Dropdown -->
                 <li>
-                    <button onclick="toggleDropdown('faqDropdown','faqArrow')" 
+                    <button onclick="toggleDropdown('faqDropdown','faqArrow')"
                             class="flex items-center justify-between w-full px-4 py-3 text-gray-600 hover:bg-gray-50 rounded-lg">
                         <div class="flex items-center gap-3">
                             <i class="bi bi-question-circle"></i>
@@ -120,32 +120,32 @@
                         {{ request()->routeIs('penghargaan.*') || request()->routeIs('peringatan.*') || request()->routeIs('aspek_penghargaan.*') || request()->routeIs('aspek_pelanggaran.*') ? 'show' : '' }}">
                         <ul class="space-y-1">
                             <li>
-                                <a href="{{ route('penghargaan.index') }}" 
-                                   class="flex items-center gap-3 px-4 py-2 text-sm rounded-lg menu-link 
+                                <a href="{{ route('penghargaan.index') }}"
+                                   class="flex items-center gap-3 px-4 py-2 text-sm rounded-lg menu-link
                                    {{ request()->routeIs('penghargaan.*') ? 'active-link' : 'text-gray-600 hover:bg-gray-50' }}">
                                     <i class="bi bi-award"></i>
                                     <span>Penghargaan</span>
                                 </a>
                             </li>
                             <li>
-                                <a href="{{ route('peringatan.index') }}" 
-                                   class="flex items-center gap-3 px-4 py-2 text-sm rounded-lg menu-link 
+                                <a href="{{ route('peringatan.index') }}"
+                                   class="flex items-center gap-3 px-4 py-2 text-sm rounded-lg menu-link
                                    {{ request()->routeIs('peringatan.*') ? 'active-link' : 'text-gray-600 hover:bg-gray-50' }}">
                                     <i class="bi bi-exclamation-triangle"></i>
                                     <span>Pelanggaran</span>
                                 </a>
                             </li>
                             <li>
-                                <a href="{{ route('aspek_penghargaan.index') }}" 
-                                   class="flex items-center gap-3 px-4 py-2 text-sm rounded-lg menu-link 
+                                <a href="{{ route('aspek_penghargaan.index') }}"
+                                   class="flex items-center gap-3 px-4 py-2 text-sm rounded-lg menu-link
                                    {{ request()->routeIs('aspek_penghargaan.*') ? 'active-link' : 'text-gray-600 hover:bg-gray-50' }}">
                                     <i class="bi bi-stars"></i>
                                     <span>Aspek Penghargaan</span>
                                 </a>
                             </li>
                             <li>
-                                <a href="{{ route('aspek_pelanggaran.index') }}" 
-                                   class="flex items-center gap-3 px-4 py-2 text-sm rounded-lg menu-link 
+                                <a href="{{ route('aspek_pelanggaran.index') }}"
+                                   class="flex items-center gap-3 px-4 py-2 text-sm rounded-lg menu-link
                                    {{ request()->routeIs('aspek_pelanggaran.*') ? 'active-link' : 'text-gray-600 hover:bg-gray-50' }}">
                                     <i class="bi bi-x-circle"></i>
                                     <span>Aspek Pelanggaran</span>
@@ -157,28 +157,37 @@
 
                 <!-- Sisanya -->
                 <li>
-                    <a href="{{ route('skoring_penghargaan.index') }}" 
-                       class="flex items-center gap-3 px-3 py-3 rounded-lg menu-link 
+                    <a href="{{ route('skoring_penghargaan.index') }}"
+                       class="flex items-center gap-3 px-3 py-3 rounded-lg menu-link
                        {{ request()->routeIs('skoring_penghargaan.*') ? 'active-link' : 'text-gray-600 hover:bg-gray-50' }}">
                         <i class="bi bi-people"></i>
                         <span>Skoring Penghargaan</span>
                     </a>
                 </li>
                 <li>
-                    <a href="{{ route('skoring_pelanggaran.index') }}" 
-                       class="flex items-center gap-3 px-3 py-3 rounded-lg menu-link 
+                    <a href="{{ route('skoring_pelanggaran.index') }}"
+                       class="flex items-center gap-3 px-3 py-3 rounded-lg menu-link
                        {{ request()->routeIs('skoring_pelanggaran.*') ? 'active-link' : 'text-gray-600 hover:bg-gray-50' }}">
                         <i class="bi bi-people"></i>
                         <span>Skoring Pelanggaran</span>
                     </a>
                 </li>
-                
+
                 <li>
-                    <a href="{{ route('akumulasi.index') }}" 
-                       class="flex items-center gap-3 px-3 py-3 rounded-lg menu-link 
+                    <a href="{{ route('akumulasi.index') }}"
+                       class="flex items-center gap-3 px-3 py-3 rounded-lg menu-link
                        {{ request()->routeIs('akumulasi.*') ? 'active-link' : 'text-gray-600 hover:bg-gray-50' }}">
                         <i class="bi bi-bar-chart"></i>
                         <span>Akumulasi</span>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="{{ route('laporan.index') }}"
+                       class="flex items-center gap-3 px-3 py-3 rounded-lg menu-link
+                       {{ request()->routeIs('laporan.*') ? 'active-link' : 'text-gray-600 hover:bg-gray-50' }}">
+                        <i class="bi bi-bar-chart"></i>
+                        <span>Laporan</span>
                     </a>
                 </li>
             </ul>
