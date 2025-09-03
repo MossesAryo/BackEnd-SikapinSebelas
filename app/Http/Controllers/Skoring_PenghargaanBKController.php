@@ -8,14 +8,14 @@ use Illuminate\Http\Request;
 use App\Models\Aspek_Penilaian;
 use Illuminate\Support\Facades\DB;
 
-class Skoring_PenghargaanController extends Controller
+class Skoring_PenghargaanBKController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        return view('wakasek.skoring.penghargaan.index', [
+        return view('gurubk.skoring.penghargaan.index', [
             // Ambil semua penilaian yang aspek- nya bertipe Apresiasi
             "penilaian"   => Penilaian::whereHas('aspek_penilaian', function ($q) {
                 $q->where('jenis_poin', 'Apresiasi');
@@ -73,7 +73,7 @@ class Skoring_PenghargaanController extends Controller
             ]);
         }
 
-        return redirect()->route('skoring_penghargaan.index')
+        return redirect()->route('skoring_penghargaanBK.index')
             ->with('success', 'Data penghargaan berhasil ditambahkan.');
     }
 
@@ -125,7 +125,7 @@ class Skoring_PenghargaanController extends Controller
             ]);
         }
 
-        return redirect()->route('skoring_penghargaan.index')
+        return redirect()->route('skoring_penghargaanBK.index')
             ->with('success', 'Data penghargaan berhasil diperbarui.');
     }
 

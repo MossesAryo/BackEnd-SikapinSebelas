@@ -31,12 +31,23 @@ class AkumulasiContoller extends Controller
         return view('wakasek.akumulasi.index', compact('siswa', 'jurusanList', 'kelasList'));
     }
 
-    public function indexBK()
+    public function indexBK(Request $request)
     {
-        return view('gurubk.akumulasi.index', [
-            'siswa' => siswa::all(),
-            
-        ]);
+        $jurusanList = kelas::select('jurusan')->distinct()->pluck('jurusan');
+        $kelasList   = Kelas::all();
+
+        $query = Siswa::query();
+
+        if ($request->filled('jurusan')) {
+            $query->whereHas('kelas', fn($q) => $q->where('jurusan', $request->jurusan));
+        }
+        if ($request->filled('kelas')) {
+            $query->whereHas('kelas', fn($q) => $q->where('nama_kelas', $request->kelas));
+        }
+
+        $siswa = $query->get();
+
+        return view('gurubk.akumulasi.index', compact('siswa', 'jurusanList', 'kelasList'));
     }
 
     /**

@@ -47,13 +47,7 @@ class SiswaController extends Controller
         ], 200);
     }
 
-    public function siswaGuruBk()
-    {
-        return view('gurubk.siswa', [
-            'siswa' => Siswa::all(),
-            'kelas' => Kelas::all()
-        ]);
-    }
+   
 
  
 
@@ -167,5 +161,57 @@ class SiswaController extends Controller
         return redirect()->back()->with('success', 'Data Siswa berhasil diimport!');
     }
     
-}
 
+
+
+ public function siswaGuruBk(Request $request)
+    {
+        $jurusanList = Kelas::select('jurusan')->distinct()->pluck('jurusan');
+        $kelasList   = Kelas::all();
+
+        $query = Siswa::query();
+
+        if ($request->filled('jurusan')) {
+            $query->whereHas('kelas', fn($q) => $q->where('jurusan', $request->jurusan));
+        }
+        if ($request->filled('kelas')) {
+            $query->whereHas('kelas', fn($q) => $q->where('nama_kelas', $request->kelas));
+        }
+
+        $siswa = $query->paginate(2);
+
+        return view('gurubk.siswa.siswa', compact('siswa', 'jurusanList', 'kelasList'));
+    }
+
+
+ public function showBK(string $id)
+    {
+        // Ambil data siswa
+        $siswa = Siswa::where('nis', $id)->first();
+
+        if (!$siswa) {
+            return redirect()->route('gurubk.siswa')->with('error', 'Siswa tidak ditemukan');
+        }
+
+        // Ambil langsung dari tabel siswa
+        $poinPositif = $siswa->poin_apresiasi ?? 0;
+        $poinNegatif = $siswa->poin_pelanggaran ?? 0;
+        $poinTotal   = $siswa->poin_total ?? 0;
+
+        // Ambil aktivitas terakhir siswa
+        $activities = ActivityLog::where('nis', $siswa->nis)
+            ->orderBy('created_at', 'desc')
+            ->take(10)
+            ->get();
+
+        return view('gurubk.siswa.show', [
+            'siswa' => $siswa,
+            'kelasList' => Kelas::all(),
+            'activities' => $activities,
+            'poinPositif' => $poinPositif,
+            'poinNegatif' => $poinNegatif,
+            'poinTotal'   => $poinTotal,
+        ]);
+    }
+
+}

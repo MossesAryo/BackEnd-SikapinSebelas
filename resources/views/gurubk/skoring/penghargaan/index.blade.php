@@ -1,4 +1,4 @@
-@extends('layouts.wakasek.app')
+@extends('layouts.gurubk.app')
 
 @push('css')
     <style>
@@ -154,7 +154,7 @@
                                     {{ $item->aspek_penilaian->indikator_poin ?? 0 }}</td>
                                 <td class="px-6 py-4 text-sm">
                                     <div class="flex gap-2">
-                                        
+                                       
                                         <button
                                             onclick="openDeleteModalPenghargaan('{{ $item->id_penilaian }}', '{{ $item->siswa->nama_siswa }}')"
                                             class="text-red-600 hover:text-red-800 action-btn">
@@ -182,9 +182,9 @@
             </div>
         </div>
     </div>
-    @include('wakasek.skoring.penghargaan.create')
-  
-    @include('wakasek.skoring.penghargaan.delete')
+    @include('gurubk.skoring.penghargaan.create')
+   
+    @include('gurubk.skoring.penghargaan.delete')
 @endsection
 
 @push('js')
@@ -209,7 +209,7 @@
             document.getElementById('edit_tanggal_penghargaan').value = tanggal_penghargaan;
             document.getElementById('edit_level_penghargaan').value = level_penghargaan;
             document.getElementById('edit_alasan').value = alasan;
-            document.getElementById('form-edit').action = `/penghargaan/${id_penghargaan}/update`;
+            document.getElementById('form-edit').action = `/penghargaanbk/${id_penghargaan}/update`;
             openModal('modal-edit');
         }
 

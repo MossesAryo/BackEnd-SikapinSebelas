@@ -1,4 +1,4 @@
-@extends('layouts.wakasek.app')
+@extends('layouts.gurubk.app')
 
 @push('css')
     <style>
@@ -31,13 +31,13 @@
         <!-- Header -->
         <div class="flex justify-between items-center">
             <div>
-                <h1 class="text-2xl font-bold gradient-text">Skoring Penghargaan</h1>
-                <p class="text-gray-600 mt-1">Kelola Skoring Penghargaan</p>
+                <h1 class="text-2xl font-bold gradient-text">Skoring Pelanggaran</h1>
+                <p class="text-gray-600 mt-1">Kelola Skoring Pelanggaran</p>
             </div>
             <button onclick="openCreateModal()"
                 class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg flex items-center gap-2 transition-colors">
                 <i class="bi bi-plus-lg"></i>
-                Tambah Skoring Penghargaan
+                Tambah Skoring Pelanggaran
             </button>
         </div>
 
@@ -57,7 +57,7 @@
         <!-- Search and Filter -->
         <div class="bg-white p-6 rounded-xl shadow-sm border">
             <div class="flex flex-col md:flex-row gap-2 items-center justify-between">
-                <div id="searchPenghargaan" class="relative w-full md:w-64">
+                <div id="searchPelanggaran" class="relative w-full md:w-64">
                     <i class="bi bi-search absolute left-3 top-2.5 text-gray-400"></i>
                     <input type="text" placeholder="Cari Ketua Program..."
                         class="pl-10 pr-4 py-1.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent w-full">
@@ -78,7 +78,7 @@
         <!-- Data Table -->
         <div class="bg-white rounded-xl shadow-sm border overflow-hidden">
             <div class="px-6 py-4 border-b border-gray-200">
-                <h3 class="text-lg font-semibold text-gray-900">Skoring Penghargaan</h3>
+                <h3 class="text-lg font-semibold text-gray-900">Skoring Pelanggaran</h3>
             </div>
 
             <div class="overflow-x-auto">
@@ -100,13 +100,13 @@
                             <th class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
                                 <div class="flex items-center gap-2">
                                     <i class="bi bi-person text-gray-400"></i>
-                                    Tanggal Penghargaan
+                                    Tanggal Pelanggaran
                                 </div>
                             </th>
                             <th class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
                                 <div class="flex items-center gap-2">
                                     <i class="bi bi-shield-check text-gray-400"></i>
-                                    Jenis Penghargaan
+                                    Jenis Pelanggaran
                                 </div>
                             </th>
                             <th class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
@@ -156,10 +156,11 @@
                                     <div class="flex gap-2">
                                         
                                         <button
-                                            onclick="openDeleteModalPenghargaan('{{ $item->id_penilaian }}', '{{ $item->siswa->nama_siswa }}')"
+                                            onclick="openDeleteModalPelanggaran('{{ $item->id_penilaian }}', '{{ $item->siswa->nama_siswa }}')"
                                             class="text-red-600 hover:text-red-800 action-btn">
                                             <i class="bi bi-trash"></i>
                                         </button>
+
                                     </div>
                                 </td>
                             </tr>
@@ -170,9 +171,9 @@
                                         class="mx-auto w-24 h-24 bg-gray-100 rounded-full flex items-center justify-center mb-4">
                                         <i class="bi bi-people text-3xl text-gray-400"></i>
                                     </div>
-                                    <h3 class="text-lg font-medium text-gray-900 mb-2">Belum ada data Skoring penghargaan
+                                    <h3 class="text-lg font-medium text-gray-900 mb-2">Belum ada data Skoring Pelanggaran
                                     </h3>
-                                    <p class="text-gray-500">Tambahkan data penghargaan untuk memulai.</p>
+                                    <p class="text-gray-500">Tambahkan data Pelanggaran untuk memulai.</p>
                                 </td>
                             </tr>
                         @endforelse
@@ -182,9 +183,9 @@
             </div>
         </div>
     </div>
-    @include('wakasek.skoring.penghargaan.create')
-  
-    @include('wakasek.skoring.penghargaan.delete')
+    @include('gurubk.skoring.pelanggaran.create')
+ 
+    @include('gurubk.skoring.pelanggaran.delete')
 @endsection
 
 @push('js')
@@ -209,19 +210,19 @@
             document.getElementById('edit_tanggal_penghargaan').value = tanggal_penghargaan;
             document.getElementById('edit_level_penghargaan').value = level_penghargaan;
             document.getElementById('edit_alasan').value = alasan;
-            document.getElementById('form-edit').action = `/penghargaan/${id_penghargaan}/update`;
+            document.getElementById('form-edit').action = `/penghargaanbk/${id_penghargaan}/update`;
             openModal('modal-edit');
         }
 
-        function openDeleteModalPenghargaan(id_penghargaan, nama) {
-            document.getElementById('delete-penghargaan').innerText = nama;
-            document.getElementById('form-delete-penghargaan').action = `/skoring_penghargaan/${id_penghargaan}/destroy`;
-            openModal('modal-delete-penghargaan');
+
+        function openDeleteModalPelanggaran(id_pelanggaran, nama) {
+            document.getElementById('delete-pelanggaran').innerText = nama;
+            document.getElementById('form-delete-pelanggaran').action = `/skoring_pelanggaranBK/${id_pelanggaran}/destroy`;
+            openModal('modal-delete-pelanggaran');
         }
 
-
         document.addEventListener('click', function(event) {
-            ['modal-create', 'modal-edit', 'modal-delete'].forEach(modalId => {
+            ['modal-create', 'modal-edit', 'modal-delete-pelanggaran'].forEach(modalId => {
                 const modal = document.getElementById(modalId);
                 if (modal && !modal.classList.contains('hidden') && event.target === modal) {
                     closeModal(modalId);
@@ -231,7 +232,7 @@
 
         document.addEventListener('keydown', function(event) {
             if (event.key === 'Escape') {
-                ['modal-create', 'modal-edit', 'modal-delete'].forEach(modalId => {
+                ['modal-create', 'modal-edit', 'modal-delete-pelanggaran'].forEach(modalId => {
                     const modal = document.getElementById(modalId);
                     if (modal && !modal.classList.contains('hidden')) {
                         closeModal(modalId);
@@ -240,7 +241,7 @@
             }
         });
          document.addEventListener("DOMContentLoaded", function () {
-    const searchInput = document.querySelector("#searchPenghargaan input");
+    const searchInput = document.querySelector("#searchPelanggaran input");
     const tableRows = document.querySelectorAll("tbody tr");
 
     searchInput.addEventListener("keyup", function () {
