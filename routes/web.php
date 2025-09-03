@@ -174,6 +174,8 @@ Route::get('/akumulasibk', [AkumulasiContoller::class, 'indexBK'])->name('akumul
 Route::get('/akumulasi', [AkumulasiContoller::class, 'index'])->name('akumulasi.index');
 
 
+Route::get('/akumulasi/export_pdf', [AkumulasiContoller::class, 'export_pdf'])->name('akumulasi.export.pdf');
+Route::get('/akumulasi/export_excel', [AkumulasiContoller::class, 'export_excel'])->name('akumulasi.export.excel');
 
 
 // WAKASEKKKKK //
