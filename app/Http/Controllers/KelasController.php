@@ -11,10 +11,10 @@ class KelasController extends Controller
     /**
      * Display a listing of the resource.
      */
-    
+
     public function index()
     {
-        $kelas = kelas::all();
+        $kelas = kelas::paginate(10);
 
         return view('wakasek.kelas.kelas', compact('kelas'));
     }
@@ -28,7 +28,7 @@ class KelasController extends Controller
             'data'    => $kelas
         ], 200);
     }
-    
+
     /**
      * Show the form for creating a new resource.
      */
@@ -79,7 +79,7 @@ class KelasController extends Controller
             'id_kelas' => 'required',
             'nama_kelas' => 'required',
             'jurusan' => 'required',
-        
+
         ]);
 
         kelas::where('id_kelas', $id)->update($data);

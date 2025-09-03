@@ -19,7 +19,7 @@ class Skoring_PenghargaanController extends Controller
             // Ambil semua penilaian yang aspek- nya bertipe Apresiasi
             "penilaian"   => Penilaian::whereHas('aspek_penilaian', function ($q) {
                 $q->where('jenis_poin', 'Apresiasi');
-            })->get(),
+            })->paginate(10),
             "siswa"       => Siswa::all(),
             // Kirim dengan nama aspekPel agar view tidak error
             "aspekPel"    => Aspek_Penilaian::where('jenis_poin', 'Apresiasi')->get()

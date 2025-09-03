@@ -19,7 +19,7 @@ class KetuaProgramController extends Controller
     public function index()
     {
       return view('wakasek.kaprog.index', [
-            'ketua_program' => ketua_program::get(),
+            'ketua_program' => ketua_program::paginate(1),
         ]);
     }
     public function store(Request $request)
@@ -109,13 +109,13 @@ class KetuaProgramController extends Controller
     {
         return Excel::download(new Ketua_Program_ExportExcel, 'ketuaprogram.xlsx');
     }
-    
+
       public function import(Request $request)
     {
         $ketua_program = ketua_program::all();
 
         $request->validate([
-            'file' => 'required|mimes:xlsx,xls,csv|max:10240',  
+            'file' => 'required|mimes:xlsx,xls,csv|max:10240',
         ]);
 
         Excel::import(new Ketua_Program_Import, $request->file('file'));

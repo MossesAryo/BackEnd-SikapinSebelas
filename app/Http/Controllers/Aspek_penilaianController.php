@@ -84,12 +84,12 @@ class Aspek_penilaianController extends Controller
     {
         $query = aspek_penilaian::where('jenis_poin', 'Apresiasi');
 
-        
+
         if ($request->filled('kategori')) {
             $query->where('kategori', 'LIKE', '%' . $request->kategori . '%');
         }
 
-        $aspek_penilaian = $query->get();
+        $aspek_penilaian = $query->paginate(10);
 
         return view('wakasek.aspek_penilaian.aspek_penghargaan.index', compact('aspek_penilaian'));
     }
@@ -185,12 +185,12 @@ class Aspek_penilaianController extends Controller
     {
         $query = aspek_penilaian::where('jenis_poin', 'Pelanggaran');
 
-        
+
         if ($request->filled('kategori')) {
             $query->where('kategori', 'like', '%' . $request->kategori . '%');
         }
 
-        
+
         if ($request->filled('pelanggaran_ke')) {
             $query->where('pelanggaran_ke', $request->pelanggaran_ke);
         }
@@ -264,7 +264,7 @@ class Aspek_penilaianController extends Controller
     }
 
 
-    
+
      public function export_pelanggaran_pdf()
     {
         $aspek_penilaian = aspek_penilaian::where('jenis_poin', 'Pelanggaran')->get();
@@ -278,15 +278,15 @@ class Aspek_penilaianController extends Controller
     {
         return Excel::download(new Aspek_Pelanggaran_ExportExcel, 'aspek_pelanggaran.xlsx');
     }
-    
+
       public function import_pelanggaran(Request $request)
     {
         $aspek_penilaian = aspek_penilaian::where('jenis_poin', 'Pelanggaran')->get();
-       
+
 
         $request->validate([
             'file' => 'required|mimes:xlsx,xls,csv|max:10240',
-            
+
         ]);
 
         Excel::import(new Aspek_Pelanggaran_Import, $request->file('file'));
@@ -428,7 +428,7 @@ class Aspek_penilaianController extends Controller
 
         return redirect()->route('aspek_pelanggaranBK.index')->with('success', 'Aspek Penilaian berhasil dihapus');
     }
-    
+
 }
 
 

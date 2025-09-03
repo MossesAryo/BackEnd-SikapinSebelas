@@ -20,7 +20,7 @@ class Guru_bkController extends Controller
     public function index()
     {
         return view('wakasek.guru_bk.index', [
-            'guru_bk' => guru_bk::get(),
+            'guru_bk' => guru_bk::paginate(10),
         ]);
     }
 
@@ -110,21 +110,21 @@ public function destroy(string $id)
     {
         return Excel::download(new Guru_Bk_ExportExcel, 'guru_bk.xlsx');
     }
-    
+
       public function import(Request $request)
     {
         $guru_bk = guru_bk::all();
 
         $request->validate([
             'file' => 'required|mimes:xlsx,xls,csv|max:10240',
-            
+
         ]);
 
         Excel::import(new Guru_Bk_Import, $request->file('file'));
 
         return redirect()->back()->with('success', 'Data Guru BK berhasil diimport!');
     }
-    
+
 }
 
 

@@ -18,7 +18,7 @@
             </button>
         </div>
 
- 
+
         @if (session('success'))
             <p class="mt-2 text-sm text-green-600 font-semibold">
                 ✅ {{ session('success') }}
@@ -31,7 +31,7 @@
             </p>
         @endif
 
- 
+
         <div class="bg-white p-6 rounded-xl shadow-sm border">
             <div class="flex flex-col md:flex-row gap-2 items-center justify-between">
                 <div id="searchApresiasi" class="relative w-full md:w-64">
@@ -44,10 +44,10 @@
                         class="px-3 py-1.5 border border-gray-300 rounded-lg hover:bg-gray-50 flex items-center gap-1.5">
                         <i class="bi bi-funnel"></i> Filter
                     </button>
-                   <button
-                    id="exportImportBtn" class="px-3 py-1.5 border border-gray-300 rounded-lg hover:bg-gray-50 flex items-center gap-1.5">
-                    <i class="bi bi-download"></i> Export / Import
-                </button>
+                    <button id="exportImportBtn"
+                        class="px-3 py-1.5 border border-gray-300 rounded-lg hover:bg-gray-50 flex items-center gap-1.5">
+                        <i class="bi bi-download"></i> Export / Import
+                    </button>
                 </div>
             </div>
         </div>
@@ -67,13 +67,13 @@
                             <th class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
                                 <div class="flex items-center gap-2">
                                     <i class="bi bi-hash text-gray-400"></i>
-                                     KODE
+                                    KODE
                                 </div>
                             </th>
                             <th class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
                                 <div class="flex items-center gap-2">
                                     <i class="bi bi-hash text-gray-400"></i>
-                                     Tanggal Surat Penghargaan
+                                    Tanggal Surat Penghargaan
                                 </div>
                             </th>
                             <th class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
@@ -88,7 +88,7 @@
                                     Alasan
                                 </div>
                             </th>
-                        
+
                             <th class="px-5 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
                                 <div class="flex items-center gap-2">
                                     <i class="bi bi-gear text-gray-400"></i>
@@ -149,6 +149,10 @@
                         @endforelse
                     </tbody>
                 </table>
+                <!-- PAGINATION -->
+                <div class="px-6 py-4 border-t border-gray-200 bg-white">
+                    @include('layouts.wakasek.pagination', ['data' => $penghargaan])
+                </div>
             </div>
         </div>
     </div>
@@ -158,5 +162,5 @@
 @endsection
 
 @push('js')
-   <script src="{{ asset('js/wakasek/penghargaan.js') }}"></script>
+    <script src="{{ asset('js/wakasek/penghargaan.js') }}"></script>
 @endpush

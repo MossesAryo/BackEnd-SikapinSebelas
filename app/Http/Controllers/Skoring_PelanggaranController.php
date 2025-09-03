@@ -19,7 +19,7 @@ class Skoring_PelanggaranController extends Controller
             // ambil penilaian yg aspeknya bertipe Pelanggaran
             "penilaian" => Penilaian::whereHas('aspek_penilaian', function ($q) {
                 $q->where('jenis_poin', 'Pelanggaran');
-            })->get(),
+            })->paginate(10),
             "siswa"    => Siswa::all(),
             "aspekPel" => Aspek_Penilaian::where('jenis_poin', 'Pelanggaran')->get()
         ]);
