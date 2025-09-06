@@ -63,18 +63,18 @@
                         class="px-3 py-1.5 border border-gray-300 rounded-lg hover:bg-gray-50 flex items-center gap-1.5">
                         <i class="bi bi-funnel"></i> Filter
                     </button>
-                    <button
+                      <button
                     id="exportImportBtn" class="px-3 py-1.5 border border-gray-300 rounded-lg hover:bg-gray-50 flex items-center gap-1.5">
-                    <i class="bi bi-download"></i> Export / Import
+                    <i class="bi bi-download"></i> Export
                 </button>
             </div>
         </div>
     </div>
     
-    {{-- @include('gurubk.aspek_penilaian.aspek_penghargaan.modalExportImport') --}}
+    @include('gurubk.aspek_penilaian.aspek_penghargaan.modalExportImport')
         
         
-        
+    
         <!-- Data Table -->
         <div class="bg-white rounded-xl shadow-sm border overflow-hidden">
             <div class="px-6 py-4 border-b border-gray-200">

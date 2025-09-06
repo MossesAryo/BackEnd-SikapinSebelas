@@ -9,6 +9,10 @@ use Illuminate\Http\Request;
 use App\Models\Aspek_Penilaian;
 use Illuminate\Support\Facades\DB;
 
+use App\Exports\Skoring_Penghargaan_ExportExcel;
+use Barryvdh\DomPDF\Facade\Pdf;
+use Maatwebsite\Excel\Facades\Excel;
+
 class Skoring_PenghargaanBKController extends Controller
 {
     /**
@@ -189,5 +193,22 @@ class Skoring_PenghargaanBKController extends Controller
         $skoring->delete();
 
         return redirect()->back()->with('success', 'Penghargaan berhasil dihapus!');
+    }
+
+    public function export_excel()
+    {
+        return Excel::download(new Skoring_Penghargaan_ExportExcel, 'skoring_penghargaan.xlsx');
+    }
+
+    public function export_pdf()
+    {
+        $data = \App\Models\Penilaian::with(['siswa', 'aspek_penilaian'])
+            ->whereHas('aspek_penilaian', function ($q) {
+                $q->where('jenis_poin', 'Apresiasi');
+            })
+            ->get();
+
+        $pdf = Pdf::loadView('export.skoring_penghargaan.pdf', compact('data'));
+        return $pdf->download('skoring_penghargaan.pdf');
     }
 }
