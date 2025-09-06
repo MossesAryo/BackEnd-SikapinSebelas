@@ -83,6 +83,9 @@ Route::get('/siswa/export_pdf', [SiswaController::class, 'export_pdf'])->name('s
 Route::get('/siswa/export_excel', [SiswaController::class, 'export_excel'])->name('siswa.export.excel');
 Route::post('/siswa/import', [SiswaController::class, 'import'])->name('siswa.import');
 
+Route::get('/wakasek/jurusan', [KelasController::class, 'jurusanwakasek'])->name('wakasek.jurusan');
+Route::get('/wakasek/kelas', [KelasController::class, 'kelaswakasek'])->name('wakasek.kelas');
+
 Route::get('/kelas', [KelasController::class, 'index'])->name('kelas');
 Route::post('/kelas/store', [KelasController::class, 'store'])->name('kelas.store');
 Route::put('/kelas/{id}/update', [KelasController::class, 'update'])->name('kelas.update');
@@ -183,11 +186,15 @@ Route::get('/akumulasi', [AkumulasiContoller::class, 'index'])->name('akumulasi.
 
 // GURU BKKKKK
 Route::get('/gurubk',[DashboardBKController::class, 'index'])->name('gurubk.dashboard');
+Route::get('gurubk/profile', [ProfileController::class, 'indexbk'])->name('gurubk.profile');
 Route::get('/gurubk/siswa', [SiswaBKController::class, 'siswaGuruBk'])->name('gurubk.siswa');
 Route::get('/gurubk/siswa/{nis}/show', [SiswaBKController::class, 'showBK'])->name('gurubk.siswa.show');
 Route::get('/siswaBK/export_pdf', [SiswaBKController::class, 'export_pdf'])->name('siswa.export.pdf');
 Route::get('/siswaBK/export_excel', [SiswaBKController::class, 'export_excel_siswaBK'])->name('siswa.export.excel');
 Route::post('/siswaBK/import', [SiswaBKController::class, 'import_siswaBK'])->name('siswa.import');
+
+Route::get('/gurubk/jurusan', [KelasController::class, 'jurusanbk'])->name('gurubk.jurusan');
+Route::get('/gurubk/kelas', [KelasController::class, 'kelasbk'])->name('gurubk.kelas');
 
 Route::get('/aspek_penghargaanbk', [Aspek_penilaianController::class, 'indexPenghargaanBK'])->name('aspek_penghargaanBK.index');
 Route::post('/aspek_penghargaanbk/store', [Aspek_penilaianController::class, 'storePenghargaanBK'])->name('aspek_penghargaanBK.store');

@@ -11,7 +11,7 @@
                     <i class="bi bi-funnel text-blue-600"></i>
                 </div>
                 <h2 class="text-xl font-semibold text-gray-800">
-                    Filter Akumulasi
+                    Filter Skoring Penghargaan
                 </h2>
             </div>
             <button onclick="closeModal('modal-filter')"
@@ -21,7 +21,7 @@
         </div>
 
         <!-- Form -->
-        <form method="GET" action="{{ route('akumulasiBK') }}" class="p-6 space-y-6">
+        <form method="GET" action="{{ route('skoring_penghargaanBK.index') }}" class="p-6 space-y-6">
 
             <!-- Jurusan -->
             <div class="space-y-2">
@@ -86,7 +86,7 @@
     function resetForm() {
         const form = document.querySelector('#modal-filter form');
         form.reset();
-        window.location.href = "{{ route('akumulasiBK') }}";
+        window.location.href = "{{ route('skoring_penghargaanBK.index') }}";
     }
 
     // Filter kelas sesuai jurusan

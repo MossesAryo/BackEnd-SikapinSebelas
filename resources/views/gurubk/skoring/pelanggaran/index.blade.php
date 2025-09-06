@@ -63,7 +63,7 @@
                         class="pl-10 pr-4 py-1.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent w-full">
                 </div>
                 <div class="flex gap-2">
-                    <button
+                    <button onclick="openFilterModal()"
                         class="px-3 py-1.5 border border-gray-300 rounded-lg hover:bg-gray-50 flex items-center gap-1.5">
                         <i class="bi bi-funnel"></i> Filter
                     </button>
@@ -95,6 +95,12 @@
                                 <div class="flex items-center gap-2">
                                     <i class="bi bi-hash text-gray-400"></i>
                                     Nama Siswa
+                                </div>
+                            </th>
+                            <th class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                                <div class="flex items-center gap-2">
+                                    <i class="bi bi-hash text-gray-400"></i>
+                                    Kelas
                                 </div>
                             </th>
                             <th class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
@@ -147,6 +153,7 @@
                             <tr>
                                 <td class="px-6 py-4 text-sm text-gray-900">{{ $item->siswa->nis ?? '-' }}</td>
                                 <td class="px-6 py-4 text-sm text-gray-900">{{ $item->siswa->nama_siswa ?? '-' }}</td>
+                                <td class="px-6 py-4 text-sm text-gray-900">{{ $item->siswa->kelas->nama_kelas ?? '-' }}</td>
                                 <td class="px-6 py-4 text-sm text-gray-900">{{ $item->created_at }}</td>
                                 <td class="px-6 py-4 text-sm text-gray-900">{{ $item->aspek_penilaian->uraian ?? '-' }}
                                 </td>
@@ -184,7 +191,11 @@
         </div>
     </div>
     @include('gurubk.skoring.pelanggaran.create')
- 
+    @include('gurubk.skoring.pelanggaran.filter', [
+        'jurusanList' => $jurusanList,
+        'kelasList'   => $kelasList
+    ])
+
     @include('gurubk.skoring.pelanggaran.delete')
 @endsection
 
@@ -204,6 +215,10 @@
 
             openModal('modal-create');
         }
+        function openFilterModal() {
+
+            openModal('modal-filter');
+        }
 
         function openEditModal(id_penghargaan, tanggal_penghargaan, level_penghargaan, alasan) {
             document.getElementById('edit_id_penghargaan').value = id_penghargaan;
@@ -222,7 +237,7 @@
         }
 
         document.addEventListener('click', function(event) {
-            ['modal-create', 'modal-edit', 'modal-delete-pelanggaran'].forEach(modalId => {
+            ['modal-create', 'modal-edit', 'modal-delete-pelanggaran', 'modal-filter'].forEach(modalId => {
                 const modal = document.getElementById(modalId);
                 if (modal && !modal.classList.contains('hidden') && event.target === modal) {
                     closeModal(modalId);
@@ -232,7 +247,7 @@
 
         document.addEventListener('keydown', function(event) {
             if (event.key === 'Escape') {
-                ['modal-create', 'modal-edit', 'modal-delete-pelanggaran'].forEach(modalId => {
+                ['modal-create', 'modal-edit', 'modal-delete-pelanggaran', 'modal-filter'].forEach(modalId => {
                     const modal = document.getElementById(modalId);
                     if (modal && !modal.classList.contains('hidden')) {
                         closeModal(modalId);

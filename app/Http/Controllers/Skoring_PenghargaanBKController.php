@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Siswa;
+use App\Models\Kelas;
 use App\Models\Penilaian;
 use Illuminate\Http\Request;
 use App\Models\Aspek_Penilaian;
@@ -13,18 +14,44 @@ class Skoring_PenghargaanBKController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
-    {
-        return view('gurubk.skoring.penghargaan.index', [
-            // Ambil semua penilaian yang aspek- nya bertipe Apresiasi
-            "penilaian"   => Penilaian::whereHas('aspek_penilaian', function ($q) {
-                $q->where('jenis_poin', 'Apresiasi');
-            })->get(),
-            "siswa"       => Siswa::all(),
-            // Kirim dengan nama aspekPel agar view tidak error
-            "aspekPel"    => Aspek_Penilaian::where('jenis_poin', 'Apresiasi')->get()
-        ]);
+   public function index(Request $request)
+{
+    $jurusanList = Kelas::select('jurusan')->distinct()->pluck('jurusan');
+    $kelasList   = Kelas::all();
+    $siswa   = Siswa::all();
+    $aspekPel = Aspek_Penilaian::where('jenis_poin', 'apresiasi')->get();
+
+    // Mulai query Penilaian (hanya yg jenis Penghargaan)
+    $penilaianQuery = Penilaian::whereHas('aspek_penilaian', function ($q) {
+        $q->where('jenis_poin', 'apresiasi');
+    });
+
+    // Filter berdasarkan jurusan -> cek relasi Penilaian -> Siswa -> Kelas
+    if ($request->filled('jurusan')) {
+        $penilaianQuery->whereHas('siswa', function ($q) use ($request) {
+            $q->whereHas('kelas', function ($k) use ($request) {
+                $k->where('jurusan', $request->jurusan);
+            });
+        });
     }
+
+    // Filter berdasarkan nama_kelas
+    if ($request->filled('kelas')) {
+        $penilaianQuery->whereHas('siswa', function ($q) use ($request) {
+            $q->whereHas('kelas', function ($k) use ($request) {
+                $k->where('nama_kelas', $request->kelas);
+            });
+        });
+    }
+
+    // eager load relasi yg akan dipakai di view dan paginate
+    $penilaian = $penilaianQuery->with(['siswa.kelas', 'aspek_penilaian'])
+                                ->paginate(10)
+                                ->appends($request->query());
+
+
+    return view('gurubk.skoring.penghargaan.index', compact('siswa','aspekPel','penilaian', 'jurusanList', 'kelasList'));
+}
 
     /**
      * Store a newly created resource in storage.

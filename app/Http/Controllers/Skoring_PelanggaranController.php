@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Siswa;
+use App\Models\Kelas;
 use App\Models\Penilaian;
 use Illuminate\Http\Request;
 use App\Models\Aspek_Penilaian;
@@ -13,15 +14,19 @@ class Skoring_PelanggaranController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
+
+        
+
         return view('wakasek.skoring.pelanggaran.index', [
             // ambil penilaian yg aspeknya bertipe Pelanggaran
             "penilaian" => Penilaian::whereHas('aspek_penilaian', function ($q) {
                 $q->where('jenis_poin', 'Pelanggaran');
             })->get(),
             "siswa"    => Siswa::all(),
-            "aspekPel" => Aspek_Penilaian::where('jenis_poin', 'Pelanggaran')->get()
+            "aspekPel" => Aspek_Penilaian::where('jenis_poin', 'Pelanggaran')->get(),   
+            
         ]);
     }
 

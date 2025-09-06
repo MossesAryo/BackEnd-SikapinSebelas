@@ -34,11 +34,7 @@
                 <h1 class="text-2xl font-bold gradient-text">Data Aspek Penghargaan</h1>
                 <p class="text-gray-600 mt-1">Kelola data Aspek Penghargaan</p>
             </div>
-            <button onclick="openCreateModal()"
-                class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg flex items-center gap-2 transition-colors">
-                <i class="bi bi-plus-lg"></i>
-                Tambah Aspek Penghargaan  
-            </button>
+            
         </div>
 
         <!-- Flash Messages -->
@@ -63,7 +59,7 @@
                         class="pl-10 pr-4 py-1.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent w-full">
                 </div>
                 <div class="flex gap-2">
-                    <button
+                    <button onclick="openFilterModal()"
                         class="px-3 py-1.5 border border-gray-300 rounded-lg hover:bg-gray-50 flex items-center gap-1.5">
                         <i class="bi bi-funnel"></i> Filter
                     </button>
@@ -119,17 +115,12 @@
                                     Poin
                                 </div>
                             </th>
-                            <th class="px-5 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                                <div class="flex items-center gap-2">
-                                    <i class="bi bi-gear text-gray-400"></i>
-                                    Aksi
-                                </div>
-                            </th>
+                          
                         </tr>
                     </thead>
                     
                     <tbody class="bg-white divide-y divide-gray-100">
-                        @forelse ($aspek_penilaian as $item)
+                        @forelse ($data as $item)
                         <tr class="hover:bg-gray-50 group">
                             <td class="px-6 py-4 whitespace-nowrap">
                                 <div class="flex items-center">
@@ -152,21 +143,7 @@
                         <td class="px-6 py-4 whitespace-nowrap">
                                     <span class="text-sm font-semibold text-gray-900">{{ $item->indikator_poin }}</span>
                                 </td>
-                                <td class="px-6 py-4 whitespace-nowrap">
-                                    <div class="flex items-center gap-1">
-                                        <button
-                                        onclick="openEditModal('{{ $item->id_aspekpenilaian }}','{{ $item->jenis_poin }}', '{{ $item->kategori }}', '{{ $item->uraian }}', '{{ $item->indikator_poin }}')"
-                                        class="action-btn inline-flex items-center justify-center w-9 h-9 text-blue-600 hover:text-blue-800 hover:bg-blue-50 rounded-full"
-                                        title="Edit Aspek Penghargaan">
-                                        <i class="bi bi-pencil-square text-sm"></i>
-                                    </button>
-                                    <button onclick="openDeleteModal('{{ $item->id_aspekpenilaian }}')"
-                                        class="action-btn inline-flex items-center justify-center w-9 h-9 text-red-600 hover:text-red-800 hover:bg-red-50 rounded-full"
-                                        title="Hapus Aspek Penghargaan">    
-                                        <i class="bi bi-trash text-sm"></i>
-                                    </button>
-                                </div>
-                                </td>
+                               
                             </tr>
                             @empty
                             <tr>
@@ -186,9 +163,10 @@
         </div>
     </div>
     
-    @include('gurubk.aspek_penilaian.aspek_penghargaan.create')
-    @include('gurubk.aspek_penilaian.aspek_penghargaan.edit')
-    @include('gurubk.aspek_penilaian.aspek_penghargaan.delete')
+    @include('gurubk.aspek_penilaian.aspek_penghargaan.filter')
+    {{-- @include('gurubk.aspek_penilaian.aspek_penghargaan.create') --}}
+    {{-- @include('gurubk.aspek_penilaian.aspek_penghargaan.edit')
+    @include('gurubk.aspek_penilaian.aspek_penghargaan.delete') --}}
     @endsection
     
 @push('js')
@@ -206,6 +184,11 @@
         function openCreateModal() {
 
             openModal('modal-create');
+        }
+     
+
+        function openFilterModal() {
+            openModal('modal-filter');
         }
 
         function openEditModal(id, jenis, kategori, uraian, indikator_poin) {
@@ -228,7 +211,7 @@
 
 
         document.addEventListener('click', function(event) {
-            ['modal-create', 'modal-edit', 'modal-delete'].forEach(modalId => {
+            ['modal-create', 'modal-edit', 'modal-delete', 'modal-filter'].forEach(modalId => {
                 const modal = document.getElementById(modalId);
                 if (modal && !modal.classList.contains('hidden') && event.target === modal) {
                     closeModal(modalId);
@@ -238,7 +221,7 @@
 
         document.addEventListener('keydown', function(event) {
             if (event.key === 'Escape') {
-                ['modal-create', 'modal-edit', 'modal-delete'].forEach(modalId => {
+                ['modal-create', 'modal-edit', 'modal-delete', 'modal-filter'].forEach(modalId => {
                     const modal = document.getElementById(modalId);
                     if (modal && !modal.classList.contains('hidden')) {
                         closeModal(modalId);

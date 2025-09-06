@@ -293,12 +293,32 @@ class Aspek_penilaianController extends Controller
 
         return redirect()->back()->with('success', 'Data Aspek Pelanggaran berhasil diimport!');
     }
-     public function indexPenghargaanBK()
-    {
-        $aspek_penilaian = aspek_penilaian::where('jenis_poin', 'Apresiasi')->get();
 
-        return view('gurubk.aspek_penilaian.aspek_penghargaan.index', compact('aspek_penilaian'));
+
+
+   public function indexPenghargaanBK(Request $request)
+{
+    // Tambahkan filter jenis_poin = 'Apresiasi'
+    $query = aspek_penilaian::where('jenis_poin', 'Apresiasi');
+
+    if ($request->has('kategori') && $request->kategori != '') {
+        $query->where('kategori', $request->kategori);
     }
+    
+    $data = $query->get();
+    
+    // Kategori list juga difilter hanya untuk Apresiasi
+    $kategoriList = aspek_penilaian::where('jenis_poin', 'Apresiasi')
+                                  ->distinct()
+                                  ->pluck('kategori');
+
+    return view('gurubk.aspek_penilaian.aspek_penghargaan.index', compact('data', 'kategoriList'));
+}
+
+
+
+
+
 
     public function storePenghargaanBK(Request $request)
     {
@@ -361,11 +381,22 @@ class Aspek_penilaianController extends Controller
 
 
 
-    public function indexPelanggaranBK()
+    public function indexPelanggaranBK(Request $request)
     {
-        $aspek_penilaian = aspek_penilaian::where('jenis_poin', 'Pelanggaran')->get();
+        $query = aspek_penilaian::where('jenis_poin', 'Pelanggaran');
 
-        return view('gurubk.aspek_penilaian.aspek_pelanggaran.index', compact('aspek_penilaian'));
+      if ($request->has('kategori') && $request->kategori != '') {
+        $query->where('kategori', $request->kategori);
+      }
+    
+       $data = $query->get();
+
+       // Kategori list juga difilter hanya untuk Pelanggaran
+       $kategoriList = aspek_penilaian::where('jenis_poin', 'Pelanggaran')
+                                   ->distinct()
+                                   ->pluck('kategori');
+
+    return view('gurubk.aspek_penilaian.aspek_pelanggaran.index', compact('data', 'kategoriList'));
     }
 
 

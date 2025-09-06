@@ -18,6 +18,40 @@ class KelasController extends Controller
 
         return view('wakasek.kelas.kelas', compact('kelas'));
     }
+
+    public function jurusanwakasek()
+    {
+        $kelas = kelas::all();
+
+        return view('wakasek.siswa.jurusan', compact('kelas'));
+    }
+    public function kelaswakasek()
+    {
+        $kelas = kelas::all();
+
+        return view('wakasek.siswa.kelas', compact('kelas'));
+    }
+
+    public function jurusanbk()
+    {
+        $kelas = kelas::all();
+
+        return view('gurubk.siswa.jurusan', compact('kelas'));
+    }
+    public function kelasbk()
+    {
+        $kelas = kelas::all();
+
+        return view('gurubk.siswa.kelas', compact('kelas'));
+    }
+
+
+
+
+
+
+
+
     public function FetchApi()
     {
          $kelas = kelas::all();

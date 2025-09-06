@@ -59,11 +59,11 @@
             <div class="flex flex-col md:flex-row gap-2 items-center justify-between">
                 <div id="searchPenghargaan" class="relative w-full md:w-64">
                     <i class="bi bi-search absolute left-3 top-2.5 text-gray-400"></i>
-                    <input type="text" placeholder="Cari Ketua Program..."
+                    <input type="text" placeholder="Cari nama Siswa"
                         class="pl-10 pr-4 py-1.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent w-full">
                 </div>
                 <div class="flex gap-2">
-                    <button
+                    <button onclick="openFilterModal()"
                         class="px-3 py-1.5 border border-gray-300 rounded-lg hover:bg-gray-50 flex items-center gap-1.5">
                         <i class="bi bi-funnel"></i> Filter
                     </button>
@@ -95,6 +95,12 @@
                                 <div class="flex items-center gap-2">
                                     <i class="bi bi-hash text-gray-400"></i>
                                     Nama Siswa
+                                </div>
+                            </th>
+                            <th class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                                <div class="flex items-center gap-2">
+                                    <i class="bi bi-hash text-gray-400"></i>
+                                    Kelas
                                 </div>
                             </th>
                             <th class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
@@ -147,6 +153,7 @@
                             <tr>
                                 <td class="px-6 py-4 text-sm text-gray-900">{{ $item->siswa->nis ?? '-' }}</td>
                                 <td class="px-6 py-4 text-sm text-gray-900">{{ $item->siswa->nama_siswa ?? '-' }}</td>
+                                <td class="px-6 py-4 text-sm text-gray-900">{{ $item->siswa->kelas->nama_kelas ?? '-' }}</td>
                                 <td class="px-6 py-4 text-sm text-gray-900">{{ $item->created_at }}</td>
                                 <td class="px-6 py-4 text-sm text-gray-900">{{ $item->aspek_penilaian->uraian ?? '-' }}
                                 </td>
@@ -183,7 +190,7 @@
         </div>
     </div>
     @include('gurubk.skoring.penghargaan.create')
-   
+    @include('gurubk.skoring.penghargaan.filter')
     @include('gurubk.skoring.penghargaan.delete')
 @endsection
 
@@ -204,6 +211,11 @@
             openModal('modal-create');
         }
 
+         function openFilterModal() {
+
+            openModal('modal-filter');
+        }
+
         function openEditModal(id_penghargaan, tanggal_penghargaan, level_penghargaan, alasan) {
             document.getElementById('edit_id_penghargaan').value = id_penghargaan;
             document.getElementById('edit_tanggal_penghargaan').value = tanggal_penghargaan;
@@ -221,7 +233,7 @@
 
 
         document.addEventListener('click', function(event) {
-            ['modal-create', 'modal-edit', 'modal-delete'].forEach(modalId => {
+            ['modal-create', 'modal-edit', 'modal-delete', 'modal-filter'].forEach(modalId => {
                 const modal = document.getElementById(modalId);
                 if (modal && !modal.classList.contains('hidden') && event.target === modal) {
                     closeModal(modalId);
@@ -231,7 +243,7 @@
 
         document.addEventListener('keydown', function(event) {
             if (event.key === 'Escape') {
-                ['modal-create', 'modal-edit', 'modal-delete'].forEach(modalId => {
+                ['modal-create', 'modal-edit', 'modal-delete', 'modal-filter'].forEach(modalId => {
                     const modal = document.getElementById(modalId);
                     if (modal && !modal.classList.contains('hidden')) {
                         closeModal(modalId);

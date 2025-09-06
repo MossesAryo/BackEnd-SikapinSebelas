@@ -49,21 +49,14 @@
                     </a>
                 </li>
                 <li>
-                    <a href="{{ route('gurubk.siswa') }}" 
+                    <a href="{{ route('gurubk.jurusan') }}" 
                        class="flex items-center gap-3 px-3 py-3 rounded-lg menu-link 
                        {{ request()->routeIs('gurubk.siswa*') ? 'active-link' : 'text-gray-600 hover:bg-gray-50' }}">
                         <i class="bi bi-person"></i>
                         <span>Siswa</span>
                     </a>
                 </li>
-                <li>
-                    <a href="{{ route('kelas') }}" 
-                       class="flex items-center gap-3 px-3 py-3 rounded-lg menu-link 
-                       {{ request()->routeIs('kelas*') ? 'active-link' : 'text-gray-600 hover:bg-gray-50' }}">
-                        <i class="bi bi-people"></i>
-                        <span>Kelas</span>
-                    </a>
-                </li>
+               
 
 
                 <!-- FAQ Dropdown -->

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Siswa;
+use App\Models\Kelas;
 use App\Models\Penilaian;
 use Illuminate\Http\Request;
 use App\Models\Aspek_Penilaian;
@@ -13,17 +14,45 @@ class Skoring_PelanggaranBKController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
-    {
-        return view('gurubk.skoring.pelanggaran.index', [
-            // ambil penilaian yg aspeknya bertipe Pelanggaran
-            "penilaian" => Penilaian::whereHas('aspek_penilaian', function ($q) {
-                $q->where('jenis_poin', 'Pelanggaran');
-            })->get(),
-            "siswa"    => Siswa::all(),
-            "aspekPel" => Aspek_Penilaian::where('jenis_poin', 'Pelanggaran')->get()
-        ]);
+   public function index(Request $request)
+{
+    $jurusanList = Kelas::select('jurusan')->distinct()->pluck('jurusan');
+    $kelasList   = Kelas::all();
+    $siswa   = Siswa::all();
+    $aspekPel = Aspek_Penilaian::where('jenis_poin', 'pelanggaran')->get();
+
+    // Mulai query Penilaian (hanya yg jenis Pelanggaran)
+    $penilaianQuery = Penilaian::whereHas('aspek_penilaian', function ($q) {
+        $q->where('jenis_poin', 'Pelanggaran');
+    });
+
+    // Filter berdasarkan jurusan -> cek relasi Penilaian -> Siswa -> Kelas
+    if ($request->filled('jurusan')) {
+        $penilaianQuery->whereHas('siswa', function ($q) use ($request) {
+            $q->whereHas('kelas', function ($k) use ($request) {
+                $k->where('jurusan', $request->jurusan);
+            });
+        });
     }
+
+    // Filter berdasarkan nama_kelas
+    if ($request->filled('kelas')) {
+        $penilaianQuery->whereHas('siswa', function ($q) use ($request) {
+            $q->whereHas('kelas', function ($k) use ($request) {
+                $k->where('nama_kelas', $request->kelas);
+            });
+        });
+    }
+
+    // eager load relasi yg akan dipakai di view dan paginate
+    $penilaian = $penilaianQuery->with(['siswa.kelas', 'aspek_penilaian'])
+                                ->paginate(10)
+                                ->appends($request->query());
+
+
+    return view('gurubk.skoring.pelanggaran.index', compact('siswa','aspekPel','penilaian', 'jurusanList', 'kelasList'));
+}
+
 
     /**
      * Store a newly created resource in storage.
