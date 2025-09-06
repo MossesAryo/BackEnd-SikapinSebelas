@@ -60,10 +60,6 @@
                 </div>
                 <div class="flex gap-2">
 
-                    <button
-                        class="px-3 py-1.5 border border-gray-300 rounded-lg hover:bg-gray-50 flex items-center gap-1.5">
-                        <i class="bi bi-funnel"></i> Filter
-                    </button>
                     <button id="exportImportBtn"
                         class="px-3 py-1.5 border border-gray-300 rounded-lg hover:bg-gray-50 flex items-center gap-1.5">
                         <i class="bi bi-download"></i> Export
