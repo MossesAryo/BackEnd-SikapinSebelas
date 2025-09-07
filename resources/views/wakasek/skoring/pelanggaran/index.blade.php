@@ -155,11 +155,6 @@
                                 <td class="px-6 py-4 text-sm">
                                     <div class="flex gap-2">
                                         <button
-                                            onclick="openEditModal('{{ $item->id_penilaian }}', '{{ $item->created_at }}', '{{ $item->aspek_penilaian->n }}', '{{ $item->aspek_penilaian->indikator_poin }}')"
-                                            class="text-blue-600 hover:text-blue-800 action-btn">
-                                            <i class="bi bi-pencil-square"></i>
-                                        </button>
-                                        <button
                                             onclick="openDeleteModalPelanggaran('{{ $item->id_penilaian }}', '{{ $item->siswa->nama_siswa }}')"
                                             class="text-red-600 hover:text-red-800 action-btn">
                                             <i class="bi bi-trash"></i>
@@ -191,7 +186,7 @@
         </div>
     </div>
     @include('wakasek.skoring.pelanggaran.create')
-    @include('wakasek.skoring.pelanggaran.edit')
+    
     @include('wakasek.skoring.pelanggaran.delete')
 @endsection
 

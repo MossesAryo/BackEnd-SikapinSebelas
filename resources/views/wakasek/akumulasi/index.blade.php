@@ -1,5 +1,6 @@
  @extends('layouts.wakasek.app')
 
+
  @push('css')
      <style>
          .table-hover tbody tr:hover {
@@ -171,3 +172,4 @@
          });
      </script>
  @endpush
+

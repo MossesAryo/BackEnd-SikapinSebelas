@@ -8,12 +8,14 @@
                         <button class="p-2 text-gray-600 hover:bg-gray-100 rounded-lg">
                             <i class="bi bi-bell text-xl"></i>
                         </button>
-                        <div class="flex items-center gap-3">
-                            <div class="w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center text-white text-sm font-bold">
-                                W
-                            </div>
-                            <span class="text-gray-700">Guru BK</span>
-                        </div>
+                         <a href="{{ route('gurubk.profile') }}"
+                            class="flex items-center gap-3 hover:bg-gray-100 px-2 py-1 rounded-lg">
+                          <div
+                             class="w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center text-white text-sm font-bold">
+                              BK
+                           </div>
+                             <span class="text-gray-700">Guru BK</span>
+             </a>
                     </div>
                 </div>
             </div>

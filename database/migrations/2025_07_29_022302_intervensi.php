@@ -9,7 +9,7 @@ return new class extends Migration {
     public function up() {
         Schema::create('intervensi', function (Blueprint $table) {
             $table->integer('id_intervensi')->unique();
-            $table->integer('nip_bk');
+            $table->integer('nip_bk')->nullable();
             $table->integer('nis');
             $table->string('nama_intervensi');
             $table->enum('status', ['Dalam Bimbingan', 'Selesai']);

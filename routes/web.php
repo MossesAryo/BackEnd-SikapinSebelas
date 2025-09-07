@@ -15,12 +15,15 @@ use App\Http\Controllers\KetuaProgramController;
 use App\Http\Controllers\PenghargaanController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SiswaController;
+use App\Http\Controllers\SiswaBKController;
 use App\Http\Controllers\AkumulasiController;
-
-
+use App\Http\Controllers\DashboardBKController;
 use App\Http\Controllers\Skoring_PenghargaanController;
 use App\Http\Controllers\Skoring_PelanggaranController;
 use App\Http\Controllers\SuratPeringatanController;
+use App\Http\Controllers\Skoring_PenghargaanBKController;
+use App\Http\Controllers\Skoring_PelanggaranBKController;
+use App\Http\Controllers\IntervensiController;
 
 use Illuminate\Routing\RouteUri;
 
@@ -48,8 +51,8 @@ Route::get('/wakasek', [DashboardController::class, 'index'])->name('wakasek.das
 
 
 
-Route::get('/gurubk', fn() => view('gurubk.dashboard'))->name('gurubk.dashboard');
-Route::get('/gurubk/siswa', [SiswaController::class, 'siswaGuruBk'])->name('gurubk.siswa');
+// Route::get('/gurubk', fn() => view('gurubk.dashboard'))->name('gurubk.dashboard');
+
 Route::get('/login', [AController::class, 'index'])->name('login');
 Route::post('/login', [AController::class, 'login'])->name('login.submit');
 Route::get('/logout', [AController::class, 'logout'])->name('logout');
@@ -79,6 +82,9 @@ Route::get('/siswa/{nis}/show', [SiswaController::class, 'show'])->name('siswa.s
 Route::get('/siswa/export_pdf', [SiswaController::class, 'export_pdf'])->name('siswa.export.pdf');
 Route::get('/siswa/export_excel', [SiswaController::class, 'export_excel'])->name('siswa.export.excel');
 Route::post('/siswa/import', [SiswaController::class, 'import'])->name('siswa.import');
+
+Route::get('/wakasek/jurusan', [KelasController::class, 'jurusanwakasek'])->name('wakasek.jurusan');
+Route::get('/wakasek/kelas', [KelasController::class, 'kelaswakasek'])->name('wakasek.kelas');
 
 Route::get('/kelas', [KelasController::class, 'index'])->name('kelas');
 Route::post('/kelas/store', [KelasController::class, 'store'])->name('kelas.store');
@@ -161,6 +167,9 @@ Route::post('/skoring_penghargaan/store', [Skoring_PenghargaanController::class,
 Route::put('/skoring_penghargaan/{id}/update', [Skoring_PenghargaanController::class, 'update'])->name('skoring_penghargaan.update');
 Route::delete('/skoring_penghargaan/{id}/destroy', [Skoring_PenghargaanController::class, 'destroy'])->name('skoring_penghargaan.destroy');
 
+Route::get('/skoring_penghargaan/export_pdf', [Skoring_PenghargaanController::class, 'export_pdf'])->name('skoring_penghargaan.export.pdf');
+Route::get('/skoring_penghargaan/export', [Skoring_PenghargaanController::class, 'export_excel'])->name('skoring_penghargaan.export.excel');
+
 Route::get('/skoring_pelanggaran', [Skoring_PelanggaranController::class, 'index'])->name('skoring_pelanggaran.index');
 Route::post('/skoring_pelanggaran/store', [Skoring_PelanggaranController::class, 'store'])->name('skoring_pelanggaran.store');
 Route::put('/skoring_pelanggaran/{id}/update', [Skoring_PelanggaranController::class, 'update'])->name('skoring_pelanggaran.update');
@@ -168,13 +177,11 @@ Route::delete('/skoring_pelanggaran/{id}/destroy', [Skoring_PelanggaranControlle
 
 
 Route::get('/akumulasibk', [AkumulasiContoller::class, 'indexBK'])->name('akumulasiBK');
-
-
 Route::get('/akumulasi', [AkumulasiContoller::class, 'index'])->name('akumulasi.index');
-Route::post('/akumulasi/store', [AkumulasiContoller::class, 'store'])->name('akumulasi.store');
-Route::put('/akumulasi/{nis}/update', [AkumulasiContoller::class, 'update'])->name('akumulasi.update');
-Route::delete('/akumulasi/{nis}', [AkumulasiContoller::class, 'destroy'])->name('akumulasi.destroy');
 
+
+Route::get('/akumulasi/export_pdf', [AkumulasiContoller::class, 'export_pdf'])->name('akumulasi.export.pdf');
+Route::get('/akumulasi/export_excel', [AkumulasiContoller::class, 'export_excel'])->name('akumulasi.export.excel');
 
 
 // WAKASEKKKKK //
@@ -183,20 +190,26 @@ Route::delete('/akumulasi/{nis}', [AkumulasiContoller::class, 'destroy'])->name(
 
 
 // GURU BKKKKK
-Route::get('/gurubk', fn() => view('gurubk.dashboard'))->name('gurubk.dashboard');
-Route::get('/gurubk/siswa', [SiswaController::class, 'siswaGuruBk'])->name('gurubk.siswa');
+Route::get('/gurubk',[DashboardBKController::class, 'index'])->name('gurubk.dashboard');
+Route::get('gurubk/profile', [ProfileController::class, 'indexbk'])->name('gurubk.profile');
+Route::get('/gurubk/siswa', [SiswaBKController::class, 'siswaGuruBk'])->name('gurubk.siswa');
+Route::get('/gurubk/siswa/{nis}/show', [SiswaBKController::class, 'showBK'])->name('gurubk.siswa.show');
+Route::get('/siswaBK/export_pdf', [SiswaBKController::class, 'export_pdf'])->name('siswa.export.pdf');
+Route::get('/siswaBK/export_excel', [SiswaBKController::class, 'export_excel_siswaBK'])->name('siswa.export.excel');
+Route::post('/siswaBK/import', [SiswaBKController::class, 'import_siswaBK'])->name('siswa.import');
+
+Route::get('/gurubk/jurusan', [KelasController::class, 'jurusanbk'])->name('gurubk.jurusan');
+Route::get('/gurubk/kelas', [KelasController::class, 'kelasbk'])->name('gurubk.kelas');
 
 Route::get('/aspek_penghargaanbk', [Aspek_penilaianController::class, 'indexPenghargaanBK'])->name('aspek_penghargaanBK.index');
 Route::post('/aspek_penghargaanbk/store', [Aspek_penilaianController::class, 'storePenghargaanBK'])->name('aspek_penghargaanBK.store');
 Route::put('/aspek_penghargaanbk/{id}/update', [Aspek_penilaianController::class, 'updatePenghargaanBK'])->name('aspek_penghargaanBK.update');
 Route::delete('/aspek_penghargaanbk/{id}/destroy', [Aspek_penilaianController::class, 'destroyPenghargaanBK'])->name('aspek_penghargaanBK.destroy');
 
-
 Route::get('/aspek_pelanggaranbk', [Aspek_penilaianController::class, 'indexPelanggaranBK'])->name('aspek_pelanggaranBK.index');
 Route::post('/aspek_pelanggaranbk/store', [Aspek_penilaianController::class, 'storePelanggaranBK'])->name('aspek_pelanggaranBK.store');
 Route::put('/aspek_pelanggaranbk/{id}/update', [Aspek_penilaianController::class, 'updatePelanggaranBK'])->name('aspek_pelanggaranBK.update');
 Route::delete('/aspek_pelanggaranbk/{id}/destroy', [Aspek_penilaianController::class, 'destroyPelanggaranBK'])->name('aspek_pelanggaranBK.destroy');
-
 
 Route::get('/penghargaanbk', [PenghargaanController::class, 'indexBK'])->name('penghargaanbk.index');
 Route::post('/penghargaanbk/store', [PenghargaanController::class, 'storeBK'])->name('penghargaanbk.store');
@@ -208,4 +221,23 @@ Route::post('/peringatanbk/store', [SuratPeringatanController::class, 'storeBK']
 Route::put('/peringatanbk/{id}/update', [SuratPeringatanController::class, 'updateBK'])->name('peringatanbk.update');
 Route::delete('/peringatanbk/{id}', [SuratPeringatanController::class, 'destroyBK'])->name('peringatanbk.destroy');
 
+Route::get('/skoring_penghargaanBK', [Skoring_PenghargaanBKController::class, 'index'])->name('skoring_penghargaanBK.index');
+Route::post('/skoring_penghargaanBK/store', [Skoring_PenghargaanBKController::class, 'store'])->name('skoring_penghargaanBK.store');
+Route::put('/skoring_penghargaanBK/{id}/update', [Skoring_PenghargaanBKController::class, 'update'])->name('skoring_penghargaanBK.update');
+Route::delete('/skoring_penghargaanBK/{id}/destroy', [Skoring_PenghargaanBKController::class, 'destroy'])->name('skoring_penghargaanBK.destroy');
 
+Route::get('/skoring_penghargaanBK/export_pdf', [Skoring_PenghargaanBKController::class, 'export_pdf'])->name('skoring_penghargaanBK.export.pdf');
+Route::get('/skoring_penghargaanBK/export', [Skoring_PenghargaanBKController::class, 'export_excel'])->name('skoring_penghargaanBK.export.excel');
+
+Route::get('/skoring_pelanggaranBK', [Skoring_PelanggaranBKController::class, 'index'])->name('skoring_pelanggaranBK.index');
+Route::post('/skoring_pelanggaranBK/store', [Skoring_PelanggaranBKController::class, 'store'])->name('skoring_pelanggaranBK.store');
+Route::put('/skoring_pelanggaranBK/{id}/update', [Skoring_PelanggaranBKController::class, 'update'])->name('skoring_pelanggaranBK.update');
+Route::delete('/skoring_pelanggaranBK/{id}/destroy', [Skoring_PelanggaranBKController::class, 'destroy'])->name('skoring_pelanggaranBK.destroy');
+
+Route::get('/skoring_pelanggaranBK/export_pdf', [Skoring_PelanggaranBKController::class, 'export_pdf'])->name('skoring_pelanggaranBK.export.pdf');
+Route::get('/skoring_pelanggaranBK/export', [Skoring_PelanggaranBKController::class, 'export_excel'])->name('skoring_pelanggaranBK.export.excel');
+
+Route::get('/intervensi', [IntervensiController::class, 'index'])->name('intervensi.index');
+Route::post('/intervensi/store', [IntervensiController::class, 'store'])->name('intervensi.store');
+Route::put('/intervensi/{id}/update', [IntervensiController::class, 'update'])->name('intervensi.update');
+Route::delete('/intervensi/{id}/destroy', [IntervensiController::class, 'destroy'])->name('intervensi.destroy');

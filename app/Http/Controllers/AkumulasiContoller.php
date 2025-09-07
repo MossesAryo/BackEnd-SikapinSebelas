@@ -6,6 +6,10 @@ use App\Models\kelas;
 use Illuminate\Http\Request;
 use App\Models\siswa;
 
+use App\Exports\Akumulasi_ExportExcel;
+use App\Imports\Akumulasi_Import;
+use Barryvdh\DomPDF\Facade\Pdf;
+use Maatwebsite\Excel\Facades\Excel;
 
 class AkumulasiContoller extends Controller
 {
@@ -14,7 +18,9 @@ class AkumulasiContoller extends Controller
      */
     public function index(Request $request)
     {
+
         $jurusanList = Kelas::select('jurusan')->distinct()->pluck('jurusan');
+
         $kelasList   = Kelas::all();
 
         $query = Siswa::query();
@@ -33,12 +39,25 @@ class AkumulasiContoller extends Controller
     }
 
 
-    public function indexBK()
+    public function indexBK(Request $request)
     {
-        return view('gurubk.akumulasi.index', [
-            'siswa' => siswa::all(),
 
-        ]);
+        $jurusanList = kelas::select('jurusan')->distinct()->pluck('jurusan');
+        $kelasList   = Kelas::all();
+
+        $query = Siswa::query();
+
+        if ($request->filled('jurusan')) {
+            $query->whereHas('kelas', fn($q) => $q->where('jurusan', $request->jurusan));
+        }
+        if ($request->filled('kelas')) {
+            $query->whereHas('kelas', fn($q) => $q->where('nama_kelas', $request->kelas));
+        }
+
+        $siswa = $query->get();
+
+        return view('gurubk.akumulasi.index', compact('siswa', 'jurusanList', 'kelasList'));
+
     }
 
     /**
@@ -88,4 +107,18 @@ class AkumulasiContoller extends Controller
     {
         //
     }
+
+    public function export_pdf()
+    {
+        $akumulasi = Siswa::with('kelas')->get();
+
+        $pdf = PDF::loadView('export.akumulasi.pdf', compact('akumulasi'));
+        return $pdf->download('akumulasi.pdf');
+    }
+
+    public function export_Excel()
+{
+    return Excel::download(new Akumulasi_ExportExcel, 'akumulasi.xlsx');
+}
+
 }

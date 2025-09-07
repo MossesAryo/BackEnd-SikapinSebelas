@@ -81,7 +81,7 @@ class SuratPeringatanController extends Controller
 
     public function export_excel()
     {
-        return Excel::download(new Surat_Peringatan_ExportExcel, 'surat_peringatan.xlsx');
+        return Excel::download(new Surat_Peringatan_ExportExcel, 'peringatan.xlsx');
     }
 
     public function import(Request $request)

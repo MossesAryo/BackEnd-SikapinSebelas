@@ -34,11 +34,7 @@
                 <h1 class="text-2xl font-bold gradient-text">Data Penghargaan</h1>
                 <p class="text-gray-600 mt-1">Kelola data Penghargaan</p>
             </div>
-            <button onclick="openCreateModal()"
-                class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg flex items-center gap-2 transition-colors">
-                <i class="bi bi-plus-lg"></i>
-                Tambah Penghargaan
-            </button>
+            
         </div>
 
         <!-- Flash Messages -->
@@ -63,17 +59,17 @@
                         class="pl-10 pr-4 py-1.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent w-full">
                 </div>
                 <div class="flex gap-2">
-                    <button
-                        class="px-3 py-1.5 border border-gray-300 rounded-lg hover:bg-gray-50 flex items-center gap-1.5">
-                        <i class="bi bi-funnel"></i> Filter
-                    </button>
-                    <button
+
+                    <button id="exportImportBtn"
                         class="px-3 py-1.5 border border-gray-300 rounded-lg hover:bg-gray-50 flex items-center gap-1.5">
                         <i class="bi bi-download"></i> Export
                     </button>
                 </div>
             </div>
         </div>
+
+        @include('gurubk.penghargaan.modalExportImport')
+
 
           <!-- Data Table -->
         <div class="bg-white rounded-xl shadow-sm border overflow-hidden">
@@ -110,12 +106,7 @@
                                 </div>
                             </th>
                         
-                            <th class="px-5 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                                <div class="flex items-center gap-2">
-                                    <i class="bi bi-gear text-gray-400"></i>
-                                    Aksi
-                                </div>
-                            </th>
+                            
                         </tr>
                     </thead>
 
@@ -139,7 +130,7 @@
                                 <td class="px-6 py-4 whitespace-nowrap">
                                     <span class="text-lg font-bold text-black">{{ $item->alasan }}</span>
                                 </td>
-                                <td class="px-6 py-4 whitespace-nowrap">
+                                {{-- <td class="px-6 py-4 whitespace-nowrap">
                                     <div class="flex items-center gap-1">
                                         <button
                                             onclick="openEditModal('{{ $item->id_penghargaan }}', '{{ $item->tanggal_penghargaan }}', '{{ $item->level_penghargaan }}', '{{ $item->alasan }}')"
@@ -154,7 +145,7 @@
                                             <i class="bi bi-trash text-sm"></i>
                                         </button>
                                     </div>
-                                </td>
+                                </td> --}}
                             </tr>
                         @empty
                             <tr>
