@@ -177,8 +177,11 @@
                             </tr>
                         @endforelse
                     </tbody>
-
                 </table>
+            </div>
+            <!-- PAGINATION -->
+            <div class="px-6 py-4 border-t border-gray-200 bg-white">
+                @include('layouts.wakasek.pagination', ['data' => $penilaian])
             </div>
         </div>
     </div>
@@ -239,28 +242,28 @@
                 });
             }
         });
-         document.addEventListener("DOMContentLoaded", function () {
-    const searchInput = document.querySelector("#searchPenghargaan input");
-    const tableRows = document.querySelectorAll("tbody tr");
+        document.addEventListener("DOMContentLoaded", function() {
+            const searchInput = document.querySelector("#searchPenghargaan input");
+            const tableRows = document.querySelectorAll("tbody tr");
 
-    searchInput.addEventListener("keyup", function () {
-        const searchText = this.value.toLowerCase();
+            searchInput.addEventListener("keyup", function() {
+                const searchText = this.value.toLowerCase();
 
-        tableRows.forEach(row => {
-            
-            if (row.querySelector("td[colspan]")) {
-                row.style.display = searchText === "" ? "" : "none";
-                return;
-            }
+                tableRows.forEach(row => {
 
-            const rowText = row.innerText.toLowerCase();
-            if (rowText.includes(searchText)) {
-                row.style.display = "";
-            } else {
-                row.style.display = "none";
-            }
+                    if (row.querySelector("td[colspan]")) {
+                        row.style.display = searchText === "" ? "" : "none";
+                        return;
+                    }
+
+                    const rowText = row.innerText.toLowerCase();
+                    if (rowText.includes(searchText)) {
+                        row.style.display = "";
+                    } else {
+                        row.style.display = "none";
+                    }
+                });
+            });
         });
-    });
-});
     </script>
 @endpush

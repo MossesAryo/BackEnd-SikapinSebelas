@@ -45,10 +45,10 @@
                         class="px-3 py-1.5 border border-gray-300 rounded-lg hover:bg-gray-50 flex items-center gap-1.5">
                         <i class="bi bi-funnel"></i> Filter
                     </button>
-                    <button
-                    id="exportImportBtn" class="px-3 py-1.5 border border-gray-300 rounded-lg hover:bg-gray-50 flex items-center gap-1.5">
-                    <i class="bi bi-download"></i> Export / Import
-                </button>
+                    <button id="exportImportBtn"
+                        class="px-3 py-1.5 border border-gray-300 rounded-lg hover:bg-gray-50 flex items-center gap-1.5">
+                        <i class="bi bi-download"></i> Export / Import
+                    </button>
                 </div>
             </div>
         </div>
@@ -150,6 +150,10 @@
                     </tbody>
                 </table>
             </div>
+            <!-- PAGINATION -->
+            <div class="px-6 py-4 border-t border-gray-200 bg-white">
+                @include('layouts.wakasek.pagination', ['data' => $ketua_program])
+            </div>
         </div>
     </div>
 
@@ -160,5 +164,4 @@
 
 @push('js')
     <script src="{{ asset('js/wakasek/ketua_program.js') }}"></script>
-
 @endpush

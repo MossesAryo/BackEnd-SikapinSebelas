@@ -34,15 +34,16 @@
 
 
         <div class="bg-white p-6 rounded-xl shadow-sm border flex flex-col md:flex-row gap-2 items-center justify-between">
-            <div class="relative w-full md:w-64">
+            <div id="searchGurubk" class="relative w-full md:w-64">
                 <i class="bi bi-search absolute left-3 top-2.5 text-gray-400"></i>
-                <input type="text" placeholder="Cari Guru BK..." class="pl-10 pr-4 py-1.5 border rounded-lg w-full">
+                <input type="text" placeholder="Cari Guru BK..."
+                    class="pl-10 pr-4 py-1.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent w-full">
             </div>
             <div class="flex gap-2">
                 <button class="px-3 py-1.5 border rounded-lg hover:bg-gray-50 flex items-center gap-1.5"><i
                         class="bi bi-funnel"></i> Filter</button>
-                 <button
-                    id="exportImportBtn" class="px-3 py-1.5 border border-gray-300 rounded-lg hover:bg-gray-50 flex items-center gap-1.5">
+                <button id="exportImportBtn"
+                    class="px-3 py-1.5 border border-gray-300 rounded-lg hover:bg-gray-50 flex items-center gap-1.5">
                     <i class="bi bi-download"></i> Export / Import
                 </button>
             </div>
@@ -52,26 +53,7 @@
 
 
 
-        <!-- Search and Filter -->
-        <div class="bg-white p-6 rounded-xl shadow-sm border">
-            <div class="flex flex-col md:flex-row gap-2 items-center justify-between">
-                <div id="searchGurubk" class="relative w-full md:w-64">
-                    <i class="bi bi-search absolute left-3 top-2.5 text-gray-400"></i>
-                    <input type="text" placeholder="Cari Guru BK..."
-                        class="pl-10 pr-4 py-1.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent w-full">
-                </div>
-                <div class="flex gap-2">
-                    <button
-                        class="px-3 py-1.5 border border-gray-300 rounded-lg hover:bg-gray-50 flex items-center gap-1.5">
-                        <i class="bi bi-funnel"></i> Filter
-                    </button>
-                    <button
-                        class="px-3 py-1.5 border border-gray-300 rounded-lg hover:bg-gray-50 flex items-center gap-1.5">
-                        <i class="bi bi-download"></i> Export
-                    </button>
-                </div>
-            </div>
-        </div>
+       
 
         <!-- Data Table -->
 
@@ -159,6 +141,10 @@
                         @endforelse
                     </tbody>
                 </table>
+            </div>
+            <!-- PAGINATION -->
+            <div class="px-6 py-4 border-t border-gray-200 bg-white">
+                @include('layouts.wakasek.pagination', ['data' => $guru_bk])
             </div>
         </div>
     </div>

@@ -140,6 +140,10 @@
                     </tbody>
                 </table>
             </div>
+            <!-- PAGINATION -->
+            <div class="px-6 py-4 border-t border-gray-200 bg-white">
+                @include('layouts.wakasek.pagination', ['data' => $kelas])
+            </div>
         </div>
     </div>
 
@@ -147,71 +151,69 @@
     @include('wakasek.kelas.edit')
     @include('wakasek.kelas.delete')
     @push('js')
-<script>
-    
-    function openCreateModal() {
-        const modal = document.getElementById('modal-create');
-        if (!modal) return console.warn('modal-create tidak ditemukan');
-        modal.classList.remove('hidden');
-    }
+        <script>
+            function openCreateModal() {
+                const modal = document.getElementById('modal-create');
+                if (!modal) return console.warn('modal-create tidak ditemukan');
+                modal.classList.remove('hidden');
+            }
 
-    function openFilterModal() {
-        const modal = document.getElementById('modal-filter');
-        if (!modal) return console.warn('modal-filter tidak ditemukan');
-        modal.classList.remove('hidden');
-    }
+            function openFilterModal() {
+                const modal = document.getElementById('modal-filter');
+                if (!modal) return console.warn('modal-filter tidak ditemukan');
+                modal.classList.remove('hidden');
+            }
 
-    function openEditModal(id, nama, jurusann = null) {
-        const idK = document.getElementById('edit_id_kelas');
-        const nm  = document.getElementById('edit_nama_kelas');
-        const jur = document.getElementById('jurusan');
-        const form= document.getElementById('form-edit');
-        const mdl = document.getElementById('modal-edit');
+            function openEditModal(id, nama, jurusann = null) {
+                const idK = document.getElementById('edit_id_kelas');
+                const nm = document.getElementById('edit_nama_kelas');
+                const jur = document.getElementById('jurusan');
+                const form = document.getElementById('form-edit');
+                const mdl = document.getElementById('modal-edit');
 
-        if (idK)  idK.value = id;
-        if (nm)   nm.value  = nama;
-        if (jur && jurusann !== null) jur.value = jurusann;
-        if (form) form.action = `/kelas/${id}/update`;
-        if (!mdl) return console.warn('modal-edit tidak ditemukan');
-        mdl.classList.remove('hidden');
-    }
+                if (idK) idK.value = id;
+                if (nm) nm.value = nama;
+                if (jur && jurusann !== null) jur.value = jurusann;
+                if (form) form.action = `/kelas/${id}/update`;
+                if (!mdl) return console.warn('modal-edit tidak ditemukan');
+                mdl.classList.remove('hidden');
+            }
 
-    function openDeleteModal(id, nama) {
-        const nameEl = document.getElementById('delete-nama-kelas');
-        const form   = document.getElementById('form-delete');
-        const mdl    = document.getElementById('modal-delete');
+            function openDeleteModal(id, nama) {
+                const nameEl = document.getElementById('delete-nama-kelas');
+                const form = document.getElementById('form-delete');
+                const mdl = document.getElementById('modal-delete');
 
-        if (nameEl) nameEl.textContent = nama;
-        if (form)   form.action = `/kelas/${id}`;
-        if (!mdl) return console.warn('modal-delete tidak ditemukan');
-        mdl.classList.remove('hidden');
-    }
+                if (nameEl) nameEl.textContent = nama;
+                if (form) form.action = `/kelas/${id}`;
+                if (!mdl) return console.warn('modal-delete tidak ditemukan');
+                mdl.classList.remove('hidden');
+            }
 
-    // --- CLOSERS / UX ---
-    function closeAllModals() {
-        document.querySelectorAll('[id^="modal-"]').forEach(m => m.classList.add('hidden'));
-    }
+            // --- CLOSERS / UX ---
+            function closeAllModals() {
+                document.querySelectorAll('[id^="modal-"]').forEach(m => m.classList.add('hidden'));
+            }
 
-    // ESC to close
-    document.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape') closeAllModals();
-    });
+            // ESC to close
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape') closeAllModals();
+            });
 
-    // Klik di overlay untuk menutup (pastikan elemen overlay adalah elemen dengan id modal-*)
-    document.querySelectorAll('[id^="modal-"]').forEach(modal => {
-        modal.addEventListener('click', function (e) {
-            if (e.target === modal) modal.classList.add('hidden');
-        });
-    });
-    function closeModal(id) {
-    document.getElementById(id).classList.add('hidden');
-}
-function openModal(id) {
-    document.getElementById(id).classList.remove('hidden');
-}
+            // Klik di overlay untuk menutup (pastikan elemen overlay adalah elemen dengan id modal-*)
+            document.querySelectorAll('[id^="modal-"]').forEach(modal => {
+                modal.addEventListener('click', function(e) {
+                    if (e.target === modal) modal.classList.add('hidden');
+                });
+            });
 
-</script>
-@endpush
+            function closeModal(id) {
+                document.getElementById(id).classList.add('hidden');
+            }
 
+            function openModal(id) {
+                document.getElementById(id).classList.remove('hidden');
+            }
+        </script>
+    @endpush
 @endsection
-

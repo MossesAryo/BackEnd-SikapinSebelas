@@ -31,7 +31,7 @@ class SiswaController extends Controller
             $query->whereHas('kelas', fn($q) => $q->where('nama_kelas', $request->kelas));
         }
 
-        $siswa = $query->paginate(2);
+        $siswa = $query->paginate(10);
 
         return view('wakasek.siswa.index', compact('siswa', 'jurusanList', 'kelasList'));
     }
@@ -49,7 +49,7 @@ class SiswaController extends Controller
 
    
 
- 
+
 
     public function store(Request $request)
     {
@@ -146,21 +146,24 @@ class SiswaController extends Controller
     {
         return Excel::download(new Siswa_ExportExcel, 'siswa.xlsx');
     }
-    
+
       public function import(Request $request)
     {
         $siswa = siswa::all();
 
         $request->validate([
             'file' => 'required|mimes:xlsx,xls,csv|max:10240',
-            
+
         ]);
 
         Excel::import(new Siswa_Import, $request->file('file'));
 
         return redirect()->back()->with('success', 'Data Siswa berhasil diimport!');
     }
-    
+
+
+
+
 
 
 

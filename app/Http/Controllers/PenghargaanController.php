@@ -14,7 +14,7 @@ class PenghargaanController extends Controller
 {
     public function index()
     {
-        $penghargaan = Penghargaan::all();
+        $penghargaan = Penghargaan::paginate(10);
         return view('wakasek.penghargaan.index', compact('penghargaan'));
     }
 
@@ -57,7 +57,7 @@ class PenghargaanController extends Controller
         ];
 
         $updated = Penghargaan::where('id_penghargaan', $id_penghargaan)->update($data);
-       
+
         return redirect()->route('penghargaan.index')->with('success', 'Penghargaan berhasil diedit.');
     }
 
@@ -84,21 +84,21 @@ class PenghargaanController extends Controller
     {
         return Excel::download(new Penghargaan_ExportExcel, 'penghargaan.xlsx');
     }
-    
+
       public function import(Request $request)
     {
         $penghargaan = penghargaan::all();
 
         $request->validate([
             'file' => 'required|mimes:xlsx,xls,csv|max:10240',
-            
+
         ]);
 
         Excel::import(new Penghargaan_Import, $request->file('file'));
 
         return redirect()->back()->with('success', 'Data penghargaan berhasil diimport!');
     }
-    
+
 
 
 
@@ -139,7 +139,7 @@ class PenghargaanController extends Controller
         ];
 
         $updated = Penghargaan::where('id_penghargaan', $id_penghargaan)->update($data);
-       
+
         return redirect()->route('penghargaanbk.index')->with('success', 'Penghargaan berhasil diedit.');
     }
 

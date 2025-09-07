@@ -68,10 +68,10 @@
                         <i class="bi bi-funnel"></i> Filter
                     </button>
 
-                    <button
-                    id="exportImportBtn" class="px-3 py-1.5 border border-gray-300 rounded-lg hover:bg-gray-50 flex items-center gap-1.5">
-                    <i class="bi bi-download"></i> Export / Import
-                </button>
+                    <button id="exportImportBtn"
+                        class="px-3 py-1.5 border border-gray-300 rounded-lg hover:bg-gray-50 flex items-center gap-1.5">
+                        <i class="bi bi-download"></i> Export / Import
+                    </button>
                 </div>
             </div>
         </div>
@@ -89,8 +89,8 @@
                 <table class="w-full">
                     <thead class="bg-gray-50 border-b border-gray-200">
                         <tr>
-                            
-                           
+
+
                             <th class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
                                 <div class="flex items-center gap-2">
                                     <i class="bi bi-person text-gray-400"></i>
@@ -127,7 +127,7 @@
                     <tbody class="bg-white divide-y divide-gray-100">
                         @forelse ($aspek_penilaian as $item)
                             <tr class="hover:bg-gray-50 group">
-                                
+
                                 <td class="px-6 py-4 whitespace-nowrap">
                                     <div class="text-sm font-semibold text-gray-900">{{ $item->kategori }}</div>
                                 </td>
@@ -170,6 +170,10 @@
                         @endforelse
                     </tbody>
                 </table>
+            </div>
+            <!-- PAGINATION -->
+            <div class="px-6 py-4 border-t border-gray-200 bg-white">
+                @include('layouts.wakasek.pagination', ['data' => $aspek_penilaian])
             </div>
         </div>
     </div>

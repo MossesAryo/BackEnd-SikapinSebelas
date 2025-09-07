@@ -179,11 +179,9 @@
                         @endforelse
                     </tbody>
                 </table>
-                <div class="px-6 py-4 border-t border-gray-200">
-                    <div class="flex justify-end">
-                        
-                        {{ $siswa->links('pagination::tailwind') }}
-                    </div>
+                <!-- PAGINATION -->
+                <div class="px-6 py-4 border-t border-gray-200 bg-white">
+                    @include('layouts.wakasek.pagination', ['data' => $siswa])
                 </div>
             </div>
         </div>

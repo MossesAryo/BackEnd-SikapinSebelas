@@ -45,10 +45,10 @@
                         class="px-3 py-1.5 border border-gray-300 rounded-lg hover:bg-gray-50 flex items-center gap-1.5">
                         <i class="bi bi-funnel"></i> Filter
                     </button>
-                    <button
-                    id="exportImportBtn" class="px-3 py-1.5 border border-gray-300 rounded-lg hover:bg-gray-50 flex items-center gap-1.5">
-                    <i class="bi bi-download"></i> Export / Import
-                </button>
+                    <button id="exportImportBtn"
+                        class="px-3 py-1.5 border border-gray-300 rounded-lg hover:bg-gray-50 flex items-center gap-1.5">
+                        <i class="bi bi-download"></i> Export / Import
+                    </button>
                 </div>
             </div>
         </div>
@@ -68,13 +68,13 @@
                             <th class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
                                 <div class="flex items-center gap-2">
                                     <i class="bi bi-hash text-gray-400"></i>
-                                     KODE
+                                    KODE
                                 </div>
                             </th>
                             <th class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
                                 <div class="flex items-center gap-2">
                                     <i class="bi bi-hash text-gray-400"></i>
-                                     Tanggal Surat Peringatan
+                                    Tanggal Surat Peringatan
                                 </div>
                             </th>
                             <th class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
@@ -89,7 +89,7 @@
                                     Alasan
                                 </div>
                             </th>
-                        
+
                             <th class="px-5 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
                                 <div class="flex items-center gap-2">
                                     <i class="bi bi-gear text-gray-400"></i>
@@ -127,8 +127,7 @@
                                             title="Edit Penghargaan">
                                             <i class="bi bi-pencil-square text-sm"></i>
                                         </button>
-                                        <button
-                                            onclick="openDeleteModal('{{ $item->id_sp}}', '{{ $item->level_sp }}')"
+                                        <button onclick="openDeleteModal('{{ $item->id_sp }}', '{{ $item->level_sp }}')"
                                             class="action-btn inline-flex items-center justify-center w-9 h-9 text-red-600 hover:text-red-800 hover:bg-red-50 rounded-full"
                                             title="Hapus Penghargaan">
                                             <i class="bi bi-trash text-sm"></i>
@@ -150,6 +149,10 @@
                         @endforelse
                     </tbody>
                 </table>
+            </div>
+            <!-- PAGINATION -->
+            <div class="px-6 py-4 border-t border-gray-200 bg-white">
+                @include('layouts.wakasek.pagination', ['data' => $peringatan])
             </div>
         </div>
     </div>
