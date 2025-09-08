@@ -190,6 +190,7 @@
     @include('wakasek.siswa.edit')
     @include('wakasek.siswa.delete')
     @include('wakasek.siswa.filter')
+ 
 @endsection
 
 @push('js')

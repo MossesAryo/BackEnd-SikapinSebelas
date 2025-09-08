@@ -17,7 +17,7 @@ class siswa_penghargaan extends Model
 
     public function penghargaan()
     {
-        return $this->belongsTo(User::class, 'id_penghargaan', 'id_penghargaan');
+        return $this->belongsTo(penghargaan::class, 'id_penghargaan', 'id_penghargaan');
     }
 
     public function siswa()

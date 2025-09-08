@@ -1,5 +1,4 @@
 
-        // Modal management
         function openModal(modalId) {
             document.getElementById(modalId).classList.remove('hidden');
             document.body.classList.add('modal-open');
@@ -8,39 +7,50 @@
 
             openModal('modal-filter');
         }
+         function openpenghargaanModal(nis) {
+            document.getElementById('id_penghargaan').value = '';
+            openModal('modal-penghargaan');
+        }
+         function openperingatanModal(nis) {
+            document.getElementById('id_sp').value = '';
+            openModal('modal-peringatan');
+        }
 
         function closeModal(modalId) {
             document.getElementById(modalId).classList.add('hidden');
             document.body.classList.remove('modal-open');
         }
-
-        // Create modal
         function openCreateModal() {
             document.getElementById('nis').value = '';
             document.getElementById('nama_siswa').value = '';
             document.getElementById('id_kelas').value = '';
             openModal('modal-create');
         }
-
-        // Edit modal
         function openEditModal(nis, nama_siswa, id_kelas) {
             document.getElementById('edit_nis').value = nis;
             document.getElementById('edit_nama_siswa').value = nama_siswa;
             document.getElementById('edit_id_kelas').value = id_kelas;
             document.getElementById('form-edit').action = `/siswa/${nis}/update`;
             openModal('modal-edit');
-        }
-
-        // Delete modal
+        } 
         function openDeleteModal(nis, nama_siswa) {
             document.getElementById('delete-nama-siswa').innerText = nama_siswa;
             document.getElementById('form-delete').action = `/siswa/${nis}`;
             openModal('modal-delete');
         }
+        function openDeletePenghargaanModal(nis,id,nama_penghargaan) {
+              document.getElementById('delete-nama-penghargaan').innerText = nama_penghargaan;
+              document.getElementById('form-delete-penghargaan').action = `/siswa/${nis}/penghargaan/${id}`;
+              openModal('modal-delete-penghargaan');
+           }
+        function openDeletePeringatanModal(nis,id,nama_peringatan) {
+              document.getElementById('delete-nama-peringatan').innerText = nama_peringatan;
+              document.getElementById('form-delete-peringatan').action = `/siswa/${nis}/peringatan/${id}`;
+              openModal('modal-delete-peringatan');
+           }
 
-        // Event listeners
         document.addEventListener('click', function(event) {
-            ['modal-create', 'modal-edit', 'modal-delete','modal-filter'].forEach(modalId => {
+            ['modal-create', 'modal-edit', 'modal-delete','modal-filter','modal-penghargaan','modal-peringatan','modal-delete-penghargaan','modal-delete-peringatan'].forEach(modalId => {
                 const modal = document.getElementById(modalId);
                 if (modal && !modal.classList.contains('hidden') && event.target === modal) {
                     closeModal(modalId);
@@ -50,7 +60,7 @@
 
         document.addEventListener('keydown', function(event) {
             if (event.key === 'Escape') {
-                ['modal-create', 'modal-edit', 'modal-delete','modal-filter'].forEach(modalId => {
+                ['modal-create', 'modal-edit', 'modal-delete','modal-filter','modal-penghargaan','modal-peringatan','modal-delete-penghargaan','modal-delete-peringatan'].forEach(modalId => {
                     const modal = document.getElementById(modalId);
                     if (modal && !modal.classList.contains('hidden')) {
                         closeModal(modalId);

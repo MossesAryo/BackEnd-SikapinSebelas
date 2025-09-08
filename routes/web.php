@@ -77,7 +77,11 @@ Route::get('/siswa', [SiswaController::class, 'index'])->name('siswa.index');
 Route::post('/siswa/store', [SiswaController::class, 'store'])->name('siswa.store');
 Route::put('/siswa/{nis}/update', [SiswaController::class, 'update'])->name('siswa.update');
 Route::delete('/siswa/{nis}', [SiswaController::class, 'destroy'])->name('siswa.destroy');
+Route::delete('/siswa/{nis}/penghargaan/{id}', [SiswaController::class, 'destroyPenghargaan'])->name('siswa.penghargaan.destroy');
+Route::delete('/siswa/{nis}/peringatan/{id}', [SiswaController::class, 'destroyPeringatan'])->name('siswa.peringatan.destroy');
 Route::get('/siswa/{nis}/show', [SiswaController::class, 'show'])->name('siswa.show');
+Route::post('/siswa/{nis}/show/penghargaan', [SiswaController::class, 'penghargaan'])->name('siswa.penghargaan');
+Route::post('/siswa/{nis}/show/peringatan', [SiswaController::class, 'peringatan'])->name('siswa.peringatan');
 
 Route::get('/siswa/export_pdf', [SiswaController::class, 'export_pdf'])->name('siswa.export.pdf');
 Route::get('/siswa/export_excel', [SiswaController::class, 'export_excel'])->name('siswa.export.excel');
@@ -184,12 +188,7 @@ Route::get('/akumulasi/export_pdf', [AkumulasiContoller::class, 'export_pdf'])->
 Route::get('/akumulasi/export_excel', [AkumulasiContoller::class, 'export_excel'])->name('akumulasi.export.excel');
 
 
-// WAKASEKKKKK //
 
-
-
-
-// GURU BKKKKK
 Route::get('/gurubk',[DashboardBKController::class, 'index'])->name('gurubk.dashboard');
 Route::get('gurubk/profile', [ProfileController::class, 'indexbk'])->name('gurubk.profile');
 Route::get('/gurubk/siswa', [SiswaBKController::class, 'siswaGuruBk'])->name('gurubk.siswa');

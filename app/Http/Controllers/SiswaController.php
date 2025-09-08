@@ -9,7 +9,10 @@ use Illuminate\Http\Request;
 
 use App\Exports\Siswa_ExportExcel;
 use App\Imports\Siswa_Import;
+use App\Models\penghargaan;
 use App\Models\siswa_penghargaan;
+use App\Models\siswa_sp;
+use App\Models\surat_peringatan;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Maatwebsite\Excel\Facades\Excel;
 
@@ -22,6 +25,8 @@ class SiswaController extends Controller
     {
         $jurusanList = Kelas::select('jurusan')->distinct()->pluck('jurusan');
         $kelasList   = Kelas::all();
+      
+        $penghargaanList = siswa_penghargaan::all();
 
         $query = Siswa::query();
 
@@ -69,31 +74,32 @@ class SiswaController extends Controller
         return redirect()->route('siswa.index')->with('success', 'Siswa berhasil ditambahkan');
     }
 
-    public function Penghargaan(Request $request,string $id)
+    public function Penghargaan(Request $request,string $nis)
     {
          $request->validate([
             'id_penghargaan' => 'required|string',
         ]);
 
         siswa_penghargaan::create([
-            'nis' => $id,
+            'nis' => $nis,
             'id_penghargaan' => $request->id_penghargaan,
         ]);
 
-        return redirect()->route('siswa.show')->with('success', 'Penghargaan berhasil ditambahkan');
+       return redirect()->back()->with('success', 'Penghargaan berhasil ditambahkan');
+
     }
-    public function peringatan(Request $request,string $id)
+    public function peringatan(Request $request,string $nis)
     {
          $request->validate([
             'id_sp' => 'required|string',
         ]);
 
-        siswa_penghargaan::create([
-            'nis' => $id,
+        siswa_sp::create([
+            'nis' => $nis,
             'id_sp' => $request->id_sp,
         ]);
 
-        return redirect()->route('siswa.show')->with('success', 'Peringatan berhasil ditambahkan');
+        return redirect()->back()->with('success', 'Surat Peringatan berhasil ditambahkan');
     }
 
     /**
@@ -101,19 +107,22 @@ class SiswaController extends Controller
      */
     public function show(string $id)
     {
-        // Ambil data siswa
         $siswa = Siswa::where('nis', $id)->first();
+        $penghargaan = penghargaan::all();
+        $penghargaanList = siswa_penghargaan::all();
+        $peringatan = surat_peringatan::all();
+        $peringatanList = siswa_sp::all();
 
         if (!$siswa) {
             return redirect()->route('siswa.index')->with('error', 'Siswa tidak ditemukan');
         }
 
-        // Ambil langsung dari tabel siswa
+   
         $poinPositif = $siswa->poin_apresiasi ?? 0;
         $poinNegatif = $siswa->poin_pelanggaran ?? 0;
         $poinTotal   = $siswa->poin_total ?? 0;
 
-        // Ambil aktivitas terakhir siswa
+       
         $activities = ActivityLog::where('nis', $siswa->nis)
             ->orderBy('created_at', 'desc')
             ->take(10)
@@ -126,6 +135,10 @@ class SiswaController extends Controller
             'poinPositif' => $poinPositif,
             'poinNegatif' => $poinNegatif,
             'poinTotal'   => $poinTotal,
+            'penghargaanList' => $penghargaanList,
+            'penghargaan' => $penghargaan,
+            'peringatanList' => $peringatanList,
+            'peringatan' => $peringatan,
         ]);
     }
 
@@ -160,6 +173,28 @@ class SiswaController extends Controller
         $siswa->delete();
 
         return redirect()->route('siswa.index')->with('success', 'Siswa berhasil dihapus');
+    }
+    public function destroyPenghargaan(string $nis,int $id)
+    {
+        $penghargaanList = siswa_penghargaan::where('id', $id)->where('nis', $nis)->first();
+        if (!$penghargaanList) {
+            return back()->with('error', 'Penghargaan tidak ditemukan');
+        }
+
+        $penghargaanList->delete();
+
+        return back()->with('success', 'Penghargaan berhasil dihapus');
+    }
+    public function destroyPeringatan(string $nis,int $id)
+    {
+        $peringatanList = siswa_sp::where('id', $id)->where('nis', $nis)->first();
+        if (!$peringatanList) {
+            return back()->with('error', 'Penghargaan tidak ditemukan');
+        }
+
+        $peringatanList->delete();
+
+        return back()->with('success', 'Penghargaan berhasil dihapus');
     }
       public function export_pdf()
     {

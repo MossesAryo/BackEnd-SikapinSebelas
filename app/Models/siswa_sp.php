@@ -17,7 +17,7 @@ class siswa_sp extends Model
 
     public function peringatan()
     {
-        return $this->belongsTo(User::class, 'id_sp', 'id_sp');
+        return $this->belongsTo(surat_peringatan::class, 'id_sp', 'id_sp');
     }
 
     public function siswa()
