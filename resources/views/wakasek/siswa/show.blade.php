@@ -5,17 +5,17 @@
 @endpush
 
 @section('content')
-    <div class="space-y-4 sm:space-y-6">
-        {{-- Header --}}
+    <div class="space-y-6">
+        {{-- Header Section --}}
         <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4">
             <div>
-                <h1 class="text-xl sm:text-2xl font-bold gradient-text">Detail Siswa</h1>
-                <p class="text-gray-600 mt-1 text-sm sm:text-base">Informasi lengkap data siswa</p>
+                <h1 class="text-2xl font-bold gradient-text">Detail Siswa</h1>
+                <p class="text-gray-600 mt-1">Informasi lengkap data siswa</p>
             </div>
             <a href="{{ route('siswa.index') }}"
-                class="bg-gray-600 hover:bg-gray-700 text-white px-4 py-2 rounded-lg flex items-center justify-center sm:justify-start gap-2 transition-colors w-full sm:w-auto">
+                class="bg-gray-600 hover:bg-gray-700 text-white px-4 py-2 rounded-lg flex items-center gap-2 transition-colors w-full sm:w-auto justify-center sm:justify-start">
                 <i class="bi bi-arrow-left"></i>
-                <span class="sm:inline">Kembali</span>
+                <span>Kembali</span>
             </a>
         </div>
 
@@ -38,126 +38,128 @@
             </div>
         @endif
 
-        {{-- Main Layout --}}
-        <div class="grid grid-cols-1 xl:grid-cols-3 gap-4 lg:gap-6 max-w-full">
-            {{-- Student Profile Card --}}
-            <div class="xl:col-span-1 order-2 xl:order-1">
-                <div class="space-y-4 lg:space-y-6">
-                    {{-- Profile Card --}}
-                    <div class="bg-white rounded-xl shadow-sm border overflow-hidden">
-                        <div class="p-4 sm:p-6">
-                            {{-- Student Photo --}}
-                            <div class="flex justify-center mb-4 sm:mb-6">
-                                <div class="relative">
-                                    <div
-                                        class="w-24 h-24 sm:w-32 sm:h-32 bg-gradient-to-br from-blue-400 to-indigo-600 rounded-full flex items-center justify-center">
-                                        <i class="bi bi-person-fill text-2xl sm:text-4xl text-white"></i>
-                                    </div>
-                                    <div
-                                        class="absolute -bottom-1 -right-1 w-6 h-6 sm:w-8 sm:h-8 bg-green-500 rounded-full border-2 sm:border-4 border-white flex items-center justify-center">
-                                        <i class="bi bi-check text-white text-xs"></i>
-                                    </div>
+        {{-- Main Content Layout --}}
+        <div class="grid grid-cols-1 xl:grid-cols-3 gap-6">
+            {{-- Left Sidebar: Profile & Activities --}}
+            <div class="xl:col-span-1 space-y-6">
+                {{-- Student Profile Card --}}
+                <div class="bg-white rounded-xl shadow-sm border">
+                    <div class="p-6">
+                        {{-- Profile Picture --}}
+                        <div class="flex justify-center mb-6">
+                            <div class="relative">
+                                <div class="w-32 h-32 bg-gradient-to-br from-blue-400 to-indigo-600 rounded-full flex items-center justify-center">
+                                    <i class="bi bi-person-fill text-4xl text-white"></i>
+                                </div>
+                                <div class="absolute -bottom-1 -right-1 w-8 h-8 bg-green-500 rounded-full border-4 border-white flex items-center justify-center">
+                                    <i class="bi bi-check text-white text-xs"></i>
                                 </div>
                             </div>
+                        </div>
 
-                            {{-- Student Name --}}
-                            <div class="text-center mb-4">
-                                <h2 class="text-lg sm:text-xl font-bold text-gray-900 mb-1 break-words">
-                                    {{ $siswa->nama_siswa }}
-                                </h2>
-                            </div>
+                        {{-- Student Name --}}
+                        <div class="text-center">
+                            <h2 class="text-xl font-bold text-gray-900 break-words">
+                                {{ $siswa->nama_siswa }}
+                            </h2>
                         </div>
                     </div>
+                </div>
 
-                    {{-- Penghargaan Card --}}
-                    <div class="bg-white rounded-xl shadow-sm border overflow-hidden">
-                        <div class="px-4 sm:px-6 py-4 border-b border-gray-200 flex items-center justify-between">
-                            {{-- Title --}}
-                            <h3 class="text-base sm:text-lg font-semibold text-gray-900">Penghargaan</h3>
-
-                            {{-- Add Button --}}
-                            <button onclick="openpenghargaanModal('{{ $siswa->nis }}')"
-                                class="bg-green-600 hover:bg-green-700 text-white px-3 sm:px-4 py-1.5 rounded-lg flex items-center gap-2 transition-colors text-sm sm:text-base">
-                                <i class="bi bi-plus-circle"></i>
-                                Tambah
-                            </button>
-                        </div>
-
-                        <ul class="mt-3 space-y-2">
+                {{-- Awards Section --}}
+                <div class="bg-white rounded-xl shadow-sm border">
+                    <div class="px-6 py-4 border-b border-gray-200 flex items-center justify-between">
+                        <h3 class="text-lg font-semibold text-gray-900 flex items-center gap-2">
+                            <i class="bi bi-award text-green-600"></i>
+                            Penghargaan
+                        </h3>
+                        <button onclick="openpenghargaanModal('{{ $siswa->nis }}')"
+                            class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg flex items-center gap-2 transition-colors">
+                            <i class="bi bi-plus-circle"></i>
+                            Tambah
+                        </button>
+                    </div>
+                    <div class="p-6">
+                        <ul class="space-y-3">
                             @forelse ($penghargaanList as $item)
                                 <li>
                                     <button type="button"
                                         onclick="openDeletePenghargaanModal('{{ $item->siswa->nis }}', '{{ $item->id }}', '{{ $item->penghargaan->alasan }}')"
-                                        class="flex items-start gap-2 text-sm text-gray-700 w-full text-left hover:bg-gray-100 p-2 rounded-lg">
-                                        <i class="bi bi-award text-green-600 text-base"></i>
-                                        <span>
-                                            {{ $item->penghargaan->alasan }} ({{ $item->created_at->format('d M Y') }})
-                                        </span>
+                                        class="w-full flex items-start gap-3 p-3 rounded-lg border border-green-100 bg-green-50 hover:bg-green-100 transition">
+                                        <div class="flex-shrink-0">
+                                            <i class="bi bi-award-fill text-green-600 text-xl"></i>
+                                        </div>
+                                        <div class="flex-1 min-w-0 text-left">
+                                            <p class="text-sm font-semibold text-green-800">
+                                                {{ $item->penghargaan->alasan }}
+                                            </p>
+                                            <p class="text-xs text-gray-500">
+                                                {{ $item->created_at->format('d M Y') }}
+                                            </p>
+                                        </div>
                                     </button>
-
                                 </li>
                             @empty
                                 <li class="text-gray-500 text-sm italic">Belum ada data penghargaan</li>
                             @endforelse
                         </ul>
-
                     </div>
+                </div>
 
-                    {{-- SP Card --}}
-                    <div class="bg-white rounded-xl shadow-sm border overflow-hidden mt-4">
-                        <div class="px-4 sm:px-6 py-4 border-b border-gray-200 flex items-center justify-between">
-                            {{-- Title --}}
-                            <h3 class="text-base sm:text-lg font-semibold text-gray-900">Surat Peringatan</h3>
-
-                            {{-- Add Button --}}
-                            <button onclick="openperingatanModal('{{ $siswa->nis }}')"
-                                class="bg-red-600 hover:bg-red-700 text-white px-3 sm:px-4 py-1.5 rounded-lg flex items-center gap-2 transition-colors text-sm sm:text-base">
-                                <i class="bi bi-plus-circle"></i>
-                                Tambah
-                            </button>
-                        </div>
-
-                        <div class="p-4 sm:p-6">
-                            {{-- SP --}}
-                            <ul class="mt-3 space-y-2">
-                                @forelse ($peringatanList as $item)
-                                    <li>
-                                        <button type="button"
-                                            onclick="openDeletePeringatanModal('{{ $item->siswa->nis }}', '{{ $item->id }}', '{{ $item->peringatan->alasan }}')"
-                                            class="flex items-start gap-2 text-sm text-gray-700 w-full text-left hover:bg-gray-100 p-2 rounded-lg">
-                                            <i class="bi bi-award text-green-600 text-base"></i>
-                                            <span>
+                {{-- Warning Letters Section --}}
+                <div class="bg-white rounded-xl shadow-sm border">
+                    <div class="px-6 py-4 border-b border-gray-200 flex items-center justify-between">
+                        <h3 class="text-lg font-semibold text-gray-900 flex items-center gap-2">
+                            <i class="bi bi-exclamation-triangle text-red-600"></i>
+                            Surat Peringatan
+                        </h3>
+                        <button onclick="openperingatanModal('{{ $siswa->nis }}')"
+                            class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg flex items-center gap-2 transition-colors">
+                            <i class="bi bi-plus-circle"></i>
+                            Tambah
+                        </button>
+                    </div>
+                    <div class="p-6">
+                        <ul class="space-y-3">
+                            @forelse ($peringatanList as $item)
+                                <li>
+                                    <button type="button"
+                                        onclick="openDeletePeringatanModal('{{ $item->siswa->nis }}', '{{ $item->id }}', '{{ $item->peringatan->alasan }}')"
+                                        class="w-full flex items-start gap-3 p-3 rounded-lg border border-red-100 bg-red-50 hover:bg-red-100 transition">
+                                        <div class="flex-shrink-0">
+                                            <i class="bi bi-file-earmark-text-fill text-red-600 text-xl"></i>
+                                        </div>
+                                        <div class="flex-1 min-w-0 text-left">
+                                            <p class="text-sm font-semibold text-red-800">
                                                 {{ $item->peringatan->alasan }}
-                                                ({{ $item->created_at->format('d M Y') }})
-                                            </span>
-                                        </button>
-
-                                    </li>
-                                @empty
-                                    <li class="text-gray-500 text-sm italic">Belum ada data penghargaan</li>
-                                @endforelse
-                            </ul>
-                        </div>
+                                            </p>
+                                            <p class="text-xs text-gray-500">
+                                                {{ $item->created_at->format('d M Y') }}
+                                            </p>
+                                        </div>
+                                    </button>
+                                </li>
+                            @empty
+                                <li class="text-gray-500 text-sm italic">Belum ada surat peringatan</li>
+                            @endforelse
+                        </ul>
                     </div>
-
                 </div>
             </div>
 
-
-            {{-- Student Information --}}
-            <div class="xl:col-span-2 order-1 xl:order-2 space-y-4 lg:space-y-6">
-                {{-- Personal Information Card --}}
-                <div class="bg-white rounded-xl shadow-sm border overflow-hidden">
-                    <div class="px-4 sm:px-6 py-4 border-b border-gray-200 flex items-center justify-between">
-                        <h3 class="text-base sm:text-lg font-semibold text-gray-900">Informasi Siswa</h3>
-                        <button
-                            onclick="openEditModal('{{ $siswa->nis }}', '{{ $siswa->nama_siswa }}', '{{ $siswa->id_kelas }}')"
-                            class="bg-blue-600 hover:bg-blue-700 text-white px-3 sm:px-4 py-2 rounded-lg flex items-center gap-2 transition-colors text-sm sm:text-base">
+            {{-- Right Content: Student Information --}}
+            <div class="xl:col-span-2 space-y-6">
+                {{-- Student Information Card --}}
+                <div class="bg-white rounded-xl shadow-sm border">
+                    <div class="px-6 py-4 border-b border-gray-200 flex items-center justify-between">
+                        <h3 class="text-lg font-semibold text-gray-900">Informasi Siswa</h3>
+                        <button onclick="openEditModal('{{ $siswa->nis }}', '{{ $siswa->nama_siswa }}', '{{ $siswa->id_kelas }}')"
+                            class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg flex items-center gap-2 transition-colors">
                             <i class="bi bi-pencil-square"></i>
                             Edit
                         </button>
                     </div>
-                    <div class="p-4 sm:p-6">
+                    <div class="p-6">
                         <div class="space-y-4">
                             @php
                                 $studentInfo = [
@@ -169,170 +171,150 @@
                             @endphp
 
                             @foreach ($studentInfo as $info)
-                                <div class="flex justify-between items-center py-2 border-b border-gray-50 last:border-0">
-                                    <label
-                                        class="text-xs sm:text-sm font-medium text-gray-500">{{ $info['label'] }}</label>
-                                    <span
-                                        class="text-sm sm:text-base text-gray-900 font-medium break-words text-right">{{ $info['value'] }}</span>
+                                <div class="flex justify-between items-center py-3 border-b border-gray-100 last:border-0">
+                                    <span class="text-sm font-medium text-gray-500">{{ $info['label'] }}</span>
+                                    <span class="text-base text-gray-900 font-medium break-words text-right">{{ $info['value'] }}</span>
                                 </div>
                             @endforeach
                         </div>
                     </div>
                 </div>
-            </div>
-        </div>
 
+                {{-- Statistics Card --}}
+                <div class="bg-white rounded-xl shadow-sm border">
+                    <div class="px-6 py-4 border-b border-gray-200">
+                        <h3 class="text-lg font-semibold text-gray-900 flex items-center gap-2">
+                            <i class="bi bi-bar-chart text-blue-600"></i>
+                            Statistik Poin
+                        </h3>
+                    </div>
+                    <div class="p-6">
+                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                            @php
+                                $statistics = [
+                                    [
+                                        'icon' => 'bi-plus-circle-fill',
+                                        'label' => 'Poin Penghargaan',
+                                        'value' => $poinPositif ?? 0,
+                                        'bgGradient' => 'from-green-50 to-emerald-50',
+                                        'borderColor' => 'border-green-200',
+                                        'iconBg' => 'bg-green-100',
+                                        'iconColor' => 'text-green-600',
+                                        'labelColor' => 'text-green-600',
+                                        'valueColor' => 'text-green-700',
+                                    ],
+                                    [
+                                        'icon' => 'bi-dash-circle-fill',
+                                        'label' => 'Poin Pelanggaran',
+                                        'value' => $poinNegatif ?? 0,
+                                        'bgGradient' => 'from-red-50 to-rose-50',
+                                        'borderColor' => 'border-red-200',
+                                        'iconBg' => 'bg-red-100',
+                                        'iconColor' => 'text-red-600',
+                                        'labelColor' => 'text-red-600',
+                                        'valueColor' => 'text-red-700',
+                                    ],
+                                    [
+                                        'icon' => 'bi-calculator-fill',
+                                        'label' => 'Poin Total',
+                                        'value' => $poinTotal ?? 0,
+                                        'bgGradient' => 'from-blue-50 to-indigo-50',
+                                        'borderColor' => 'border-blue-200',
+                                        'iconBg' => 'bg-blue-100',
+                                        'iconColor' => 'text-blue-600',
+                                        'labelColor' => 'text-blue-600',
+                                        'valueColor' => 'text-blue-700',
+                                    ],
+                                ];
+                            @endphp
 
-        <div class="bg-white rounded-xl shadow-sm border overflow-hidden">
-            <div class="px-4 sm:px-6 py-4 border-b border-gray-200">
-                <h3 class="text-base sm:text-lg font-semibold text-gray-900 flex items-center gap-2">
-                    <i class="bi bi-bar-chart text-blue-600"></i>
-                    Statistik Poin
-                </h3>
-            </div>
-            <div class="p-4 sm:p-6">
-                <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                    @php
-                        $statistics = [
-                            [
-                                'icon' => 'bi-plus-circle-fill',
-                                'label' => 'Poin Penghargaan',
-                                'value' => $poinPositif ?? 0,
-                                'bgColor' => 'from-green-50 to-emerald-50',
-                                'borderColor' => 'border-green-200',
-                                'iconBg' => 'bg-green-100',
-                                'iconColor' => 'text-green-600',
-                                'textColor' => 'text-green-600',
-                                'valueColor' => 'text-green-700',
-                            ],
-                            [
-                                'icon' => 'bi-dash-circle-fill',
-                                'label' => 'Poin Pelanggaran',
-                                'value' => $poinNegatif ?? 0,
-                                'bgColor' => 'from-red-50 to-rose-50',
-                                'borderColor' => 'border-red-200',
-                                'iconBg' => 'bg-red-100',
-                                'iconColor' => 'text-red-600',
-                                'textColor' => 'text-red-600',
-                                'valueColor' => 'text-red-700',
-                            ],
-                            [
-                                'icon' => 'bi-calculator-fill',
-                                'label' => 'Poin Total',
-                                'value' => $poinTotal ?? 0,
-                                'bgColor' => 'from-blue-50 to-indigo-50',
-                                'borderColor' => 'border-blue-200',
-                                'iconBg' => 'bg-blue-100',
-                                'iconColor' => 'text-blue-600',
-                                'textColor' => 'text-blue-600',
-                                'valueColor' => 'text-blue-700',
-                            ],
-                        ];
-                    @endphp
-
-                    @foreach ($statistics as $stat)
-                        <div
-                            class="bg-gradient-to-r {{ $stat['bgColor'] }} p-3 sm:p-4 rounded-lg border {{ $stat['borderColor'] }}">
-                            <div class="text-center">
-                                <div
-                                    class="w-10 h-10 sm:w-12 sm:h-12 {{ $stat['iconBg'] }} rounded-full flex items-center justify-center mx-auto mb-2">
-                                    <i class="bi {{ $stat['icon'] }} {{ $stat['iconColor'] }} text-lg sm:text-xl"></i>
+                            @foreach ($statistics as $stat)
+                                <div class="bg-gradient-to-r {{ $stat['bgGradient'] }} p-4 rounded-lg border {{ $stat['borderColor'] }}">
+                                    <div class="text-center">
+                                        <div class="w-12 h-12 {{ $stat['iconBg'] }} rounded-full flex items-center justify-center mx-auto mb-3">
+                                            <i class="bi {{ $stat['icon'] }} {{ $stat['iconColor'] }} text-xl"></i>
+                                        </div>
+                                        <p class="{{ $stat['labelColor'] }} text-sm font-medium mb-1">{{ $stat['label'] }}</p>
+                                        <p class="text-2xl font-bold {{ $stat['valueColor'] }}">{{ $stat['value'] }}</p>
+                                    </div>
                                 </div>
-                                <p class="{{ $stat['textColor'] }} text-xs sm:text-sm font-medium">{{ $stat['label'] }}
-                                </p>
-                                <p class="text-xl sm:text-2xl font-bold {{ $stat['valueColor'] }}">{{ $stat['value'] }}
-                                </p>
-                            </div>
+                            @endforeach
                         </div>
-                    @endforeach
+                    </div>
+                </div>
+
+                {{-- Recent Activities Card --}}
+                <div class="bg-white rounded-xl shadow-sm border">
+                    <div class="px-6 py-4 border-b border-gray-200 flex items-center justify-between">
+                        <h3 class="text-xl font-semibold text-gray-900 flex items-center gap-2">
+                            <i class="bi bi-clock-history text-gray-700"></i>
+                            Aktivitas Terakhir
+                        </h3>
+                        <button class="px-4 py-2 border border-gray-300 rounded-lg bg-white hover:bg-gray-50 transition flex items-center gap-2 text-sm font-medium text-gray-700 shadow-sm">
+                            <i class="bi bi-download text-gray-600"></i>
+                            Export
+                        </button>
+                    </div>
+                    <div class="p-6">
+                        @if ($activities->count() > 0)
+                            <div class="space-y-4">
+                                @foreach ($activities as $activity)
+                                    @php
+                                        $isViolation = $activity->kategori === 'Pelanggaran';
+                                        $point = $isViolation ? "-{$activity->point}" : "+{$activity->point}";
+                                        $cardClass = $isViolation 
+                                            ? 'bg-red-50 border-red-200 hover:bg-red-100' 
+                                            : 'bg-green-50 border-green-200 hover:bg-green-100';
+                                        $titleClass = $isViolation ? 'text-red-800' : 'text-green-800';
+                                        $textClass = $isViolation ? 'text-red-700' : 'text-green-700';
+                                        $pointClass = $isViolation ? 'text-red-600' : 'text-green-600';
+                                    @endphp
+
+                                    <div class="flex items-center justify-between p-4 rounded-lg border transition {{ $cardClass }}">
+                                        <div class="flex-1 min-w-0">
+                                            <h4 class="text-base font-bold break-words {{ $titleClass }} mb-1">
+                                                {{ $activity->activity }}
+                                            </h4>
+                                            <p class="text-xs font-semibold {{ $textClass }} mb-1">
+                                                {{ $activity->kategori }}
+                                            </p>
+                                            <p class="text-sm break-words {{ $textClass }} mb-2">
+                                                {{ $activity->description }}
+                                            </p>
+                                            <p class="text-xs text-gray-500">
+                                                {{ $activity->created_at->format('d M Y') }}
+                                            </p>
+                                        </div>
+                                        <div class="ml-4">
+                                            <span class="text-lg font-bold {{ $pointClass }}">
+                                                {{ $point }}
+                                            </span>
+                                        </div>
+                                    </div>
+                                @endforeach
+                            </div>
+                        @else
+                            <div class="text-center py-8">
+                                <i class="bi bi-calendar-x text-gray-400 text-4xl mb-3"></i>
+                                <p class="text-gray-500 text-sm">Belum ada aktivitas tercatat</p>
+                            </div>
+                        @endif
+                    </div>
                 </div>
             </div>
         </div>
 
-
-        {{-- Activities Card --}}
-        <div class="bg-white rounded-xl shadow-sm border overflow-hidden">
-            <div class="px-4 sm:px-6 py-4 border-b border-gray-200 flex items-center justify-between">
-                {{-- Judul --}}
-                <h3 class="text-lg sm:text-xl font-semibold text-gray-900 flex items-center gap-2">
-                    <i class="bi bi-clock-history text-gray-700"></i>
-                    Aktivitas Terakhir
-                </h3>
-
-                {{-- Tombol Export --}}
-                <button
-                    class="px-3 py-1.5 border border-gray-300 rounded-lg bg-white hover:bg-gray-100 transition flex items-center gap-2 text-sm font-medium text-gray-700 shadow-sm">
-                    <i class="bi bi-download text-gray-600"></i>
-                    Export
-                </button>
-            </div>
-
-            <div class="p-4 sm:p-6">
-                @if ($activities->count() > 0)
-                    <div class="space-y-3">
-                        @foreach ($activities as $activity)
-                            @php
-                                $isNegative = $activity->kategori === 'Pelanggaran';
-                                $point = $isNegative ? "-{$activity->point}" : "+{$activity->point}";
-
-                                $bgColor = $isNegative
-                                    ? 'bg-red-50 border-red-200 hover:bg-red-100'
-                                    : 'bg-green-50 border-green-200 hover:bg-green-100';
-
-                                $titleColor = $isNegative ? 'text-red-800' : 'text-green-800';
-                                $textColor = $isNegative ? 'text-red-700' : 'text-green-700';
-                                $pointColor = $isNegative ? 'text-red-600' : 'text-green-600';
-                            @endphp
-
-                            <div
-                                class="flex items-center justify-between p-3 rounded-lg border transition {{ $bgColor }}">
-                                {{-- Kiri: Informasi --}}
-                                <div class="flex-1 min-w-0">
-                                    {{-- Judul --}}
-                                    <p class="text-base font-bold break-words {{ $titleColor }}">
-                                        {{ $activity->activity }}
-                                    </p>
-                                    {{-- Kategori --}}
-                                    <p class="text-xs font-semibold {{ $textColor }}">
-                                        {{ $activity->kategori }}
-                                    </p>
-                                    {{-- Uraian --}}
-                                    <p class="text-sm break-words {{ $textColor }}">
-                                        {{ $activity->description }}
-                                    </p>
-                                    {{-- Waktu --}}
-                                    <p class="text-xs mt-1 text-gray-500">
-                                        {{ $activity->created_at->format('Y-m-d') }}
-                                    </p>
-                                </div>
-
-                                {{-- Kanan: Poin --}}
-                                <div class="ml-3">
-                                    <span class="text-base font-bold {{ $pointColor }}">
-                                        {{ $point }}
-                                    </span>
-                                </div>
-                            </div>
-                        @endforeach
-                    </div>
-                @else
-                    <p class="text-sm text-gray-500 italic">Belum ada aktivitas tercatat</p>
-                @endif
-            </div>
-
-        </div>
-
-
         {{-- Action Buttons --}}
-        <div class="flex flex-col sm:flex-row justify-end gap-3 pt-4 sm:pt-6 border-t border-gray-200">
+        <div class="flex justify-end pt-6 border-t border-gray-200">
             <button onclick="openDeleteModal('{{ $siswa->nis }}', '{{ $siswa->nama_siswa }}')"
-                class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg flex items-center justify-center gap-2 transition-colors order-2 sm:order-1">
+                class="bg-red-600 hover:bg-red-700 text-white px-6 py-2 rounded-lg flex items-center gap-2 transition-colors">
                 <i class="bi bi-trash"></i>
                 Hapus Siswa
             </button>
         </div>
     </div>
 
+    {{-- Included Modals --}}
     @include('wakasek.siswa.edit')
     @include('wakasek.siswa.delete')
     @include('wakasek.siswa.penghargaan')
