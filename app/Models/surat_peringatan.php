@@ -12,14 +12,10 @@ class surat_peringatan extends Model
 
     protected $fillable = [
         'id_sp',
-        'nis',
         'tanggal_sp',
         'level_sp',
         'alasan',
     ];
 
-    public function siswa()
-    {
-        return $this->belongsTo(siswa::class, 'nis', 'nis');
-    }
+    
 }

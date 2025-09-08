@@ -16,8 +16,4 @@ class penghargaan extends Model
         'alasan',
     ];
 
-    public function siswa()
-    {
-        return $this->belongsTo(Siswa::class, 'nis', 'nis');
-    }
 }

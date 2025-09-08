@@ -71,12 +71,19 @@
 
                     {{-- Penghargaan Card --}}
                     <div class="bg-white rounded-xl shadow-sm border overflow-hidden">
-                        <div class="p-4 sm:p-6">
+                        <div class="px-4 sm:px-6 py-4 border-b border-gray-200 flex items-center justify-between">
                             {{-- Title --}}
-                            <h3 class="text-base sm:text-lg font-semibold text-gray-900 border-b border-gray-200 pb-2">
-                                Penghargaan
-                            </h3>
+                            <h3 class="text-base sm:text-lg font-semibold text-gray-900">Penghargaan</h3>
 
+                            {{-- Add Button --}}
+                            <button onclick="openAddPenghargaanModal('{{ $siswa->nis }}')"
+                                class="bg-green-600 hover:bg-green-700 text-white px-3 sm:px-4 py-1.5 rounded-lg flex items-center gap-2 transition-colors text-sm sm:text-base">
+                                <i class="bi bi-plus-circle"></i>
+                                Tambah
+                            </button>
+                        </div>
+
+                        <div class="p-4 sm:p-6">
                             {{-- Penghargaan --}}
                             @if (isset($siswa->penghargaan) && count($siswa->penghargaan) > 0)
                                 <ul class="mt-3 space-y-2">
@@ -95,12 +102,19 @@
 
                     {{-- SP Card --}}
                     <div class="bg-white rounded-xl shadow-sm border overflow-hidden mt-4">
-                        <div class="p-4 sm:p-6">
+                        <div class="px-4 sm:px-6 py-4 border-b border-gray-200 flex items-center justify-between">
                             {{-- Title --}}
-                            <h3 class="text-base sm:text-lg font-semibold text-gray-900 border-b border-gray-200 pb-2">
-                                Surat Peringatan
-                            </h3>
+                            <h3 class="text-base sm:text-lg font-semibold text-gray-900">Surat Peringatan</h3>
 
+                            {{-- Add Button --}}
+                            <button onclick="openAddSPModal('{{ $siswa->nis }}')"
+                                class="bg-red-600 hover:bg-red-700 text-white px-3 sm:px-4 py-1.5 rounded-lg flex items-center gap-2 transition-colors text-sm sm:text-base">
+                                <i class="bi bi-plus-circle"></i>
+                                Tambah
+                            </button>
+                        </div>
+
+                        <div class="p-4 sm:p-6">
                             {{-- SP --}}
                             @if (isset($siswa->sp) && count($siswa->sp) > 0)
                                 <ul class="mt-3 space-y-2">
@@ -140,10 +154,9 @@
                                 $studentInfo = [
                                     ['label' => 'NIS', 'value' => $siswa->nis],
                                     ['label' => 'Nama Lengkap', 'value' => $siswa->nama_siswa],
-                                    ['label' => 'Kelas', 'value' => $siswa->kelas->nama_kelas],
-                                    
+                                    ['label' => 'Kelas', 'value' => $siswa->kelas->nama_kelas],                                    
                                     ['label' => 'Tahun Masuk', 'value' => $siswa->tahun_masuk ?? '2023'],
-                                    ['label' => 'Status', 'value' => 'Aktif'],
+                                    
                                 ];
                             @endphp
 

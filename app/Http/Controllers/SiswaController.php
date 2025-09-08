@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 
 use App\Exports\Siswa_ExportExcel;
 use App\Imports\Siswa_Import;
+use App\Models\siswa_penghargaan;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Maatwebsite\Excel\Facades\Excel;
 
@@ -66,6 +67,33 @@ class SiswaController extends Controller
         ]);
 
         return redirect()->route('siswa.index')->with('success', 'Siswa berhasil ditambahkan');
+    }
+
+    public function Penghargaan(Request $request,string $id)
+    {
+         $request->validate([
+            'id_penghargaan' => 'required|string',
+        ]);
+
+        siswa_penghargaan::create([
+            'nis' => $id,
+            'id_penghargaan' => $request->id_penghargaan,
+        ]);
+
+        return redirect()->route('siswa.show')->with('success', 'Penghargaan berhasil ditambahkan');
+    }
+    public function peringatan(Request $request,string $id)
+    {
+         $request->validate([
+            'id_sp' => 'required|string',
+        ]);
+
+        siswa_penghargaan::create([
+            'nis' => $id,
+            'id_sp' => $request->id_sp,
+        ]);
+
+        return redirect()->route('siswa.show')->with('success', 'Peringatan berhasil ditambahkan');
     }
 
     /**
