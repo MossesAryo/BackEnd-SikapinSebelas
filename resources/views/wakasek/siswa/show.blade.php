@@ -91,9 +91,10 @@
                                         </div>
                                         <div class="flex-1 min-w-0 text-left">
                                             <p class="text-sm font-semibold text-green-800">
-                                                {{ $item->penghargaan->alasan }}
+                                                {{ $item->penghargaan->level_penghargaan }}
                                             </p>
                                             <p class="text-xs text-gray-500">
+                                                {{ $item->penghargaan->alasan }} -
                                                 {{ $item->created_at->format('d M Y') }}
                                             </p>
                                         </div>
@@ -131,9 +132,10 @@
                                         </div>
                                         <div class="flex-1 min-w-0 text-left">
                                             <p class="text-sm font-semibold text-red-800">
-                                                {{ $item->peringatan->alasan }}
+                                                {{ $item->peringatan->level_sp }}
                                             </p>
                                             <p class="text-xs text-gray-500">
+                                                {{ $item->peringatan->alasan }} -
                                                 {{ $item->created_at->format('d M Y') }}
                                             </p>
                                         </div>
@@ -242,6 +244,102 @@
                         </div>
                     </div>
                 </div>
+
+                {{-- Handling Table (Only show if student has warning letters) --}}
+                @if ($peringatanList->count() > 0)
+                    <div class="bg-white rounded-xl shadow-sm border">
+                        <div class="px-6 py-4 border-b border-gray-200 flex items-center justify-between">
+                            <h3 class="text-lg font-semibold text-gray-900 flex items-center gap-2">
+                                <i class="bi bi-clipboard-check text-orange-600"></i>
+                                Penanganan Siswa
+                            </h3>          
+                        </div>
+                        <div class="overflow-x-auto">
+                            <table class="w-full">
+                                <thead class="bg-gray-50">
+                                    <tr>
+                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Penanganan</th>
+                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Kesepakatan Waktu Perbaikan</th>
+                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Perubahan Setelah Perbaikan</th>
+                                     
+                                    </tr>
+                                </thead>
+                                <tbody class="bg-white divide-y divide-gray-200">
+                                    {{-- Dummy data for now --}}
+                                    <tr class="hover:bg-gray-50">
+                                        <td class="px-6 py-4 whitespace-nowrap">
+                                            <div class="text-sm text-gray-900">
+                                                <p class="font-medium">Konseling Individual</p>
+                                                <p class="text-gray-500">Sesi konseling dengan psikolog sekolah</p>
+                                            </div>
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-nowrap">
+                                            <div class="text-sm text-gray-900">
+                                                <p class="font-medium">2 Minggu</p>
+                                                <p class="text-gray-500">15 Jan - 29 Jan 2024</p>
+                                            </div>
+                                        </td>
+                                        <td class="px-6 py-4">
+                                            <div class="text-sm text-gray-900">
+                                                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                                                    Membaik
+                                                </span>
+                                                <p class="text-gray-500 mt-1">Kedisiplinan meningkat, tidak ada pelanggaran baru</p>
+                                            </div>
+                                        </td>
+                                        
+                                    </tr>
+                                    <tr class="hover:bg-gray-50">
+                                        <td class="px-6 py-4 whitespace-nowrap">
+                                            <div class="text-sm text-gray-900">
+                                                <p class="font-medium">Tugas Sosial</p>
+                                                <p class="text-gray-500">Membantu membersihkan lingkungan sekolah</p>
+                                            </div>
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-nowrap">
+                                            <div class="text-sm text-gray-900">
+                                                <p class="font-medium">1 Minggu</p>
+                                                <p class="text-gray-500">1 Feb - 7 Feb 2024</p>
+                                            </div>
+                                        </td>
+                                        <td class="px-6 py-4">
+                                            <div class="text-sm text-gray-900">
+                                                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800">
+                                                    Dalam Proses
+                                                </span>
+                                                <p class="text-gray-500 mt-1">Sedang menjalani tugas sosial dengan baik</p>
+                                            </div>
+                                        </td>
+                                        
+                                    </tr>
+                                    <tr class="hover:bg-gray-50">
+                                        <td class="px-6 py-4 whitespace-nowrap">
+                                            <div class="text-sm text-gray-900">
+                                                <p class="font-medium">Pembinaan Orang Tua</p>
+                                                <p class="text-gray-500">Melibatkan orang tua dalam proses perbaikan</p>
+                                            </div>
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-nowrap">
+                                            <div class="text-sm text-gray-900">
+                                                <p class="font-medium">1 Bulan</p>
+                                                <p class="text-gray-500">10 Feb - 10 Mar 2024</p>
+                                            </div>
+                                        </td>
+                                        <td class="px-6 py-4">
+                                            <div class="text-sm text-gray-900">
+                                                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800">
+                                                    Perlu Evaluasi
+                                                </span>
+                                                <p class="text-gray-500 mt-1">Masih ada kendala, perlu pendekatan lebih intensif</p>
+                                            </div>
+                                        </td>
+                                        
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                @endif
 
                 {{-- Recent Activities Card --}}
                 <div class="bg-white rounded-xl shadow-sm border">
