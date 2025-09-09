@@ -17,6 +17,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SiswaController;
 use App\Http\Controllers\SiswaBKController;
 use App\Http\Controllers\AkumulasiController;
+use App\Http\Controllers\catatanController;
 use App\Http\Controllers\DashboardBKController;
 use App\Http\Controllers\Skoring_PenghargaanController;
 use App\Http\Controllers\Skoring_PelanggaranController;
@@ -24,7 +25,7 @@ use App\Http\Controllers\SuratPeringatanController;
 use App\Http\Controllers\Skoring_PenghargaanBKController;
 use App\Http\Controllers\Skoring_PelanggaranBKController;
 use App\Http\Controllers\IntervensiController;
-
+use App\Models\catatan;
 use Illuminate\Routing\RouteUri;
 
 Route::get('/', fn() => redirect('/wakasek'));
@@ -82,6 +83,7 @@ Route::delete('/siswa/{nis}/peringatan/{id}', [SiswaController::class, 'destroyP
 Route::get('/siswa/{nis}/show', [SiswaController::class, 'show'])->name('siswa.show');
 Route::post('/siswa/{nis}/show/penghargaan', [SiswaController::class, 'penghargaan'])->name('siswa.penghargaan');
 Route::post('/siswa/{nis}/show/peringatan', [SiswaController::class, 'peringatan'])->name('siswa.peringatan');
+Route::post('/siswa/{nis}/show/catatan', [catatanController::class, 'AddCatatan'])->name('siswa.catatan');
 
 Route::get('/siswa/export_pdf', [SiswaController::class, 'export_pdf'])->name('siswa.export.pdf');
 Route::get('/siswa/export_excel', [SiswaController::class, 'export_excel'])->name('siswa.export.excel');

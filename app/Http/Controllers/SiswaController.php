@@ -101,6 +101,7 @@ class SiswaController extends Controller
 
         return redirect()->back()->with('success', 'Surat Peringatan berhasil ditambahkan');
     }
+   
 
     /**
      * Show the detail of the student

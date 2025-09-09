@@ -15,6 +15,11 @@
             document.getElementById('id_sp').value = '';
             openModal('modal-peringatan');
         }
+         function opencatatanmodal(nis) {
+            document.getElementById('judul_catatan').value = '';
+            document.getElementById('isi_catatan').value = '';
+            openModal('modal-catatan');
+        }
 
         function closeModal(modalId) {
             document.getElementById(modalId).classList.add('hidden');
@@ -50,7 +55,7 @@
            }
 
         document.addEventListener('click', function(event) {
-            ['modal-create', 'modal-edit', 'modal-delete','modal-filter','modal-penghargaan','modal-peringatan','modal-delete-penghargaan','modal-delete-peringatan'].forEach(modalId => {
+            ['modal-create', 'modal-edit', 'modal-delete','modal-filter','modal-penghargaan','modal-peringatan','modal-delete-penghargaan','modal-delete-peringatan','modal-catatan'].forEach(modalId => {
                 const modal = document.getElementById(modalId);
                 if (modal && !modal.classList.contains('hidden') && event.target === modal) {
                     closeModal(modalId);
@@ -60,7 +65,7 @@
 
         document.addEventListener('keydown', function(event) {
             if (event.key === 'Escape') {
-                ['modal-create', 'modal-edit', 'modal-delete','modal-filter','modal-penghargaan','modal-peringatan','modal-delete-penghargaan','modal-delete-peringatan'].forEach(modalId => {
+                ['modal-create', 'modal-edit', 'modal-delete','modal-filter','modal-penghargaan','modal-peringatan','modal-delete-penghargaan','modal-delete-peringatan','modal-catatan'].forEach(modalId => {
                     const modal = document.getElementById(modalId);
                     if (modal && !modal.classList.contains('hidden')) {
                         closeModal(modalId);

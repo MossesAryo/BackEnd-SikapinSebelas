@@ -7,17 +7,31 @@
 @section('content')
     <div class="space-y-6">
         {{-- Header Section --}}
-        <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4">
-            <div>
+        <div class="flex flex-col sm:flex-row sm:items-end sm:justify-end gap-4">
+            <!-- Header -->
+            <div class="flex-1">
                 <h1 class="text-2xl font-bold gradient-text">Detail Siswa</h1>
-                <p class="text-gray-600 mt-1">Informasi lengkap data siswa</p>
+                <p class="mt-1 text-gray-600">Informasi lengkap data siswa</p>
             </div>
+
+           
+            <button onclick="opencatatanmodal('{{ $siswa->nis }}')"
+                class="flex items-center justify-center sm:justify-start gap-2 px-4 py-2 w-full sm:w-auto 
+              rounded-lg bg-blue-600 text-white transition-colors hover:bg-blue-700">
+                <i class="bi bi-plus"></i>
+                <span>Tambah Catatan Untuk BK</span>
+            </button>
+            
+
+         
             <a href="{{ route('siswa.index') }}"
-                class="bg-gray-600 hover:bg-gray-700 text-white px-4 py-2 rounded-lg flex items-center gap-2 transition-colors w-full sm:w-auto justify-center sm:justify-start">
+                class="flex items-center justify-center sm:justify-start gap-2 px-4 py-2 w-full sm:w-auto 
+              rounded-lg bg-gray-600 text-white transition-colors hover:bg-gray-700">
                 <i class="bi bi-arrow-left"></i>
                 <span>Kembali</span>
             </a>
         </div>
+
 
         {{-- Flash Messages --}}
         @if (session('success'))
@@ -48,10 +62,12 @@
                         {{-- Profile Picture --}}
                         <div class="flex justify-center mb-6">
                             <div class="relative">
-                                <div class="w-32 h-32 bg-gradient-to-br from-blue-400 to-indigo-600 rounded-full flex items-center justify-center">
+                                <div
+                                    class="w-32 h-32 bg-gradient-to-br from-blue-400 to-indigo-600 rounded-full flex items-center justify-center">
                                     <i class="bi bi-person-fill text-4xl text-white"></i>
                                 </div>
-                                <div class="absolute -bottom-1 -right-1 w-8 h-8 bg-green-500 rounded-full border-4 border-white flex items-center justify-center">
+                                <div
+                                    class="absolute -bottom-1 -right-1 w-8 h-8 bg-green-500 rounded-full border-4 border-white flex items-center justify-center">
                                     <i class="bi bi-check text-white text-xs"></i>
                                 </div>
                             </div>
@@ -155,7 +171,8 @@
                 <div class="bg-white rounded-xl shadow-sm border">
                     <div class="px-6 py-4 border-b border-gray-200 flex items-center justify-between">
                         <h3 class="text-lg font-semibold text-gray-900">Informasi Siswa</h3>
-                        <button onclick="openEditModal('{{ $siswa->nis }}', '{{ $siswa->nama_siswa }}', '{{ $siswa->id_kelas }}')"
+                        <button
+                            onclick="openEditModal('{{ $siswa->nis }}', '{{ $siswa->nama_siswa }}', '{{ $siswa->id_kelas }}')"
                             class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg flex items-center gap-2 transition-colors">
                             <i class="bi bi-pencil-square"></i>
                             Edit
@@ -175,7 +192,8 @@
                             @foreach ($studentInfo as $info)
                                 <div class="flex justify-between items-center py-3 border-b border-gray-100 last:border-0">
                                     <span class="text-sm font-medium text-gray-500">{{ $info['label'] }}</span>
-                                    <span class="text-base text-gray-900 font-medium break-words text-right">{{ $info['value'] }}</span>
+                                    <span
+                                        class="text-base text-gray-900 font-medium break-words text-right">{{ $info['value'] }}</span>
                                 </div>
                             @endforeach
                         </div>
@@ -231,12 +249,15 @@
                             @endphp
 
                             @foreach ($statistics as $stat)
-                                <div class="bg-gradient-to-r {{ $stat['bgGradient'] }} p-4 rounded-lg border {{ $stat['borderColor'] }}">
+                                <div
+                                    class="bg-gradient-to-r {{ $stat['bgGradient'] }} p-4 rounded-lg border {{ $stat['borderColor'] }}">
                                     <div class="text-center">
-                                        <div class="w-12 h-12 {{ $stat['iconBg'] }} rounded-full flex items-center justify-center mx-auto mb-3">
+                                        <div
+                                            class="w-12 h-12 {{ $stat['iconBg'] }} rounded-full flex items-center justify-center mx-auto mb-3">
                                             <i class="bi {{ $stat['icon'] }} {{ $stat['iconColor'] }} text-xl"></i>
                                         </div>
-                                        <p class="{{ $stat['labelColor'] }} text-sm font-medium mb-1">{{ $stat['label'] }}</p>
+                                        <p class="{{ $stat['labelColor'] }} text-sm font-medium mb-1">{{ $stat['label'] }}
+                                        </p>
                                         <p class="text-2xl font-bold {{ $stat['valueColor'] }}">{{ $stat['value'] }}</p>
                                     </div>
                                 </div>
@@ -245,23 +266,29 @@
                     </div>
                 </div>
 
-                {{-- Handling Table (Only show if student has warning letters) --}}
+               
                 @if ($peringatanList->count() > 0)
                     <div class="bg-white rounded-xl shadow-sm border">
                         <div class="px-6 py-4 border-b border-gray-200 flex items-center justify-between">
                             <h3 class="text-lg font-semibold text-gray-900 flex items-center gap-2">
                                 <i class="bi bi-clipboard-check text-orange-600"></i>
                                 Penanganan Siswa
-                            </h3>          
+                            </h3>
                         </div>
                         <div class="overflow-x-auto">
                             <table class="w-full">
                                 <thead class="bg-gray-50">
                                     <tr>
-                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Penanganan</th>
-                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Kesepakatan Waktu Perbaikan</th>
-                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Perubahan Setelah Perbaikan</th>
-                                     
+                                        <th
+                                            class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                            Penanganan</th>
+                                        <th
+                                            class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                            Kesepakatan Waktu Perbaikan</th>
+                                        <th
+                                            class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                            Perubahan Setelah Perbaikan</th>
+
                                     </tr>
                                 </thead>
                                 <tbody class="bg-white divide-y divide-gray-200">
@@ -281,13 +308,15 @@
                                         </td>
                                         <td class="px-6 py-4">
                                             <div class="text-sm text-gray-900">
-                                                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                                                <span
+                                                    class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
                                                     Membaik
                                                 </span>
-                                                <p class="text-gray-500 mt-1">Kedisiplinan meningkat, tidak ada pelanggaran baru</p>
+                                                <p class="text-gray-500 mt-1">Kedisiplinan meningkat, tidak ada pelanggaran
+                                                    baru</p>
                                             </div>
                                         </td>
-                                        
+
                                     </tr>
                                     <tr class="hover:bg-gray-50">
                                         <td class="px-6 py-4 whitespace-nowrap">
@@ -304,13 +333,14 @@
                                         </td>
                                         <td class="px-6 py-4">
                                             <div class="text-sm text-gray-900">
-                                                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800">
+                                                <span
+                                                    class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800">
                                                     Dalam Proses
                                                 </span>
                                                 <p class="text-gray-500 mt-1">Sedang menjalani tugas sosial dengan baik</p>
                                             </div>
                                         </td>
-                                        
+
                                     </tr>
                                     <tr class="hover:bg-gray-50">
                                         <td class="px-6 py-4 whitespace-nowrap">
@@ -327,13 +357,15 @@
                                         </td>
                                         <td class="px-6 py-4">
                                             <div class="text-sm text-gray-900">
-                                                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800">
+                                                <span
+                                                    class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800">
                                                     Perlu Evaluasi
                                                 </span>
-                                                <p class="text-gray-500 mt-1">Masih ada kendala, perlu pendekatan lebih intensif</p>
+                                                <p class="text-gray-500 mt-1">Masih ada kendala, perlu pendekatan lebih
+                                                    intensif</p>
                                             </div>
                                         </td>
-                                        
+
                                     </tr>
                                 </tbody>
                             </table>
@@ -348,7 +380,8 @@
                             <i class="bi bi-clock-history text-gray-700"></i>
                             Aktivitas Terakhir
                         </h3>
-                        <button class="px-4 py-2 border border-gray-300 rounded-lg bg-white hover:bg-gray-50 transition flex items-center gap-2 text-sm font-medium text-gray-700 shadow-sm">
+                        <button
+                            class="px-4 py-2 border border-gray-300 rounded-lg bg-white hover:bg-gray-50 transition flex items-center gap-2 text-sm font-medium text-gray-700 shadow-sm">
                             <i class="bi bi-download text-gray-600"></i>
                             Export
                         </button>
@@ -360,15 +393,16 @@
                                     @php
                                         $isViolation = $activity->kategori === 'Pelanggaran';
                                         $point = $isViolation ? "-{$activity->point}" : "+{$activity->point}";
-                                        $cardClass = $isViolation 
-                                            ? 'bg-red-50 border-red-200 hover:bg-red-100' 
+                                        $cardClass = $isViolation
+                                            ? 'bg-red-50 border-red-200 hover:bg-red-100'
                                             : 'bg-green-50 border-green-200 hover:bg-green-100';
                                         $titleClass = $isViolation ? 'text-red-800' : 'text-green-800';
                                         $textClass = $isViolation ? 'text-red-700' : 'text-green-700';
                                         $pointClass = $isViolation ? 'text-red-600' : 'text-green-600';
                                     @endphp
 
-                                    <div class="flex items-center justify-between p-4 rounded-lg border transition {{ $cardClass }}">
+                                    <div
+                                        class="flex items-center justify-between p-4 rounded-lg border transition {{ $cardClass }}">
                                         <div class="flex-1 min-w-0">
                                             <h4 class="text-base font-bold break-words {{ $titleClass }} mb-1">
                                                 {{ $activity->activity }}
@@ -417,6 +451,7 @@
     @include('wakasek.siswa.delete')
     @include('wakasek.siswa.penghargaan')
     @include('wakasek.siswa.peringatan')
+    @include('wakasek.siswa.catatan')
 @endsection
 
 @push('js')
