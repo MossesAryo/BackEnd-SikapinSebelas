@@ -18,44 +18,43 @@ class Skoring_PelanggaranBKController extends Controller
     /**
      * Display a listing of the resource.
      */
-   public function index(Request $request)
-{
-    $jurusanList = Kelas::select('jurusan')->distinct()->pluck('jurusan');
-    $kelasList   = Kelas::all();
-    $siswa   = Siswa::all();
-    $aspekPel = Aspek_Penilaian::where('jenis_poin', 'pelanggaran')->get();
+    public function index(Request $request)
+    {
+        $jurusanList = Kelas::select('jurusan')->distinct()->pluck('jurusan');
+        $kelasList   = Kelas::all();
+        $siswa   = Siswa::all();
+        $aspekPel = Aspek_Penilaian::where('jenis_poin', 'pelanggaran')->get();
 
-    // Mulai query Penilaian (hanya yg jenis Pelanggaran)
-    $penilaianQuery = Penilaian::whereHas('aspek_penilaian', function ($q) {
-        $q->where('jenis_poin', 'Pelanggaran');
-    });
-
-    // Filter berdasarkan jurusan -> cek relasi Penilaian -> Siswa -> Kelas
-    if ($request->filled('jurusan')) {
-        $penilaianQuery->whereHas('siswa', function ($q) use ($request) {
-            $q->whereHas('kelas', function ($k) use ($request) {
-                $k->where('jurusan', $request->jurusan);
-            });
+        $penilaianQuery = Penilaian::whereHas('aspek_penilaian', function ($q) {
+            $q->where('jenis_poin', 'Pelanggaran');
         });
-    }
 
-    // Filter berdasarkan nama_kelas
-    if ($request->filled('kelas')) {
-        $penilaianQuery->whereHas('siswa', function ($q) use ($request) {
-            $q->whereHas('kelas', function ($k) use ($request) {
-                $k->where('nama_kelas', $request->kelas);
+        // Filter berdasarkan jurusan -> cek relasi Penilaian -> Siswa -> Kelas
+        if ($request->filled('jurusan')) {
+            $penilaianQuery->whereHas('siswa', function ($q) use ($request) {
+                $q->whereHas('kelas', function ($k) use ($request) {
+                    $k->where('jurusan', $request->jurusan);
+                });
             });
-        });
+        }
+
+        // Filter berdasarkan nama_kelas
+        if ($request->filled('kelas')) {
+            $penilaianQuery->whereHas('siswa', function ($q) use ($request) {
+                $q->whereHas('kelas', function ($k) use ($request) {
+                    $k->where('nama_kelas', $request->kelas);
+                });
+            });
+        }
+
+        // eager load relasi yg akan dipakai di view dan paginate
+        $penilaian = $penilaianQuery->with(['siswa.kelas', 'aspek_penilaian'])
+            ->paginate(10)
+            ->appends($request->query());
+
+
+        return view('gurubk.skoring.pelanggaran.index', compact('siswa', 'aspekPel', 'penilaian', 'jurusanList', 'kelasList'));
     }
-
-    // eager load relasi yg akan dipakai di view dan paginate
-    $penilaian = $penilaianQuery->with(['siswa.kelas', 'aspek_penilaian'])
-                                ->paginate(10)
-                                ->appends($request->query());
-
-
-    return view('gurubk.skoring.pelanggaran.index', compact('siswa','aspekPel','penilaian', 'jurusanList', 'kelasList'));
-}
 
 
     /**
@@ -73,21 +72,21 @@ class Skoring_PelanggaranBKController extends Controller
         $aspek   = Aspek_Penilaian::findOrFail($request->id_aspekpenilaian);
         $skor    = (int) $aspek->indikator_poin;
         $uraian  = $aspek->uraian;
+        $user = auth()->user();
 
-        // Simpan penilaian
         Penilaian::create([
             'id_penilaian'      => $request->id_penilaian,
             'nis'               => $request->nis,
             'id_aspekpenilaian' => $request->id_aspekpenilaian,
 
-            'nip_wakasek'       => null,
-            'nip_walikelas'     => null,
-            'nip_bk'            => null,
-            'created_at'        => now(),
+            'nip_bk'        => $user->gurubk->nip_bk ?? null,
+            'nip_walikelas' => $user->walikelas->nip_walikelas ?? null,
+            'nip_wakasek'   => $user->wakasek->nip_wakasek ?? null,
 
+            'created_at'    => now(),
         ]);
 
-        // Update poin siswa
+        
         $siswa = Siswa::where('nis', $request->nis)->first();
         if ($siswa) {
             $siswa->poin_pelanggaran += $skor;
@@ -100,7 +99,7 @@ class Skoring_PelanggaranBKController extends Controller
                 'nis'         => $siswa->nis,
                 'kategori'    => 'Pelanggaran',
                 'activity'    => 'Tambah Pelanggaran',
-                'description' => $uraian, // gunakan uraian aspek_penilaian
+                'description' => $uraian,
                 'point'       => $skor,
                 'created_at'  => now(),
                 'updated_at'  => now(),
@@ -192,7 +191,7 @@ class Skoring_PelanggaranBKController extends Controller
         return redirect()->back()->with('success', 'Skoring berhasil dihapus!');
     }
 
-      public function export_excel()
+    public function export_excel()
     {
         return Excel::download(new Skoring_Pelanggaran_ExportExcel, 'skoring_pelanggaran.xlsx');
     }
