@@ -54,7 +54,7 @@ class AuthController extends Controller
         if ($role === 'wakasek') {
             return redirect()->route('wakasek.dashboard')->with('success', 'Berhasil login');
         } elseif ($role === 'guru_bk') {
-            return redirect()->route('bk.dashboard')->with('success', 'Berhasil login');
+            return redirect()->route('gurubk.dashboard')->with('success', 'Berhasil login');
         }
     }
 

@@ -2,16 +2,17 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Siswa;
 use App\Models\Kelas;
+use App\Models\Siswa;
 use App\Models\Penilaian;
 use Illuminate\Http\Request;
 use App\Models\Aspek_Penilaian;
-use Illuminate\Support\Facades\DB;
-
-use App\Exports\Skoring_Pelanggaran_ExportExcel;
 use Barryvdh\DomPDF\Facade\Pdf;
+
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 use Maatwebsite\Excel\Facades\Excel;
+use App\Exports\Skoring_Pelanggaran_ExportExcel;
 
 class Skoring_PelanggaranBKController extends Controller
 {
@@ -72,7 +73,7 @@ class Skoring_PelanggaranBKController extends Controller
         $aspek   = Aspek_Penilaian::findOrFail($request->id_aspekpenilaian);
         $skor    = (int) $aspek->indikator_poin;
         $uraian  = $aspek->uraian;
-        $user = auth()->user();
+        $user = Auth::user();
 
         Penilaian::create([
             'id_penilaian'      => $request->id_penilaian,
@@ -95,7 +96,7 @@ class Skoring_PelanggaranBKController extends Controller
 
             // Insert ke activity_logs
             DB::table('activity_logs')->insert([
-                'user_id'     => auth()->id(),
+                'user_id'     => $user->id,
                 'nis'         => $siswa->nis,
                 'kategori'    => 'Pelanggaran',
                 'activity'    => 'Tambah Pelanggaran',
@@ -121,6 +122,7 @@ class Skoring_PelanggaranBKController extends Controller
 
         $penilaian = Penilaian::findOrFail($id);
         $siswa     = $penilaian->siswa;
+        $user = Auth::user();
 
         // rollback skor lama
         $oldSkor = $penilaian->aspek_penilaian->indikator_poin ?? 0;
@@ -144,7 +146,7 @@ class Skoring_PelanggaranBKController extends Controller
             $siswa->save();
 
             DB::table('activity_logs')->insert([
-                'user_id'     => auth()->id(),
+                'user_id'     => $user->id,
                 'nis'         => $siswa->nis,
                 'kategori'    => 'Pelanggaran',
                 'activity'    => 'Update Pelanggaran',
@@ -168,6 +170,7 @@ class Skoring_PelanggaranBKController extends Controller
         $siswa   = $skoring->siswa;
         $skor    = $skoring->aspek_penilaian->indikator_poin ?? 0;
         $uraian  = $skoring->aspek_penilaian->uraian ?? '-';
+        $user = Auth::user();
 
         if ($siswa) {
             $siswa->poin_pelanggaran -= $skor;
@@ -175,7 +178,7 @@ class Skoring_PelanggaranBKController extends Controller
             $siswa->save();
 
             DB::table('activity_logs')->insert([
-                'user_id'     => auth()->id(),
+                'user_id'     => $user->id,
                 'nis'         => $siswa->nis,
                 'kategori'    => 'Pelanggaran',
                 'activity'    => 'Hapus Pelanggaran',

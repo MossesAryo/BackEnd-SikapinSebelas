@@ -1,32 +1,33 @@
 <?php
 
-use App\Http\Controllers\AkumulasiContoller;
-use App\Http\Controllers\Aspek_penilaianController;
-use App\Http\Controllers\Auth\AuthController as AController;
-use App\Http\Controllers\DashboardController;
-use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\LaporanController;
-use App\Http\Controllers\Guru_bkController;
-use App\Http\Controllers\JurusanController;
-use App\Http\Controllers\KelasController;
-use App\Http\Controllers\PenilaianController;
-use App\Http\Controllers\WalikelasController;
-use App\Http\Controllers\KetuaProgramController;
-use App\Http\Controllers\PenghargaanController;
-use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\SiswaController;
-use App\Http\Controllers\SiswaBKController;
-use App\Http\Controllers\AkumulasiController;
-use App\Http\Controllers\catatanController;
-use App\Http\Controllers\DashboardBKController;
-use App\Http\Controllers\Skoring_PenghargaanController;
-use App\Http\Controllers\Skoring_PelanggaranController;
-use App\Http\Controllers\SuratPeringatanController;
-use App\Http\Controllers\Skoring_PenghargaanBKController;
-use App\Http\Controllers\Skoring_PelanggaranBKController;
-use App\Http\Controllers\IntervensiController;
 use App\Models\catatan;
 use Illuminate\Routing\RouteUri;
+use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\KelasController;
+use App\Http\Controllers\SiswaController;
+use App\Http\Controllers\catatanController;
+use App\Http\Controllers\Guru_bkController;
+use App\Http\Controllers\JurusanController;
+use App\Http\Controllers\LaporanController;
+use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\SiswaBKController;
+use App\Http\Controllers\AkumulasiContoller;
+use App\Http\Controllers\AkumulasiController;
+use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\PenilaianController;
+use App\Http\Controllers\WalikelasController;
+use App\Http\Controllers\IntervensiController;
+use App\Http\Controllers\DashboardBKController;
+use App\Http\Controllers\PenghargaanController;
+use App\Http\Controllers\KetuaProgramController;
+use App\Http\Controllers\NotifikasiBKController;
+use App\Http\Controllers\Aspek_penilaianController;
+use App\Http\Controllers\SuratPeringatanController;
+use App\Http\Controllers\Skoring_PelanggaranController;
+use App\Http\Controllers\Skoring_PenghargaanController;
+use App\Http\Controllers\Skoring_PelanggaranBKController;
+use App\Http\Controllers\Skoring_PenghargaanBKController;
+use App\Http\Controllers\Auth\AuthController as AController;
 
 Route::get('/', [AController::class, 'index'])->name('login');
 Route::post('/login', [AController::class, 'login'])->name('login.submit');
@@ -235,5 +236,7 @@ Route::middleware('UserAccess:2')->group(function () {
     Route::delete('/intervensi/{id}/destroy', [IntervensiController::class, 'destroy'])->name('intervensi.destroy');
 
     Route::get('/akumulasibk', [AkumulasiContoller::class, 'indexBK'])->name('akumulasiBK');
+
+    route::get('/notifikasibk', [NotifikasiBKController::class, 'index'])->name('notifikasibk.index');
 });
 });

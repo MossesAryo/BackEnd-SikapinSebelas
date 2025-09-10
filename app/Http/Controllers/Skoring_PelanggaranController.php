@@ -2,12 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Siswa;
 use App\Models\Kelas;
+use App\Models\Siswa;
 use App\Models\Penilaian;
 use Illuminate\Http\Request;
 use App\Models\Aspek_Penilaian;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 
 class Skoring_PelanggaranController extends Controller
 {
@@ -17,7 +18,7 @@ class Skoring_PelanggaranController extends Controller
     public function index(Request $request)
     {
 
-        
+
 
         return view('wakasek.skoring.pelanggaran.index', [
             // ambil penilaian yg aspeknya bertipe Pelanggaran
@@ -25,8 +26,8 @@ class Skoring_PelanggaranController extends Controller
                 $q->where('jenis_poin', 'Pelanggaran');
             })->paginate(10),
             "siswa"    => Siswa::all(),
-            "aspekPel" => Aspek_Penilaian::where('jenis_poin', 'Pelanggaran')->get(),   
-            
+            "aspekPel" => Aspek_Penilaian::where('jenis_poin', 'Pelanggaran')->get(),
+
         ]);
     }
 
@@ -52,15 +53,16 @@ class Skoring_PelanggaranController extends Controller
             'nis'               => $request->nis,
             'id_aspekpenilaian' => $request->id_aspekpenilaian,
 
-            'nip_wakasek'       => null,
-            'nip_walikelas'     => null,
-            'nip_bk'            => null,
+            'nip_bk'        => $user->gurubk->nip_bk ?? null,
+            'nip_walikelas' => $user->walikelas->nip_walikelas ?? null,
+            'nip_wakasek'   => $user->wakasek->nip_wakasek ?? null,
             'created_at'        => now(),
 
         ]);
 
         // Update poin siswa
         $siswa = Siswa::where('nis', $request->nis)->first();
+        $user = Auth::user();
         if ($siswa) {
             $siswa->poin_pelanggaran += $skor;
             $siswa->poin_total       -= $skor;
@@ -68,7 +70,7 @@ class Skoring_PelanggaranController extends Controller
 
             // Insert ke activity_logs
             DB::table('activity_logs')->insert([
-                'user_id'     => auth()->id(),
+                'user_id'     => $user->id,
                 'nis'         => $siswa->nis,
                 'kategori'    => 'Pelanggaran',
                 'activity'    => 'Tambah Pelanggaran',
@@ -94,6 +96,7 @@ class Skoring_PelanggaranController extends Controller
 
         $penilaian = Penilaian::findOrFail($id);
         $siswa     = $penilaian->siswa;
+        $user = Auth::user();
 
         // rollback skor lama
         $oldSkor = $penilaian->aspek_penilaian->indikator_poin ?? 0;
@@ -117,7 +120,7 @@ class Skoring_PelanggaranController extends Controller
             $siswa->save();
 
             DB::table('activity_logs')->insert([
-                'user_id'     => auth()->id(),
+                'user_id'     => $user->id,
                 'nis'         => $siswa->nis,
                 'kategori'    => 'Pelanggaran',
                 'activity'    => 'Update Pelanggaran',
@@ -141,6 +144,7 @@ class Skoring_PelanggaranController extends Controller
         $siswa   = $skoring->siswa;
         $skor    = $skoring->aspek_penilaian->indikator_poin ?? 0;
         $uraian  = $skoring->aspek_penilaian->uraian ?? '-';
+        $user = Auth::user();
 
         if ($siswa) {
             $siswa->poin_pelanggaran -= $skor;
@@ -148,7 +152,7 @@ class Skoring_PelanggaranController extends Controller
             $siswa->save();
 
             DB::table('activity_logs')->insert([
-                'user_id'     => auth()->id(),
+                'user_id'     => $user->id,
                 'nis'         => $siswa->nis,
                 'kategori'    => 'Pelanggaran',
                 'activity'    => 'Hapus Pelanggaran',

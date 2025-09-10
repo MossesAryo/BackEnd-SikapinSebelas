@@ -50,16 +50,16 @@ class User extends Authenticatable
 
     public function gurubk()
     {
-        return $this->hasOne(guru_bk::class, 'id_user');
+        return $this->hasOne(guru_bk::class, 'username', 'username');
     }
 
     public function walikelas()
     {
-        return $this->hasOne(WaliKelas::class, 'id_user');
+        return $this->hasOne(WaliKelas::class, 'username', 'username');
     }
 
     public function wakasek()
     {
-        return $this->hasOne(Wakasek::class, 'id_user');
+        return $this->hasOne(Wakasek::class, 'username', 'username');
     }
 }

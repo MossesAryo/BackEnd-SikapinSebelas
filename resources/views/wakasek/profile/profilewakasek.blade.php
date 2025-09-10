@@ -11,21 +11,19 @@
                 class="w-[100px] h-[100px] bg-slate-100 rounded-full flex items-center justify-center text-3xl mx-auto mb-6 text-slate-500 border-3 border-slate-200">
                 <i class="bi bi-person"></i>
             </div>
-            <h1 class="profile-name text-2xl font-semibold text-slate-800 mb-2">Elan Pratama S.pd</h1>
-            <p class="profile-title text-blue-600 font-medium mb-6 text-sm">Wakil Kepala Sekolah</p>
+            <h1 class="profile-name text-2xl font-semibold text-slate-800 mb-2">@auth
+                {{ Auth::user()->wakasek->nama_wakasek }}
+            @endauth</h1>
+            <p class="profile-title text-blue-600 font-medium mb-6 text-sm">Wakil Kepala Kesiswaan</p>
             <div class="flex flex-col gap-3">
-                <button id="editProfileBtn"
-                    class="flex items-center justify-center px-4 py-3 rounded-lg text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 transition-colors w-full btn-animate">
-                    <i class="bi bi-pencil mr-2"></i>
-                    Edit Profile
-                </button>
+                
                 <form method="POST" action="#" class="w-full">
                     @csrf
-                    <button type="submit"
+                    <a href="{{ route('logout') }}"
                         class="flex items-center justify-center px-4 py-3 rounded-lg text-sm font-medium text-white bg-red-600 hover:bg-red-700 transition-colors w-full btn-animate">
                         <i class="bi bi-box-arrow-right mr-2"></i>
                         Logout
-                    </button>
+                    </a>
                 </form>
             </div>
         </div>
@@ -39,15 +37,21 @@
             <div class="space-y-4">
                 <div class="grid grid-cols-1 md:grid-cols-[140px_1fr] gap-4 py-3 border-b border-slate-100">
                     <div class="text-sm font-medium text-slate-500">Nama Lengkap</div>
-                    <div class="info-value text-sm font-medium text-slate-800">Elan Pratama S.pd</div>
+                    <div class="info-value text-sm font-medium text-slate-800">@auth
+                {{ Auth::user()->wakasek->nama_wakasek }}
+                    @endauth</div>
                 </div>
                 <div class="grid grid-cols-1 md:grid-cols-[140px_1fr] gap-4 py-3 border-b border-slate-100">
                     <div class="text-sm font-medium text-slate-500">NIP</div>
-                    <div class="info-value text-sm font-medium text-slate-800">196512121990031001</div>
+                    <div class="info-value text-sm font-medium text-slate-800">@auth
+                {{ Auth::user()->wakasek->nip_wakasek }}
+                    @endauth</div>
                 </div>
                 <div class="grid grid-cols-1 md:grid-cols-[140px_1fr] gap-4 py-3 border-b border-slate-100">
                     <div class="text-sm font-medium text-slate-500">Email</div>
-                    <div class="info-value text-sm font-medium text-slate-800">elann03@smkn1bandung.sch.id</div>
+                    <div class="info-value text-sm font-medium text-slate-800">@auth
+                {{ Auth::user()->email }}
+                    @endauth</div>
                 </div>
                 <div class="grid grid-cols-1 md:grid-cols-[140px_1fr] gap-4 py-3 border-b border-slate-100">
                     <div class="text-sm font-medium text-slate-500">Jabatan</div>
@@ -58,60 +62,7 @@
         </div>
     </div>
 
-    <!-- Edit Profile Modal -->
-    <div id="editModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
-        <div class="bg-white rounded-2xl p-8 w-full max-w-md mx-4 transform transition-all duration-300 scale-95 opacity-0"
-            id="modalContent">
-            <div class="flex items-center justify-between mb-6">
-                <h3 class="text-xl font-semibold text-slate-800">Edit Profile</h3>
-                <button id="closeModal" class="text-slate-400 hover:text-slate-600 transition-colors">
-                    <i class="bi bi-x-lg text-xl"></i>
-                </button>
-            </div>
-
-            <form id="editForm" class="space-y-4">
-                <div>
-                    <label class="block text-sm font-medium text-slate-700 mb-2">Nama Lengkap</label>
-                    <input type="text" id="namaLengkap" value="Elan Pratama S.pd"
-                        class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
-                </div>
-
-                <div>
-                    <label class="block text-sm font-medium text-slate-700 mb-2">NIP</label>
-                    <input type="text" id="nip" value="196512121990031001"
-                        class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
-                </div>
-
-                <div>
-                    <label class="block text-sm font-medium text-slate-700 mb-2">Email</label>
-                    <input type="email" id="email" value="elann03@smkn1bandung.sch.id"
-                        class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
-                </div>
-
-                <div>
-                    <label class="block text-sm font-medium text-slate-700 mb-2">Jabatan</label>
-                    <select id="jabatan"
-                        class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
-                        <option value="Wakil Kepala Sekolah" selected>Wakil Kepala Sekolah</option>
-                        <option value="Kepala Sekolah">Kepala Sekolah</option>
-                        <option value="Guru">Guru</option>
-                        <option value="Staff">Staff</option>
-                    </select>
-                </div>
-
-                <div class="flex gap-3 pt-4">
-                    <button type="button" id="cancelBtn"
-                        class="flex-1 px-4 py-2 text-sm font-medium text-slate-600 bg-slate-100 hover:bg-slate-200 rounded-lg transition-colors">
-                        Batal
-                    </button>
-                    <button type="submit"
-                        class="flex-1 px-4 py-2 text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 rounded-lg transition-colors">
-                        Simpan
-                    </button>
-                </div>
-            </form>
-        </div>
-    </div>
+    
 @endsection
 
 @push('css')

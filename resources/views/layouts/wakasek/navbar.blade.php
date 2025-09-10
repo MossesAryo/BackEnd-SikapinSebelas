@@ -12,9 +12,12 @@
                  class="flex items-center gap-3 hover:bg-gray-100 px-2 py-1 rounded-lg">
                  <div
                      class="w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center text-white text-sm font-bold">
-                     W
+                        {{ strtoupper(substr(Auth::user()->wakasek->nama_wakasek, 0, 1)) }}
                  </div>
-                 <span class="text-gray-700">Wakasek</span>
+                 <span class="text-gray-700">@auth
+                         {{ Auth::user()->wakasek->nama_wakasek }}
+                     @endauth
+                 </span>
              </a>
          </div>
      </div>

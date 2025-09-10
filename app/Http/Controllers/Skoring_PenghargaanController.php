@@ -7,6 +7,7 @@ use App\Models\Penilaian;
 use Illuminate\Http\Request;
 use App\Models\Aspek_Penilaian;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 
 class Skoring_PenghargaanController extends Controller
 {
@@ -41,15 +42,16 @@ class Skoring_PenghargaanController extends Controller
         $aspek  = Aspek_Penilaian::findOrFail($request->id_aspekpenilaian);
         $skor   = (int) $aspek->indikator_poin;
         $uraian = $aspek->uraian;
+        $user = Auth::user();
 
         // Simpan penilaian
         Penilaian::create([
             'id_penilaian'      => $request->id_penilaian,
             'nis'               => $request->nis,
             'id_aspekpenilaian' => $request->id_aspekpenilaian,
-            'nip_wakasek'       => null,
-            'nip_walikelas'     => null,
-            'nip_bk'            => null,
+            'nip_bk'        => $user->gurubk->nip_bk ?? null,
+            'nip_walikelas' => $user->walikelas->nip_walikelas ?? null,
+            'nip_wakasek'   => $user->wakasek->nip_wakasek ?? null,
             'created_at'        => now(),
         ]);
 
@@ -62,7 +64,7 @@ class Skoring_PenghargaanController extends Controller
 
             // Simpan log aktivitas (pakai query builder agar kategori pasti tersimpan)
             DB::table('activity_logs')->insert([
-                'user_id'     => auth()->id(),
+                'user_id'     => $user->id,
                 'nis'         => $siswa->nis,
                 'kategori'    => 'Apresiasi',
                 'activity'    => 'Tambah Penghargaan',
@@ -88,6 +90,7 @@ class Skoring_PenghargaanController extends Controller
 
         $penilaian = Penilaian::findOrFail($id);
         $siswa     = $penilaian->siswa;
+        $user = Auth::user();
 
         // Skor lama (ambil dari aspek yang saat ini terhubung)
         $oldSkor = $penilaian->aspek_penilaian->indikator_poin ?? 0;
@@ -114,7 +117,7 @@ class Skoring_PenghargaanController extends Controller
 
             // simpan log update
             DB::table('activity_logs')->insert([
-                'user_id'     => auth()->id(),
+                'user_id'     => $user->id,
                 'nis'         => $siswa->nis,
                 'kategori'    => 'Apresiasi',
                 'activity'    => 'Update Penghargaan',
@@ -136,6 +139,7 @@ class Skoring_PenghargaanController extends Controller
     {
         $skoring = Penilaian::findOrFail($id);
         $siswa   = $skoring->siswa;
+        $user = Auth::user();
 
         $skor   = $skoring->aspek_penilaian->indikator_poin ?? 0;
         $uraian = $skoring->aspek_penilaian->uraian ?? '-';
@@ -147,7 +151,7 @@ class Skoring_PenghargaanController extends Controller
 
             // simpan log hapus
             DB::table('activity_logs')->insert([
-                'user_id'     => auth()->id(),
+                'user_id'     => $user->id,
                 'nis'         => $siswa->nis,
                 'kategori'    => 'Apresiasi',
                 'activity'    => 'Hapus Penghargaan',
