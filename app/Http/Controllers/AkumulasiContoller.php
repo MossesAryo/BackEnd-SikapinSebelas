@@ -19,9 +19,9 @@ class AkumulasiContoller extends Controller
     public function index(Request $request)
     {
 
-        $jurusanList = Kelas::select('jurusan')->distinct()->pluck('jurusan');
+        $jurusanList = kelas::select('jurusan')->distinct()->pluck('jurusan');
 
-        $kelasList   = Kelas::all();
+        $kelasList   = kelas::all();
 
         $query = Siswa::query();
 
@@ -45,7 +45,7 @@ class AkumulasiContoller extends Controller
         $jurusanList = kelas::select('jurusan')->distinct()->pluck('jurusan');
         $kelasList   = Kelas::all();
 
-        $query = Siswa::query();
+        $query = siswa::query();
 
         if ($request->filled('jurusan')) {
             $query->whereHas('kelas', fn($q) => $q->where('jurusan', $request->jurusan));

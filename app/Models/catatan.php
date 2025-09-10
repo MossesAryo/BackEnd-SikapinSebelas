@@ -11,10 +11,10 @@ class catatan extends Model
 
     public function siswa()
     {
-        return $this->belongsTo(Siswa::class, 'nis', 'nis');
+        return $this->belongsTo(siswa::class, 'nis', 'nis');
     }
     public function wakasek()
     {
-        return $this->belongsTo(Wakasek::class, 'nip_wakasek', 'nip_wakasek');
+        return $this->belongsTo(wakasek::class, 'nip_wakasek', 'nip_wakasek');
     }
 }

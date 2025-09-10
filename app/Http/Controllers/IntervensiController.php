@@ -16,8 +16,8 @@ class IntervensiController extends Controller
     public function index(Request $request)
     {
         $intervensi = intervensi::all();
-        $kelas = Kelas::all();
-        $siswa = Siswa::all();
+        $kelas = kelas::all();
+        $siswa = siswa::all();
 
         // Kirim data walikelas dan kelas ke view
         return view('gurubk.intervensi.index', compact('intervensi', 'kelas', 'siswa'));

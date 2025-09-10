@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Siswa;
-use App\Models\Penilaian;
+use App\Models\siswa;
+use App\Models\penilaian;
 use Illuminate\Http\Request;
-use App\Models\Aspek_Penilaian;
+use App\Models\aspek_penilaian;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 
@@ -18,12 +18,12 @@ class Skoring_PenghargaanController extends Controller
     {
         return view('wakasek.skoring.penghargaan.index', [
             // Ambil semua penilaian yang aspek- nya bertipe Apresiasi
-            "penilaian"   => Penilaian::whereHas('aspek_penilaian', function ($q) {
+            "penilaian"   => penilaian::whereHas('aspek_penilaian', function ($q) {
                 $q->where('jenis_poin', 'Apresiasi');
             })->paginate(10),
-            "siswa"       => Siswa::all(),
+            "siswa"       => siswa::all(),
             // Kirim dengan nama aspekPel agar view tidak error
-            "aspekPel"    => Aspek_Penilaian::where('jenis_poin', 'Apresiasi')->get()
+            "aspekPel"    => aspek_penilaian::where('jenis_poin', 'Apresiasi')->get()
         ]);
     }
 
@@ -39,13 +39,13 @@ class Skoring_PenghargaanController extends Controller
         ]);
 
         // Ambil skor & uraian dari aspek_penilaian
-        $aspek  = Aspek_Penilaian::findOrFail($request->id_aspekpenilaian);
+        $aspek  = aspek_penilaian::findOrFail($request->id_aspekpenilaian);
         $skor   = (int) $aspek->indikator_poin;
         $uraian = $aspek->uraian;
         $user = Auth::user();
 
         // Simpan penilaian
-        Penilaian::create([
+        penilaian::create([
             'id_penilaian'      => $request->id_penilaian,
             'nis'               => $request->nis,
             'id_aspekpenilaian' => $request->id_aspekpenilaian,
@@ -56,7 +56,7 @@ class Skoring_PenghargaanController extends Controller
         ]);
 
         // Update poin siswa
-        $siswa = Siswa::where('nis', $request->nis)->first();
+        $siswa = siswa::where('nis', $request->nis)->first();
         if ($siswa) {
             $siswa->poin_apresiasi += $skor;
             $siswa->poin_total     += $skor;
@@ -88,7 +88,7 @@ class Skoring_PenghargaanController extends Controller
             'id_aspekpenilaian' => 'required',
         ]);
 
-        $penilaian = Penilaian::findOrFail($id);
+        $penilaian = penilaian::findOrFail($id);
         $siswa     = $penilaian->siswa;
         $user = Auth::user();
 
@@ -101,7 +101,7 @@ class Skoring_PenghargaanController extends Controller
         }
 
         // Ambil aspek baru & uraian
-        $aspekBaru = Aspek_Penilaian::findOrFail($request->id_aspekpenilaian);
+        $aspekBaru = aspek_penilaian::findOrFail($request->id_aspekpenilaian);
         $newSkor   = (int) $aspekBaru->indikator_poin;
         $uraian    = $aspekBaru->uraian;
 
@@ -137,7 +137,7 @@ class Skoring_PenghargaanController extends Controller
      */
     public function destroy(string $id)
     {
-        $skoring = Penilaian::findOrFail($id);
+        $skoring = penilaian::findOrFail($id);
         $siswa   = $skoring->siswa;
         $user = Auth::user();
 

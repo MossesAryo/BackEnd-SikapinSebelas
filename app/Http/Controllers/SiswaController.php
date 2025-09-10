@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Kelas;
-use App\Models\Siswa;
+use App\Models\kelas;
+use App\Models\siswa;
 use App\Models\ActivityLog;
 use Illuminate\Http\Request;
 
@@ -23,12 +23,12 @@ class SiswaController extends Controller
      */
     public function index(Request $request)
     {
-        $jurusanList = Kelas::select('jurusan')->distinct()->pluck('jurusan');
-        $kelasList   = Kelas::all();
+        $jurusanList = kelas::select('jurusan')->distinct()->pluck('jurusan');
+        $kelasList   = kelas::all();
       
         $penghargaanList = siswa_penghargaan::all();
 
-        $query = Siswa::query();
+        $query = siswa::query();
 
         if ($request->filled('jurusan')) {
             $query->whereHas('kelas', fn($q) => $q->where('jurusan', $request->jurusan));
@@ -65,7 +65,7 @@ class SiswaController extends Controller
             'id_kelas' => 'required',
         ]);
 
-        Siswa::create([
+        siswa::create([
             'nis' => $request->nis,
             'nama_siswa' => $request->nama_siswa,
             'id_kelas' => $request->id_kelas,
@@ -108,7 +108,7 @@ class SiswaController extends Controller
      */
     public function show(string $id)
     {
-        $siswa = Siswa::where('nis', $id)->first();
+        $siswa = siswa::where('nis', $id)->first();
         $penghargaan = penghargaan::all();
         $penghargaanList = siswa_penghargaan::all();
         $peringatan = surat_peringatan::all();
@@ -152,7 +152,7 @@ class SiswaController extends Controller
             'id_kelas' => 'required|string',
         ]);
 
-        $siswa = Siswa::where('nis', $nis)->firstOrFail();
+        $siswa = siswa::where('nis', $nis)->firstOrFail();
 
         $siswa->update([
             'nis' => $request->nis,
@@ -233,10 +233,10 @@ class SiswaController extends Controller
 
  public function siswaGuruBk(Request $request)
     {
-        $jurusanList = Kelas::select('jurusan')->distinct()->pluck('jurusan');
-        $kelasList   = Kelas::all();
+        $jurusanList = kelas::select('jurusan')->distinct()->pluck('jurusan');
+        $kelasList   = kelas::all();
 
-        $query = Siswa::query();
+        $query = siswa::query();
 
         if ($request->filled('jurusan')) {
             $query->whereHas('kelas', fn($q) => $q->where('jurusan', $request->jurusan));
@@ -254,7 +254,7 @@ class SiswaController extends Controller
  public function showBK(string $id)
     {
         // Ambil data siswa
-        $siswa = Siswa::where('nis', $id)->first();
+        $siswa = siswa::where('nis', $id)->first();
 
         if (!$siswa) {
             return redirect()->route('gurubk.siswa')->with('error', 'Siswa tidak ditemukan');
@@ -273,7 +273,7 @@ class SiswaController extends Controller
 
         return view('gurubk.siswa.show', [
             'siswa' => $siswa,
-            'kelasList' => Kelas::all(),
+            'kelasList' => kelas::all(),
             'activities' => $activities,
             'poinPositif' => $poinPositif,
             'poinNegatif' => $poinNegatif,

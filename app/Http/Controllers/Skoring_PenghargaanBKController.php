@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Kelas;
-use App\Models\Siswa;
-use App\Models\Penilaian;
+use App\Models\kelas;
+use App\Models\siswa;
+use App\Models\penilaian;
 use Illuminate\Http\Request;
-use App\Models\Aspek_Penilaian;
+use App\Models\aspek_penilaian;
 use Barryvdh\DomPDF\Facade\Pdf;
 
 use Illuminate\Support\Facades\DB;
@@ -21,17 +21,17 @@ class Skoring_PenghargaanBKController extends Controller
      */
     public function index(Request $request)
     {
-        $jurusanList = Kelas::select('jurusan')->distinct()->pluck('jurusan');
-        $kelasList   = Kelas::all();
-        $siswa   = Siswa::all();
-        $aspekPel = Aspek_Penilaian::where('jenis_poin', 'apresiasi')->get();
+        $jurusanList = kelas::select('jurusan')->distinct()->pluck('jurusan');
+        $kelasList   = kelas::all();
+        $siswa   = siswa::all();
+        $aspekPel = aspek_penilaian::where('jenis_poin', 'apresiasi')->get();
 
-        // Mulai query Penilaian (hanya yg jenis Penghargaan)
-        $penilaianQuery = Penilaian::whereHas('aspek_penilaian', function ($q) {
+        // Mulai query penilaian (hanya yg jenis Penghargaan)
+        $penilaianQuery = penilaian::whereHas('aspek_penilaian', function ($q) {
             $q->where('jenis_poin', 'apresiasi');
         });
 
-        // Filter berdasarkan jurusan -> cek relasi Penilaian -> Siswa -> Kelas
+        // Filter berdasarkan jurusan -> cek relasi penilaian -> siswa -> kelas
         if ($request->filled('jurusan')) {
             $penilaianQuery->whereHas('siswa', function ($q) use ($request) {
                 $q->whereHas('kelas', function ($k) use ($request) {
@@ -70,13 +70,13 @@ class Skoring_PenghargaanBKController extends Controller
         ]);
 
         // Ambil skor & uraian dari aspek_penilaian
-        $aspek  = Aspek_Penilaian::findOrFail($request->id_aspekpenilaian);
+        $aspek  = aspek_penilaian::findOrFail($request->id_aspekpenilaian);
         $skor   = (int) $aspek->indikator_poin;
         $uraian = $aspek->uraian;
         $user = Auth::user();
 
         // Simpan penilaian
-        Penilaian::create([
+        penilaian::create([
             'id_penilaian'      => $request->id_penilaian,
             'nis'               => $request->nis,
             'id_aspekpenilaian' => $request->id_aspekpenilaian,
@@ -87,7 +87,7 @@ class Skoring_PenghargaanBKController extends Controller
         ]);
 
         // Update poin siswa
-        $siswa = Siswa::where('nis', $request->nis)->first();
+        $siswa = siswa::where('nis', $request->nis)->first();
         if ($siswa) {
             $siswa->poin_apresiasi += $skor;
             $siswa->poin_total     += $skor;
@@ -119,7 +119,7 @@ class Skoring_PenghargaanBKController extends Controller
             'id_aspekpenilaian' => 'required',
         ]);
 
-        $penilaian = Penilaian::findOrFail($id);
+        $penilaian = penilaian::findOrFail($id);
         $siswa     = $penilaian->siswa;
         $user = Auth::user();
 
@@ -132,7 +132,7 @@ class Skoring_PenghargaanBKController extends Controller
         }
 
 
-        $aspekBaru = Aspek_Penilaian::findOrFail($request->id_aspekpenilaian);
+        $aspekBaru = aspek_penilaian::findOrFail($request->id_aspekpenilaian);
         $newSkor   = (int) $aspekBaru->indikator_poin;
         $uraian    = $aspekBaru->uraian;
 
@@ -168,7 +168,7 @@ class Skoring_PenghargaanBKController extends Controller
      */
     public function destroy(string $id)
     {
-        $skoring = Penilaian::findOrFail($id);
+        $skoring = penilaian::findOrFail($id);
         $siswa   = $skoring->siswa;
         $user = Auth::user();
 
@@ -206,7 +206,7 @@ class Skoring_PenghargaanBKController extends Controller
 
     public function export_pdf()
     {
-        $data = \App\Models\Penilaian::with(['siswa', 'aspek_penilaian'])
+        $data = \App\Models\penilaian::with(['siswa', 'aspek_penilaian'])
             ->whereHas('aspek_penilaian', function ($q) {
                 $q->where('jenis_poin', 'Apresiasi');
             })

@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Kelas;
-use App\Models\Siswa;
+use App\Models\kelas;
+use App\Models\siswa;
 use App\Models\ActivityLog;
 use Illuminate\Http\Request;
 
@@ -27,7 +27,7 @@ class SiswaBKController extends Controller
     
       public function import_siswaBK(Request $request)
     {
-        $siswa = Siswa::all();
+        $siswa = siswa::all();
 
         $request->validate([
             'file' => 'required|mimes:xlsx,xls,csv|max:10240',
@@ -43,10 +43,10 @@ class SiswaBKController extends Controller
 
  public function siswaGuruBk(Request $request)
     {
-        $jurusanList = Kelas::select('jurusan')->distinct()->pluck('jurusan');
-        $kelasList   = Kelas::all();
+        $jurusanList = kelas::select('jurusan')->distinct()->pluck('jurusan');
+        $kelasList   = kelas::all();
 
-        $query = Siswa::query();
+        $query = siswa::query();
 
         if ($request->filled('jurusan')) {
             $query->whereHas('kelas', fn($q) => $q->where('jurusan', $request->jurusan));
@@ -64,7 +64,7 @@ class SiswaBKController extends Controller
  public function showBK(string $id)
     {
         // Ambil data siswa
-        $siswa = Siswa::where('nis', $id)->first();
+        $siswa = siswa::where('nis', $id)->first();
 
         if (!$siswa) {
             return redirect()->route('gurubk.siswa')->with('error', 'Siswa tidak ditemukan');
@@ -83,7 +83,7 @@ class SiswaBKController extends Controller
 
         return view('gurubk.siswa.show', [
             'siswa' => $siswa,
-            'kelasList' => Kelas::all(),
+            'kelasList' => kelas::all(),
             'activities' => $activities,
             'poinPositif' => $poinPositif,
             'poinNegatif' => $poinNegatif,

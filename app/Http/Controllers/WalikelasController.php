@@ -3,8 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Walikelas;
-use App\Models\Kelas;
+use App\Models\walikelas;
+use App\Models\kelas;
 use App\Models\User;
 
 use App\Exports\Walikelas_ExportExcel;
@@ -20,7 +20,7 @@ class WalikelasController extends Controller
     public function index()
     {
         $walikelas = Walikelas::paginate(10);
-        $kelas = Kelas::all();
+        $kelas = kelas::all();
         $user = User::all();
 
         // Kirim data walikelas dan kelas ke view

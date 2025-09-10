@@ -27,18 +27,18 @@ class penilaian extends Model
     }
     public function walikelas()
     {
-        return $this->belongsTo(Walikelas::class, 'nip_walikelas');
+        return $this->belongsTo(walikelas::class, 'nip_walikelas');
     }
 
     public function aspek_penilaian()
     {
-        return $this->belongsTo(Aspek_Penilaian::class, 'id_aspekpenilaian', 'id_aspekpenilaian');
+        return $this->belongsTo(aspek_penilaian::class, 'id_aspekpenilaian', 'id_aspekpenilaian');
     }
 
 
     public function siswa()
     {
-        return $this->belongsTo(Siswa::class, 'nis', 'nis');
+        return $this->belongsTo(siswa::class, 'nis', 'nis');
     }
 
     public function guruBk()
@@ -48,12 +48,12 @@ class penilaian extends Model
 
      public function aspekApresiasi()
     {
-        return $this->belongsTo(Aspek_Penilaian::class, 'id_aspek_penilaian', 'id_aspek_penilaian')
+        return $this->belongsTo(aspek_penilaian::class, 'id_aspek_penilaian', 'id_aspek_penilaian')
                     ->where('jenis_poin', 'Apresiasi');
     }
     public function aspekPelanggaran()
     {
-        return $this->belongsTo(Aspek_Penilaian::class, 'id_aspek_penilaian', 'id_aspek_penilaian')
+        return $this->belongsTo(aspek_penilaian::class, 'id_aspek_penilaian', 'id_aspek_penilaian')
                     ->where('jenis_poin', 'Pelanggaran');
     }
 }

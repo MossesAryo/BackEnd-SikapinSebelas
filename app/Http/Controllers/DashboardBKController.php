@@ -16,16 +16,16 @@ class DashboardBKController extends Controller
     {
         $totalSiswa = Siswa::count();
 
-        $idApresiasi = Aspek_Penilaian::where('jenis_poin', 'apresiasi')->pluck('id_aspekpenilaian');
+        $idApresiasi = aspek_Penilaian::where('jenis_poin', 'apresiasi')->pluck('id_aspekpenilaian');
 
-        $idPelanggaran = Aspek_Penilaian::where('jenis_poin', 'pelanggaran')->pluck('id_aspekpenilaian');
+        $idPelanggaran = aspek_Penilaian::where('jenis_poin', 'pelanggaran')->pluck('id_aspekpenilaian');
 
-        $totalApresiasi = Penilaian::whereIn('id_aspekpenilaian', $idApresiasi)
+        $totalApresiasi = penilaian::whereIn('id_aspekp', $idApresiasi)
             ->select('nis')
             ->distinct()
             ->count();
 
-        $totalPelanggaran = Penilaian::whereIn('id_aspekpenilaian', $idPelanggaran)
+        $totalPelanggaran = penilaian::whereIn('id_aspekpenilaian', $idPelanggaran)
             ->select('nis')
             ->distinct()
             ->count();

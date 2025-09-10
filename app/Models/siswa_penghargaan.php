@@ -22,6 +22,6 @@ class siswa_penghargaan extends Model
 
     public function siswa()
     {
-        return $this->belongsTo(Siswa::class, 'nis', 'nis');
+        return $this->belongsTo(siswa::class, 'nis', 'nis');
     }
 }

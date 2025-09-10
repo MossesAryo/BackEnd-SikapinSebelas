@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use App\Models\guru_bk;
 use App\Models\User;
-use App\Models\Wakasek;
+use App\Models\wakasek;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -27,7 +27,7 @@ class AuthController extends Controller
         $role = null;
         $user = null;
 
-        $wakasek = Wakasek::where('nip_wakasek', $request->nip)->first();
+        $wakasek = wakasek::where('nip_wakasek', $request->nip)->first();
         if ($wakasek) {
             $user = User::where('username', $wakasek->username)->first();
             $role = 'wakasek';

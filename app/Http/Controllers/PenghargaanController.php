@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Penghargaan;
+use App\Models\penghargaan;
 
 use App\Exports\Penghargaan_ExportExcel;
 use App\Imports\Penghargaan_Import;
@@ -14,12 +14,12 @@ class PenghargaanController extends Controller
 {
     public function index()
     {
-        $penghargaan = Penghargaan::paginate(10);
+        $penghargaan = penghargaan::paginate(10);
         return view('wakasek.penghargaan.index', compact('penghargaan'));
     }
 
     public function fetchApi(){
-        $penghargaan = Penghargaan::all();
+        $penghargaan = penghargaan::all();
 
         return response()->json([
             'success' => true,
@@ -36,7 +36,7 @@ class PenghargaanController extends Controller
             'level_penghargaan' => 'required|in:PH1,PH2,PH3',
             'alasan' => 'required|string|max:255',
         ]);
-        Penghargaan::create($request->all());
+        penghargaan::create($request->all());
         return redirect()->back()->with('success', 'Data berhasil disimpan');
     }
 
@@ -56,7 +56,7 @@ class PenghargaanController extends Controller
             'alasan' => $request->alasan,
         ];
 
-        $updated = Penghargaan::where('id_penghargaan', $id_penghargaan)->update($data);
+        $updated = penghargaan::where('id_penghargaan', $id_penghargaan)->update($data);
 
         return redirect()->route('penghargaan.index')->with('success', 'Penghargaan berhasil diedit.');
     }
@@ -64,7 +64,7 @@ class PenghargaanController extends Controller
 
     public function destroy($id)
     {
-        $penghargaan = Penghargaan::findOrFail($id);
+        $penghargaan = penghargaan::findOrFail($id);
         $penghargaan->delete();
 
         return redirect()->route('penghargaan.index')->with('success', 'Data penghargaan berhasil dihapus.');
@@ -105,7 +105,7 @@ class PenghargaanController extends Controller
 
     public function indexBK()
     {
-        $penghargaan = Penghargaan::all();
+        $penghargaan = penghargaan::all();
         return view('gurubk.penghargaan.index', compact('penghargaan'));
     }
 
@@ -118,7 +118,7 @@ class PenghargaanController extends Controller
             'level_penghargaan' => 'required|in:PH1,PH2,PH3',
             'alasan' => 'required|string|max:255',
         ]);
-        Penghargaan::create($request->all());
+        penghargaan::create($request->all());
         return redirect()->back()->with('success', 'Data berhasil disimpan');
     }
 
@@ -138,7 +138,7 @@ class PenghargaanController extends Controller
             'alasan' => $request->alasan,
         ];
 
-        $updated = Penghargaan::where('id_penghargaan', $id_penghargaan)->update($data);
+        $updated = penghargaan::where('id_penghargaan', $id_penghargaan)->update($data);
 
         return redirect()->route('penghargaanbk.index')->with('success', 'Penghargaan berhasil diedit.');
     }
@@ -146,7 +146,7 @@ class PenghargaanController extends Controller
 
     public function destroyBK($id)
     {
-        $penghargaan = Penghargaan::findOrFail($id);
+        $penghargaan = penghargaan::findOrFail($id);
         $penghargaan->delete();
 
         return redirect()->route('penghargaanbk.index')->with('success', 'Data penghargaan berhasil dihapus.');

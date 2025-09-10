@@ -14,18 +14,18 @@ class DashboardController extends Controller
      */
     public function index()
     {
-        $totalSiswa = Siswa::count();
+        $totalSiswa = siswa::count();
 
-        $idApresiasi = Aspek_Penilaian::where('jenis_poin', 'apresiasi')->pluck('id_aspekpenilaian');
+        $idApresiasi = aspek_Penilaian::where('jenis_poin', 'apresiasi')->pluck('id_aspekpenilaian');
 
-        $idPelanggaran = Aspek_Penilaian::where('jenis_poin', 'pelanggaran')->pluck('id_aspekpenilaian');
+        $idPelanggaran = aspek_Penilaian::where('jenis_poin', 'pelanggaran')->pluck('id_aspekpenilaian');
 
-        $totalApresiasi = Penilaian::whereIn('id_aspekpenilaian', $idApresiasi)
+        $totalApresiasi = penilaian::whereIn('id_aspekpenilaian', $idApresiasi)
             ->select('nis')
             ->distinct()
             ->count();
 
-        $totalPelanggaran = Penilaian::whereIn('id_aspekpenilaian', $idPelanggaran)
+        $totalPelanggaran = penilaian::whereIn('id_aspekpenilaian', $idPelanggaran)
             ->select('nis')
             ->distinct()
             ->count();
