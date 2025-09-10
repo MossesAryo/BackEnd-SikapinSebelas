@@ -47,6 +47,8 @@
         <div class="divide-y divide-gray-200">
             
             <!-- Notification Item - Unread Apresiasi -->
+            @foreach ($notifikasi as $item )
+                
             <div class="notification-item unread p-6 hover:bg-gray-50 transition-colors cursor-pointer relative">
                 <div class="flex items-start gap-4">
                     <div class="flex-shrink-0">
@@ -57,21 +59,28 @@
                     <div class="flex-1 min-w-0">
                         <div class="flex items-center gap-2 mb-1">
                             <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800">
-                                Apresiasi
+                                {{ $item->judul_catatan }}
                             </span>
                             <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-red-100 text-red-800">
                                 Baru
                             </span>
                         </div>
                         <p class="text-gray-900 font-medium mb-1">
-                            <strong>Ahmad Rizki Pratama</strong> dari kelas XII RPL 1 mendapat apresiasi baru
+                            <strong>{{ $item->siswa->nama_siswa }}</strong> dari kelas {{ $item->siswa->kelas->nama_kelas }} 
                         </p>
                         <p class="text-gray-600 text-sm mb-2">
-                            "Juara 1 Lomba Programming Tingkat Provinsi" - Poin: +50
+                            "{{ $item->isi_catatan }}"
+                        </p>
+                        <p class="text-gray-500 text-xs flex items-center gap-1">
+                            Catatan Dari : @if ($item->nip_wakasek === null) 
+                            {{ $item->walikelas->nama_walikelas }}
+                            @else
+                            {{ $item->wakasek->nama_wakasek }} | Wakil Kepala Kesiswaan  
+                            @endif
                         </p>
                         <p class="text-gray-500 text-xs flex items-center gap-1">
                             <i class="bi bi-clock"></i>
-                            2 menit yang lalu
+                            {{ $item->created_at->diffForHumans() }}
                         </p>
                     </div>
                     <div class="flex items-center gap-2">
@@ -86,6 +95,7 @@
                 <!-- Unread indicator -->
                 <div class="absolute left-0 top-1/2 transform -translate-y-1/2 w-1 h-8 bg-blue-500 rounded-r"></div>
             </div>
+            @endforeach
 
             
 

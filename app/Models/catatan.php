@@ -13,4 +13,8 @@ class catatan extends Model
     {
         return $this->belongsTo(Siswa::class, 'nis', 'nis');
     }
+    public function wakasek()
+    {
+        return $this->belongsTo(Wakasek::class, 'nip_wakasek', 'nip_wakasek');
+    }
 }
