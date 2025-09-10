@@ -55,7 +55,7 @@ class User extends Authenticatable
 
     public function walikelas()
     {
-        return $this->hasOne(waliKelas::class, 'username', 'username');
+        return $this->hasOne(walikelas::class, 'username', 'username');
     }
 
     public function wakasek()
