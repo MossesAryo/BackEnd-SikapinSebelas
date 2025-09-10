@@ -17,7 +17,7 @@ class Skoring_PenghargaanController extends Controller
     public function index()
     {
         return view('wakasek.skoring.penghargaan.index', [
-            // Ambil semua penilaian yang aspek- nya bertipe Apresiasi
+            
             "penilaian"   => penilaian::whereHas('aspek_penilaian', function ($q) {
                 $q->where('jenis_poin', 'Apresiasi');
             })->paginate(10),
@@ -42,7 +42,7 @@ class Skoring_PenghargaanController extends Controller
         $aspek  = aspek_penilaian::findOrFail($request->id_aspekpenilaian);
         $skor   = (int) $aspek->indikator_poin;
         $uraian = $aspek->uraian;
-        $user = Auth::user();
+        $user   = Auth::user();
 
         // Simpan penilaian
         penilaian::create([
@@ -50,7 +50,7 @@ class Skoring_PenghargaanController extends Controller
             'nis'               => $request->nis,
             'id_aspekpenilaian' => $request->id_aspekpenilaian,
             'nip_bk'        => $user->gurubk->nip_bk ?? null,
-            'nip_walikelas' => $user->walikelas->nip_walikelas ?? null,
+            'nip_walikelas' =>  null,
             'nip_wakasek'   => $user->wakasek->nip_wakasek ?? null,
             'created_at'        => now(),
         ]);

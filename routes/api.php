@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\api\SkoringPenghargaan;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\KelasController;
@@ -14,7 +15,7 @@ Route::get('/aspekpenilaian', [Aspek_penilaianController::class, 'FetchApi'])->n
 Route::get('/Penghargaan', [PenghargaanController::class, 'FetchApi'])->name('api.penghargaan');
 Route::get('/peringatan', [SuratPeringatanController::class, 'FetchApi'])->name('api.peringatan');
 Route::get('/siswa', [SiswaController::class, 'FetchApi'])->name('api.siswa');
+Route::get('/skoring_penghargaan', [SkoringPenghargaan::class, 'index']);
+Route::post('/skoring_penghargaan', [SkoringPenghargaan::class, 'store']);
 Route::post('/login', [AuthAPIcontroller::class, 'login']);
 Route::post('/logout', [AuthAPIcontroller::class, 'logout']);
-
-
