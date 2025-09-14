@@ -38,6 +38,33 @@ class AkumulasiContoller extends Controller
         return view('wakasek.akumulasi.index', compact('siswa', 'jurusanList', 'kelasList'));
     }
 
+    public function fetchAPI(Request $request)
+    {
+        $jurusanList = kelas::select('jurusan')->distinct()->pluck('jurusan');
+        $kelasList   = kelas::all();
+
+        $query = siswa::query();
+
+        if ($request->filled('jurusan')) {
+            $query->whereHas('kelas', fn($q) => $q->where('jurusan', $request->jurusan));
+        }
+
+        if ($request->filled('kelas')) {
+            $query->whereHas('kelas', fn($q) => $q->where('nama_kelas', $request->kelas));
+        }
+
+        $siswa = $query->paginate(10)->withQueryString();
+
+        return response()->json([
+            'success'      => true,
+            'message'      => 'Data siswa berhasil diambil',
+            'jurusan_list' => $jurusanList,
+            'kelas_list'   => $kelasList,
+            'data'         => $siswa
+        ], 200);
+    }
+
+
 
     public function indexBK(Request $request)
     {
@@ -57,7 +84,6 @@ class AkumulasiContoller extends Controller
         $siswa = $query->get();
 
         return view('gurubk.akumulasi.index', compact('siswa', 'jurusanList', 'kelasList'));
-
     }
 
     /**
@@ -117,8 +143,7 @@ class AkumulasiContoller extends Controller
     }
 
     public function export_Excel()
-{
-    return Excel::download(new Akumulasi_ExportExcel, 'akumulasi.xlsx');
-}
-
+    {
+        return Excel::download(new Akumulasi_ExportExcel, 'akumulasi.xlsx');
+    }
 }
