@@ -232,6 +232,7 @@ Route::middleware('UserAccess:2')->group(function () {
 
     Route::get('/intervensi', [IntervensiController::class, 'index'])->name('intervensi.index');
     Route::post('/intervensi/store', [IntervensiController::class, 'store'])->name('intervensi.store');
+    Route::get('/intervensi/{id_intervensi}', [IntervensiController::class, 'show'])->name('intervensi.show');
     Route::put('/intervensi/{id}/update', [IntervensiController::class, 'update'])->name('intervensi.update');
     Route::delete('/intervensi/{id}/destroy', [IntervensiController::class, 'destroy'])->name('intervensi.destroy');
 

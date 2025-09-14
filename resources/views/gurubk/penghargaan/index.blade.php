@@ -34,7 +34,6 @@
                 <h1 class="text-2xl font-bold gradient-text">Data Penghargaan</h1>
                 <p class="text-gray-600 mt-1">Kelola data Penghargaan</p>
             </div>
-            
         </div>
 
         <!-- Flash Messages -->

@@ -20,7 +20,7 @@ class DashboardBKController extends Controller
 
         $idPelanggaran = aspek_Penilaian::where('jenis_poin', 'pelanggaran')->pluck('id_aspekpenilaian');
 
-        $totalApresiasi = penilaian::whereIn('id_aspekp', $idApresiasi)
+        $totalApresiasi = penilaian::whereIn('id_aspekpenilaian', $idApresiasi)
             ->select('nis')
             ->distinct()
             ->count();

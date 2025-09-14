@@ -21,7 +21,6 @@ class Skoring_PelanggaranController extends Controller
 
 
         return view('wakasek.skoring.pelanggaran.index', [
-            // ambil penilaian yg aspeknya bertipe Pelanggaran
             "penilaian" => penilaian::whereHas('aspek_penilaian', function ($q) {
                 $q->where('jenis_poin', 'Pelanggaran');
             })->paginate(10),
@@ -42,7 +41,7 @@ class Skoring_PelanggaranController extends Controller
             'id_aspekpenilaian' => 'required',
         ]);
 
-        // Ambil skor & uraian dari aspek_penilaian
+        $user = Auth::user();
         $aspek   = aspek_penilaian::findOrFail($request->id_aspekpenilaian);
         $skor    = (int) $aspek->indikator_poin;
         $uraian  = $aspek->uraian;

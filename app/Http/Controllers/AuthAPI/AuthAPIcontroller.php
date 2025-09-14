@@ -47,7 +47,7 @@ class AuthAPIcontroller extends Controller
             }
         }
 
-        // Jika gagal
+      
         return response()->json([
             'status' => false,
             'message' => 'NIP atau password salah'

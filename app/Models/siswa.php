@@ -9,7 +9,7 @@ class siswa extends Model
     protected $table = 'siswa';
     protected $primaryKey = 'nis';
     public $incrementing = false;
-    protected $keyType = 'integer';
+    protected $keyType = 'string';
     protected $fillable = [
         'nis',
         'id_kelas',

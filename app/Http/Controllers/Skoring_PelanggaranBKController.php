@@ -30,7 +30,7 @@ class Skoring_PelanggaranBKController extends Controller
             $q->where('jenis_poin', 'Pelanggaran');
         });
 
-        // Filter berdasarkan jurusan -> cek relasi penilaian -> siswa -> kelas
+        
         if ($request->filled('jurusan')) {
             $penilaianQuery->whereHas('siswa', function ($q) use ($request) {
                 $q->whereHas('kelas', function ($k) use ($request) {
@@ -39,7 +39,6 @@ class Skoring_PelanggaranBKController extends Controller
             });
         }
 
-        // Filter berdasarkan nama_kelas
         if ($request->filled('kelas')) {
             $penilaianQuery->whereHas('siswa', function ($q) use ($request) {
                 $q->whereHas('kelas', function ($k) use ($request) {
@@ -69,7 +68,7 @@ class Skoring_PelanggaranBKController extends Controller
             'id_aspekpenilaian' => 'required',
         ]);
 
-        // Ambil skor & uraian dari aspek_penilaian
+       
         $aspek   = aspek_penilaian::findOrFail($request->id_aspekpenilaian);
         $skor    = (int) $aspek->indikator_poin;
         $uraian  = $aspek->uraian;
