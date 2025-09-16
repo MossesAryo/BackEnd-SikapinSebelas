@@ -35,8 +35,7 @@ Route::post('/login', [AController::class, 'login'])->name('login.submit');
 Route::get('/logout', [AController::class, 'logout'])->name('logout');
 
 Route::middleware(['auth'])->group(function () {
-    Route::get('/siswa', [SiswaController::class, 'index'])->name('siswa.index');
-    Route::get('/siswa/{nis}/show', [SiswaController::class, 'show'])->name('siswa.show');
+
     Route::middleware('UserAccess:1')->group(function () {
         route::get('/notifikasi', [NotifikasiWakasekController::class, 'index'])->name('notifikasi.index');
         Route::get('/wakasek/laporanjammalam', [LaporanController::class, 'index'])->name('wakasek.laporanjammalam');
@@ -73,6 +72,8 @@ Route::middleware(['auth'])->group(function () {
         Route::delete('/siswa/{nis}/penghargaan/{id}', [SiswaController::class, 'destroyPenghargaan'])->name('siswa.penghargaan.destroy');
         Route::delete('/siswa/{nis}/peringatan/{id}', [SiswaController::class, 'destroyPeringatan'])->name('siswa.peringatan.destroy');
 
+        Route::get('/siswa', [SiswaController::class, 'index'])->name('siswa.index');
+        Route::get('/siswa/{nis}/show', [SiswaController::class, 'show'])->name('siswa.show');
         Route::post('/siswa/{nis}/show/penghargaan', [SiswaController::class, 'penghargaan'])->name('siswa.penghargaan');
         Route::post('/siswa/{nis}/show/peringatan', [SiswaController::class, 'peringatan'])->name('siswa.peringatan');
         Route::post('/siswa/{nis}/show/catatan', [catatanController::class, 'AddCatatan'])->name('siswa.catatan');

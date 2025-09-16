@@ -11,8 +11,7 @@ class Aspek extends Seeder
     {
         $data = [
 
-            // ================== PELANGGARAN ==================
-            // TERLAMBAT
+           
             [
                 'id_aspekpenilaian' => '1',
                 'jenis_poin' => 'Pelanggaran',
@@ -76,7 +75,7 @@ class Aspek extends Seeder
                 'updated_at' => now(),
             ],
 
-            // ================== APRESIASI ==================
+            
             [
                 'id_aspekpenilaian' => '7',
                 'jenis_poin' => 'Apresiasi',
