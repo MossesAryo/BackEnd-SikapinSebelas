@@ -1,45 +1,16 @@
-@extends('layouts.gurubk.app')
+@extends('layouts.wakasek.app')
 
 @section('content')
     <!-- Page Header -->
     <div class="flex items-center justify-between mb-8">
         <div>
             <h1 class="text-2xl font-bold text-gray-900">Notifikasi</h1>
+            
         </div>
-        <div class="flex gap-3">
-            <button class="btn btn-outline">
-                <i class="bi bi-check-all text-sm"></i>
-                Tandai Semua Dibaca
-            </button>
-            <button class="btn btn-danger">
-                <i class="bi bi-trash text-sm"></i>
-                Hapus Semua
-            </button>
-        </div>
+        
     </div>
 
-    <!-- Filter Tabs -->
-    <div class="bg-white rounded-xl shadow-sm border mb-6">
-        <div class="p-6 border-b border-gray-200">
-            <div class="flex flex-wrap gap-2">
-                <button class="filter-tab active bg-blue-500 text-white px-4 py-2 rounded-lg text-sm font-medium">
-                    Semua <span class="ml-1 bg-white bg-opacity-20 px-2 py-0.5 rounded-full text-xs">{{ $totalNotifikasi ?? 15 }}</span>
-                </button>
-                <button class="filter-tab bg-gray-100 text-gray-600 px-4 py-2 rounded-lg text-sm font-medium hover:bg-gray-200">
-                    Belum Dibaca <span class="ml-1 bg-red-500 text-white px-2 py-0.5 rounded-full text-xs">{{ $belumDibaca ?? 8 }}</span>
-                </button>
-                <button class="filter-tab bg-gray-100 text-gray-600 px-4 py-2 rounded-lg text-sm font-medium hover:bg-gray-200">
-                    Apresiasi <span class="ml-1 bg-green-500 text-white px-2 py-0.5 rounded-full text-xs">{{ $apresiasi ?? 6 }}</span>
-                </button>
-                <button class="filter-tab bg-gray-100 text-gray-600 px-4 py-2 rounded-lg text-sm font-medium hover:bg-gray-200">
-                    Pelanggaran <span class="ml-1 bg-red-500 text-white px-2 py-0.5 rounded-full text-xs">{{ $pelanggaran ?? 5 }}</span>
-                </button>
-                <button class="filter-tab bg-gray-100 text-gray-600 px-4 py-2 rounded-lg text-sm font-medium hover:bg-gray-200">
-                    Sistem <span class="ml-1 bg-blue-500 text-white px-2 py-0.5 rounded-full text-xs">{{ $sistem ?? 4 }}</span>
-                </button>
-            </div>
-        </div>
-    </div>
+   
 
     <!-- Notifications List -->
     <div class="bg-white rounded-xl shadow-sm border">
@@ -57,39 +28,29 @@
                     </div>
                     <div class="flex-1 min-w-0">
                         <div class="flex items-center gap-2 mb-1">
-                            <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800">
-                                {{ $item->judul_catatan }}
-                            </span>
+                            
                             <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-red-100 text-red-800">
                                 Baru
                             </span>
                         </div>
+                        <p class="text-gray-600 text-md mb-2">
+                            {{ $item->siswa->nama_siswa }} ({{ $item->nis }}) <strong>Telah Diintervensi </strong>
+                        </p>
                         <p class="text-gray-900 font-medium mb-1">
-                            <strong>{{ $item->siswa->nama_siswa }}</strong> dari kelas {{ $item->siswa->kelas->nama_kelas }} 
+                            Judul Intervensi : <strong>{{ $item->nama_intervensi }}</strong> 
                         </p>
                         <p class="text-gray-600 text-sm mb-2">
-                            "{{ $item->isi_catatan }}"
+                            Isi : "{{ $item->isi_intervensi }}"
                         </p>
                         <p class="text-gray-500 text-xs flex items-center gap-1">
-                            Catatan Dari : @if ($item->nip_wakasek === null) 
-                            {{ $item->walikelas->nama_walikelas }}
-                            @else
-                            {{ $item->wakasek->nama_wakasek }} | Wakil Kepala Kesiswaan  
-                            @endif
+                            Intervensi Oleh : {{ $item->guruBK->nama_guru_bk }} | Guru BK 
                         </p>
                         <p class="text-gray-500 text-xs flex items-center gap-1">
                             <i class="bi bi-clock"></i>
                             {{ $item->created_at->diffForHumans() }}
                         </p>
                     </div>
-                    <div class="flex items-center gap-2">
-                        <button class="text-gray-400 hover:text-gray-600" title="Tandai dibaca">
-                            <i class="bi bi-check-circle"></i>
-                        </button>
-                        <button class="text-gray-400 hover:text-red-600" title="Hapus">
-                            <i class="bi bi-trash"></i>
-                        </button>
-                    </div>
+                   
                 </div>
                 <!-- Unread indicator -->
                 <div class="absolute left-0 top-1/2 transform -translate-y-1/2 w-1 h-8 bg-blue-500 rounded-r"></div>

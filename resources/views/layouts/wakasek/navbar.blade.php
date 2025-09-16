@@ -5,9 +5,9 @@
              <p class="text-gray-600">Selamat datang di Sistem Skoring Sikapin</p>
          </div>
          <div class="flex items-center gap-4">
-             <button class="p-2 text-gray-600 hover:bg-gray-100 rounded-lg">
+              <a href="{{ route('notifikasi.index') }}" class="p-2 text-gray-600 hover:bg-gray-100 rounded-lg">
                  <i class="bi bi-bell text-xl"></i>
-             </button>
+             </a>
              <a href="{{ route('wakasek.profile.profilewakasek') }}"
                  class="flex items-center gap-3 hover:bg-gray-100 px-2 py-1 rounded-lg">
                  <div

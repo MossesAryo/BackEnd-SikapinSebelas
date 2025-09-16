@@ -33,7 +33,7 @@
         </div>
 
 
-        {{-- Flash Messages --}}
+       
         @if (session('success'))
             <div class="bg-green-50 border border-green-200 text-green-800 px-4 py-3 rounded-lg">
                 <p class="text-sm font-semibold flex items-center gap-2">

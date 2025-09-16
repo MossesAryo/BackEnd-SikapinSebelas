@@ -19,17 +19,22 @@
             </button>
         </div>
 
-        <!-- Flash Messages -->
         @if (session('success'))
-            <p class="mt-2 text-sm text-green-600 font-semibold">
-                ✅ {{ session('success') }}
-            </p>
+            <div class="bg-green-50 border border-green-200 text-green-800 px-4 py-3 rounded-lg">
+                <p class="text-sm font-semibold flex items-center gap-2">
+                    <i class="bi bi-check-circle-fill text-green-600"></i>
+                    {{ session('success') }}
+                </p>
+            </div>
         @endif
 
         @if (session('error'))
-            <p class="mt-2 text-sm text-red-600 font-semibold">
-                ❌ {{ session('error') }}
-            </p>
+            <div class="bg-red-50 border border-red-200 text-red-800 px-4 py-3 rounded-lg">
+                <p class="text-sm font-semibold flex items-center gap-2">
+                    <i class="bi bi-exclamation-triangle-fill text-red-600"></i>
+                    {{ session('error') }}
+                </p>
+            </div>
         @endif
 
         <!-- Search and Filter -->

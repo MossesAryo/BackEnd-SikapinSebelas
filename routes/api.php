@@ -6,6 +6,7 @@ use App\Http\Controllers\KelasController;
 use App\Http\Controllers\SiswaController;
 use App\Http\Controllers\catatanController;
 use App\Http\Controllers\AkumulasiContoller;
+use App\Http\Controllers\api\NotifikasiController;
 use App\Http\Controllers\PenghargaanController;
 use App\Http\Controllers\api\SkoringPelanggaran;
 use App\Http\Controllers\api\SkoringPenghargaan;
@@ -22,8 +23,10 @@ Route::get('/siswa', [SiswaController::class, 'FetchApi'])->name('api.siswa');
 Route::get('/skoring_penghargaan', [SkoringPenghargaan::class, 'index']);
 Route::get('/skoring_pelanggaran', [SkoringPelanggaran::class, 'index']);
 Route::get('/akumulasi', [AkumulasiContoller::class, 'fetchAPI']);
+Route::get('/notifikasi', [NotifikasiController::class, 'index']);
 Route::post('/skoring_penghargaan', [SkoringPenghargaan::class, 'store']);
 Route::post('/skoring_pelanggaran', [skoringpelanggaran::class, 'store']);
 Route::post('/AddCatatan/{nis}', [catatanController::class, 'AddCatatanAPI']);
+
 Route::post('/login', [AuthAPIcontroller::class, 'login']);
 Route::post('/logout', [AuthAPIcontroller::class, 'logout']);
