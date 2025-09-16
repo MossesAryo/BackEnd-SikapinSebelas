@@ -23,7 +23,7 @@ Route::get('/skoring_penghargaan', [SkoringPenghargaan::class, 'index']);
 Route::get('/skoring_pelanggaran', [SkoringPelanggaran::class, 'index']);
 Route::get('/akumulasi', [AkumulasiContoller::class, 'fetchAPI']);
 Route::post('/skoring_penghargaan', [SkoringPenghargaan::class, 'store']);
-Route::post('/skoring_pelanggaran', [SkoringPelanggaran::class, 'store']);
+Route::post('/skoring_pelanggaran', [skoringpelanggaran::class, 'store']);
 Route::post('/AddCatatan/{nis}', [catatanController::class, 'AddCatatanAPI']);
 Route::post('/login', [AuthAPIcontroller::class, 'login']);
 Route::post('/logout', [AuthAPIcontroller::class, 'logout']);

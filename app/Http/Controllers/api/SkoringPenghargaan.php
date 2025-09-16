@@ -30,47 +30,65 @@ class SkoringPenghargaan extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'id_penilaian'      => 'required|unique:penilaian,id_penilaian',
-            'nis'               => 'required',
+            'id_penilaian' => 'required|unique:penilaian,id_penilaian',
+            'nis' => 'required',
             'id_aspekpenilaian' => 'required',
         ]);
 
-        $aspek  = aspek_penilaian::findOrFail($request->id_aspekpenilaian);
-        $skor   = (int) $aspek->indikator_poin;
-        $uraian = $aspek->uraian;
-        $user   = $request->user(); 
+        try {
+            $aspek = aspek_penilaian::findOrFail($request->id_aspekpenilaian);
+            $skor = (int) $aspek->indikator_poin;
+            $uraian = $aspek->uraian;
+            $user = $request->user() ?? (object) [
+                'gurubk' => (object) ['nip_bk' => null],
+                'walikelas' => (object) ['nip_walikelas' => null],
+                'wakasek' => (object) ['nip_wakasek' => null],
+                'id' => null,
+            ];
 
-        $penilaian = penilaian::create([
-            'id_penilaian'      => $request->id_penilaian,
-            'nis'               => $request->nis,
-            'id_aspekpenilaian' => $request->id_aspekpenilaian,
-            'nip_bk'            => $user->gurubk->nip_bk ?? null,
-            'nip_walikelas'     => $user->walikelas->nip_walikelas ?? null,
-            'nip_wakasek'       => $user->wakasek->nip_wakasek ?? null,
-            'created_at'        => now(),
-        ]);
+            $penilaian = penilaian::create([
+                'id_penilaian' => $request->id_penilaian,
+                'nis' => $request->nis,
+                'id_aspekpenilaian' => $request->id_aspekpenilaian,
+                'nip_bk' => $user->gurubk->nip_bk ?? null,
+                'nip_walikelas' => $user->walikelas->nip_walikelas ?? null,
+                'nip_wakasek' => $user->wakasek->nip_wakasek ?? null,
+                'created_at' => now(),
+            ]);
 
-        $siswa = siswa::where('nis', $request->nis)->first();
-        if ($siswa) {
+            $siswa = siswa::where('nis', $request->nis)->first();
+            if (!$siswa) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Siswa dengan NIS ' . $request->nis . ' tidak ditemukan.',
+                ], 404);
+            }
+
             $siswa->poin_apresiasi += $skor;
-            $siswa->poin_total     += $skor;
+            $siswa->poin_total += $skor;
             $siswa->save();
 
             DB::table('activity_logs')->insert([
-                'user_id'     => $user->id,
-                'nis'         => $siswa->nis,
-                'kategori'    => 'Apresiasi',
-                'activity'    => 'Tambah Penghargaan',
+                'user_id' => $user->id ?? null,
+                'nis' => $siswa->nis,
+                'kategori' => 'Apresiasi',
+                'activity' => 'Tambah Penghargaan',
                 'description' => $uraian,
-                'point'       => $skor,
-                'created_at'  => now(),
-                'updated_at'  => now(),
+                'point' => $skor,
+                'created_at' => now(),
+                'updated_at' => now(),
             ]);
-        }
 
-        return response()->json([
-            'message' => 'Data penghargaan berhasil ditambahkan.',
-            'data'    => $penilaian
-        ], 201);
+            return response()->json([
+                'success' => true,
+                'message' => 'Data penghargaan berhasil ditambahkan.',
+                'data' => $penilaian
+            ], 201);
+            } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Gagal menambahkan penghargaan: ' . $e->getMessage(),
+            ], 500);
+        }
     }
 }
