@@ -149,18 +149,24 @@
 
                                     <td class="px-6 py-4 whitespace-nowrap">
                                         <div class="flex items-center gap-1">
-                                            
+
                                             <a href="{{ route('intervensi.show', ['id_intervensi' => $item->id_intervensi]) }}"
                                                 class="action-btn inline-flex items-center justify-center w-9 h-9 text-yellow-600 hover:text-yellow-800 hover:bg-orange-50 rounded-full"
                                                 title="Lihat Detail">
                                                 <i class="bi bi-eye text-sm"></i>
                                             </a>
 
-                                            {{-- <a href="{{ route('intervensi.edit', $item->id) }}"
-                                                class="action-btn inline-flex items-center justify-center w-9 h-9 text-blue-600 hover:text-blue-800 hover:bg-blue-50 rounded-full"
-                                                title="Edit Data">
-                                                <i class="bi bi-pencil text-sm"></i>
-                                            </a> --}}
+                                                <button
+                                                    onclick="openEditModal('{{ $item->id_intervensi }}', '{{ $item->nis }}', '{{ $item->nama_intervensi }}','{{ $item->isi_intervensi }}','{{ $item->status }}', '{{ $item->tanggal_Mulai_Perbaikan }}', '{{ $item->tanggal_Selesai_Perbaikan }}','{{ $item->perubahan_setelah_intervensi ?? '' }}')"
+                                                    class="action-btn inline-flex items-center justify-center w-9 h-9 text-blue-600 hover:text-blue-800 hover:bg-blue-50 rounded-full">
+                                                    <i class="bi bi-pencil-square text-sm"></i>
+                                                </button>
+                                                <button
+                                                    onclick="openDeleteModal('{{ $item->id_intervensi }}', '{{ $item->nis }}', '{{ $item->nama_intervensi }}')"
+                                                    class="action-btn inline-flex items-center justify-center w-9 h-9 text-red-600 hover:text-red-800 hover:bg-red-50 rounded-full">
+                                                    <i class="bi bi-trash text-sm"></i>
+                                                </button>
+
                                         </div>
                                     </td>
                                 </tr>
@@ -177,10 +183,7 @@
                                 </tr>
                             @endforelse
                         </tbody>
-
                     </table>
-
-
                     <div class="px-6 py-4 border-t border-gray-200">
                         <div class="flex justify-end">
 
@@ -190,6 +193,8 @@
             </div>
         </div>
         @include('gurubk.intervensi.create')
+        @include('gurubk.intervensi.edit')
+        @include('gurubk.intervensi.delete')
     @endsection
 
     <script>
@@ -212,35 +217,50 @@
             openModal('modal-create');
         }
 
-        function openEditModal(nis, nama_siswa, id_kelas) {
-            document.getElementById('edit_nis').value = nis;
-            document.getElementById('edit_nama_siswa').value = nama_siswa;
-            document.getElementById('edit_id_kelas').value = id_kelas;
-            document.getElementById('form-edit').action = `/siswa/${nis}/update`;
+        function openEditModal(id_intervensi, nis, nama_intervensi, isi_intervensi, status, tanggal_Mulai_Perbaikan,
+            tanggal_Selesai_Perbaikan, perubahan_setelah_intervensi) {
+            document.getElementById('nis_edit').value = nis;
+            document.getElementById('nama_intervensi_edit').value = nama_intervensi;
+            document.getElementById('isi_intervensi_edit').value = isi_intervensi;
+            document.getElementById('status_edit').value = status;
+            document.getElementById('tanggal_Mulai_Perbaikan_edit').value = tanggal_Mulai_Perbaikan;
+            document.getElementById('tanggal_Selesai_Perbaikan_edit').value = tanggal_Selesai_Perbaikan;
+            document.getElementById('perubahan_setelah_intervensi_edit').value = perubahan_setelah_intervensi||'';
+
+            togglePerubahanFieldEdit();
+
+            document.getElementById('form-edit').action = `/intervensi/${id_intervensi}/update`;
             openModal('modal-edit');
         }
 
-        function openDeleteModal(nis, nama_siswa) {
-            document.getElementById('delete-nama-siswa').innerText = nama_siswa;
-            document.getElementById('form-delete').action = `/siswa/${nis}`;
+        function togglePerubahanFieldEdit() {
+            const status = document.getElementById('status_edit').value;
+            const perubahanField = document.getElementById('perubahan-field-edit');
+            const perubahanTextarea = document.getElementById('perubahan_setelah_intervensi_edit');
+
+            if (status === 'Selesai') {
+                perubahanField.classList.remove('hidden');
+                perubahanTextarea.setAttribute('required', 'required');
+            } else {
+                perubahanField.classList.add('hidden');
+                perubahanTextarea.removeAttribute('required');
+                perubahanTextarea.value = '';
+            }
+        }
+
+        function openDeleteModal(id_intervensi,nis, nama_intervensi) {
+            document.getElementById('delete-nama-intervensi').innerText = nama_intervensi;
+            document.getElementById('form-delete').action = `/intervensi/${id_intervensi}/destroy`;
             openModal('modal-delete');
         }
 
-        function openDeletePenghargaanModal(nis, id, nama_penghargaan) {
-            document.getElementById('delete-nama-penghargaan').innerText = nama_penghargaan;
-            document.getElementById('form-delete-penghargaan').action = `/siswa/${nis}/penghargaan/${id}`;
-            openModal('modal-delete-penghargaan');
-        }
+       
 
-        function openDeletePeringatanModal(nis, id, nama_peringatan) {
-            document.getElementById('delete-nama-peringatan').innerText = nama_peringatan;
-            document.getElementById('form-delete-peringatan').action = `/siswa/${nis}/peringatan/${id}`;
-            openModal('modal-delete-peringatan');
-        }
+   
 
         document.addEventListener('click', function(event) {
-            ['modal-create', 'modal-edit', 'modal-delete', 'modal-filter', 'modal-penghargaan', 'modal-peringatan',
-                'modal-delete-penghargaan', 'modal-delete-peringatan', 'modal-catatan'
+            ['modal-create', 'modal-edit', 'modal-delete', 
+                 
             ].forEach(modalId => {
                 const modal = document.getElementById(modalId);
                 if (modal && !modal.classList.contains('hidden') && event.target === modal) {
@@ -251,8 +271,7 @@
 
         document.addEventListener('keydown', function(event) {
             if (event.key === 'Escape') {
-                ['modal-create', 'modal-edit', 'modal-delete', 'modal-filter', 'modal-penghargaan',
-                    'modal-peringatan', 'modal-delete-penghargaan', 'modal-delete-peringatan', 'modal-catatan'
+                ['modal-create', 'modal-edit', 'modal-delete', 
                 ].forEach(modalId => {
                     const modal = document.getElementById(modalId);
                     if (modal && !modal.classList.contains('hidden')) {

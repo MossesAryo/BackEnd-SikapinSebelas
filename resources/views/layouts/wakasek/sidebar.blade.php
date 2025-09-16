@@ -6,7 +6,7 @@
         transition: max-height 0.3s ease-out;
     }
     .dropdown-content.show {
-        max-height: 500px; /* biar muat semua */
+        max-height: 500px; 
         transition: max-height 0.3s ease-in;
     }
     .dropdown-arrow {
@@ -197,15 +197,12 @@
                         <span>Akumulasi</span>
                     </a>
                 </li>
-
-                
             </ul>
         </nav>
     </div>
 </div>
 
 <script>
-    // Toggle dropdown generic
     function toggleDropdown(dropdownId, arrowId) {
         const dropdown = document.getElementById(dropdownId);
         const arrow = document.getElementById(arrowId);
@@ -230,11 +227,11 @@
         });
     });
 
-    // Initialize and handle scrolling + active links
+
     document.addEventListener("DOMContentLoaded", () => {
         const sidebarScrollArea = document.querySelector('.sidebar-nav');
         
-        // Prevent body scroll when scrolling inside sidebar
+
         if (sidebarScrollArea) {
             sidebarScrollArea.addEventListener('wheel', (e) => {
                 const { scrollTop, scrollHeight, clientHeight } = sidebarScrollArea;
@@ -242,14 +239,14 @@
                 const isAtTop = scrollTop === 0;
                 const isAtBottom = scrollTop + clientHeight >= scrollHeight;
                 
-                // Only prevent default if we can scroll in the sidebar
+           
                 if ((isScrollingDown && !isAtBottom) || (!isScrollingDown && !isAtTop)) {
                     e.stopPropagation();
                 }
             });
         }
         
-        // Check if any dropdown item is active and open the dropdown
+        
         const userDropdown = document.getElementById('userDropdown');
         const userArrow = document.getElementById('userArrow');
         const faqDropdown = document.getElementById('faqDropdown');
@@ -263,7 +260,7 @@
             faqArrow.classList.add('rotate');
         }
         
-        // JS Fallback for active links based on pathname (improved version)
+     
         const currentPath = window.location.pathname;
         document.querySelectorAll(".menu-link").forEach(link => {
             const href = link.getAttribute("href");

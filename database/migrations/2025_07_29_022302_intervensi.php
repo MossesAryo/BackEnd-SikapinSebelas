@@ -13,8 +13,9 @@ return new class extends Migration {
             $table->integer('nip_bk')->nullable();
             $table->integer('nis');
             $table->string('nama_intervensi');
+            $table->string('isi_intervensi');
             $table->enum('status', ['Dalam Bimbingan', 'Dalam Pemantauan', 'Selesai']);
-            $table->string('Perubahan Setelah Intervensi')->nullable();
+            $table->string('perubahan_setelah_intervensi')->nullable();
             $table->date('tanggal_Mulai_Perbaikan');
             $table->date('tanggal_Selesai_Perbaikan');
             $table->foreign('nip_bk')->references('nip_bk')->on('guru_bk')->onDelete('cascade');
