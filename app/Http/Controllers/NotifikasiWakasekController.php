@@ -9,12 +9,7 @@ class NotifikasiWakasekController extends Controller
 {
     public function index()
     {
-        $notifikasi = Intervensi::all();
-
-        return response()->json([
-            'success' => true,
-            'message' => 'Daftar Notifikasi',
-            'data'    => $notifikasi
-        ]);
+        $notifikasi = intervensi::all();
+        return view('wakasek.notifikasi.notifikasi',compact('notifikasi'));
     }
 }
