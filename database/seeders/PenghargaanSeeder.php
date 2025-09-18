@@ -15,7 +15,7 @@ class PenghargaanSeeder extends Seeder
     {
          DB::table('penghargaan')->insert([
             [
-                'id_penghargaan' => 'PHG001',
+                'id_penghargaan' => '1',
                 'tanggal_penghargaan' => '2025-01-15',
                 'level_penghargaan' => 'PH1',
                 'alasan' => 'Disiplin dalam kehadiran',
@@ -23,7 +23,7 @@ class PenghargaanSeeder extends Seeder
                 'updated_at' => now(),
             ],
             [
-                'id_penghargaan' => 'PHG002',
+                'id_penghargaan' => '2',
                 'tanggal_penghargaan' => '2025-03-10',
                 'level_penghargaan' => 'PH2',
                 'alasan' => 'Prestasi lomba tingkat kota',
@@ -31,7 +31,7 @@ class PenghargaanSeeder extends Seeder
                 'updated_at' => now(),
             ],
             [
-                'id_penghargaan' => 'PHG003',
+                'id_penghargaan' => '3',
                 'tanggal_penghargaan' => '2025-06-01',
                 'level_penghargaan' => 'PH3',
                 'alasan' => 'Aktif dalam kegiatan OSIS',

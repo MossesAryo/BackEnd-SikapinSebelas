@@ -15,7 +15,7 @@ class PelanggaranSeeder extends Seeder
     {
         DB::table('surat_peringatan')->insert([
             [
-                'id_sp' => 'SP001',
+                'id_sp' => '1',
                 'tanggal_sp' => '2025-02-05',
                 'level_sp' => 'SP1',
                 'alasan' => 'Sering terlambat masuk kelas',
@@ -23,7 +23,7 @@ class PelanggaranSeeder extends Seeder
                 'updated_at' => now(),
             ],
             [
-                'id_sp' => 'SP002',
+                'id_sp' => '2',
                 'tanggal_sp' => '2025-03-20',
                 'level_sp' => 'SP2',
                 'alasan' => 'Tidak mengerjakan tugas berulang kali',
@@ -31,7 +31,7 @@ class PelanggaranSeeder extends Seeder
                 'updated_at' => now(),
             ],
             [
-                'id_sp' => 'SP003',
+                'id_sp' => '3',
                 'tanggal_sp' => '2025-05-15',
                 'level_sp' => 'SP3',
                 'alasan' => 'Membolos lebih dari 3 kali',
