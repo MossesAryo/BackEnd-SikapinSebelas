@@ -9,7 +9,7 @@ return new class extends Migration {
     public function up()
     {
         Schema::create('penilaian', function (Blueprint $table) {
-            $table->integer('id_penilaian')->unique();
+            $table->integer('id_penilaian')->unique()->autoIncrement();
             $table->bigInteger('nip_wakasek')->nullable();
             $table->bigInteger('nip_walikelas')->nullable();
             $table->bigInteger('nip_bk')->nullable();

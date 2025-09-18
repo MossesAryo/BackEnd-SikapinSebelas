@@ -33,7 +33,7 @@ class Skoring_PenghargaanController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'id_penilaian'      => 'required|unique:penilaian,id_penilaian',
+            
             'nis'               => 'required',
             'id_aspekpenilaian' => 'required',
         ]);
@@ -46,7 +46,7 @@ class Skoring_PenghargaanController extends Controller
 
         // Simpan penilaian
         penilaian::create([
-            'id_penilaian'      => $request->id_penilaian,
+            
             'nis'               => $request->nis,
             'id_aspekpenilaian' => $request->id_aspekpenilaian,
             'nip_bk'        => $user->gurubk->nip_bk ?? null,
@@ -82,55 +82,7 @@ class Skoring_PenghargaanController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
-    {
-        $request->validate([
-            'id_aspekpenilaian' => 'required',
-        ]);
-
-        $penilaian = penilaian::findOrFail($id);
-        $siswa     = $penilaian->siswa;
-        $user = Auth::user();
-
-        // Skor lama (ambil dari aspek yang saat ini terhubung)
-        $oldSkor = $penilaian->aspek_penilaian->indikator_poin ?? 0;
-        if ($siswa) {
-            // rollback nilai lama
-            $siswa->poin_apresiasi -= $oldSkor;
-            $siswa->poin_total     -= $oldSkor;
-        }
-
-        // Ambil aspek baru & uraian
-        $aspekBaru = aspek_penilaian::findOrFail($request->id_aspekpenilaian);
-        $newSkor   = (int) $aspekBaru->indikator_poin;
-        $uraian    = $aspekBaru->uraian;
-
-        // Update penilaian
-        $penilaian->id_aspekpenilaian = $request->id_aspekpenilaian;
-        $penilaian->save();
-
-        if ($siswa) {
-            // tambahkan skor baru
-            $siswa->poin_apresiasi += $newSkor;
-            $siswa->poin_total     += $newSkor;
-            $siswa->save();
-
-            // simpan log update
-            DB::table('activity_logs')->insert([
-                'user_id'     => $user->id,
-                'nis'         => $siswa->nis,
-                'kategori'    => 'Apresiasi',
-                'activity'    => 'Update Penghargaan',
-                'description' => $uraian,
-                'point'       => $newSkor,
-                'created_at'  => now(),
-                'updated_at'  => now(),
-            ]);
-        }
-
-        return redirect()->route('skoring_penghargaan.index')
-            ->with('success', 'Data penghargaan berhasil diperbarui.');
-    }
+    
 
     /**
      * Remove the specified resource from storage.

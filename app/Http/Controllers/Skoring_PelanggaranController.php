@@ -36,7 +36,7 @@ class Skoring_PelanggaranController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'id_penilaian'      => 'required|unique:penilaian,id_penilaian',
+            
             'nis'               => 'required',
             'id_aspekpenilaian' => 'required',
         ]);
@@ -48,7 +48,7 @@ class Skoring_PelanggaranController extends Controller
 
         // Simpan penilaian
         penilaian::create([
-            'id_penilaian'      => $request->id_penilaian,
+            
             'nis'               => $request->nis,
             'id_aspekpenilaian' => $request->id_aspekpenilaian,
 
@@ -87,52 +87,7 @@ class Skoring_PelanggaranController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
-    {
-        $request->validate([
-            'id_aspekpenilaian' => 'required',
-        ]);
-
-        $penilaian = penilaian::findOrFail($id);
-        $siswa     = $penilaian->siswa;
-        $user = Auth::user();
-
-        // rollback skor lama
-        $oldSkor = $penilaian->aspek_penilaian->indikator_poin ?? 0;
-        if ($siswa) {
-            $siswa->poin_pelanggaran -= $oldSkor;
-            $siswa->poin_total       += $oldSkor;
-        }
-
-        // aspek baru
-        $aspekBaru = aspek_penilaian::findOrFail($request->id_aspekpenilaian);
-        $newSkor   = (int) $aspekBaru->indikator_poin;
-        $uraian    = $aspekBaru->uraian;
-
-        // update penilaian
-        $penilaian->id_aspekpenilaian = $request->id_aspekpenilaian;
-        $penilaian->save();
-
-        if ($siswa) {
-            $siswa->poin_pelanggaran += $newSkor;
-            $siswa->poin_total       -= $newSkor;
-            $siswa->save();
-
-            DB::table('activity_logs')->insert([
-                'user_id'     => $user->id,
-                'nis'         => $siswa->nis,
-                'kategori'    => 'Pelanggaran',
-                'activity'    => 'Update Pelanggaran',
-                'description' => $uraian, // uraian aspek baru
-                'point'       => $newSkor,
-                'created_at'  => now(),
-                'updated_at'  => now(),
-            ]);
-        }
-
-        return redirect()->route('skoring_pelanggaran.index')
-            ->with('success', 'Data pelanggaran berhasil diperbarui.');
-    }
+    
 
     /**
      * Remove the specified resource from storage.

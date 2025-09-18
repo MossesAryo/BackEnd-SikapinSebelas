@@ -9,11 +9,7 @@
             </div>
 
             <div class="space-y-4">
-                <div>
-                    <label for="id_penilaian" class="block text-sm font-medium text-gray-700 mb-1">ID Penilaian</label>
-                    <input type="text" id="id_penilaian" name="id_penilaian" required
-                        class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-transparent">
-                </div>
+                
                 <div>
                     <label for="nis" class="block text-sm font-medium text-gray-700 mb-1">Pilih Siswa</label>
                     <select id="nis" name="nis" required

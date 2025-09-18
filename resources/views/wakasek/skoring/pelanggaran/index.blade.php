@@ -41,7 +41,7 @@
             </button>
         </div>
 
-       @if (session('success'))
+        @if (session('success'))
             <div class="bg-green-50 border border-green-200 text-green-800 px-4 py-3 rounded-lg">
                 <p class="text-sm font-semibold flex items-center gap-2">
                     <i class="bi bi-check-circle-fill text-green-600"></i>
@@ -72,10 +72,11 @@
                         class="px-3 py-1.5 border border-gray-300 rounded-lg hover:bg-gray-50 flex items-center gap-1.5">
                         <i class="bi bi-funnel"></i> Filter
                     </button>
-                    <button
+                    <a href="{{ route('laporan.index') }}"
                         class="px-3 py-1.5 border border-gray-300 rounded-lg hover:bg-gray-50 flex items-center gap-1.5">
                         <i class="bi bi-download"></i> Export
-                    </button>
+                    </a>
+
                 </div>
             </div>
         </div>
@@ -191,7 +192,7 @@
         </div>
     </div>
     @include('wakasek.skoring.pelanggaran.create')
-    
+
     @include('wakasek.skoring.pelanggaran.delete')
 @endsection
 

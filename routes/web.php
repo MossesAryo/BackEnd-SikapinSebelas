@@ -115,9 +115,9 @@ Route::middleware(['auth'])->group(function () {
 
 
 
-    Route::get('/laporanjammalam', [LaporanController::class, 'index'])->name('wakasek.laporanjammalam');
-    Route::get('/penilaian', [PenilaianController::class, 'index'])->name('wakasek.penilaian');
-    Route::get('/gurubk', fn() => view('gurubk.dashboard'))->name('gurubk.dashboard');
+    Route::get('/laporan', [LaporanController::class, 'index'])->name('laporan.index');
+    Route::get('/laporan/export/pdf', [LaporanController::class, 'exportPdf'])->name('laporan.export.pdf');
+    Route::get('/laporan/export/excel', [LaporanController::class, 'exportExcel'])->name('laporan.export.excel');
 
 
     Route::get('/kaprog', [KetuaProgramController::class, 'index'])->name('kaprog.index');
@@ -133,7 +133,7 @@ Route::middleware(['auth'])->group(function () {
 
 
 
-    
+
 
     Route::get('/kelas', [KelasController::class, 'index'])->name('kelas');
     Route::post('/kelas/store', [KelasController::class, 'store'])->name('kelas.store');
@@ -191,7 +191,5 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/intervensi/{id_intervensi}', [IntervensiController::class, 'show'])->name('intervensi.show');
         Route::put('/intervensi/{id_intervensi}/update', [IntervensiController::class, 'update'])->name('intervensi.update');
         Route::delete('/intervensi/{id_intervensi}/destroy', [IntervensiController::class, 'destroy'])->name('intervensi.destroy');
-
-       
     });
 });
