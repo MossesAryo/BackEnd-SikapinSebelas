@@ -39,8 +39,8 @@ class Guru_bkController extends Controller
     {
         $request->validate([
             'nip_bk' => 'required',
-            'username' => 'required',
-            'nama_guru_bk' => 'required',
+            'username' => 'required|string|max:255',
+            'nama_guru_bk' => 'required|string|max:255',
         ]);
 
         $user = User::create([

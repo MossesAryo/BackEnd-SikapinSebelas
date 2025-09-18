@@ -12,6 +12,15 @@ class kelas extends Model
     public $timestamps = false;
     protected $keyType = 'string';
 
+    public function siswa()
+    {
+        return $this->hasMany(siswa::class, 'id_kelas', 'id_kelas');
+    }
+    public function walikelas()
+    {
+        return $this->hasOne(walikelas::class, 'id_kelas', 'id_kelas');
+    }
+
 
    
 }

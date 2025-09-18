@@ -10,8 +10,8 @@ return new class extends Migration {
     {
         Schema::create('intervensi', function (Blueprint $table) {
             $table->integer('id_intervensi')->unique();
-            $table->integer('nip_bk')->nullable();
-            $table->integer('nis');
+            $table->bigInteger('nip_bk')->nullable();
+            $table->bigInteger('nis');
             $table->string('nama_intervensi');
             $table->string('isi_intervensi');
             $table->enum('status', ['Dalam Bimbingan', 'Dalam Pemantauan', 'Selesai']);

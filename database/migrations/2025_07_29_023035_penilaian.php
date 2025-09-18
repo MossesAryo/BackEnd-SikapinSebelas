@@ -10,11 +10,11 @@ return new class extends Migration {
     {
         Schema::create('penilaian', function (Blueprint $table) {
             $table->integer('id_penilaian')->unique();
-            $table->Integer('nip_wakasek')->nullable();
-            $table->Integer('nip_walikelas')->nullable();
-            $table->Integer('nip_bk')->nullable();
+            $table->bigInteger('nip_wakasek')->nullable();
+            $table->bigInteger('nip_walikelas')->nullable();
+            $table->bigInteger('nip_bk')->nullable();
             $table->string('id_aspekpenilaian');
-            $table->Integer('nis');
+            $table->bigInteger('nis');
             $table->timestamps();
 
             $table->foreign('nip_wakasek')->references('nip_wakasek')->on('wakasek')->onDelete('cascade');

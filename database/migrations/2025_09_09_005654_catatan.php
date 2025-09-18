@@ -13,9 +13,9 @@ return new class extends Migration
     {
         Schema::create('catatan', function (Blueprint $table) {
             $table->id();
-            $table->Integer('nis');
-            $table->Integer('nip_wakasek')->nullable();
-            $table->Integer('nip_walikelas')->nullable();
+            $table->bigInteger('nis');
+            $table->bigInteger('nip_wakasek')->nullable();
+            $table->bigInteger('nip_walikelas')->nullable();
             $table->string('judul_catatan');
             $table->text('isi_catatan');
             $table->timestamps();

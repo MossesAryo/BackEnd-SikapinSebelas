@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Schema;
 return new class extends Migration {
     public function up() {
         Schema::create('ketua_program', function (Blueprint $table) {
-            $table->integer('nip_kaprog');
+            $table->bigInteger('nip_kaprog');
             $table->string('username');
             $table->string('nama_ketua_program');
             $table->timestamps();

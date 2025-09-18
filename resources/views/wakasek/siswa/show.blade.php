@@ -193,6 +193,7 @@
                                     ['label' => 'NIS', 'value' => $siswa->nis],
                                     ['label' => 'Nama Lengkap', 'value' => $siswa->nama_siswa],
                                     ['label' => 'Kelas', 'value' => $siswa->kelas->nama_kelas],
+                                    ['label' => 'Walikelas', 'value' => $siswa->kelas->walikelas->nama_walikelas ?? ''],
                                     ['label' => 'Tahun Masuk', 'value' => $siswa->tahun_masuk ?? '2023'],
                                 ];
                             @endphp

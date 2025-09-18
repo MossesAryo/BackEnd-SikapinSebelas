@@ -132,8 +132,8 @@ Route::middleware(['auth'])->group(function () {
 
 
 
-    Route::get('/jurusan', [KelasController::class, 'jurusanwakasek'])->name('wakasek.jurusan');
-    Route::get('/kelas', [KelasController::class, 'kelaswakasek'])->name('wakasek.kelas');
+
+    
 
     Route::get('/kelas', [KelasController::class, 'index'])->name('kelas');
     Route::post('/kelas/store', [KelasController::class, 'store'])->name('kelas.store');

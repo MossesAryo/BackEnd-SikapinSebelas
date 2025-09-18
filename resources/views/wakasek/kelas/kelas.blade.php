@@ -155,6 +155,7 @@
     @include('wakasek.kelas.create')
     @include('wakasek.kelas.edit')
     @include('wakasek.kelas.delete')
+    @include('wakasek.kelas.modalFilter')
     @push('js')
         <script>
             function openCreateModal() {

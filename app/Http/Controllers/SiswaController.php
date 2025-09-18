@@ -74,20 +74,20 @@ class SiswaController extends Controller
         return redirect()->route('siswa.index')->with('success', 'Siswa berhasil ditambahkan');
     }
 
-    public function Penghargaan(Request $request,string $nis)
-    {
-         $request->validate([
-            'id_penghargaan' => 'required|string',
-        ]);
+        public function Penghargaan(Request $request,string $nis)
+        {
+            $request->validate([
+                'id_penghargaan' => 'required|string',
+            ]);
 
-        siswa_penghargaan::create([
-            'nis' => $nis,
-            'id_penghargaan' => $request->id_penghargaan,
-        ]);
+            siswa_penghargaan::create([
+                'nis' => $nis,
+                'id_penghargaan' => $request->id_penghargaan,
+            ]);
 
-       return redirect()->back()->with('success', 'Penghargaan berhasil ditambahkan');
+        return redirect()->back()->with('success', 'Penghargaan berhasil ditambahkan');
 
-    }
+        }
     public function peringatan(Request $request,string $nis)
     {
          $request->validate([
