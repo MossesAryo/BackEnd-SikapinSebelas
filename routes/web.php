@@ -186,41 +186,12 @@ Route::middleware(['auth'])->group(function () {
 
 
     Route::middleware('UserAccess:2')->group(function () {
-        Route::get('gurubk/profile', [ProfileController::class, 'indexbk'])->name('gurubk.profile');
-
-        Route::get('/gurubk/jurusan', [KelasController::class, 'jurusanbk'])->name('gurubk.jurusan');
-        Route::get('/gurubk/kelas', [KelasController::class, 'kelasbk'])->name('gurubk.kelas');
-
-        Route::get('/aspek_penghargaanbk', [Aspek_penilaianController::class, 'indexPenghargaanBK'])->name('aspek_penghargaanBK.index');
-        Route::post('/aspek_penghargaanbk/store', [Aspek_penilaianController::class, 'storePenghargaanBK'])->name('aspek_penghargaanBK.store');
-        Route::put('/aspek_penghargaanbk/{id}/update', [Aspek_penilaianController::class, 'updatePenghargaanBK'])->name('aspek_penghargaanBK.update');
-        Route::delete('/aspek_penghargaanbk/{id}/destroy', [Aspek_penilaianController::class, 'destroyPenghargaanBK'])->name('aspek_penghargaanBK.destroy');
-
-        Route::get('/aspek_pelanggaranbk', [Aspek_penilaianController::class, 'indexPelanggaranBK'])->name('aspek_pelanggaranBK.index');
-        Route::post('/aspek_pelanggaranbk/store', [Aspek_penilaianController::class, 'storePelanggaranBK'])->name('aspek_pelanggaranBK.store');
-        Route::put('/aspek_pelanggaranbk/{id}/update', [Aspek_penilaianController::class, 'updatePelanggaranBK'])->name('aspek_pelanggaranBK.update');
-        Route::delete('/aspek_pelanggaranbk/{id}/destroy', [Aspek_penilaianController::class, 'destroyPelanggaranBK'])->name('aspek_pelanggaranBK.destroy');
-
-        Route::get('/penghargaanbk', [PenghargaanController::class, 'indexBK'])->name('penghargaanbk.index');
-        Route::post('/penghargaanbk/store', [PenghargaanController::class, 'storeBK'])->name('penghargaanbk.store');
-        Route::put('/penghargaanbk/{id_penghargaan}/update', [PenghargaanController::class, 'updateBK'])->name('penghargaanbk.update');
-        Route::delete('/penghargaanbk/{id}/destroy', [PenghargaanController::class, 'destroyBK'])->name('penghargaanbk.destroy');
-
-        Route::get('/peringatanbk', [SuratPeringatanController::class, 'indexBK'])->name('peringatanbk.index');
-        Route::post('/peringatanbk/store', [SuratPeringatanController::class, 'storeBK'])->name('peringatanbk.store');
-        Route::put('/peringatanbk/{id}/update', [SuratPeringatanController::class, 'updateBK'])->name('peringatanbk.update');
-        Route::delete('/peringatanbk/{id}', [SuratPeringatanController::class, 'destroyBK'])->name('peringatanbk.destroy');
-
-
-
-
-
         Route::get('/intervensi', [IntervensiController::class, 'index'])->name('intervensi.index');
         Route::post('/intervensi/store', [IntervensiController::class, 'store'])->name('intervensi.store');
         Route::get('/intervensi/{id_intervensi}', [IntervensiController::class, 'show'])->name('intervensi.show');
         Route::put('/intervensi/{id_intervensi}/update', [IntervensiController::class, 'update'])->name('intervensi.update');
         Route::delete('/intervensi/{id_intervensi}/destroy', [IntervensiController::class, 'destroy'])->name('intervensi.destroy');
 
-        Route::get('/akumulasibk', [AkumulasiContoller::class, 'indexBK'])->name('akumulasiBK');
+       
     });
 });

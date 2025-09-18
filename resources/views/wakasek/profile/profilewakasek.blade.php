@@ -62,11 +62,11 @@
                         <div class="info-value text-sm font-medium text-slate-800">
                             @if (auth()->user()->role == 2)
                                 @auth
-                                    {{ Auth::user()->gurubk->nama_guru_bk }}
+                                    {{ Auth::user()->gurubk->nip_bk }}
                                 @endauth
                             @else
                                 @auth
-                                    {{ Auth::user()->wakasek->nama_wakasek }}
+                                    {{ Auth::user()->wakasek->nip_wakasek }}
                                 @endauth
                             @endif
                         </div>
@@ -74,20 +74,19 @@
                     <div class="grid grid-cols-1 md:grid-cols-[140px_1fr] gap-4 py-3 border-b border-slate-100">
                         <div class="text-sm font-medium text-slate-500">Email</div>
                         <div class="info-value text-sm font-medium text-slate-800">
-                            @if (auth()->user()->role == 2)
-                                @auth
-                                    {{ Auth::user()->gurubk->nama_guru_bk }}
-                                @endauth
-                            @else
-                                @auth
-                                    {{ Auth::user()->wakasek->nama_wakasek }}
-                                @endauth
-                            @endif
+                           
+                                    {{ Auth::user()->email }}
+                               
                         </div>
                     </div>
                     <div class="grid grid-cols-1 md:grid-cols-[140px_1fr] gap-4 py-3 border-b border-slate-100">
                         <div class="text-sm font-medium text-slate-500">Jabatan</div>
-                        <div class="info-value text-sm font-medium text-slate-800">Wakil Kepala Sekolah</div>
+                        <div class="info-value text-sm font-medium text-slate-800">
+                         @if (auth()->user()->role == 2)
+                                Guru Bimbingan Konseling    
+                            @else
+                                Wakil Kepala Kesiswaan
+                            @endif</div>
                     </div>
 
                 </div>
