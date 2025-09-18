@@ -14,18 +14,17 @@
                 <p class="mt-1 text-gray-600">Informasi lengkap data siswa</p>
             </div>
 
-           
-            <button onclick="opencatatanmodal('{{ $siswa->nis }}')"
-                class="flex items-center justify-center sm:justify-start gap-2 px-4 py-2 w-full sm:w-auto 
+            @if (auth()->user()->role == 1)
+                <button onclick="opencatatanmodal('{{ $siswa->nis }}')"
+                    class="flex items-center justify-center sm:justify-start gap-2 px-4 py-2 w-full sm:w-auto
               rounded-lg bg-blue-600 text-white transition-colors hover:bg-blue-700">
-                <i class="bi bi-plus"></i>
-                <span>Tambah Catatan Untuk BK</span>
-            </button>
-            
+                    <i class="bi bi-plus"></i>
+                    <span>Tambah Catatan Untuk BK</span>
+                </button>
+            @endif
 
-         
             <a href="{{ route('siswa.index') }}"
-                class="flex items-center justify-center sm:justify-start gap-2 px-4 py-2 w-full sm:w-auto 
+                class="flex items-center justify-center sm:justify-start gap-2 px-4 py-2 w-full sm:w-auto
               rounded-lg bg-gray-600 text-white transition-colors hover:bg-gray-700">
                 <i class="bi bi-arrow-left"></i>
                 <span>Kembali</span>
@@ -33,7 +32,7 @@
         </div>
 
 
-       
+
         @if (session('success'))
             <div class="bg-green-50 border border-green-200 text-green-800 px-4 py-3 rounded-lg">
                 <p class="text-sm font-semibold flex items-center gap-2">
@@ -89,11 +88,14 @@
                             <i class="bi bi-award text-green-600"></i>
                             Penghargaan
                         </h3>
-                        <button onclick="openpenghargaanModal('{{ $siswa->nis }}')"
-                            class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg flex items-center gap-2 transition-colors">
-                            <i class="bi bi-plus-circle"></i>
-                            Tambah
-                        </button>
+                        @if (auth()->user()->role == 1)
+                            <button onclick="openpenghargaanModal('{{ $siswa->nis }}')"
+                                class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg flex items-center gap-2 transition-colors">
+                                <i class="bi bi-plus-circle"></i>
+                                Tambah
+                            </button>
+                        @endif
+
                     </div>
                     <div class="p-6">
                         <ul class="space-y-3">
@@ -130,11 +132,14 @@
                             <i class="bi bi-exclamation-triangle text-red-600"></i>
                             Surat Peringatan
                         </h3>
-                        <button onclick="openperingatanModal('{{ $siswa->nis }}')"
-                            class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg flex items-center gap-2 transition-colors">
-                            <i class="bi bi-plus-circle"></i>
-                            Tambah
-                        </button>
+                        @if (auth()->user()->role == 1)
+                            <button onclick="openperingatanModal('{{ $siswa->nis }}')"
+                                class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg flex items-center gap-2 transition-colors">
+                                <i class="bi bi-plus-circle"></i>
+                                Tambah
+                            </button>
+                        @endif
+
                     </div>
                     <div class="p-6">
                         <ul class="space-y-3">
@@ -171,12 +176,15 @@
                 <div class="bg-white rounded-xl shadow-sm border">
                     <div class="px-6 py-4 border-b border-gray-200 flex items-center justify-between">
                         <h3 class="text-lg font-semibold text-gray-900">Informasi Siswa</h3>
-                        <button
-                            onclick="openEditModal('{{ $siswa->nis }}', '{{ $siswa->nama_siswa }}', '{{ $siswa->id_kelas }}')"
-                            class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg flex items-center gap-2 transition-colors">
-                            <i class="bi bi-pencil-square"></i>
-                            Edit
-                        </button>
+                        @if (auth()->user()->role == 1)
+                            <button
+                                onclick="openEditModal('{{ $siswa->nis }}', '{{ $siswa->nama_siswa }}', '{{ $siswa->id_kelas }}')"
+                                class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg flex items-center gap-2 transition-colors">
+                                <i class="bi bi-pencil-square"></i>
+                                Edit
+                            </button>
+                        @endif
+
                     </div>
                     <div class="p-6">
                         <div class="space-y-4">
@@ -266,7 +274,7 @@
                     </div>
                 </div>
 
-               
+
                 @if ($peringatanList->count() > 0)
                     <div class="bg-white rounded-xl shadow-sm border">
                         <div class="px-6 py-4 border-b border-gray-200 flex items-center justify-between">
@@ -435,15 +443,18 @@
                 </div>
             </div>
         </div>
+        @if (auth()->user()->role == 1)
+            {{-- Action Buttons --}}
+            <div class="flex justify-end pt-6 border-t border-gray-200">
+                <button onclick="openDeleteModal('{{ $siswa->nis }}', '{{ $siswa->nama_siswa }}')"
+                    class="bg-red-600 hover:bg-red-700 text-white px-6 py-2 rounded-lg flex items-center gap-2 transition-colors">
+                    <i class="bi bi-trash"></i>
+                    Hapus Siswa
+                </button>
+            </div>
+        @endif
 
-        {{-- Action Buttons --}}
-        <div class="flex justify-end pt-6 border-t border-gray-200">
-            <button onclick="openDeleteModal('{{ $siswa->nis }}', '{{ $siswa->nama_siswa }}')"
-                class="bg-red-600 hover:bg-red-700 text-white px-6 py-2 rounded-lg flex items-center gap-2 transition-colors">
-                <i class="bi bi-trash"></i>
-                Hapus Siswa
-            </button>
-        </div>
+
     </div>
 
     {{-- Included Modals --}}

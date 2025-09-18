@@ -11,11 +11,13 @@
                 <h1 class="text-2xl font-bold gradient-text">Data Penghargaan</h1>
                 <p class="text-gray-600 mt-1">Kelola data Penghargaan</p>
             </div>
-            <button onclick="document.getElementById('modal-create').classList.remove('hidden')"
-                class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg flex items-center gap-2 transition-colors">
-                <i class="bi bi-plus-lg"></i>
-                Tambah Penghargaan
-            </button>
+            @if (auth()->user()->role == 1)
+                <button onclick="document.getElementById('modal-create').classList.remove('hidden')"
+                    class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg flex items-center gap-2 transition-colors">
+                    <i class="bi bi-plus-lg"></i>
+                    Tambah Penghargaan
+                </button>
+            @endif
         </div>
 
 
@@ -94,13 +96,15 @@
                                     Alasan
                                 </div>
                             </th>
-
-                            <th class="px-5 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                                <div class="flex items-center gap-2">
-                                    <i class="bi bi-gear text-gray-400"></i>
-                                    Aksi
-                                </div>
-                            </th>
+                            @if (auth()->user()->role == 1)
+                                <th
+                                    class="px-5 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                                    <div class="flex items-center gap-2">
+                                        <i class="bi bi-gear text-gray-400"></i>
+                                        Aksi
+                                    </div>
+                                </th>
+                            @endif
                         </tr>
                     </thead>
 
@@ -124,22 +128,24 @@
                                 <td class="px-6 py-4 whitespace-nowrap">
                                     <span class="text-lg font-bold text-black">{{ $item->alasan }}</span>
                                 </td>
-                                <td class="px-6 py-4 whitespace-nowrap">
-                                    <div class="flex items-center gap-1">
-                                        <button
-                                            onclick="openEditModal('{{ $item->id_penghargaan }}', '{{ $item->tanggal_penghargaan }}', '{{ $item->level_penghargaan }}', '{{ $item->alasan }}')"
-                                            class="action-btn inline-flex items-center justify-center w-9 h-9 text-blue-600 hover:text-blue-800 hover:bg-blue-50 rounded-full"
-                                            title="Edit Penghargaan">
-                                            <i class="bi bi-pencil-square text-sm"></i>
-                                        </button>
-                                        <button
-                                            onclick="openDeleteModal('{{ $item->id_penghargaan }}', '{{ $item->level_penghargaan }}')"
-                                            class="action-btn inline-flex items-center justify-center w-9 h-9 text-red-600 hover:text-red-800 hover:bg-red-50 rounded-full"
-                                            title="Hapus Penghargaan">
-                                            <i class="bi bi-trash text-sm"></i>
-                                        </button>
-                                    </div>
-                                </td>
+                                @if (auth()->user()->role == 1)
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="flex items-center gap-1">
+                                            <button
+                                                onclick="openEditModal('{{ $item->id_penghargaan }}', '{{ $item->tanggal_penghargaan }}', '{{ $item->level_penghargaan }}', '{{ $item->alasan }}')"
+                                                class="action-btn inline-flex items-center justify-center w-9 h-9 text-blue-600 hover:text-blue-800 hover:bg-blue-50 rounded-full"
+                                                title="Edit Penghargaan">
+                                                <i class="bi bi-pencil-square text-sm"></i>
+                                            </button>
+                                            <button
+                                                onclick="openDeleteModal('{{ $item->id_penghargaan }}', '{{ $item->level_penghargaan }}')"
+                                                class="action-btn inline-flex items-center justify-center w-9 h-9 text-red-600 hover:text-red-800 hover:bg-red-50 rounded-full"
+                                                title="Hapus Penghargaan">
+                                                <i class="bi bi-trash text-sm"></i>
+                                            </button>
+                                        </div>
+                                    </td>
+                                @endif
                             </tr>
                         @empty
                             <tr>

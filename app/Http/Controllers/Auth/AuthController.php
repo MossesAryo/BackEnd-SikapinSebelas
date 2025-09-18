@@ -51,11 +51,7 @@ class AuthController extends Controller
 
         Auth::login($user);
 
-        if ($role === 'wakasek') {
-            return redirect()->route('wakasek.dashboard')->with('success', 'Berhasil login');
-        } elseif ($role === 'guru_bk') {
-            return redirect()->route('gurubk.dashboard')->with('success', 'Berhasil login');
-        }
+        return redirect()->route('wakasek.dashboard')->with('success', 'Berhasil login');
     }
 
     public function logout()

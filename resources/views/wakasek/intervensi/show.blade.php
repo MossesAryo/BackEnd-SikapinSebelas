@@ -1,4 +1,4 @@
-@extends('layouts.gurubk.app')
+@extends('layouts.wakasek.app')
 
 @push('css')
     <link rel="stylesheet" href="{{ asset('css/gurubk/siswa.css') }}">
@@ -122,7 +122,7 @@
             </div>
         </div>
     </div>
-    @include('gurubk.intervensi.edit')
+    @include('wakasek.intervensi.edit')
     <script>
         function openModal(modalId) {
             document.getElementById(modalId).classList.remove('hidden');
@@ -134,7 +134,7 @@
             document.body.classList.remove('modal-open');
         }
 
-        
+
 
         function openEditModal(id_intervensi, nis, nama_intervensi, isi_intervensi, status, tanggal_Mulai_Perbaikan,
             tanggal_Selesai_Perbaikan, perubahan_setelah_intervensi) {
@@ -167,7 +167,7 @@
             }
         }
 
-        
+
 
 
         document.addEventListener('click', function(event) {

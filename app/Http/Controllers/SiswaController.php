@@ -25,7 +25,7 @@ class SiswaController extends Controller
     {
         $jurusanList = kelas::select('jurusan')->distinct()->pluck('jurusan');
         $kelasList   = kelas::all();
-      
+
         $penghargaanList = siswa_penghargaan::all();
 
         $query = siswa::query();
@@ -53,7 +53,7 @@ class SiswaController extends Controller
         ], 200);
     }
 
-   
+
 
 
 
@@ -101,7 +101,7 @@ class SiswaController extends Controller
 
         return redirect()->back()->with('success', 'Surat Peringatan berhasil ditambahkan');
     }
-   
+
 
     /**
      * Show the detail of the student
@@ -118,12 +118,12 @@ class SiswaController extends Controller
             return redirect()->route('siswa.index')->with('error', 'Siswa tidak ditemukan');
         }
 
-   
+
         $poinPositif = $siswa->poin_apresiasi ?? 0;
         $poinNegatif = $siswa->poin_pelanggaran ?? 0;
         $poinTotal   = $siswa->poin_total ?? 0;
 
-       
+
         $activities = ActivityLog::where('nis', $siswa->nis)
             ->orderBy('created_at', 'desc')
             ->take(10)
@@ -231,54 +231,6 @@ class SiswaController extends Controller
 
 
 
- public function siswaGuruBk(Request $request)
-    {
-        $jurusanList = kelas::select('jurusan')->distinct()->pluck('jurusan');
-        $kelasList   = kelas::all();
-
-        $query = siswa::query();
-
-        if ($request->filled('jurusan')) {
-            $query->whereHas('kelas', fn($q) => $q->where('jurusan', $request->jurusan));
-        }
-        if ($request->filled('kelas')) {
-            $query->whereHas('kelas', fn($q) => $q->where('nama_kelas', $request->kelas));
-        }
-
-        $siswa = $query->paginate(2);
-
-        return view('gurubk.siswa.siswa', compact('siswa', 'jurusanList', 'kelasList'));
-    }
-
-
- public function showBK(string $id)
-    {
-        // Ambil data siswa
-        $siswa = siswa::where('nis', $id)->first();
-
-        if (!$siswa) {
-            return redirect()->route('gurubk.siswa')->with('error', 'Siswa tidak ditemukan');
-        }
-
-        // Ambil langsung dari tabel siswa
-        $poinPositif = $siswa->poin_apresiasi ?? 0;
-        $poinNegatif = $siswa->poin_pelanggaran ?? 0;
-        $poinTotal   = $siswa->poin_total ?? 0;
-
-        // Ambil aktivitas terakhir siswa
-        $activities = ActivityLog::where('nis', $siswa->nis)
-            ->orderBy('created_at', 'desc')
-            ->take(10)
-            ->get();
-
-        return view('gurubk.siswa.show', [
-            'siswa' => $siswa,
-            'kelasList' => kelas::all(),
-            'activities' => $activities,
-            'poinPositif' => $poinPositif,
-            'poinNegatif' => $poinNegatif,
-            'poinTotal'   => $poinTotal,
-        ]);
-    }
+ 
 
 }

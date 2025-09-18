@@ -23,19 +23,28 @@
         <div class="p-6 border-b border-gray-200">
             <div class="flex flex-wrap gap-2">
                 <button class="filter-tab active bg-blue-500 text-white px-4 py-2 rounded-lg text-sm font-medium">
-                    Semua <span class="ml-1 bg-white bg-opacity-20 px-2 py-0.5 rounded-full text-xs">{{ $totalNotifikasi ?? 15 }}</span>
+                    Semua <span
+                        class="ml-1 bg-white bg-opacity-20 px-2 py-0.5 rounded-full text-xs">{{ $totalNotifikasi ?? 15 }}</span>
                 </button>
-                <button class="filter-tab bg-gray-100 text-gray-600 px-4 py-2 rounded-lg text-sm font-medium hover:bg-gray-200">
-                    Belum Dibaca <span class="ml-1 bg-red-500 text-white px-2 py-0.5 rounded-full text-xs">{{ $belumDibaca ?? 8 }}</span>
+                <button
+                    class="filter-tab bg-gray-100 text-gray-600 px-4 py-2 rounded-lg text-sm font-medium hover:bg-gray-200">
+                    Belum Dibaca <span
+                        class="ml-1 bg-red-500 text-white px-2 py-0.5 rounded-full text-xs">{{ $belumDibaca ?? 8 }}</span>
                 </button>
-                <button class="filter-tab bg-gray-100 text-gray-600 px-4 py-2 rounded-lg text-sm font-medium hover:bg-gray-200">
-                    Apresiasi <span class="ml-1 bg-green-500 text-white px-2 py-0.5 rounded-full text-xs">{{ $apresiasi ?? 6 }}</span>
+                <button
+                    class="filter-tab bg-gray-100 text-gray-600 px-4 py-2 rounded-lg text-sm font-medium hover:bg-gray-200">
+                    Apresiasi <span
+                        class="ml-1 bg-green-500 text-white px-2 py-0.5 rounded-full text-xs">{{ $apresiasi ?? 6 }}</span>
                 </button>
-                <button class="filter-tab bg-gray-100 text-gray-600 px-4 py-2 rounded-lg text-sm font-medium hover:bg-gray-200">
-                    Pelanggaran <span class="ml-1 bg-red-500 text-white px-2 py-0.5 rounded-full text-xs">{{ $pelanggaran ?? 5 }}</span>
+                <button
+                    class="filter-tab bg-gray-100 text-gray-600 px-4 py-2 rounded-lg text-sm font-medium hover:bg-gray-200">
+                    Pelanggaran <span
+                        class="ml-1 bg-red-500 text-white px-2 py-0.5 rounded-full text-xs">{{ $pelanggaran ?? 5 }}</span>
                 </button>
-                <button class="filter-tab bg-gray-100 text-gray-600 px-4 py-2 rounded-lg text-sm font-medium hover:bg-gray-200">
-                    Sistem <span class="ml-1 bg-blue-500 text-white px-2 py-0.5 rounded-full text-xs">{{ $sistem ?? 4 }}</span>
+                <button
+                    class="filter-tab bg-gray-100 text-gray-600 px-4 py-2 rounded-lg text-sm font-medium hover:bg-gray-200">
+                    Sistem <span
+                        class="ml-1 bg-blue-500 text-white px-2 py-0.5 rounded-full text-xs">{{ $sistem ?? 4 }}</span>
                 </button>
             </div>
         </div>
@@ -44,63 +53,15 @@
     <!-- Notifications List -->
     <div class="bg-white rounded-xl shadow-sm border">
         <div class="divide-y divide-gray-200">
-            
+
             <!-- Notification Item - Unread Apresiasi -->
-            @foreach ($notifikasi as $item )
-                
-            <div class="notification-item unread p-6 hover:bg-gray-50 transition-colors cursor-pointer relative">
-                <div class="flex items-start gap-4">
-                    <div class="flex-shrink-0">
-                        <div class="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center">
-                            <i class="bi bi-award text-green-600"></i>
-                        </div>
-                    </div>
-                    <div class="flex-1 min-w-0">
-                        <div class="flex items-center gap-2 mb-1">
-                            <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800">
-                                {{ $item->judul_catatan }}
-                            </span>
-                            <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-red-100 text-red-800">
-                                Baru
-                            </span>
-                        </div>
-                        <p class="text-gray-900 font-medium mb-1">
-                            <strong>{{ $item->siswa->nama_siswa }}</strong> dari kelas {{ $item->siswa->kelas->nama_kelas }} 
-                        </p>
-                        <p class="text-gray-600 text-sm mb-2">
-                            "{{ $item->isi_catatan }}"
-                        </p>
-                        <p class="text-gray-500 text-xs flex items-center gap-1">
-                            Catatan Dari : @if ($item->nip_wakasek === null) 
-                            {{ $item->walikelas->nama_walikelas }}
-                            @else
-                            {{ $item->wakasek->nama_wakasek }} | Wakil Kepala Kesiswaan  
-                            @endif
-                        </p>
-                        <p class="text-gray-500 text-xs flex items-center gap-1">
-                            <i class="bi bi-clock"></i>
-                            {{ $item->created_at->diffForHumans() }}
-                        </p>
-                    </div>
-                    <div class="flex items-center gap-2">
-                        <button class="text-gray-400 hover:text-gray-600" title="Tandai dibaca">
-                            <i class="bi bi-check-circle"></i>
-                        </button>
-                        <button class="text-gray-400 hover:text-red-600" title="Hapus">
-                            <i class="bi bi-trash"></i>
-                        </button>
-                    </div>
-                </div>
-                <!-- Unread indicator -->
-                <div class="absolute left-0 top-1/2 transform -translate-y-1/2 w-1 h-8 bg-blue-500 rounded-r"></div>
-            </div>
-            @endforeach
 
-            
 
-          
 
-          
+
+
+
+
 
         </div>
     </div>
@@ -118,19 +79,19 @@
         .btn {
             @apply inline-flex items-center gap-2 px-4 py-2 rounded-lg font-medium text-sm transition-colors;
         }
-        
+
         .btn-outline {
             @apply border border-gray-300 text-gray-700 hover:bg-gray-50;
         }
-        
+
         .btn-danger {
             @apply bg-red-600 text-white hover:bg-red-700;
         }
-        
+
         .filter-tab.active {
             @apply bg-blue-500 text-white;
         }
-        
+
         .notification-item.unread {
             @apply bg-blue-50 bg-opacity-30;
         }
@@ -148,7 +109,7 @@
                         t.classList.remove('active', 'bg-blue-500', 'text-white');
                         t.classList.add('bg-gray-100', 'text-gray-600');
                     });
-                    
+
                     // Add active class to clicked tab
                     this.classList.add('active', 'bg-blue-500', 'text-white');
                     this.classList.remove('bg-gray-100', 'text-gray-600');
@@ -160,32 +121,35 @@
                 btn.addEventListener('click', function(e) {
                     e.stopPropagation();
                     const notificationItem = this.closest('.notification-item');
-                    
+
                     // Remove unread styles
                     notificationItem.classList.remove('unread', 'bg-blue-50', 'bg-opacity-30');
-                    
+
                     // Remove unread indicator
                     const indicator = notificationItem.querySelector('.absolute.left-0');
                     if (indicator) indicator.remove();
-                    
+
                     // Remove "Baru" badge
                     const newBadge = notificationItem.querySelector('.bg-red-100.text-red-800');
                     if (newBadge && newBadge.textContent === 'Baru') {
                         newBadge.remove();
                     }
-                    
+
                     // Hide the mark as read button
                     this.style.display = 'none';
-                    
+
                     // Change text colors to read state
                     const titleElement = notificationItem.querySelector('.text-gray-900');
-                    if (titleElement) titleElement.classList.replace('text-gray-900', 'text-gray-700');
-                    
+                    if (titleElement) titleElement.classList.replace('text-gray-900',
+                        'text-gray-700');
+
                     const contentElement = notificationItem.querySelector('.text-gray-600');
-                    if (contentElement) contentElement.classList.replace('text-gray-600', 'text-gray-500');
-                    
+                    if (contentElement) contentElement.classList.replace('text-gray-600',
+                        'text-gray-500');
+
                     const timeElement = notificationItem.querySelector('.text-gray-500');
-                    if (timeElement) timeElement.classList.replace('text-gray-500', 'text-gray-400');
+                    if (timeElement) timeElement.classList.replace('text-gray-500',
+                    'text-gray-400');
                 });
             });
 
@@ -205,23 +169,24 @@
             });
 
             // Mark all as read functionality
-            document.querySelector('[data-action="mark-all-read"], .btn.btn-outline').addEventListener('click', function() {
-                if (confirm('Tandai semua notifikasi sebagai sudah dibaca?')) {
-                    document.querySelectorAll('.notification-item.unread').forEach(item => {
-                        item.classList.remove('unread', 'bg-blue-50', 'bg-opacity-30');
-                        const indicator = item.querySelector('.absolute.left-0');
-                        if (indicator) indicator.remove();
-                        
-                        const newBadge = item.querySelector('.bg-red-100.text-red-800');
-                        if (newBadge && newBadge.textContent === 'Baru') {
-                            newBadge.remove();
-                        }
-                        
-                        const markReadBtn = item.querySelector('[title="Tandai dibaca"]');
-                        if (markReadBtn) markReadBtn.style.display = 'none';
-                    });
-                }
-            });
+            document.querySelector('[data-action="mark-all-read"], .btn.btn-outline').addEventListener('click',
+                function() {
+                    if (confirm('Tandai semua notifikasi sebagai sudah dibaca?')) {
+                        document.querySelectorAll('.notification-item.unread').forEach(item => {
+                            item.classList.remove('unread', 'bg-blue-50', 'bg-opacity-30');
+                            const indicator = item.querySelector('.absolute.left-0');
+                            if (indicator) indicator.remove();
+
+                            const newBadge = item.querySelector('.bg-red-100.text-red-800');
+                            if (newBadge && newBadge.textContent === 'Baru') {
+                                newBadge.remove();
+                            }
+
+                            const markReadBtn = item.querySelector('[title="Tandai dibaca"]');
+                            if (markReadBtn) markReadBtn.style.display = 'none';
+                        });
+                    }
+                });
         });
     </script>
 @endsection
