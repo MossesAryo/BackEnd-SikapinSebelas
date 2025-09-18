@@ -14,7 +14,8 @@
                      class="w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center text-white text-sm font-bold">
                      {{ strtoupper(substr(Auth::user()->gurubk->nama_guru_bk, 0, 1)) }}
                  </div>
-                 <span class="text-gray-700">@auth
+                 <span class="text-gray-700">
+                     @auth
                          {{ Auth::user()->gurubk->nama_guru_bk }}
                      @endauth
                  </span>

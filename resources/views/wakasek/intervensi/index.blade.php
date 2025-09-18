@@ -1,4 +1,4 @@
-    @extends('layouts.gurubk.app')
+    @extends('layouts.wakasek.app')
 
     @push('css')
         <link rel="stylesheet" href="{{ asset('css/gurubk/siswa.css') }}">
@@ -192,9 +192,9 @@
                 </div>
             </div>
         </div>
-        @include('gurubk.intervensi.create')
-        @include('gurubk.intervensi.edit')
-        @include('gurubk.intervensi.delete')
+        @include('wakasek.intervensi.create')
+        @include('wakasek.intervensi.edit')
+        @include('wakasek.intervensi.delete')
     @endsection
 
     <script>
@@ -254,13 +254,13 @@
             openModal('modal-delete');
         }
 
-       
 
-   
+
+
 
         document.addEventListener('click', function(event) {
-            ['modal-create', 'modal-edit', 'modal-delete', 
-                 
+            ['modal-create', 'modal-edit', 'modal-delete',
+
             ].forEach(modalId => {
                 const modal = document.getElementById(modalId);
                 if (modal && !modal.classList.contains('hidden') && event.target === modal) {
@@ -271,7 +271,7 @@
 
         document.addEventListener('keydown', function(event) {
             if (event.key === 'Escape') {
-                ['modal-create', 'modal-edit', 'modal-delete', 
+                ['modal-create', 'modal-edit', 'modal-delete',
                 ].forEach(modalId => {
                     const modal = document.getElementById(modalId);
                     if (modal && !modal.classList.contains('hidden')) {

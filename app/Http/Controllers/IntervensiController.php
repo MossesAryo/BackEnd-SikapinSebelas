@@ -23,7 +23,7 @@ class IntervensiController extends Controller
         $catatan = catatan::all();
 
         // Kirim data walikelas dan kelas ke view
-        return view('gurubk.intervensi.index', compact('intervensi', 'kelas', 'siswa', 'catatan'));
+        return view('wakasek.intervensi.index', compact('intervensi', 'kelas', 'siswa', 'catatan'));
     }
 
     /**
@@ -65,13 +65,13 @@ class IntervensiController extends Controller
             ->firstOrFail();
         $kelas = kelas::all();
         $siswa = siswa::all();
-        $catatan = catatan::all();    
+        $catatan = catatan::all();
 
-        return view('gurubk.intervensi.show', compact('intervensi', 'kelas', 'siswa', 'catatan'));
+        return view('wakasek.intervensi.show', compact('intervensi', 'kelas', 'siswa', 'catatan'));
     }
 
 
-    
+
 
     /**
      * Update the specified resource in storage.

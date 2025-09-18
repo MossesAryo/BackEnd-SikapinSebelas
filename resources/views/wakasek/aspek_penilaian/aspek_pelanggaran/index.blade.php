@@ -34,14 +34,16 @@
                 <h1 class="text-2xl font-bold gradient-text">Data Aspek Pelanggaran</h1>
                 <p class="text-gray-600 mt-1">Kelola data Aspek Pelanggaran</p>
             </div>
-            <button onclick="openCreateModal()"
-                class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg flex items-center gap-2 transition-colors">
-                <i class="bi bi-plus-lg"></i>
-                Tambah Aspek Pelanggaran
-            </button>
+            @if (auth()->user()->role == 1)
+                <button onclick="openCreateModal()"
+                    class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg flex items-center gap-2 transition-colors">
+                    <i class="bi bi-plus-lg"></i>
+                    Tambah Aspek Pelanggaran
+                </button>
+            @endif
         </div>
 
-       @if (session('success'))
+        @if (session('success'))
             <div class="bg-green-50 border border-green-200 text-green-800 px-4 py-3 rounded-lg">
                 <p class="text-sm font-semibold flex items-center gap-2">
                     <i class="bi bi-check-circle-fill text-green-600"></i>
@@ -120,12 +122,15 @@
                                     Poin
                                 </div>
                             </th>
-                            <th class="px-5 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                                <div class="flex items-center gap-2">
-                                    <i class="bi bi-gear text-gray-400"></i>
-                                    Aksi
-                                </div>
-                            </th>
+                            @if (auth()->user()->role == 1)
+                                <th
+                                    class="px-5 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                                    <div class="flex items-center gap-2">
+                                        <i class="bi bi-gear text-gray-400"></i>
+                                        Aksi
+                                    </div>
+                                </th>
+                            @endif
                         </tr>
                     </thead>
 
@@ -145,21 +150,23 @@
                                 <td class="px-6 py-4 whitespace-nowrap">
                                     <span class="text-sm font-semibold text-gray-900">{{ $item->indikator_poin }}</span>
                                 </td>
-                                <td class="px-6 py-4 whitespace-nowrap">
-                                    <div class="flex items-center gap-1">
-                                        <button
-                                            onclick="openEditModal('{{ $item->id_aspekpenilaian }}','{{ $item->jenis_poin }}', '{{ $item->kategori }}', '{{ $item->uraian }}', '{{ $item->pelanggaran_ke }}', '{{ $item->indikator_poin }}')"
-                                            class="action-btn inline-flex items-center justify-center w-9 h-9 text-blue-600 hover:text-blue-800 hover:bg-blue-50 rounded-full"
-                                            title="Edit Aspek Pelanggaran">
-                                            <i class="bi bi-pencil-square text-sm"></i>
-                                        </button>
-                                        <button onclick="openDeleteModal('{{ $item->id_aspekpenilaian }}')"
-                                            class="action-btn inline-flex items-center justify-center w-9 h-9 text-red-600 hover:text-red-800 hover:bg-red-50 rounded-full"
-                                            title="Hapus Aspek Pelanggaran">
-                                            <i class="bi bi-trash text-sm"></i>
-                                        </button>
-                                    </div>
-                                </td>
+                                @if (auth()->user()->role == 1)
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="flex items-center gap-1">
+                                            <button
+                                                onclick="openEditModal('{{ $item->id_aspekpenilaian }}','{{ $item->jenis_poin }}', '{{ $item->kategori }}', '{{ $item->uraian }}', '{{ $item->pelanggaran_ke }}', '{{ $item->indikator_poin }}')"
+                                                class="action-btn inline-flex items-center justify-center w-9 h-9 text-blue-600 hover:text-blue-800 hover:bg-blue-50 rounded-full"
+                                                title="Edit Aspek Pelanggaran">
+                                                <i class="bi bi-pencil-square text-sm"></i>
+                                            </button>
+                                            <button onclick="openDeleteModal('{{ $item->id_aspekpenilaian }}')"
+                                                class="action-btn inline-flex items-center justify-center w-9 h-9 text-red-600 hover:text-red-800 hover:bg-red-50 rounded-full"
+                                                title="Hapus Aspek Pelanggaran">
+                                                <i class="bi bi-trash text-sm"></i>
+                                            </button>
+                                        </div>
+                                    </td>
+                                @endif
                             </tr>
                         @empty
                             <tr>
