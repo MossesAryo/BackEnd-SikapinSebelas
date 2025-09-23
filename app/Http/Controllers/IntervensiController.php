@@ -17,7 +17,7 @@ class IntervensiController extends Controller
      */
     public function index(Request $request)
     {
-        $intervensi = intervensi::all();
+        $intervensi = intervensi::paginate(10);
         $kelas = kelas::all();
         $siswa = siswa::all();
         $catatan = catatan::all();
