@@ -156,16 +156,16 @@
                                                 <i class="bi bi-eye text-sm"></i>
                                             </a>
 
-                                                <button
-                                                    onclick="openEditModal('{{ $item->id_intervensi }}', '{{ $item->nis }}', '{{ $item->nama_intervensi }}','{{ $item->isi_intervensi }}','{{ $item->status }}', '{{ $item->tanggal_Mulai_Perbaikan }}', '{{ $item->tanggal_Selesai_Perbaikan }}','{{ $item->perubahan_setelah_intervensi ?? '' }}')"
-                                                    class="action-btn inline-flex items-center justify-center w-9 h-9 text-blue-600 hover:text-blue-800 hover:bg-blue-50 rounded-full">
-                                                    <i class="bi bi-pencil-square text-sm"></i>
-                                                </button>
-                                                <button
-                                                    onclick="openDeleteModal('{{ $item->id_intervensi }}', '{{ $item->nis }}', '{{ $item->nama_intervensi }}')"
-                                                    class="action-btn inline-flex items-center justify-center w-9 h-9 text-red-600 hover:text-red-800 hover:bg-red-50 rounded-full">
-                                                    <i class="bi bi-trash text-sm"></i>
-                                                </button>
+                                            <button
+                                                onclick="openEditModal('{{ $item->id_intervensi }}', '{{ $item->nis }}', '{{ $item->nama_intervensi }}','{{ $item->isi_intervensi }}','{{ $item->status }}', '{{ $item->tanggal_Mulai_Perbaikan }}', '{{ $item->tanggal_Selesai_Perbaikan }}','{{ $item->perubahan_setelah_intervensi ?? '' }}')"
+                                                class="action-btn inline-flex items-center justify-center w-9 h-9 text-blue-600 hover:text-blue-800 hover:bg-blue-50 rounded-full">
+                                                <i class="bi bi-pencil-square text-sm"></i>
+                                            </button>
+                                            <button
+                                                onclick="openDeleteModal('{{ $item->id_intervensi }}', '{{ $item->nis }}', '{{ $item->nama_intervensi }}')"
+                                                class="action-btn inline-flex items-center justify-center w-9 h-9 text-red-600 hover:text-red-800 hover:bg-red-50 rounded-full">
+                                                <i class="bi bi-trash text-sm"></i>
+                                            </button>
 
                                         </div>
                                     </td>
@@ -184,11 +184,10 @@
                             @endforelse
                         </tbody>
                     </table>
-                    <div class="px-6 py-4 border-t border-gray-200">
-                        <div class="flex justify-end">
-
-                        </div>
-                    </div>
+                </div>
+                <!-- PAGINATION -->
+                <div class="px-6 py-4 border-t border-gray-200 bg-white">
+                    @include('layouts.wakasek.pagination', ['data' => $intervensi])
                 </div>
             </div>
         </div>
@@ -225,7 +224,7 @@
             document.getElementById('status_edit').value = status;
             document.getElementById('tanggal_Mulai_Perbaikan_edit').value = tanggal_Mulai_Perbaikan;
             document.getElementById('tanggal_Selesai_Perbaikan_edit').value = tanggal_Selesai_Perbaikan;
-            document.getElementById('perubahan_setelah_intervensi_edit').value = perubahan_setelah_intervensi||'';
+            document.getElementById('perubahan_setelah_intervensi_edit').value = perubahan_setelah_intervensi || '';
 
             togglePerubahanFieldEdit();
 
@@ -248,7 +247,7 @@
             }
         }
 
-        function openDeleteModal(id_intervensi,nis, nama_intervensi) {
+        function openDeleteModal(id_intervensi, nis, nama_intervensi) {
             document.getElementById('delete-nama-intervensi').innerText = nama_intervensi;
             document.getElementById('form-delete').action = `/intervensi/${id_intervensi}/destroy`;
             openModal('modal-delete');
@@ -271,8 +270,7 @@
 
         document.addEventListener('keydown', function(event) {
             if (event.key === 'Escape') {
-                ['modal-create', 'modal-edit', 'modal-delete',
-                ].forEach(modalId => {
+                ['modal-create', 'modal-edit', 'modal-delete', ].forEach(modalId => {
                     const modal = document.getElementById(modalId);
                     if (modal && !modal.classList.contains('hidden')) {
                         closeModal(modalId);

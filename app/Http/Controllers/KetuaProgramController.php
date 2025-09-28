@@ -19,7 +19,7 @@ class KetuaProgramController extends Controller
     public function index()
     {
       return view('wakasek.kaprog.index', [
-            'ketua_program' => ketua_program::paginate(1),
+            'ketua_program' => ketua_program::paginate(10),
         ]);
     }
     public function store(Request $request)
