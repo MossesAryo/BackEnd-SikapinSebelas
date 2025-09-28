@@ -77,12 +77,7 @@
                                     NIP
                                 </div>
                             </th>
-                            <th class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                                <div class="flex items-center gap-2">
-                                    <i class="bi bi-person text-gray-400"></i>
-                                    Username
-                                </div>
-                            </th>
+                            
                             <th class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
                                 <div class="flex items-center gap-2">
                                     <i class="bi bi-person text-gray-400"></i>
@@ -109,9 +104,7 @@
                                         <span class="text-sm font-medium text-gray-900">{{ $item->nip_bk }}</span>
                                     </div>
                                 </td>
-                                <td class="px-6 py-4 whitespace-nowrap">
-                                    <div class="text-sm font-semibold text-gray-900">{{ $item->user->username }}</div>
-                                </td>
+                               
                                 <td class="px-6 py-4 whitespace-nowrap">
                                     <div class="text-sm font-semibold text-gray-900">{{ $item->nama_guru_bk }}</div>
                                 </td>

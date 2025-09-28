@@ -219,8 +219,8 @@
         }
 
         function openEditModal(id, jenis, kategori, uraian, pelanggaran_ke, indikator_poin) {
-            document.getElementById('edit_id_aspekpenilaian').value = id;
-            document.getElementById('edit_jenis_poin').value = jenis;
+           
+           
             document.getElementById('edit_kategori').value = kategori;
             document.getElementById('edit_uraian').value = uraian;
             document.getElementById('edit_pelanggaran_ke').value = pelanggaran_ke;

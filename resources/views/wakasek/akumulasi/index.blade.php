@@ -68,7 +68,7 @@
                          class="px-3 py-1.5 border border-gray-300 rounded-lg hover:bg-gray-50 flex items-center gap-1.5">
                          <i class="bi bi-funnel"></i> Filter
                      </button>
-                     <button
+                     <button onclick="openModal('exportImportModal')"
                          class="px-3 py-1.5 border border-gray-300 rounded-lg hover:bg-gray-50 flex items-center gap-1.5">
                          <i class="bi bi-download"></i> Export
                      </button>
@@ -130,6 +130,7 @@
 
      </div>
      @include('wakasek.akumulasi.filter')
+        @include('wakasek.akumulasi.modalExportImport')
  @endsection
 
  @push('js')
@@ -157,7 +158,7 @@
 
          // Event listeners
          document.addEventListener('click', function(event) {
-             ['modal-filter'].forEach(modalId => {
+             ['modal-filter','exportImportModal'].forEach(modalId => {
                  const modal = document.getElementById(modalId);
                  if (modal && !modal.classList.contains('hidden') && event.target === modal) {
                      closeModal(modalId);
@@ -167,7 +168,7 @@
 
          document.addEventListener('keydown', function(event) {
              if (event.key === 'Escape') {
-                 ['modal-filter'].forEach(modalId => {
+                 ['modal-filter','exportImportModal'].forEach(modalId => {
                      const modal = document.getElementById(modalId);
                      if (modal && !modal.classList.contains('hidden')) {
                          closeModal(modalId);

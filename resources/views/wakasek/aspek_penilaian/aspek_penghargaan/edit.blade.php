@@ -12,20 +12,8 @@
             </div>
 
             <div class="space-y-4">
-                <div>
-                    <label for="id_aspekpenilaian" class="block text-sm font-medium text-gray-700 mb-1">KODE</label>
-                    <input type="text" id="edit_id_aspekpenilaian" name="id_aspekpenilaian" required
-                        class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-transparent">
-                </div>
-                <div>
-                    <label for="jenis_poin" class="block text-sm font-medium text-gray-700 mb-1">Jenis Poin</label>
-                    <select name="jenis_poin" id="edit_jenis_poin" required
-                        class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white">
-                        <option value="" disabled selected>Pilih Jenis Poin</option>
-                        <option value="Pelanggaran">Pelanggaran</option>
-                        <option value="Apresiasi">Apresiasi</option>
-                    </select>
-                </div>
+                
+                
                 <div>
                     <label for="kategori" class="block text-sm font-medium text-gray-700 mb-1">Kategori</label>
                     <input type="text" id="edit_kategori" name="kategori" required

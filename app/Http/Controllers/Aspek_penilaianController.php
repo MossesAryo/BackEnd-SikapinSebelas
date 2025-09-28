@@ -18,13 +18,7 @@ class Aspek_penilaianController extends Controller
      * Display a listing of the resource.
      */
 
-    // WAKASEKK
-    public function index()
-    {
-        return view('wakasek.aspek_penilaian.aspek_penilaian', [
-            'aspek_penilaian' => aspek_penilaian::get(),
-        ]);
-    }
+    
     public function FetchApi()
     {
         $aspek_penilaian = aspek_penilaian::all();
@@ -71,7 +65,7 @@ class Aspek_penilaianController extends Controller
     {
         $request->validate([
      
-            'jenis_poin' => 'required',
+            
             'kategori' => 'required',
             'uraian' => 'required',
             'indikator_poin' => 'required',
@@ -79,7 +73,7 @@ class Aspek_penilaianController extends Controller
 
         aspek_penilaian::create([
             
-            'jenis_poin' => $request->jenis_poin,
+            'jenis_poin' => 'Apresiasi',
             'kategori' => $request->kategori,
             'uraian' => $request->uraian,
             'indikator_poin' => $request->indikator_poin,
@@ -94,7 +88,7 @@ class Aspek_penilaianController extends Controller
     {
         $data = $request->validate([
      
-            'jenis_poin' => 'required',
+           
             'kategori' => 'required',
             'uraian' => 'required',
             'indikator_poin' => 'required',
@@ -104,7 +98,7 @@ class Aspek_penilaianController extends Controller
 
         $aspek_penilaian->update([
            
-            'jenis_poin' => $data['jenis_poin'],
+            'jenis_poin' => 'Apresiasi',
             'kategori' => $data['kategori'],
             'uraian' => $data['uraian'],
         ]);
@@ -168,7 +162,7 @@ class Aspek_penilaianController extends Controller
             $query->where('pelanggaran_ke', $request->pelanggaran_ke);
         }
 
-        // Bisa pagination biar rapih
+  
         $aspek_penilaian = $query->paginate(10)->appends($request->all());
 
         return view('wakasek.aspek_penilaian.aspek_pelanggaran.index', compact('aspek_penilaian'));
@@ -181,7 +175,6 @@ class Aspek_penilaianController extends Controller
     {
         $request->validate([
          
-            'jenis_poin' => 'required',
             'kategori' => 'required',
             'uraian' => 'required',
             'indikator_poin' => 'required',
@@ -189,7 +182,7 @@ class Aspek_penilaianController extends Controller
 
         aspek_penilaian::create([
             
-            'jenis_poin' => $request->jenis_poin,
+            'jenis_poin' => 'Pelanggaran',
             'kategori' => $request->kategori,
             'uraian' => $request->uraian,
             'pelanggaran_ke' => $request->pelanggaran_ke,
@@ -204,8 +197,8 @@ class Aspek_penilaianController extends Controller
     public function updatePelanggaran(Request $request, string $id)
     {
         $data = $request->validate([
-            'id_aspekpenilaian' => 'required',
-            'jenis_poin' => 'required',
+       
+            
             'kategori' => 'required',
             'uraian' => 'required',
             'pelanggaran_ke' => 'required',
@@ -215,8 +208,8 @@ class Aspek_penilaianController extends Controller
         $aspek_penilaian = aspek_penilaian::where('id_aspekpenilaian', $id)->firstOrFail();
 
         $aspek_penilaian->update([
-            'id_aspekpenilaian' => $data['id_aspekpenilaian'],
-            'jenis_poin' => $data['jenis_poin'],
+            
+            'jenis_poin' => 'Pelanggaran',
             'kategori' => $data['kategori'],
             'uraian' => $data['uraian'],
             'pelanggaran_ke' => $data['pelanggaran_ke'],
