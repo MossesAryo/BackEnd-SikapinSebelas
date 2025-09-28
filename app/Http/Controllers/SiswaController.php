@@ -224,6 +224,36 @@ class SiswaController extends Controller
 
         return redirect()->back()->with('success', 'Data Siswa berhasil diimport!');
     }
+    public function naikKelasSemua()
+{
+    $semuaKelas = Kelas::all();
+
+    foreach ($semuaKelas as $kelasAsal) {
+        $kelasTujuan = null;
+
+        if (str_starts_with($kelasAsal->id_kelas, 'X-')) {
+        
+            $kelasTujuan = str_replace('X-', 'XI-', $kelasAsal->id_kelas);
+        } elseif (str_starts_with($kelasAsal->id_kelas, 'XI-')) {
+         
+            $kelasTujuan = str_replace('XI-', 'XII-', $kelasAsal->id_kelas);
+        } elseif (str_starts_with($kelasAsal->id_kelas, 'XII-')) {
+        
+            continue;
+        }
+
+ 
+        $kelasTujuanData = Kelas::where('id_kelas', $kelasTujuan)->first();
+
+        if ($kelasTujuanData) {
+            Siswa::where('id_kelas', $kelasAsal->id_kelas)
+                ->update(['id_kelas' => $kelasTujuanData->id_kelas]);
+        }
+    }
+
+    return back()->with('success', 'Semua siswa berhasil dinaikkan kelas');
+}
+
 
 
 

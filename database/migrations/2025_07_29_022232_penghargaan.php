@@ -9,7 +9,7 @@ return new class extends Migration {
     public function up()
     {
         Schema::create('penghargaan', function (Blueprint $table) {
-            $table->string('id_penghargaan')->unique();
+            $table->integer('id_penghargaan')->unique();
             $table->date('tanggal_penghargaan');
             $table->enum('level_penghargaan', ['PH1', 'PH2', 'PH3']);
             $table->string('alasan');

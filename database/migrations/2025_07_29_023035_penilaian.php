@@ -13,7 +13,7 @@ return new class extends Migration {
             $table->bigInteger('nip_wakasek')->nullable();
             $table->bigInteger('nip_walikelas')->nullable();
             $table->bigInteger('nip_bk')->nullable();
-            $table->string('id_aspekpenilaian');
+            $table->integer('id_aspekpenilaian');
             $table->bigInteger('nis');
             $table->timestamps();
 

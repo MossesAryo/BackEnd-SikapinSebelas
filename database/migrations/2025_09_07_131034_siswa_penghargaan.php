@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('siswapenghargaan', function (Blueprint $table) {
             $table->id('id');
             $table->bigInteger('nis');
-            $table->string('id_penghargaan');
+            $table->integer('id_penghargaan');
             $table->timestamps();
             $table->foreign('nis')->references('nis')->on('siswa')->onDelete('cascade');
             $table->foreign('id_penghargaan')->references('id_penghargaan')->on('penghargaan')->onDelete('cascade');

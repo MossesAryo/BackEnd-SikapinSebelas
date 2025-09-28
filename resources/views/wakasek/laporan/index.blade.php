@@ -2,6 +2,40 @@
 
 @push('css')
     <link rel="stylesheet" href="{{ asset('css/wakasek/laporan_skoring.css') }}">
+    <style>
+        /* Style untuk searchable dropdown */
+        .dropdown-container {
+            position: relative;
+            width: 100%;
+        }
+        .dropdown-search {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #d1d5db; /* border-gray-300 */
+            border-radius: 0.5rem;
+            outline: none;
+        }
+        .dropdown-list {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background: white;
+            border: 1px solid #d1d5db;
+            border-radius: 0.5rem;
+            max-height: 200px;
+            overflow-y: auto;
+            z-index: 50;
+            display: none;
+        }
+        .dropdown-item {
+            padding: 8px;
+            cursor: pointer;
+        }
+        .dropdown-item:hover {
+            background: #f3f4f6; /* bg-gray-100 */
+        }
+    </style>
 @endpush
 
 @section('content')
@@ -58,20 +92,19 @@
                 <div class="space-y-4">
                     <div>
                         <label for="kelas" class="block text-sm font-medium text-gray-700">Kelas</label>
-                        <select id="kelas" name="kelas" class="mt-1 block w-full border border-gray-300 rounded-lg p-2 focus:ring-2 focus:ring-blue-500">
-                            <option value="">Semua Kelas</option>
-                            @foreach ($kelas as $item)
-                                <option value="{{ $item->id_kelas }}">{{ $item->nama_kelas }}</option>
-                            @endforeach
-                        </select>
-                    </div>
-                    <div>
-                        <label for="jurusan" class="block text-sm font-medium text-gray-700">Jurusan</label>
-                        <select id="jurusan" name="jurusan" class="mt-1 block w-full border border-gray-300 rounded-lg p-2 focus:ring-2 focus:ring-blue-500">
-                            <option value="">Semua Jurusan</option>
-                            <option value="IPA">IPA</option>
-                            <option value="IPS">IPS</option>
-                        </select>
+                        <!-- Custom Searchable Dropdown -->
+                        <div class="dropdown-container">
+                            <input type="text" id="kelasSearch" placeholder="Cari kelas..." class="dropdown-search">
+                            <div id="kelasList" class="dropdown-list">
+                                <div class="dropdown-item" data-value="">Semua Kelas</div>
+                                @foreach ($kelas as $item)
+                                    <div class="dropdown-item" data-value="{{ $item->id_kelas }}">
+                                        {{ $item->nama_kelas }}
+                                    </div>
+                                @endforeach
+                            </div>
+                        </div>
+                        <input type="hidden" id="kelas" name="kelas">
                     </div>
                 </div>
                 <div class="mt-6 flex justify-end gap-2">
@@ -104,18 +137,46 @@
 
         function exportToPDF() {
             const kelas = document.getElementById('kelas').value;
-            const jurusan = document.getElementById('jurusan').value;
-            
-            const url = `{{ route('laporan.export.pdf') }}?type=${reportType}&kelas=${kelas}&jurusan=${jurusan}`;
+            const url = `{{ route('laporan.export.pdf') }}?type=${reportType}&kelas=${kelas}`;
             window.location.href = url;
         }
 
         function exportToExcel() {
             const kelas = document.getElementById('kelas').value;
-            const jurusan = document.getElementById('jurusan').value;
-            
-            const url = `{{ route('laporan.export.excel') }}?type=${reportType}&kelas=${kelas}&jurusan=${jurusan}`;
+            const url = `{{ route('laporan.export.excel') }}?type=${reportType}&kelas=${kelas}`;
             window.location.href = url;
         }
+
+        // Searchable Dropdown Logic
+        const searchInput = document.getElementById('kelasSearch');
+        const list = document.getElementById('kelasList');
+        const hiddenInput = document.getElementById('kelas');
+
+        searchInput.addEventListener('focus', () => {
+            list.style.display = 'block';
+        });
+
+        searchInput.addEventListener('input', () => {
+            const filter = searchInput.value.toLowerCase();
+            const items = list.getElementsByClassName('dropdown-item');
+            Array.from(items).forEach(item => {
+                const text = item.textContent.toLowerCase();
+                item.style.display = text.includes(filter) ? 'block' : 'none';
+            });
+        });
+
+        list.addEventListener('click', (e) => {
+            if (e.target.classList.contains('dropdown-item')) {
+                searchInput.value = e.target.textContent;
+                hiddenInput.value = e.target.getAttribute('data-value');
+                list.style.display = 'none';
+            }
+        });
+
+        document.addEventListener('click', (e) => {
+            if (!e.target.closest('.dropdown-container')) {
+                list.style.display = 'none';
+            }
+        });
     </script>
 @endpush

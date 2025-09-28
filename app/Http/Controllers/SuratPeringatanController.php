@@ -31,7 +31,7 @@ class SuratPeringatanController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'id_sp' => 'required',
+            
             'tanggal_sp' => 'required|date',
             'level_sp' => 'required|in:SP1,SP2,SP3',
             'alasan' => 'required|string|max:255',

@@ -46,7 +46,7 @@
     }
 </style>
 
-<div class="w-64 h-screen bg-white border-r border-gray-200 fixed left-0 top-0 z-10 flex flex-col">
+<div class="w-64 h-screen bg-white border-r border-gray-200 fixed left-0 top-0 z-20 flex flex-col">
     <!-- Fixed Header -->
     <div class="p-6 flex-shrink-0 border-b border-gray-100">
         <div class="flex items-center gap-3">
@@ -133,8 +133,6 @@
                         </div>
                     </li>
                 @endif
-
-
 
                 <!-- FAQ Dropdown -->
                 <li>

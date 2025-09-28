@@ -1,5 +1,5 @@
 <!-- Modal Edit -->
-<div id="modal-edit" class="fixed inset-0 bg-black bg-opacity-40 modal-overlay flex items-center justify-center hidden backdrop-blur-sm">
+<div id="modal-edit" class="fixed inset-0 bg-black bg-opacity-40 modal-overlay flex items-center justify-center hidden ">
     <div class="bg-white rounded-xl shadow-xl w-full max-w-xl mx-4">
         <form method="POST" class="p-6 space-y-4" id="edit_form-edit">
             @csrf

@@ -8,6 +8,8 @@ class surat_peringatan extends Model
 {
     protected $table = 'surat_peringatan';
     protected $primaryKey = 'id_sp';
+    public $incrementing = true; 
+    protected $keyType = 'integer';
     public $timestamps = false;
 
     protected $fillable = [

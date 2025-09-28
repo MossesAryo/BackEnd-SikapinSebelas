@@ -1,5 +1,5 @@
 <div id="modal-filter"
-     class="hidden fixed inset-0 bg-black/50 flex items-center justify-center z-50 backdrop-blur-sm">
+     class="hidden fixed inset-0 bg-black/50 flex items-center justify-center z-50 ">
     <div class="bg-white rounded-2xl shadow-2xl w-full max-w-md mx-4 transform transition-all duration-300 scale-95 " 
          id="modal-content">
        

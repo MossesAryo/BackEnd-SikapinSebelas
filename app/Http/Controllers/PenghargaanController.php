@@ -31,7 +31,7 @@ class PenghargaanController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'id_penghargaan' => 'required',
+          
             'tanggal_penghargaan' => 'required|date',
             'level_penghargaan' => 'required|in:PH1,PH2,PH3',
             'alasan' => 'required|string|max:255',
@@ -43,14 +43,14 @@ class PenghargaanController extends Controller
     public function update(Request $request, $id_penghargaan)
     {
         $request->validate([
-            'id_penghargaan' => 'required',
+            
             'tanggal_penghargaan' => 'required|date',
             'level_penghargaan' => 'required|in:PH1,PH2,PH3',
             'alasan' => 'required|string|max:255',
         ]);
 
         $data = [
-            'id_penghargaan' => $request->id_penghargaan,
+            
             'tanggal_penghargaan' => $request->tanggal_penghargaan,
             'level_penghargaan' => $request->level_penghargaan,
             'alasan' => $request->alasan,

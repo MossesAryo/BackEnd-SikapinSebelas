@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Schema;
 return new class extends Migration {
     public function up() {
         Schema::create('aspek_penilaian', function (Blueprint $table) {
-            $table->string('id_aspekpenilaian')->unique();
+            $table->integer('id_aspekpenilaian')->unique();
             $table->enum('jenis_poin', ['Pelanggaran', 'Apresiasi']);
             $table->string('kategori');
             $table->string('uraian');

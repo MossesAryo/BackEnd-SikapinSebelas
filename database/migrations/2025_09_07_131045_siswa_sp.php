@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('siswaperingatan', function (Blueprint $table) {
             $table->id('id');
             $table->bigInteger('nis');
-            $table->string('id_sp');
+            $table->integer('id_sp');
             $table->timestamps();
              $table->foreign('nis')->references('nis')->on('siswa')->onDelete('cascade');
             $table->foreign('id_sp')->references('id_sp')->on('surat_peringatan')->onDelete('cascade');
