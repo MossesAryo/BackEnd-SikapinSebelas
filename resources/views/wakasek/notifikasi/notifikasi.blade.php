@@ -19,6 +19,7 @@
             <!-- Notification Item - Unread Apresiasi -->
             @if (auth()->user()->role == 1)
                 @foreach ($notifikasi as $item)
+                <a href="{{ route('statusintervensi.show', $item->id_intervensi) }}" class="block">
                     <div class="notification-item unread p-6 hover:bg-gray-50 transition-colors cursor-pointer relative">
                         <div class="flex items-start gap-4">
                             <div class="flex-shrink-0">
@@ -57,6 +58,7 @@
                         <!-- Unread indicator -->
                         <div class="absolute left-0 top-1/2 transform -translate-y-1/2 w-1 h-8 bg-blue-500 rounded-r"></div>
                     </div>
+                </a>
                 @endforeach
             @else
                 @foreach ($notifikasibk as $item)

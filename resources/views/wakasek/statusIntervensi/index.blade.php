@@ -1,0 +1,88 @@
+@extends('layouts.wakasek.app')
+@section('content')
+    <div class="w-full px-4 py-6 lg:px-8">
+        <div class="max-w-6xl mx-auto">
+            <!-- Header -->
+            <div class="mb-6">
+                <h2 class="text-2xl sm:text-3xl font-bold text-gray-900">Daftar Siswa Intervensi</h2>
+            </div>
+
+            <!-- Student List -->
+            <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
+                <!-- Table Header - Desktop -->
+                <div
+                    class="hidden md:grid md:grid-cols-12 gap-4 bg-gray-50 px-6 py-4 font-semibold text-sm text-gray-700 border-b">
+                    <div class="col-span-4">Nama Siswa</div>
+                    <div class="col-span-3">Nama Intervensi</div>
+                    <div class="col-span-3">Status</div>
+                    <div class="col-span-2 text-center">Aksi</div>
+                </div>
+
+                <!-- Student Items -->
+                <div class="divide-y divide-gray-100">
+                    <!-- Student 1 -->
+                    @foreach ($intervensi as $item)
+                        <div class="p-4 sm:p-6 hover:bg-gray-50 transition-colors">
+                            <div class="md:grid md:grid-cols-12 md:gap-4 md:items-center">
+                                <!-- Name -->
+                                <div class="col-span-4 mb-3 md:mb-0">
+                                    <p class="text-xs text-gray-500 md:hidden mb-1">Nama Siswa</p>
+                                    <p class="font-semibold text-gray-900">{{ $item->siswa->nama_siswa }}</p>
+                                    <p class="text-gray-500 text-sm">{{ $item->siswa->kelas->nama_kelas }}</p>
+                                </div>
+
+                                <!-- Intervention Name -->
+                                <div class="col-span-3 mb-3 md:mb-0">
+                                    <p class="text-xs text-gray-500 md:hidden mb-1">Nama Intervensi</p>
+                                    <p class="text-gray-700 text-sm">{{ $item->nama_intervensi }}</p>
+                                </div>
+
+                                <!-- Status -->
+                                <div class="col-span-3 mb-3 md:mb-0">
+                                    <p class="text-xs text-gray-500 md:hidden mb-1">Status</p>
+                                    <span
+                                        class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-blue-100 text-blue-700">
+                                        <span class="w-1.5 h-1.5 bg-blue-600 rounded-full mr-1.5 animate-pulse"></span>
+                                        {{ $item->status }}
+                                    </span>
+                                </div>
+
+                                <!-- Action -->
+                                <div class="col-span-2 flex justify-start md:justify-center">
+                                    <a href="{{ route('statusintervensi.show', $item->id_intervensi) }}"
+                                        class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium rounded-lg transition-colors flex items-center gap-2">
+                                        <i class="bi bi-eye"></i>
+                                        Detail
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    @endforeach
+                </div>
+            </div>
+
+            <!-- Pagination -->
+            <div
+                class="mt-6 flex flex-col sm:flex-row items-center justify-between gap-4 bg-white rounded-xl shadow-sm border border-gray-100 p-4">
+                <p class="text-sm text-gray-600">Menampilkan <span class="font-semibold">1-6</span> dari <span
+                        class="font-semibold">24</span> siswa</p>
+                <div class="flex gap-2">
+                    <button
+                        class="px-3 py-2 border border-gray-300 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+                        disabled>
+                        <i class="bi bi-chevron-left"></i>
+                    </button>
+                    <button class="px-3 py-2 bg-blue-600 text-white rounded-lg text-sm font-medium">1</button>
+                    <button
+                        class="px-3 py-2 border border-gray-300 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-50">2</button>
+                    <button
+                        class="px-3 py-2 border border-gray-300 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-50">3</button>
+                    <button
+                        class="px-3 py-2 border border-gray-300 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-50">
+                        <i class="bi bi-chevron-right"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+@endsection

@@ -213,8 +213,8 @@
                         </a>
                     </li>
                 @endif
-
-                <li>
+                @if(auth()->user()->role == 1)
+                   <li>
                     <a href="{{ route('akumulasi.index') }}"
                         class="flex items-center gap-3 px-4 py-3 rounded-lg menu-link
                        {{ request()->routeIs('akumulasi.*') ? 'active-link' : 'text-gray-600 hover:bg-gray-50' }}">
@@ -222,6 +222,17 @@
                         <span>Akumulasi</span>
                     </a>
                 </li>
+                <li>
+                    <a href="{{ route('statusintervensi.index') }}"
+                        class="flex items-center gap-3 px-4 py-3 rounded-lg menu-link
+                       {{ request()->routeIs('statusintervensi.*') ? 'active-link' : 'text-gray-600 hover:bg-gray-50' }}">
+                        <i class="bi bi-bar-chart"></i>
+                        <span>Status Intervensi</span>
+                    </a>
+                </li>
+                @endif
+
+                
                 <li>
                     <a href="{{ route('laporan.index') }}"
                         class="flex items-center gap-3 px-4 py-3 rounded-lg menu-link

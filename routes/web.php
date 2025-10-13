@@ -24,6 +24,7 @@ use App\Http\Controllers\Skoring_PelanggaranController;
 use App\Http\Controllers\Skoring_PenghargaanController;
 use App\Http\Controllers\Auth\AuthController as AController;
 use App\Http\Controllers\NotifikasiWakasekController;
+use App\Http\Controllers\StatusIntervensiController;
 
 Route::get('/', [AController::class, 'index'])->name('login');
 Route::post('/login', [AController::class, 'login'])->name('login.submit');
@@ -167,16 +168,13 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/walikelas/export_excel', [WalikelasController::class, 'export_excel'])->name('walikelas.export.excel');
     Route::post('/walikelas/import', [WalikelasController::class, 'import'])->name('walikelas.import');
 
-
-
     Route::get('/aspekpenilaian', [Aspek_penilaianController::class, 'index'])->name('aspekpenilaian');
     Route::post('/aspekpenilaian/store', [Aspek_penilaianController::class, 'store'])->name('aspekpenilaian.store');
     Route::put('/aspekpenilaian/{id}/update', [Aspek_penilaianController::class, 'update'])->name('aspekpenilaian.update');
     Route::delete('/aspekpenilaian/{id}/destroy', [Aspek_penilaianController::class, 'destroy'])->name('aspekpenilaian.destroy');
-    //
-    //
-    //
-
+   
+    Route::get('/statusintervensi', [StatusIntervensiController::class, 'index'])->name('statusintervensi.index');
+    Route::get('/statusintervensi/{id_intervensi}', [StatusIntervensiController::class, 'show'])->name('statusintervensi.show');
 
 
 
