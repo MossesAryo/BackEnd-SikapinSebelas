@@ -15,8 +15,8 @@ class KelasSeeder extends Seeder
     {
         $data = [
            
-            ['id_kelas' => 'X-RPL-1', 'nama_kelas' => 'X RPL 1', 'jurusan' => 'RPL'],
-            ['id_kelas' => 'X-RPL-2', 'nama_kelas' => 'X RPL 2', 'jurusan' => 'RPL'],
+            ['id_kelas' => 'X-PPLG-1', 'nama_kelas' => 'X PPLG 1', 'jurusan' => 'RPL'],
+            ['id_kelas' => 'X-PPLG-2', 'nama_kelas' => 'X PPLG 2', 'jurusan' => 'RPL'],
 
             
             ['id_kelas' => 'XI-RPL-1', 'nama_kelas' => 'XI RPL 1', 'jurusan' => 'RPL'],
@@ -33,14 +33,14 @@ class KelasSeeder extends Seeder
             ['id_kelas' => 'X-PM-3', 'nama_kelas' => 'X PM 3', 'jurusan' => 'PM'],
 
           
-            ['id_kelas' => 'XI-PM-1', 'nama_kelas' => 'XI PM 1', 'jurusan' => 'PM'],
-            ['id_kelas' => 'XI-PM-2', 'nama_kelas' => 'XI PM 2', 'jurusan' => 'PM'],
-            ['id_kelas' => 'XI-PM-3', 'nama_kelas' => 'XI PM 3', 'jurusan' => 'PM'],
+            ['id_kelas' => 'XI-BR-1', 'nama_kelas' => 'XI BR 1', 'jurusan' => 'PM'],
+            ['id_kelas' => 'XI-BR-2', 'nama_kelas' => 'XI BR 2', 'jurusan' => 'PM'],
+           
 
            
-            ['id_kelas' => 'XII-PM-1', 'nama_kelas' => 'XII PM 1', 'jurusan' => 'PM'],
-            ['id_kelas' => 'XII-PM-2', 'nama_kelas' => 'XII PM 2', 'jurusan' => 'PM'],
-            ['id_kelas' => 'XII-PM-3', 'nama_kelas' => 'XII PM 3', 'jurusan' => 'PM'],
+            ['id_kelas' => 'XII-BR-1', 'nama_kelas' => 'XII BR 1', 'jurusan' => 'PM'],
+            ['id_kelas' => 'XII-BR-2', 'nama_kelas' => 'XII BR 2', 'jurusan' => 'PM'],
+            ['id_kelas' => 'XII-BR-3', 'nama_kelas' => 'XII BR 3', 'jurusan' => 'PM'],
 
 
     
@@ -52,6 +52,7 @@ class KelasSeeder extends Seeder
             ['id_kelas' => 'XI-AK-1', 'nama_kelas' => 'XI AK 1', 'jurusan' => 'AK'],
             ['id_kelas' => 'XI-AK-2', 'nama_kelas' => 'XI AK 2', 'jurusan' => 'AK'],
             ['id_kelas' => 'XI-AK-3', 'nama_kelas' => 'XI AK 3', 'jurusan' => 'AK'],
+            ['id_kelas' => 'XI-AK-4', 'nama_kelas' => 'XI AK 3', 'jurusan' => 'AK'],
 
  
             ['id_kelas' => 'XII-AK-1', 'nama_kelas' => 'XII AK 1', 'jurusan' => 'AK'],
@@ -102,9 +103,10 @@ class KelasSeeder extends Seeder
 
 
             // X MP
-            ['id_kelas' => 'X-MP-1', 'nama_kelas' => 'X MP 1', 'jurusan' => 'MP'],
-            ['id_kelas' => 'X-MP-2', 'nama_kelas' => 'X MP 2', 'jurusan' => 'MP'],
-            ['id_kelas' => 'X-MP-3', 'nama_kelas' => 'X MP 3', 'jurusan' => 'MP'],
+            ['id_kelas' => 'X-MPLB-1', 'nama_kelas' => 'X MPLB 1', 'jurusan' => 'MP'],
+            ['id_kelas' => 'X-MPLB-2', 'nama_kelas' => 'X MPLB 2', 'jurusan' => 'MP'],
+            ['id_kelas' => 'X-MPLB-3', 'nama_kelas' => 'X MPLB 3', 'jurusan' => 'MP'],
+            ['id_kelas' => 'X-MPLB-4', 'nama_kelas' => 'X MPLB 3', 'jurusan' => 'MP'],
 
             // XI MP
             ['id_kelas' => 'XI-MP-1', 'nama_kelas' => 'XI MP 1', 'jurusan' => 'MP'],

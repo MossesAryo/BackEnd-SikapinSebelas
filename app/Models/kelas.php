@@ -21,6 +21,11 @@ class kelas extends Model
         return $this->hasOne(walikelas::class, 'id_kelas', 'id_kelas');
     }
 
+    public function guruBkKelas()
+    {
+        return $this->hasMany(GuruBkKelas::class, 'kelas_id', 'id_kelas');
+    }
+
 
    
 }

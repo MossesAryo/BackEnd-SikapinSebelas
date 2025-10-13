@@ -22,7 +22,12 @@
                     @endif
 
                 </h1>
+                @if (auth()->user()->role == 2)
+                <p class="profile-title text-blue-600 font-medium mb-6 text-sm">Guru BK</p>
+                @else
                 <p class="profile-title text-blue-600 font-medium mb-6 text-sm">Wakil Kepala Kesiswaan</p>
+                @endif
+                
                 <div class="flex flex-col gap-3">
 
                     <form method="POST" action="#" class="w-full">

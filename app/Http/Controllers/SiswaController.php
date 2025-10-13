@@ -9,12 +9,14 @@ use Illuminate\Http\Request;
 
 use App\Exports\Siswa_ExportExcel;
 use App\Imports\Siswa_Import;
+use App\Models\guru_bk;
 use App\Models\penghargaan;
 use App\Models\siswa_penghargaan;
 use App\Models\siswa_sp;
 use App\Models\surat_peringatan;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Maatwebsite\Excel\Facades\Excel;
+use Illuminate\Support\Facades\Auth;
 
 class SiswaController extends Controller
 {
@@ -22,25 +24,46 @@ class SiswaController extends Controller
      * Display a listing of the resource.
      */
     public function index(Request $request)
-    {
-        $jurusanList = kelas::select('jurusan')->distinct()->pluck('jurusan');
-        $kelasList   = kelas::all();
+{
+    $jurusanList = Kelas::select('jurusan')->distinct()->pluck('jurusan');
+    $kelasList   = Kelas::select('id_kelas', 'nama_kelas', 'jurusan')->get();
+    $penghargaanList = siswa_penghargaan::all();
 
-        $penghargaanList = siswa_penghargaan::all();
+    $query = Siswa::with('kelas');
 
-        $query = siswa::query();
+    // Cek apakah yang login adalah guru BK
+    if (Auth::user()->role === 'guru_bk') {
+        // Ambil guru BK berdasarkan NIP atau user_id (tergantung sistem kamu)
+        $guruBk = guru_bk::where('user_id', Auth::id())->first();
 
-        if ($request->filled('jurusan')) {
-            $query->whereHas('kelas', fn($q) => $q->where('jurusan', $request->jurusan));
+        if ($guruBk) {
+            // Ambil semua id_kelas yang dipegang guru BK ini
+            $kelasIds = $guruBk->kelas->pluck('id_kelas');
+
+            // Filter siswa hanya dari kelas yang dipegang guru ini
+            $query->whereIn('kelas_id', $kelasIds);
         }
-        if ($request->filled('kelas')) {
-            $query->whereHas('kelas', fn($q) => $q->where('nama_kelas', $request->kelas));
-        }
-
-        $siswa = $query->paginate(10);
-
-        return view('wakasek.siswa.index', compact('siswa', 'jurusanList', 'kelasList'));
     }
+
+    // Filter tambahan dari request
+    if ($request->filled('jurusan')) {
+        $query->whereHas('kelas', function ($q) use ($request) {
+            $q->where('jurusan', $request->jurusan);
+        });
+    }
+
+    if ($request->filled('kelas')) {
+        $query->whereHas('kelas', function ($q) use ($request) {
+            $q->where('id_kelas', $request->kelas);
+        });
+    }
+
+    $siswa = $query->paginate(10);
+
+    return view('wakasek.siswa.index', compact(
+        'siswa', 'jurusanList', 'kelasList', 'penghargaanList'
+    ));
+}
 
     public function fetchAPI()
     {

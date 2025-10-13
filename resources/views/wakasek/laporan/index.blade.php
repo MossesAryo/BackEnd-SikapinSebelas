@@ -3,7 +3,7 @@
 @push('css')
     <link rel="stylesheet" href="{{ asset('css/wakasek/laporan_skoring.css') }}">
     <style>
-        /* Style untuk searchable dropdown */
+       
         .dropdown-container {
             position: relative;
             width: 100%;
@@ -11,7 +11,7 @@
         .dropdown-search {
             width: 100%;
             padding: 8px;
-            border: 1px solid #d1d5db; /* border-gray-300 */
+            border: 1px solid #d1d5db; 
             border-radius: 0.5rem;
             outline: none;
         }
@@ -80,7 +80,7 @@
     </div>
 
     <!-- Filter Modal -->
-    <div id="filterModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden">
+    <div id="filterModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
         <div class="bg-white rounded-xl p-6 w-full max-w-md">
             <div class="flex justify-between items-center mb-4">
                 <h3 class="text-lg font-semibold text-gray-900">Filter Laporan</h3>
