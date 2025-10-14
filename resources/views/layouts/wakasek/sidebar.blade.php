@@ -69,7 +69,7 @@
                     <a href="{{ route('wakasek.dashboard') }}"
                         class="flex items-center gap-3 px-4 py-3 rounded-lg menu-link
                        {{ request()->routeIs('wakasek.dashboard') ? 'active-link' : 'text-gray-600 hover:bg-gray-50' }}">
-                        <i class="bi bi-house"></i>
+                        <i class="bi bi-speedometer2"></i>
                         <span>Dashboard</span>
                     </a>
                 </li>
@@ -77,7 +77,7 @@
                     <a href="{{ route('siswa.index') }}"
                         class="flex items-center gap-3 px-4 py-3 rounded-lg menu-link
                        {{ request()->routeIs('siswa.*') ? 'active-link' : 'text-gray-600 hover:bg-gray-50' }}">
-                        <i class="bi bi-person"></i>
+                        <i class="bi bi-person-badge"></i>
                         <span>Siswa</span>
                     </a>
                 </li>
@@ -86,7 +86,7 @@
                         <a href="{{ route('kelas') }}"
                             class="flex items-center gap-3 px-4 py-3 rounded-lg menu-link
                        {{ request()->routeIs('kelas*') ? 'active-link' : 'text-gray-600 hover:bg-gray-50' }}">
-                            <i class="bi bi-people"></i>
+                            <i class="bi bi-grid-3x3-gap"></i>
                             <span>Kelas</span>
                         </a>
                     </li>
@@ -96,7 +96,7 @@
                         <button onclick="toggleDropdown('userDropdown','userArrow')"
                             class="flex items-center justify-between w-full px-4 py-3 text-gray-600 hover:bg-gray-50 rounded-lg">
                             <div class="flex items-center gap-3">
-                                <i class="bi bi-person-gear"></i>
+                                <i class="bi bi-people-fill"></i>
                                 <span>User</span>
                             </div>
                             <i class="bi bi-chevron-down dropdown-arrow text-sm" id="userArrow"></i>
@@ -109,7 +109,7 @@
                                     <a href="{{ route('walikelas.index') }}"
                                         class="flex items-center gap-3 px-4 py-2 text-sm rounded-lg menu-link
                                    {{ request()->routeIs('walikelas.*') ? 'active-link' : 'text-gray-600 hover:bg-gray-50' }}">
-                                        <i class="bi bi-person-check"></i>
+                                        <i class="bi bi-person-vcard"></i>
                                         <span>Wali Kelas</span>
                                     </a>
                                 </li>
@@ -117,7 +117,7 @@
                                     <a href="{{ route('gurubk.index') }}"
                                         class="flex items-center gap-3 px-4 py-2 text-sm rounded-lg menu-link
                                    {{ request()->routeIs('gurubk.*') ? 'active-link' : 'text-gray-600 hover:bg-gray-50' }}">
-                                        <i class="bi bi-person-heart"></i>
+                                        <i class="bi bi-person-hearts"></i>
                                         <span>Guru BK</span>
                                     </a>
                                 </li>
@@ -125,7 +125,7 @@
                                     <a href="{{ route('kaprog.index') }}"
                                         class="flex items-center gap-3 px-4 py-2 text-sm rounded-lg menu-link
                                    {{ request()->routeIs('kaprog.*') ? 'active-link' : 'text-gray-600 hover:bg-gray-50' }}">
-                                        <i class="bi bi-person-badge"></i>
+                                        <i class="bi bi-mortarboard"></i>
                                         <span>Kaprog</span>
                                     </a>
                                 </li>
@@ -139,7 +139,7 @@
                     <button onclick="toggleDropdown('faqDropdown','faqArrow')"
                         class="flex items-center justify-between w-full px-4 py-3 text-gray-600 hover:bg-gray-50 rounded-lg">
                         <div class="flex items-center gap-3">
-                            <i class="bi bi-question-circle"></i>
+                            <i class="bi bi-info-circle"></i>
                             <span>FAQ</span>
                         </div>
                         <i class="bi bi-chevron-down dropdown-arrow text-sm" id="faqArrow"></i>
@@ -152,7 +152,7 @@
                                 <a href="{{ route('penghargaan.index') }}"
                                     class="flex items-center gap-3 px-4 py-2 text-sm rounded-lg menu-link
                                    {{ request()->routeIs('penghargaan.*') ? 'active-link' : 'text-gray-600 hover:bg-gray-50' }}">
-                                    <i class="bi bi-award"></i>
+                                    <i class="bi bi-trophy"></i>
                                     <span>Penghargaan</span>
                                 </a>
                             </li>
@@ -160,7 +160,7 @@
                                 <a href="{{ route('peringatan.index') }}"
                                     class="flex items-center gap-3 px-4 py-2 text-sm rounded-lg menu-link
                                    {{ request()->routeIs('peringatan.*') ? 'active-link' : 'text-gray-600 hover:bg-gray-50' }}">
-                                    <i class="bi bi-exclamation-triangle"></i>
+                                    <i class="bi bi-shield-exclamation"></i>
                                     <span>Pelanggaran</span>
                                 </a>
                             </li>
@@ -168,7 +168,7 @@
                                 <a href="{{ route('aspek_penghargaan.index') }}"
                                     class="flex items-center gap-3 px-4 py-2 text-sm rounded-lg menu-link
                                    {{ request()->routeIs('aspek_penghargaan.*') ? 'active-link' : 'text-gray-600 hover:bg-gray-50' }}">
-                                    <i class="bi bi-stars"></i>
+                                    <i class="bi bi-star-fill"></i>
                                     <span>Aspek Penghargaan</span>
                                 </a>
                             </li>
@@ -176,7 +176,7 @@
                                 <a href="{{ route('aspek_pelanggaran.index') }}"
                                     class="flex items-center gap-3 px-4 py-2 text-sm rounded-lg menu-link
                                    {{ request()->routeIs('aspek_pelanggaran.*') ? 'active-link' : 'text-gray-600 hover:bg-gray-50' }}">
-                                    <i class="bi bi-x-circle"></i>
+                                    <i class="bi bi-x-octagon"></i>
                                     <span>Aspek Pelanggaran</span>
                                 </a>
                             </li>
@@ -189,7 +189,7 @@
                     <a href="{{ route('skoring_penghargaan.index') }}"
                         class="flex items-center gap-3 px-4 py-3 rounded-lg menu-link
                        {{ request()->routeIs('skoring_penghargaan.*') ? 'active-link' : 'text-gray-600 hover:bg-gray-50' }}">
-                        <i class="bi bi-people"></i>
+                        <i class="bi bi-clipboard-check"></i>
                         <span>Skoring Penghargaan</span>
                     </a>
                 </li>
@@ -197,7 +197,7 @@
                     <a href="{{ route('skoring_pelanggaran.index') }}"
                         class="flex items-center gap-3 px-4 py-3 rounded-lg menu-link
                        {{ request()->routeIs('skoring_pelanggaran.*') ? 'active-link' : 'text-gray-600 hover:bg-gray-50' }}">
-                        <i class="bi bi-people"></i>
+                        <i class="bi bi-clipboard-x"></i>
                         <span>Skoring Pelanggaran</span>
                     </a>
                 </li>
@@ -208,36 +208,36 @@
                         <a href="{{ route('intervensi.index') }}"
                             class="flex items-center gap-3 px-4 py-3 rounded-lg menu-link
                        {{ request()->routeIs('intervensi.*') ? 'active-link' : 'text-gray-600 hover:bg-gray-50' }}">
-                            <i class="bi bi-award"></i>
+                            <i class="bi bi-life-preserver"></i>
                             <span>Intervensi</span>
                         </a>
                     </li>
                 @endif
-                @if(auth()->user()->role == 1)
-                   <li>
-                    <a href="{{ route('akumulasi.index') }}"
-                        class="flex items-center gap-3 px-4 py-3 rounded-lg menu-link
+                @if (auth()->user()->role == 1)
+                    <li>
+                        <a href="{{ route('akumulasi.index') }}"
+                            class="flex items-center gap-3 px-4 py-3 rounded-lg menu-link
                        {{ request()->routeIs('akumulasi.*') ? 'active-link' : 'text-gray-600 hover:bg-gray-50' }}">
-                        <i class="bi bi-bar-chart"></i>
-                        <span>Akumulasi</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="{{ route('statusintervensi.index') }}"
-                        class="flex items-center gap-3 px-4 py-3 rounded-lg menu-link
+                            <i class="bi bi-graph-up"></i>
+                            <span>Akumulasi</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{ route('statusintervensi.index') }}"
+                            class="flex items-center gap-3 px-4 py-3 rounded-lg menu-link
                        {{ request()->routeIs('statusintervensi.*') ? 'active-link' : 'text-gray-600 hover:bg-gray-50' }}">
-                        <i class="bi bi-bar-chart"></i>
-                        <span>Status Intervensi</span>
-                    </a>
-                </li>
+                            <i class="bi bi-clipboard-data"></i>
+                            <span>Status Intervensi</span>
+                        </a>
+                    </li>
                 @endif
 
-                
+
                 <li>
                     <a href="{{ route('laporan.index') }}"
                         class="flex items-center gap-3 px-4 py-3 rounded-lg menu-link
                        {{ request()->routeIs('laporan.*') ? 'active-link' : 'text-gray-600 hover:bg-gray-50' }}">
-                        <i class="bi bi-file"></i>
+                        <i class="bi bi-file-earmark-text"></i>
                         <span>laporan</span>
                     </a>
                 </li>
