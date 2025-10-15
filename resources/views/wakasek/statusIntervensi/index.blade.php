@@ -20,8 +20,7 @@
 
                 <!-- Student Items -->
                 <div class="divide-y divide-gray-100">
-                    <!-- Student 1 -->
-                    @foreach ($intervensi as $item)
+                    @forelse ($intervensi as $item)
                         <div class="p-4 sm:p-6 hover:bg-gray-50 transition-colors">
                             <div class="md:grid md:grid-cols-12 md:gap-4 md:items-center">
                                 <!-- Name -->
@@ -57,32 +56,43 @@
                                 </div>
                             </div>
                         </div>
-                    @endforeach
+                    @empty
+                        <!-- Empty State -->
+                        <div class="p-12 text-center">
+                            <div class="inline-flex items-center justify-center w-16 h-16 bg-gray-100 rounded-full mb-4">
+                                <i class="bi bi-inbox text-3xl text-gray-400"></i>
+                            </div>
+                            <h3 class="text-lg font-semibold text-gray-900 mb-2">Belum Ada Data Intervensi</h3>
+                            <p class="text-gray-500 text-sm">Tidak ada siswa yang memiliki intervensi saat ini.</p>
+                        </div>
+                    @endforelse
                 </div>
             </div>
 
             <!-- Pagination -->
-            <div
-                class="mt-6 flex flex-col sm:flex-row items-center justify-between gap-4 bg-white rounded-xl shadow-sm border border-gray-100 p-4">
-                <p class="text-sm text-gray-600">Menampilkan <span class="font-semibold">1-6</span> dari <span
-                        class="font-semibold">24</span> siswa</p>
-                <div class="flex gap-2">
-                    <button
-                        class="px-3 py-2 border border-gray-300 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
-                        disabled>
-                        <i class="bi bi-chevron-left"></i>
-                    </button>
-                    <button class="px-3 py-2 bg-blue-600 text-white rounded-lg text-sm font-medium">1</button>
-                    <button
-                        class="px-3 py-2 border border-gray-300 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-50">2</button>
-                    <button
-                        class="px-3 py-2 border border-gray-300 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-50">3</button>
-                    <button
-                        class="px-3 py-2 border border-gray-300 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-50">
-                        <i class="bi bi-chevron-right"></i>
-                    </button>
+            @if($intervensi->count() > 0)
+                <div
+                    class="mt-6 flex flex-col sm:flex-row items-center justify-between gap-4 bg-white rounded-xl shadow-sm border border-gray-100 p-4">
+                    <p class="text-sm text-gray-600">Menampilkan <span class="font-semibold">1-6</span> dari <span
+                            class="font-semibold">24</span> siswa</p>
+                    <div class="flex gap-2">
+                        <button
+                            class="px-3 py-2 border border-gray-300 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+                            disabled>
+                            <i class="bi bi-chevron-left"></i>
+                        </button>
+                        <button class="px-3 py-2 bg-blue-600 text-white rounded-lg text-sm font-medium">1</button>
+                        <button
+                            class="px-3 py-2 border border-gray-300 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-50">2</button>
+                        <button
+                            class="px-3 py-2 border border-gray-300 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-50">3</button>
+                        <button
+                            class="px-3 py-2 border border-gray-300 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-50">
+                            <i class="bi bi-chevron-right"></i>
+                        </button>
+                    </div>
                 </div>
-            </div>
+            @endif
         </div>
     </div>
 @endsection
