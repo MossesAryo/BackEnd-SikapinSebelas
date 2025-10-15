@@ -122,7 +122,10 @@ class WalikelasController extends Controller
     public function destroy($nip_walikelas)
     {
         $walikelas = Walikelas::where('nip_walikelas', $nip_walikelas)->firstOrFail();
-
+        $user = User::where('username', $walikelas->username)->first();
+        if ($user) {
+            $user->delete();
+        }
         $walikelas->delete();
 
         return redirect()->route('walikelas.index')->with('success', 'Data Walikelas berhasil dihapus.');
