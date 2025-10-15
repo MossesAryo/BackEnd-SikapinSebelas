@@ -63,7 +63,13 @@
                     <table class="w-full">
                         <thead class="bg-gray-50 border-b border-gray-200">
                             <tr>
-
+                                <th
+                                    class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                                    <div class="flex items-center gap-2">
+                                        <i class="bi bi-person text-gray-400"></i>
+                                        No
+                                    </div>
+                                </th>
                                 <th
                                     class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
                                     <div class="flex items-center gap-2">
@@ -71,7 +77,6 @@
                                         Nama Siswa
                                     </div>
                                 </th>
-
                                 <th
                                     class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
                                     <div class="flex items-center gap-2">
@@ -123,7 +128,11 @@
                         <tbody class="bg-white divide-y divide-gray-100">
                             @forelse ($intervensi as $item)
                                 <tr class="hover:bg-gray-50 group">
-
+                                    
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="text-sm font-semibold text-gray-900">{{ $loop->iteration }}
+                                        </div>
+                                    </td>
                                     <td class="px-6 py-4 whitespace-nowrap">
                                         <div class="text-sm font-semibold text-gray-900">{{ $item->siswa->nama_siswa }}
                                         </div>

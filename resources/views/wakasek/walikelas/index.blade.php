@@ -75,6 +75,12 @@
                             <th class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
                                 <div class="flex items-center gap-2">
                                     <i class="bi bi-hash text-gray-400"></i>
+                                    No
+                                </div>
+                            </th>
+                            <th class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                                <div class="flex items-center gap-2">
+                                    <i class="bi bi-hash text-gray-400"></i>
                                     NIP
                                 </div>
                             </th>
@@ -103,7 +109,10 @@
 
                     <tbody class="bg-white divide-y divide-gray-100">
                         @forelse ($walikelas as $item)
-                            <tr class="hover:bg-gray-50 group">
+                            <tr class="hover:bg-gray-50 group">   
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <div class="text-sm font-semibold text-gray-900">{{ $loop->iteration }}</div>
+                                </td>                            
                                 <td class="px-6 py-4 whitespace-nowrap">
                                     <div class="flex items-center">
                                         <div

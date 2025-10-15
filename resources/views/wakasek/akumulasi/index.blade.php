@@ -86,6 +86,9 @@
                  <table class="w-full">
                      <thead class="bg-gray-50 border-b border-gray-200">
                          <tr>
+
+                             <th class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                                 No</th>
                              <th class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
                                  NIS</th>
                              <th class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
@@ -103,7 +106,8 @@
 
                      <tbody class="bg-white divide-y divide-gray-100">
                          @forelse ($siswa as $item)
-                             <tr class="hover:bg-gray-50 group">
+                         <tr class="hover:bg-gray-50 group">
+                                 <td class="px-6 py-4 whitespace-nowrap">{{ $loop->iteration }}</td>
                                  <td class="px-6 py-4 whitespace-nowrap">{{ $item->nis }}</td>
                                  <td class="px-6 py-4 whitespace-nowrap">{{ $item->nama_siswa }}</td>
                                  <td class="px-6 py-4 whitespace-nowrap">{{ $item->kelas->nama_kelas }}</td>
