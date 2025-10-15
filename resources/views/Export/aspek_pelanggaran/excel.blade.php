@@ -14,6 +14,7 @@
                 <tr>
                     <td>{{ $item->id_aspekpenilaian }}</td>
                     <td>{{ $item->jenis_poin }}</td>
+                    <td>{{ $item->pelanggaran_ke }}</td>
                     <td>{{ $item->kategori }}</td>
                     <td>{{ $item->uraian }}</td>
                     <td>{{ $item->indikator_poin }}</td>

@@ -5,7 +5,7 @@
                 <th>Kode</th>
                 <th>Tanggal Surat Peringatan</th>
                 <th>Level Surat Peringatan</th>
-                <th>Level Surat Peringatan</th>
+                <th>Uraian</th>
             </tr>
         </thead>
         <tbody>

@@ -17,17 +17,12 @@ class Aspek_Penghargaan_Import implements ToModel, WithHeadingRow
     
     public function model(array $row)
     {
-        // Filter: hanya import data dengan jenis_poin = Apresiasi
-        if (strtolower(trim($row['jenis_poin'])) !== 'apresiasi') {
-            return null;
-        }
 
         return new aspek_penilaian([
-            'id_aspekpenilaian' => $row['kode'],
-            'jenis_poin'        => $row['jenis_poin'],
-            'kategori'          => $row['kategori'],
-            'uraian'            => $row['uraian'],
-            'indikator_poin'    => $row['poin'],
+            'jenis_poin'        => 'pelanggaran', 
+            'kategori'          => $row['kategori'] ?? null,
+            'uraian'            => $row['uraian'] ?? null,
+            'indikator_poin'    => $row['poin'] ?? null,
         ]);
     }
 }
