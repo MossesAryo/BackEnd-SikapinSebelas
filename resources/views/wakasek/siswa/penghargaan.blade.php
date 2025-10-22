@@ -18,7 +18,7 @@
                         class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-transparent">
                         <option value="" disabled selected>Pilih Penghargaan</option>
                         @foreach ($penghargaan as $item)
-                            <option value="{{ $item->id_penghargaan }}">{{ $item->alasan }}</option>
+                            <option value="{{ $item->id_penghargaan }}">{{ $item->level_penghargaan }}</option>
                         @endforeach
                     </select>
                 </div>

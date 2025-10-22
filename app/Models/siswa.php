@@ -29,4 +29,16 @@ class siswa extends Model
     {
         return $this->belongsTo(aspek_penilaian::class, 'id_aspekpenilaian', 'id_aspekpenilaian');
     }
+    public function activitylog()
+    {
+        return $this->hasMany(ActivityLog::class, 'nis', 'nis');
+    }
+    public function siswaPenghargaan()
+    {
+        return $this->hasMany(siswa_penghargaan::class, 'nis', 'nis');
+    }
+    public function siswaSp()
+    {
+        return $this->hasMany(siswa_sp::class, 'nis', 'nis');
+    }
 }

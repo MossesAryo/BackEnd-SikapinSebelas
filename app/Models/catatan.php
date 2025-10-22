@@ -17,4 +17,8 @@ class catatan extends Model
     {
         return $this->belongsTo(wakasek::class, 'nip_wakasek', 'nip_wakasek');
     }
+    public function walikelas()
+    {
+        return $this->belongsTo(walikelas::class, 'nip_walikelas', 'nip_walikelas');
+    }
 }

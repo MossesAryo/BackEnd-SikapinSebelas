@@ -222,15 +222,23 @@
                             <span>Akumulasi</span>
                         </a>
                     </li>
-                    <li>
-                        <a href="{{ route('statusintervensi.index') }}"
-                            class="flex items-center gap-3 px-4 py-3 rounded-lg menu-link
-                       {{ request()->routeIs('statusintervensi.*') ? 'active-link' : 'text-gray-600 hover:bg-gray-50' }}">
-                            <i class="bi bi-clipboard-data"></i>
-                            <span>Status Intervensi</span>
-                        </a>
-                    </li>
                 @endif
+                <li>
+                    <a href="{{ route('statusintervensi.index') }}"
+                        class="flex items-center gap-3 px-4 py-3 rounded-lg menu-link
+                       {{ request()->routeIs('statusintervensi.*') ? 'active-link' : 'text-gray-600 hover:bg-gray-50' }}">
+                        <i class="bi bi-clipboard-data"></i>
+                        <span>Status Intervensi</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ route('catatan.index') }}"
+                        class="flex items-center gap-3 px-4 py-3 rounded-lg menu-link
+                       {{ request()->routeIs('catatan.*') ? 'active-link' : 'text-gray-600 hover:bg-gray-50' }}">
+                        <i class="bi bi-clipboard-check"></i>
+                        <span>Catatan</span>
+                    </a>
+                </li>
 
 
                 <li>

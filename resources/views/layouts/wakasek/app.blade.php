@@ -28,7 +28,7 @@
         </div>
     </div>
 
-    <script src="{{ asset('js/wakasek/app.js') }}"></script>
+   
     @stack('js')
 </body>
 </html>

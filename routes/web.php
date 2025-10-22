@@ -23,6 +23,7 @@ use App\Http\Controllers\SuratPeringatanController;
 use App\Http\Controllers\Skoring_PelanggaranController;
 use App\Http\Controllers\Skoring_PenghargaanController;
 use App\Http\Controllers\Auth\AuthController as AController;
+use App\Http\Controllers\listcatatanController;
 use App\Http\Controllers\NotifikasiWakasekController;
 use App\Http\Controllers\StatusIntervensiController;
 
@@ -172,10 +173,12 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/aspekpenilaian/store', [Aspek_penilaianController::class, 'store'])->name('aspekpenilaian.store');
     Route::put('/aspekpenilaian/{id}/update', [Aspek_penilaianController::class, 'update'])->name('aspekpenilaian.update');
     Route::delete('/aspekpenilaian/{id}/destroy', [Aspek_penilaianController::class, 'destroy'])->name('aspekpenilaian.destroy');
-   
+
     Route::get('/statusintervensi', [StatusIntervensiController::class, 'index'])->name('statusintervensi.index');
     Route::get('/statusintervensi/{id_intervensi}', [StatusIntervensiController::class, 'show'])->name('statusintervensi.show');
 
+    Route::get('/catatan', [listcatatanController::class, 'index'])->name('catatan.index');
+    Route::put('/catatan/{id}', [listcatatanController::class, 'update'])->name('catatan.update');
 
 
 

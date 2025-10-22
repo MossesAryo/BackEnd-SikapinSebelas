@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('activity_logs', function (Blueprint $table) {            
             $table->id();
             $table->unsignedBigInteger('user_id')->nullable();
-            $table->string('nis')->nullable();
+            $table->bigInteger('nis')->nullable();
             $table->enum('kategori', ['Apresiasi', 'Pelanggaran']);
             $table->string('activity');
             $table->text('description')->nullable();
@@ -22,6 +22,7 @@ return new class extends Migration
             $table->timestamps();
 
             $table->foreign('user_id')->references('id')->on('users')->onDelete('set null');
+            $table->foreign('nis')->references('nis')->on('siswa')->onDelete('set null');
         });
     }
 

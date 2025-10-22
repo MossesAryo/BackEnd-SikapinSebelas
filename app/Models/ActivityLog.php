@@ -6,13 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class ActivityLog extends Model
 {
-    protected $fillable = [
-        'id',
-        'user_id',
-        'nis',
-        'activity',
-        'description',
-        'point',
+    protected $guarded = [
+        'id'
     ];
 
     public function user()
