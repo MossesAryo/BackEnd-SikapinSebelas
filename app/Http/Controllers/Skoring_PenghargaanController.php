@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\kelas;
 use App\Models\siswa;
 use App\Models\penilaian;
 use Illuminate\Http\Request;
@@ -14,19 +15,44 @@ class Skoring_PenghargaanController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+   public function index(Request $request)
     {
+        $query = penilaian::whereHas('aspek_penilaian', function ($q) {
+            $q->where('jenis_poin', 'Apresiasi');
+        });
+
+        // Filter berdasarkan kelas
+        if ($request->filled('kelas')) {
+            $query->whereHas('siswa', function ($q) use ($request) {
+                $q->where('id_kelas', $request->kelas);
+            });
+        }
+
+        // Filter berdasarkan tanggal mulai
+        if ($request->filled('tanggal_mulai')) {
+            $query->whereDate('created_at', '>=', $request->tanggal_mulai);
+        }
+
+        // Filter berdasarkan tanggal akhir
+        if ($request->filled('tanggal_akhir')) {
+            $query->whereDate('created_at', '<=', $request->tanggal_akhir);
+        }
+
+        // Filter berdasarkan jenis penghargaan
+        if ($request->filled('jenis_penghargaan')) {
+            $query->where('id_aspekpenilaian', $request->jenis_penghargaan);
+        }
+
+        // Sorting berdasarkan tanggal terbaru
+        $query->latest();
+
         return view('wakasek.skoring.penghargaan.index', [
-            
-            "penilaian"   => penilaian::whereHas('aspek_penilaian', function ($q) {
-                $q->where('jenis_poin', 'Apresiasi');
-            })->paginate(10),
-            "siswa"       => siswa::all(),
-            // Kirim dengan nama aspekPel agar view tidak error
-            "aspekPel"    => aspek_penilaian::where('jenis_poin', 'Apresiasi')->get()
+            "penilaian" => $query->paginate(10)->withQueryString(),
+            "siswa"     => siswa::all(),
+            "aspekPel"  => aspek_penilaian::where('jenis_poin', 'Apresiasi')->get(),
+            "kelas"     => kelas::all(),
         ]);
     }
-
     /**
      * Store a newly created resource in storage.
      */

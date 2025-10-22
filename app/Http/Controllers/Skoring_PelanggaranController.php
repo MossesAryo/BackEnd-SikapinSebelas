@@ -17,26 +17,45 @@ class Skoring_PelanggaranController extends Controller
      */
     public function index(Request $request)
     {
+        $query = penilaian::whereHas('aspek_penilaian', function ($q) {
+            $q->where('jenis_poin', 'Pelanggaran');
+        });
 
+      
+        if ($request->filled('kelas')) {
+            $query->whereHas('siswa', function ($q) use ($request) {
+                $q->where('id_kelas', $request->kelas);
+            });
+        }
 
+ 
+        if ($request->filled('tanggal_mulai')) {
+            $query->whereDate('created_at', '>=', $request->tanggal_mulai);
+        }
+
+    
+        if ($request->filled('tanggal_akhir')) {
+            $query->whereDate('created_at', '<=', $request->tanggal_akhir);
+        }
+
+        if ($request->filled('jenis_pelanggaran')) {
+            $query->where('id_aspekpenilaian', $request->jenis_pelanggaran);
+        }
 
         return view('wakasek.skoring.pelanggaran.index', [
-            "penilaian" => penilaian::whereHas('aspek_penilaian', function ($q) {
-                $q->where('jenis_poin', 'Pelanggaran');
-            })->paginate(10),
-            "siswa"    => siswa::all(),
-            "aspekPel" => aspek_penilaian::where('jenis_poin', 'Pelanggaran')->get(),
-
+            "penilaian" => $query->latest()->paginate(10)->withQueryString(),
+            "siswa"     => siswa::all(),
+            "aspekPel"  => aspek_penilaian::where('jenis_poin', 'Pelanggaran')->get(),
+            "kelas"     => kelas::all(),
         ]);
     }
-
     /**
      * Store a newly created resource in storage.
      */
     public function store(Request $request)
     {
         $request->validate([
-            
+
             'nis'               => 'required',
             'id_aspekpenilaian' => 'required',
         ]);
@@ -48,7 +67,7 @@ class Skoring_PelanggaranController extends Controller
 
         // Simpan penilaian
         penilaian::create([
-            
+
             'nis'               => $request->nis,
             'id_aspekpenilaian' => $request->id_aspekpenilaian,
 
@@ -87,7 +106,7 @@ class Skoring_PelanggaranController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    
+
 
     /**
      * Remove the specified resource from storage.

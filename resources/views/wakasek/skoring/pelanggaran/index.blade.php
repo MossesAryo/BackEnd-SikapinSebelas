@@ -61,24 +61,69 @@
 
         <!-- Search and Filter -->
         <div class="bg-white p-6 rounded-xl shadow-sm border">
-            <div class="flex flex-col md:flex-row gap-2 items-center justify-between">
-                <div id="searchPelanggaran" class="relative w-full md:w-64">
-                    <i class="bi bi-search absolute left-3 top-2.5 text-gray-400"></i>
-                    <input type="text" placeholder="Cari Ketua Program..."
-                        class="pl-10 pr-4 py-1.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent w-full">
+            <form method="GET" action="{{ route('skoring_pelanggaran.index') }}">
+                <div class="flex flex-col md:flex-row gap-2 items-center justify-between">
+                    <div id="searchPelanggaran" class="relative w-full md:w-64">
+                        <i class="bi bi-search absolute left-3 top-2.5 text-gray-400"></i>
+                        <input type="text" placeholder="Cari Nama Siswa..."
+                            class="pl-10 pr-4 py-1.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent w-full">
+                    </div>
+                    <div class="flex gap-2">
+                        <button type="button" onclick="openFilterModal()"
+                            class="px-3 py-1.5 border border-gray-300 rounded-lg hover:bg-gray-50 flex items-center gap-1.5">
+                            <i class="bi bi-funnel"></i> Filter
+                            @if(request()->hasAny(['kelas', 'tanggal_mulai', 'tanggal_akhir', 'jenis_pelanggaran']))
+                                <span class="ml-1 bg-blue-600 text-white text-xs rounded-full px-2 py-0.5">●</span>
+                            @endif
+                        </button>
+                        <a href="{{ route('laporan.index') }}"
+                            class="px-3 py-1.5 border border-gray-300 rounded-lg hover:bg-gray-50 flex items-center gap-1.5">
+                            <i class="bi bi-download"></i> Export
+                        </a>
+                    </div>
                 </div>
-                <div class="flex gap-2">
-                    <button
-                        class="px-3 py-1.5 border border-gray-300 rounded-lg hover:bg-gray-50 flex items-center gap-1.5">
-                        <i class="bi bi-funnel"></i> Filter
-                    </button>
-                    <a href="{{ route('laporan.index') }}"
-                        class="px-3 py-1.5 border border-gray-300 rounded-lg hover:bg-gray-50 flex items-center gap-1.5">
-                        <i class="bi bi-download"></i> Export
-                    </a>
 
-                </div>
-            </div>
+                <!-- Active Filters Display -->
+                @if(request()->hasAny(['kelas', 'tanggal_mulai', 'tanggal_akhir', 'jenis_pelanggaran']))
+                    <div class="mt-3 flex flex-wrap gap-2">
+                        @if(request('kelas'))
+                            <span class="inline-flex items-center gap-1 bg-blue-100 text-blue-800 text-sm px-3 py-1 rounded-full">
+                                Kelas: {{ $kelas->find(request('kelas'))->nama_kelas ?? 'N/A' }}
+                                <a href="{{ route('skoring_pelanggaran.index', array_filter(request()->except('kelas'))) }}" class="hover:text-blue-900">
+                                    <i class="bi bi-x"></i>
+                                </a>
+                            </span>
+                        @endif
+                        @if(request('tanggal_mulai'))
+                            <span class="inline-flex items-center gap-1 bg-blue-100 text-blue-800 text-sm px-3 py-1 rounded-full">
+                                Dari: {{ date('d M Y', strtotime(request('tanggal_mulai'))) }}
+                                <a href="{{ route('skoring_pelanggaran.index', array_filter(request()->except('tanggal_mulai'))) }}" class="hover:text-blue-900">
+                                    <i class="bi bi-x"></i>
+                                </a>
+                            </span>
+                        @endif
+                        @if(request('tanggal_akhir'))
+                            <span class="inline-flex items-center gap-1 bg-blue-100 text-blue-800 text-sm px-3 py-1 rounded-full">
+                                Sampai: {{ date('d M Y', strtotime(request('tanggal_akhir'))) }}
+                                <a href="{{ route('skoring_pelanggaran.index', array_filter(request()->except('tanggal_akhir'))) }}" class="hover:text-blue-900">
+                                    <i class="bi bi-x"></i>
+                                </a>
+                            </span>
+                        @endif
+                        @if(request('jenis_pelanggaran'))
+                            <span class="inline-flex items-center gap-1 bg-blue-100 text-blue-800 text-sm px-3 py-1 rounded-full">
+                                Jenis: {{ $aspekPel->find(request('jenis_pelanggaran'))->uraian ?? 'N/A' }}
+                                <a href="{{ route('skoring_pelanggaran.index', array_filter(request()->except('jenis_pelanggaran'))) }}" class="hover:text-blue-900">
+                                    <i class="bi bi-x"></i>
+                                </a>
+                            </span>
+                        @endif
+                        <a href="{{ route('skoring_pelanggaran.index') }}" class="text-sm text-red-600 hover:text-red-800 px-2 py-1">
+                            Hapus Semua Filter
+                        </a>
+                    </div>
+                @endif
+            </form>
         </div>
 
         <!-- Data Table -->
@@ -127,24 +172,6 @@
                                     Skor
                                 </div>
                             </th>
-                            {{-- <th class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                                <div class="flex items-center gap-2">
-                                    <i class="bi bi-shield-check text-gray-400"></i>
-                                    Penanganan Pelanggaran
-                                </div>
-                            </th>
-                            <th class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                                <div class="flex items-center gap-2">
-                                    <i class="bi bi-shield-check text-gray-400"></i>
-                                  Kesepakatan waktu perbaikan
-                                </div>
-                            </th>
-                            <th class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                                <div class="flex items-center gap-2">
-                                    <i class="bi bi-shield-check text-gray-400"></i>
-                                Perubahan setelah Penanganan
-                                </div>
-                            </th> --}}
                             <th class="px-5 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
                                 <div class="flex items-center gap-2">
                                     <i class="bi bi-gear text-gray-400"></i>
@@ -157,14 +184,12 @@
                     <tbody class="bg-white divide-y divide-gray-100">
                         @forelse ($penilaian as $item)
                             <tr>
-                                <td class="px-6 py-4 text-sm text-gray-900">{{ $loop->iteration }}</td>
+                                <td class="px-6 py-4 text-sm text-gray-900">{{ $loop->iteration + ($penilaian->currentPage() - 1) * $penilaian->perPage() }}</td>
                                 <td class="px-6 py-4 text-sm text-gray-900">{{ $item->siswa->nis ?? '-' }}</td>
                                 <td class="px-6 py-4 text-sm text-gray-900">{{ $item->siswa->nama_siswa ?? '-' }}</td>
                                 <td class="px-6 py-4 text-sm text-gray-900">{{ $item->created_at }}</td>
-                                <td class="px-6 py-4 text-sm text-gray-900">{{ $item->aspek_penilaian->uraian ?? '-' }}
-                                </td>
-                                <td class="px-6 py-4 text-sm text-gray-900">
-                                    {{ $item->aspek_penilaian->indikator_poin ?? 0 }}</td>
+                                <td class="px-6 py-4 text-sm text-gray-900">{{ $item->aspek_penilaian->uraian ?? '-' }}</td>
+                                <td class="px-6 py-4 text-sm text-gray-900">{{ $item->aspek_penilaian->indikator_poin ?? 0 }}</td>
                                 <td class="px-6 py-4 text-sm">
                                     <div class="flex gap-2">
                                         <button
@@ -172,19 +197,16 @@
                                             class="text-red-600 hover:text-red-800 action-btn">
                                             <i class="bi bi-trash"></i>
                                         </button>
-
                                     </div>
                                 </td>
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="6" class="px-6 py-12 text-center">
-                                    <div
-                                        class="mx-auto w-24 h-24 bg-gray-100 rounded-full flex items-center justify-center mb-4">
+                                <td colspan="7" class="px-6 py-12 text-center">
+                                    <div class="mx-auto w-24 h-24 bg-gray-100 rounded-full flex items-center justify-center mb-4">
                                         <i class="bi bi-people text-3xl text-gray-400"></i>
                                     </div>
-                                    <h3 class="text-lg font-medium text-gray-900 mb-2">Belum ada data Skoring Pelanggaran
-                                    </h3>
+                                    <h3 class="text-lg font-medium text-gray-900 mb-2">Belum ada data Skoring Pelanggaran</h3>
                                     <p class="text-gray-500">Tambahkan data Pelanggaran untuk memulai.</p>
                                 </td>
                             </tr>
@@ -192,14 +214,82 @@
                     </tbody>
                 </table>
             </div>
+            
             <!-- PAGINATION -->
             <div class="px-6 py-4 border-t border-gray-200 bg-white">
                 @include('layouts.wakasek.pagination', ['data' => $penilaian])
             </div>
         </div>
     </div>
-    @include('wakasek.skoring.pelanggaran.create')
 
+    <!-- Filter Modal -->
+    <div id="modal-filter" class="hidden fixed inset-0 bg-black bg-opacity-50 modal-overlay flex items-center justify-center p-4 z-50">
+        <div class="bg-white rounded-xl shadow-xl max-w-md w-full">
+            <div class="px-6 py-4 border-b border-gray-200">
+                <div class="flex items-center justify-between">
+                    <h3 class="text-lg font-semibold text-gray-900">Filter Data</h3>
+                    <button onclick="closeModal('modal-filter')" class="text-gray-400 hover:text-gray-600">
+                        <i class="bi bi-x-lg"></i>
+                    </button>
+                </div>
+            </div>
+            <form method="GET" action="{{ route('skoring_pelanggaran.index') }}">
+                <div class="px-6 py-4 space-y-4">
+                    <!-- Filter Kelas -->
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Kelas</label>
+                        <select name="kelas" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                            <option value="">Semua Kelas</option>
+                            @foreach($kelas as $k)
+                                <option value="{{ $k->id_kelas }}" {{ request('kelas') == $k->id_kelas ? 'selected' : '' }}>
+                                    {{ $k->nama_kelas }}
+                                </option>
+                            @endforeach
+                        </select>
+                    </div>
+
+                    <!-- Filter Jenis Pelanggaran -->
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Jenis Pelanggaran</label>
+                        <select name="jenis_pelanggaran" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                            <option value="">Semua Jenis</option>
+                            @foreach($aspekPel as $aspek)
+                                <option value="{{ $aspek->id_aspekpenilaian }}" {{ request('jenis_pelanggaran') == $aspek->id_aspekpenilaian ? 'selected' : '' }}>
+                                    {{ $aspek->uraian }} ({{ $aspek->indikator_poin }} poin)
+                                </option>
+                            @endforeach
+                        </select>
+                    </div>
+
+                    <!-- Filter Tanggal -->
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Tanggal Mulai</label>
+                        <input type="date" name="tanggal_mulai" value="{{ request('tanggal_mulai') }}"
+                            class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Tanggal Akhir</label>
+                        <input type="date" name="tanggal_akhir" value="{{ request('tanggal_akhir') }}"
+                            class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                    </div>
+                </div>
+
+                <div class="px-6 py-4 border-t border-gray-200 flex gap-3 justify-end">
+                    <a href="{{ route('skoring_pelanggaran.index') }}"
+                        class="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors">
+                        Reset
+                    </a>
+                    <button type="submit"
+                        class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors">
+                        Terapkan Filter
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    @include('wakasek.skoring.pelanggaran.create')
     @include('wakasek.skoring.pelanggaran.delete')
 @endsection
 
@@ -216,19 +306,12 @@
         }
 
         function openCreateModal() {
-
             openModal('modal-create');
         }
 
-        function openEditModal(id_penghargaan, tanggal_penghargaan, level_penghargaan, alasan) {
-            document.getElementById('edit_id_penghargaan').value = id_penghargaan;
-            document.getElementById('edit_tanggal_penghargaan').value = tanggal_penghargaan;
-            document.getElementById('edit_level_penghargaan').value = level_penghargaan;
-            document.getElementById('edit_alasan').value = alasan;
-            document.getElementById('form-edit').action = `/penghargaan/${id_penghargaan}/update`;
-            openModal('modal-edit');
+        function openFilterModal() {
+            openModal('modal-filter');
         }
-
 
         function openDeleteModalPelanggaran(id_pelanggaran, nama) {
             document.getElementById('delete-pelanggaran').innerText = nama;
@@ -236,18 +319,9 @@
             openModal('modal-delete-pelanggaran');
         }
 
-        document.addEventListener('click', function(event) {
-            ['modal-create', 'modal-edit', 'modal-delete-pelanggaran'].forEach(modalId => {
-                const modal = document.getElementById(modalId);
-                if (modal && !modal.classList.contains('hidden') && event.target === modal) {
-                    closeModal(modalId);
-                }
-            });
-        });
-
         document.addEventListener('keydown', function(event) {
             if (event.key === 'Escape') {
-                ['modal-create', 'modal-edit', 'modal-delete-pelanggaran'].forEach(modalId => {
+                ['modal-create', 'modal-filter', 'modal-delete-pelanggaran'].forEach(modalId => {
                     const modal = document.getElementById(modalId);
                     if (modal && !modal.classList.contains('hidden')) {
                         closeModal(modalId);
@@ -255,6 +329,7 @@
                 });
             }
         });
+
         document.addEventListener("DOMContentLoaded", function() {
             const searchInput = document.querySelector("#searchPelanggaran input");
             const tableRows = document.querySelectorAll("tbody tr");
@@ -263,7 +338,6 @@
                 const searchText = this.value.toLowerCase();
 
                 tableRows.forEach(row => {
-
                     if (row.querySelector("td[colspan]")) {
                         row.style.display = searchText === "" ? "" : "none";
                         return;
