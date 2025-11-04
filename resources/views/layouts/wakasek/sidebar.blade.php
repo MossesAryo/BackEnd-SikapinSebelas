@@ -133,56 +133,41 @@
                         </div>
                     </li>
                 @endif
-
-                <!-- FAQ Dropdown -->
                 <li>
-                    <button onclick="toggleDropdown('faqDropdown','faqArrow')"
-                        class="flex items-center justify-between w-full px-4 py-3 text-gray-600 hover:bg-gray-50 rounded-lg">
-                        <div class="flex items-center gap-3">
-                            <i class="bi bi-info-circle"></i>
-                            <span>FAQ</span>
-                        </div>
-                        <i class="bi bi-chevron-down dropdown-arrow text-sm" id="faqArrow"></i>
-                    </button>
-                    <div id="faqDropdown"
-                        class="dropdown-content ml-4 mt-1
-                        {{ request()->routeIs('penghargaan.*') || request()->routeIs('peringatan.*') || request()->routeIs('aspek_penghargaan.*') || request()->routeIs('aspek_pelanggaran.*') ? 'show' : '' }}">
-                        <ul class="space-y-1">
-                            <li>
-                                <a href="{{ route('penghargaan.index') }}"
-                                    class="flex items-center gap-3 px-4 py-2 text-sm rounded-lg menu-link
+                    <a href="{{ route('penghargaan.index') }}"
+                        class="flex items-center gap-3 px-4 py-2  rounded-lg menu-link
                                    {{ request()->routeIs('penghargaan.*') ? 'active-link' : 'text-gray-600 hover:bg-gray-50' }}">
-                                    <i class="bi bi-trophy"></i>
-                                    <span>Penghargaan</span>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="{{ route('peringatan.index') }}"
-                                    class="flex items-center gap-3 px-4 py-2 text-sm rounded-lg menu-link
-                                   {{ request()->routeIs('peringatan.*') ? 'active-link' : 'text-gray-600 hover:bg-gray-50' }}">
-                                    <i class="bi bi-shield-exclamation"></i>
-                                    <span>Pelanggaran</span>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="{{ route('aspek_penghargaan.index') }}"
-                                    class="flex items-center gap-3 px-4 py-2 text-sm rounded-lg menu-link
-                                   {{ request()->routeIs('aspek_penghargaan.*') ? 'active-link' : 'text-gray-600 hover:bg-gray-50' }}">
-                                    <i class="bi bi-star-fill"></i>
-                                    <span>Aspek Penghargaan</span>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="{{ route('aspek_pelanggaran.index') }}"
-                                    class="flex items-center gap-3 px-4 py-2 text-sm rounded-lg menu-link
-                                   {{ request()->routeIs('aspek_pelanggaran.*') ? 'active-link' : 'text-gray-600 hover:bg-gray-50' }}">
-                                    <i class="bi bi-x-octagon"></i>
-                                    <span>Aspek Pelanggaran</span>
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
+                        <i class="bi bi-trophy"></i>
+                        <span>Penghargaan</span>
+                    </a>
                 </li>
+                <li>
+                    <a href="{{ route('peringatan.index') }}"
+                        class="flex items-center gap-3 px-4 py-2  rounded-lg menu-link
+                                   {{ request()->routeIs('peringatan.*') ? 'active-link' : 'text-gray-600 hover:bg-gray-50' }}">
+                        <i class="bi bi-shield-exclamation"></i>
+                        <span>Pelanggaran</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ route('aspek_penghargaan.index') }}"
+                        class="flex items-center gap-3 px-4 py-2  rounded-lg menu-link
+                                   {{ request()->routeIs('aspek_penghargaan.*') ? 'active-link' : 'text-gray-600 hover:bg-gray-50' }}">
+                        <i class="bi bi-star-fill"></i>
+                        <span>Aspek Penghargaan</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ route('aspek_pelanggaran.index') }}"
+                        class="flex items-center gap-3 px-4 py-2  rounded-lg menu-link
+                                   {{ request()->routeIs('aspek_pelanggaran.*') ? 'active-link' : 'text-gray-600 hover:bg-gray-50' }}">
+                        <i class="bi bi-x-octagon"></i>
+                        <span>Aspek Pelanggaran</span>
+                    </a>
+                </li>
+
+
+
 
                 <!-- Skoring Penghargaan -->
                 <li>
@@ -201,34 +186,31 @@
                         <span>Skoring Pelanggaran</span>
                     </a>
                 </li>
-
-                @if (auth()->user()->role == 2)
-                    <!-- Intervensi -->
-                    <li>
-                        <a href="{{ route('intervensi.index') }}"
-                            class="flex items-center gap-3 px-4 py-3 rounded-lg menu-link
-                       {{ request()->routeIs('intervensi.*') ? 'active-link' : 'text-gray-600 hover:bg-gray-50' }}">
-                            <i class="bi bi-life-preserver"></i>
-                            <span>Intervensi</span>
-                        </a>
-                    </li>
-                @endif
+                
                 @if (auth()->user()->role == 1)
-                    <li>
-                        <a href="{{ route('akumulasi.index') }}"
-                            class="flex items-center gap-3 px-4 py-3 rounded-lg menu-link
-                       {{ request()->routeIs('akumulasi.*') ? 'active-link' : 'text-gray-600 hover:bg-gray-50' }}">
-                            <i class="bi bi-graph-up"></i>
-                            <span>Akumulasi</span>
-                        </a>
-                    </li>
+                <li>
+                    <a href="{{ route('akumulasi.index') }}"
+                    class="flex items-center gap-3 px-4 py-3 rounded-lg menu-link
+                    {{ request()->routeIs('akumulasi.*') ? 'active-link' : 'text-gray-600 hover:bg-gray-50' }}">
+                    <i class="bi bi-graph-up"></i>
+                    <span>Akumulasi</span>
+                </a>
+            </li>
+            <li>
+                <a href="{{ route('intervensi.index') }}"
+                    class="flex items-center gap-3 px-4 py-3 rounded-lg menu-link
+                   {{ request()->routeIs('intervensi.*') ? 'active-link' : 'text-gray-600 hover:bg-gray-50' }}">
+                    <i class="bi bi-life-preserver"></i>
+                    <span>Penanganan</span>
+                </a>
+            </li>
                 @endif
                 <li>
                     <a href="{{ route('statusintervensi.index') }}"
                         class="flex items-center gap-3 px-4 py-3 rounded-lg menu-link
                        {{ request()->routeIs('statusintervensi.*') ? 'active-link' : 'text-gray-600 hover:bg-gray-50' }}">
                         <i class="bi bi-clipboard-data"></i>
-                        <span>Status Intervensi</span>
+                        <span>Status Penanganan</span>
                     </a>
                 </li>
                 <li>

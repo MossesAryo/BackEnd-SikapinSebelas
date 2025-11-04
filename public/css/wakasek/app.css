@@ -28,3 +28,83 @@
         .stat-card:hover::before {
             transform: scaleX(1);
         }
+       
+/* 🌈 Tampilan utama Select2 */
+.select2-container--default .select2-selection--single {
+    height: 46px !important;
+    border: 1px solid #d1d5db; /* gray-300 */
+    border-radius: 0.75rem; /* rounded-xl */
+    background-color: #f9fafb; /* soft gray background */
+    padding: 8px 12px;
+    transition: all 0.25s ease;
+    display: flex;
+    align-items: center;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+}
+
+/* Fokus: glowing biru */
+.select2-container--default.select2-container--focus .select2-selection--single {
+    border-color: #2563eb; /* blue-600 */
+    box-shadow: 0 0 0 3px rgba(37,99,235,0.25);
+    background-color: #ffffff;
+}
+
+/* 🔤 Teks di dalam */
+.select2-container--default .select2-selection--single .select2-selection__rendered {
+    color: #111827; /* gray-900 */
+    font-size: 0.95rem;
+    font-weight: 500;
+}
+
+/* Panah dropdown */
+.select2-container--default .select2-selection--single .select2-selection__arrow {
+    height: 100%;
+    right: 12px;
+}
+
+/* 🔍 Input search di dropdown */
+.select2-container--default .select2-search--dropdown .select2-search__field {
+    border: 1px solid #d1d5db;
+    border-radius: 0.5rem;
+    padding: 8px 10px;
+    outline: none;
+    font-size: 0.9rem;
+    transition: all 0.2s ease;
+}
+.select2-container--default .select2-search--dropdown .select2-search__field:focus {
+    border-color: #2563eb;
+    box-shadow: 0 0 0 2px rgba(37,99,235,0.2);
+}
+
+/* 🌙 Dropdown list */
+.select2-dropdown {
+    border-radius: 0.75rem;
+    border: 1px solid #e5e7eb;
+    overflow: hidden;
+    box-shadow: 0 6px 15px rgba(0,0,0,0.1);
+    animation: dropdownFade 0.15s ease;
+}
+
+/* Hover item */
+.select2-results__option--highlighted {
+    background-color: #2563eb !important; /* blue-600 */
+    color: white !important;
+    font-weight: 500;
+}
+
+/* Scrollbar halus */
+.select2-results__options::-webkit-scrollbar {
+    width: 6px;
+}
+.select2-results__options::-webkit-scrollbar-thumb {
+    background: #9ca3af;
+    border-radius: 9999px;
+}
+
+/* 🔥 Animasi lembut */
+@keyframes dropdownFade {
+    from { opacity: 0; transform: translateY(-4px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+

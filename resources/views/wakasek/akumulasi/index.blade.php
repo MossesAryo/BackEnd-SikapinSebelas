@@ -38,22 +38,22 @@
          </div>
 
          @if (session('success'))
-            <div class="bg-green-50 border border-green-200 text-green-800 px-4 py-3 rounded-lg">
-                <p class="text-sm font-semibold flex items-center gap-2">
-                    <i class="bi bi-check-circle-fill text-green-600"></i>
-                    {{ session('success') }}
-                </p>
-            </div>
-        @endif
+             <div class="bg-green-50 border border-green-200 text-green-800 px-4 py-3 rounded-lg">
+                 <p class="text-sm font-semibold flex items-center gap-2">
+                     <i class="bi bi-check-circle-fill text-green-600"></i>
+                     {{ session('success') }}
+                 </p>
+             </div>
+         @endif
 
-        @if (session('error'))
-            <div class="bg-red-50 border border-red-200 text-red-800 px-4 py-3 rounded-lg">
-                <p class="text-sm font-semibold flex items-center gap-2">
-                    <i class="bi bi-exclamation-triangle-fill text-red-600"></i>
-                    {{ session('error') }}
-                </p>
-            </div>
-        @endif
+         @if (session('error'))
+             <div class="bg-red-50 border border-red-200 text-red-800 px-4 py-3 rounded-lg">
+                 <p class="text-sm font-semibold flex items-center gap-2">
+                     <i class="bi bi-exclamation-triangle-fill text-red-600"></i>
+                     {{ session('error') }}
+                 </p>
+             </div>
+         @endif
 
          <!-- Search and Filter -->
          <div class="bg-white p-6 rounded-xl shadow-sm border">
@@ -106,7 +106,7 @@
 
                      <tbody class="bg-white divide-y divide-gray-100">
                          @forelse ($siswa as $item)
-                         <tr class="hover:bg-gray-50 group">
+                             <tr class="hover:bg-gray-50 group">
                                  <td class="px-6 py-4 whitespace-nowrap">{{ $loop->iteration }}</td>
                                  <td class="px-6 py-4 whitespace-nowrap">{{ $item->nis }}</td>
                                  <td class="px-6 py-4 whitespace-nowrap">{{ $item->nama_siswa }}</td>
@@ -134,7 +134,7 @@
 
      </div>
      @include('wakasek.akumulasi.filter')
-        @include('wakasek.akumulasi.modalExportImport')
+     @include('wakasek.akumulasi.modalExportImport')
  @endsection
 
  @push('js')
@@ -162,7 +162,7 @@
 
          // Event listeners
          document.addEventListener('click', function(event) {
-             ['modal-filter','exportImportModal'].forEach(modalId => {
+             ['modal-filter', 'exportImportModal'].forEach(modalId => {
                  const modal = document.getElementById(modalId);
                  if (modal && !modal.classList.contains('hidden') && event.target === modal) {
                      closeModal(modalId);
@@ -172,7 +172,7 @@
 
          document.addEventListener('keydown', function(event) {
              if (event.key === 'Escape') {
-                 ['modal-filter','exportImportModal'].forEach(modalId => {
+                 ['modal-filter', 'exportImportModal'].forEach(modalId => {
                      const modal = document.getElementById(modalId);
                      if (modal && !modal.classList.contains('hidden')) {
                          closeModal(modalId);
@@ -180,6 +180,62 @@
                  });
              }
          });
+
+         document.addEventListener("DOMContentLoaded", () => {
+             const table = document.querySelector("table");
+             const headers = table.querySelectorAll("th");
+             const tbody = table.querySelector("tbody");
+
+             headers.forEach((header, index) => {
+                 header.classList.add("cursor-pointer", "select-none");
+                 header.innerHTML += ` <i class="bi bi-chevron-expand opacity-50 text-xs ml-1"></i>`;
+
+                 header.addEventListener("click", () => {
+                     const rows = Array.from(tbody.querySelectorAll("tr"))
+                         .filter(row => row.querySelectorAll("td").length > 0);
+
+                     // Detect numeric or text column
+                     const firstValue = rows[0]?.querySelectorAll("td")[index]?.innerText.trim() ||
+                         "";
+                     const isNumeric = !isNaN(parseFloat(firstValue.replace(",", ".")));
+
+                     // Toggle sort direction
+                     const currentSort = header.dataset.sort || (isNumeric ? "desc" : "asc");
+                     const newSort = currentSort === "asc" ? "desc" : "asc";
+
+                     headers.forEach(h => {
+                         h.dataset.sort = "";
+                         h.querySelector("i").className =
+                             "bi bi-chevron-expand opacity-50 text-xs ml-1";
+                     });
+
+                     header.dataset.sort = newSort;
+                     header.querySelector("i").className =
+                         newSort === "asc" ?
+                         "bi bi-chevron-up text-blue-600 text-xs ml-1" :
+                         "bi bi-chevron-down text-blue-600 text-xs ml-1";
+
+                     // Sort logic
+                     const sortedRows = rows.sort((a, b) => {
+                         const aText = a.querySelectorAll("td")[index].innerText.trim();
+                         const bText = b.querySelectorAll("td")[index].innerText.trim();
+
+                         if (isNumeric) {
+                             const aNum = parseFloat(aText.replace(",", ".")) || 0;
+                             const bNum = parseFloat(bText.replace(",", ".")) || 0;
+                             return newSort === "asc" ? aNum - bNum : bNum - aNum;
+                         } else {
+                             return newSort === "asc" ?
+                                 aText.localeCompare(bText) :
+                                 bText.localeCompare(aText);
+                         }
+                     });
+
+                     // Rebuild tbody
+                     tbody.innerHTML = "";
+                     sortedRows.forEach(row => tbody.appendChild(row));
+                 });
+             });
+         });
      </script>
  @endpush
-

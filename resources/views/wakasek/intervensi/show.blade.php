@@ -10,8 +10,8 @@
         <!-- Header -->
 <div class="bg-gradient-to-r from-blue-600 to-blue-500 text-white rounded-xl shadow-lg p-6 mb-6 flex justify-between items-center">
     <div>
-        <h1 class="text-2xl font-bold">Detail Intervensi</h1>
-        <p class="text-sm text-blue-100">Informasi lengkap mengenai intervensi siswa</p>
+        <h1 class="text-2xl font-bold">Detail Penanganan</h1>
+        <p class="text-sm text-blue-100">Informasi lengkap mengenai Penanganan siswa</p>
     </div>
 
     <!-- Tombol Edit (pakai modal) -->

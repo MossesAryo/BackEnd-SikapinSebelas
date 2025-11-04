@@ -44,6 +44,8 @@ class IntervensiController extends Controller
         intervensi::create([
             'nis' => $request->nis,
             'nip_bk'=> $user->gurubk->nip_bk ?? null,
+            'nip_walikelas'=> $user->walikelas->nip_walikelas ?? null,
+            'nip_wakasek'=> $user->wakasek->nip_wakasek ?? null,
             'nama_intervensi' => $request->nama_intervensi,
             'isi_intervensi' => $request->isi_intervensi,
             'tanggal_Mulai_Perbaikan' => $request->tanggal_Mulai_Perbaikan,

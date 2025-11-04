@@ -8,7 +8,7 @@
             <!-- Header -->
             <div class="bg-gradient-to-r from-blue-600 to-blue-700 px-4 py-5 sm:px-6 lg:px-8 flex justify-between items-center">
                 <div>
-                    <h3 class="text-2xl font-bold text-white">Status Intervensi</h3>
+                    <h3 class="text-2xl font-bold text-white">Status Penanganan</h3>
                     <p class="text-blue-100 text-sm">Tracking progress siswa</p>
                 </div>
                 <div class="flex items-center gap-2">
@@ -58,8 +58,8 @@
                         @else bg-gray-50 border-gray-200 opacity-70 @endif">
                         <div class="flex justify-between items-start mb-2">
                             <div>
-                                <p class="font-bold text-green-700">Intervensi Dibuat</p>
-                                <p class="text-gray-600 text-sm mt-1">Data intervensi telah ditambahkan</p>
+                                <p class="font-bold text-green-700">Penanganan Dibuat</p>
+                                <p class="text-gray-600 text-sm mt-1">Data Penanganan telah ditambahkan</p>
                             </div>
                             @if($step === 'done')
                                 <span class="bg-green-500 text-white text-xs px-3 py-1 rounded-full">Selesai</span>

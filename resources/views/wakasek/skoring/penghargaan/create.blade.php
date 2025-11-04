@@ -60,5 +60,18 @@
         let skor = select.options[select.selectedIndex].dataset.skor;
         document.getElementById('skor').value = skor;
     }
-    
+     setTimeout(() => {
+        $('#nis').select2({
+            dropdownParent: $('#modal-create'),
+            placeholder: "Cari atau pilih siswa...",
+            allowClear: true,
+            width: '100%'
+        });
+        $('#id_aspekpenilaian').select2({
+            dropdownParent: $('#modal-create'),
+            placeholder: "Cari atau pilih aspek...",
+            allowClear: true,
+            width: '100%'
+        });
+    }, 150);
 </script>

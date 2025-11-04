@@ -11,17 +11,18 @@
             </div>
 
             <div class="space-y-4">
-                
+
                 <div>
                     <label for="nis" class="block text-sm font-medium text-gray-700 mb-1">Pilih Siswa</label>
                     <select id="nis" name="nis" required
-                        class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                        class="select2 w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-transparent">
                         <option value="" disabled selected>Pilih Siswa</option>
                         @foreach ($siswa as $item)
                             <option value="{{ $item->nis }}">{{ $item->nama_siswa }}</option>
                         @endforeach
                     </select>
                 </div>
+
 
                 <div>
                     <label for="id_aspekpenilaian" class="block text-sm font-medium text-gray-700 mb-1">Jenis
@@ -62,4 +63,19 @@
         let skor = select.options[select.selectedIndex].dataset.skor;
         document.getElementById('skor').value = skor;
     }
+    setTimeout(() => {
+        $('#nis').select2({
+            dropdownParent: $('#modal-create'),
+            placeholder: "Cari atau pilih siswa...",
+            allowClear: true,
+            width: '100%'
+        });
+        $('#id_aspekpenilaian').select2({
+            dropdownParent: $('#modal-create'),
+            placeholder: "Cari atau pilih aspek...",
+            allowClear: true,
+            width: '100%'
+        });
+    }, 150); // delay kecil supaya modal render dulu
+    
 </script>

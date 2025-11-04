@@ -9,13 +9,13 @@
             <!-- Header -->
             <div class="flex justify-between items-center">
                 <div>
-                    <h1 class="text-2xl font-bold gradient-text">Data Intervensi</h1>
-                    <p class="text-gray-600 mt-1">Kelola Intervensi</p>
+                    <h1 class="text-2xl font-bold gradient-text">Data Penanganan</h1>
+                    <p class="text-gray-600 mt-1">Kelola Penanganan</p>
                 </div>
                 <button onclick="openCreateModal()"
                     class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg flex items-center gap-2 transition-colors">
                     <i class="bi bi-plus-lg"></i>
-                    Tambah Intervensi
+                    Tambah Penanganan
                 </button>
             </div>
 
@@ -37,7 +37,7 @@
                 <div class="flex flex-col md:flex-row gap-2 items-center justify-between">
                     <div id="searchSiswa" class="relative w-full md:w-64">
                         <i class="bi bi-search absolute left-3 top-2.5 text-gray-400"></i>
-                        <input type="text" placeholder="Cari Intervensi..."
+                        <input type="text" placeholder="Cari Penanganan..."
                             class="pl-10 pr-4 py-1.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent w-full">
                     </div>
                     <div class="flex gap-2">
@@ -56,7 +56,7 @@
 
             <div class="bg-white rounded-xl shadow-sm border overflow-hidden">
                 <div class="px-6 py-4 border-b border-gray-200">
-                    <h3 class="text-lg font-semibold text-gray-900">Daftar Intervensi</h3>
+                    <h3 class="text-lg font-semibold text-gray-900">Daftar Penanganan</h3>
                 </div>
 
                 <div class="overflow-x-auto">
@@ -104,7 +104,7 @@
                                     class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
                                     <div class="flex items-center gap-2">
                                         <i class="bi bi-person text-gray-400"></i>
-                                        Nama Intervensi
+                                        Nama Penanganan
                                     </div>
                                 </th>
                                 <th

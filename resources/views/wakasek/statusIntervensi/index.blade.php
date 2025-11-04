@@ -4,7 +4,7 @@
         <div class="max-w-6xl mx-auto">
             <!-- Header -->
             <div class="mb-6">
-                <h2 class="text-2xl sm:text-3xl font-bold text-gray-900">Daftar Siswa Intervensi</h2>
+                <h2 class="text-2xl sm:text-3xl font-bold text-gray-900">Daftar Siswa Penanganan</h2>
             </div>
 
             <!-- Student List -->
@@ -13,7 +13,7 @@
                 <div
                     class="hidden md:grid md:grid-cols-12 gap-4 bg-gray-50 px-6 py-4 font-semibold text-sm text-gray-700 border-b">
                     <div class="col-span-4">Nama Siswa</div>
-                    <div class="col-span-3">Nama Intervensi</div>
+                    <div class="col-span-3">Nama Penanganan</div>
                     <div class="col-span-3">Status</div>
                     <div class="col-span-2 text-center">Aksi</div>
                 </div>
@@ -32,7 +32,7 @@
 
                                 <!-- Intervention Name -->
                                 <div class="col-span-3 mb-3 md:mb-0">
-                                    <p class="text-xs text-gray-500 md:hidden mb-1">Nama Intervensi</p>
+                                    <p class="text-xs text-gray-500 md:hidden mb-1">Nama Penanganan</p>
                                     <p class="text-gray-700 text-sm">{{ $item->nama_intervensi }}</p>
                                 </div>
 
@@ -48,7 +48,7 @@
 
                                 <!-- Action -->
                                 <div class="col-span-2 flex justify-start md:justify-center">
-                                    <a href="{{ route('statusintervensi.show', $item->id_intervensi) }}"
+                                    <a href="{{ route('statusPenanganan.show', $item->id_intervensi) }}"
                                         class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium rounded-lg transition-colors flex items-center gap-2">
                                         <i class="bi bi-eye"></i>
                                         Detail
@@ -62,8 +62,8 @@
                             <div class="inline-flex items-center justify-center w-16 h-16 bg-gray-100 rounded-full mb-4">
                                 <i class="bi bi-inbox text-3xl text-gray-400"></i>
                             </div>
-                            <h3 class="text-lg font-semibold text-gray-900 mb-2">Belum Ada Data Intervensi</h3>
-                            <p class="text-gray-500 text-sm">Tidak ada siswa yang memiliki intervensi saat ini.</p>
+                            <h3 class="text-lg font-semibold text-gray-900 mb-2">Belum Ada Data Penanganan</h3>
+                            <p class="text-gray-500 text-sm">Tidak ada siswa yang memiliki Penanganan saat ini.</p>
                         </div>
                     @endforelse
                 </div>

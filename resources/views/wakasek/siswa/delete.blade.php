@@ -5,11 +5,11 @@
                 @csrf
                 @method('DELETE')
                 <div class="flex justify-between items-center">
-                    <h2 class="text-xl font-bold text-gray-700">Hapus Penghargaan</h2>
+                    <h2 class="text-xl font-bold text-gray-700">Hapus siswa</h2>
                     <button type="button" onclick="closeModal('modal-delete')"
                         class="text-gray-500 hover:text-gray-700 text-xl">&times;</button>
                 </div>
-                <p class="text-gray-600">Apakah kamu yakin ingin menghapus Penghargaan <span id="delete-nama-Penghargaan" class="font-semibold"></span>?</p>
+                <p class="text-gray-600">Apakah kamu yakin ingin menghapus siswa <span id="delete-nama-siswa" class="font-semibold"></span>?</p>
                 <div class="flex justify-end gap-2 pt-4">
                     <button type="button" onclick="closeModal('modal-delete')"
                         class="px-4 py-2 rounded-lg border border-gray-300 text-gray-600 hover:bg-gray-100">Batal</button>
