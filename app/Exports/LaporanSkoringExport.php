@@ -2,7 +2,7 @@
 
 namespace App\Exports;
 
-use App\Models\Penilaian;
+use App\Models\penilaian;
 use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\WithHeadings;
 use Maatwebsite\Excel\Concerns\WithMapping;
@@ -27,7 +27,7 @@ class LaporanSkoringExport implements FromCollection, WithHeadings, WithMapping
 
     public function collection()
     {
-        $query = Penilaian::with(['siswa.kelas', 'aspek_penilaian'])
+        $query = penilaian::with(['siswa.kelas', 'aspek_penilaian'])
             ->whereHas('aspek_penilaian', function ($q) {
                 $q->where('jenis_poin', $this->type === 'pelanggaran' ? 'Pelanggaran' : 'Apresiasi');
             });

@@ -2,7 +2,7 @@
 
 namespace App\Exports;
 
-use App\Models\Penilaian;
+use App\Models\penilaian;
 use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\WithHeadings;
 use Carbon\Carbon;
@@ -11,7 +11,7 @@ class Skoring_Pelanggaran_ExportExcel implements FromCollection, WithHeadings
 {
     public function collection()
     {
-        return Penilaian::with(['siswa', 'aspek_penilaian'])
+        return penilaian::with(['siswa', 'aspek_penilaian'])
             ->whereHas('aspek_penilaian', fn($q) => $q->where('jenis_poin', 'Pelanggaran'))
             ->get()
             ->map(fn($item) => [
