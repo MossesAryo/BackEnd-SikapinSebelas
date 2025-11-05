@@ -3,18 +3,19 @@
 @push('css')
     <link rel="stylesheet" href="{{ asset('css/wakasek/laporan_skoring.css') }}">
     <style>
-       
         .dropdown-container {
             position: relative;
             width: 100%;
         }
+
         .dropdown-search {
             width: 100%;
             padding: 8px;
-            border: 1px solid #d1d5db; 
+            border: 1px solid #d1d5db;
             border-radius: 0.5rem;
             outline: none;
         }
+
         .dropdown-list {
             position: absolute;
             top: 100%;
@@ -28,12 +29,15 @@
             z-index: 50;
             display: none;
         }
+
         .dropdown-item {
             padding: 8px;
             cursor: pointer;
         }
+
         .dropdown-item:hover {
-            background: #f3f4f6; /* bg-gray-100 */
+            background: #f3f4f6;
+            /* bg-gray-100 */
         }
     </style>
 @endpush
@@ -68,11 +72,13 @@
 
         <!-- Cards -->
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-            <div class="bg-white p-6 rounded-xl shadow-sm border cursor-pointer hover:shadow-md transition-shadow" onclick="openFilterModal('pelanggaran')">
+            <div class="bg-white p-6 rounded-xl shadow-sm border cursor-pointer hover:shadow-md transition-shadow"
+                onclick="openFilterModal('pelanggaran')">
                 <h3 class="text-lg font-semibold text-gray-900">Pelanggaran</h3>
                 <p class="text-gray-600 mt-1">Lihat laporan pelanggaran siswa</p>
             </div>
-            <div class="bg-white p-6 rounded-xl shadow-sm border cursor-pointer hover:shadow-md transition-shadow" onclick="openFilterModal('penghargaan')">
+            <div class="bg-white p-6 rounded-xl shadow-sm border cursor-pointer hover:shadow-md transition-shadow"
+                onclick="openFilterModal('penghargaan')">
                 <h3 class="text-lg font-semibold text-gray-900">Penghargaan</h3>
                 <p class="text-gray-600 mt-1">Lihat laporan penghargaan siswa</p>
             </div>
@@ -107,11 +113,25 @@
                         <input type="hidden" id="kelas" name="kelas">
                     </div>
                 </div>
+                <div>
+                    <label for="start_date" class="block text-sm font-medium text-gray-700">Tanggal Mulai</label>
+                    <input type="date" id="start_date" name="start_date"
+                        class="mt-1 w-full border border-gray-300 rounded-lg p-2 focus:ring focus:ring-blue-200 focus:outline-none">
+                </div>
+
+                <div>
+                    <label for="end_date" class="block text-sm font-medium text-gray-700">Tanggal Selesai</label>
+                    <input type="date" id="end_date" name="end_date"
+                        class="mt-1 w-full border border-gray-300 rounded-lg p-2 focus:ring focus:ring-blue-200 focus:outline-none">
+                </div>
+
                 <div class="mt-6 flex justify-end gap-2">
-                    <button type="button" onclick="exportToPDF()" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg flex items-center gap-2">
+                    <button type="button" onclick="exportToPDF()"
+                        class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg flex items-center gap-2">
                         <i class="bi bi-file-earmark-pdf"></i> Ekspor PDF
                     </button>
-                    <button type="button" onclick="exportToExcel()" class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg flex items-center gap-2">
+                    <button type="button" onclick="exportToExcel()"
+                        class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg flex items-center gap-2">
                         <i class="bi bi-file-earmark-excel"></i> Ekspor Excel
                     </button>
                 </div>
@@ -137,13 +157,19 @@
 
         function exportToPDF() {
             const kelas = document.getElementById('kelas').value;
-            const url = `{{ route('laporan.export.pdf') }}?type=${reportType}&kelas=${kelas}`;
+            const startDate = document.getElementById('start_date').value;
+            const endDate = document.getElementById('end_date').value;
+            const url =
+                `{{ route('laporan.export.pdf') }}?type=${reportType}&kelas=${kelas}&start_date=${startDate}&end_date=${endDate}`;
             window.location.href = url;
         }
 
         function exportToExcel() {
             const kelas = document.getElementById('kelas').value;
-            const url = `{{ route('laporan.export.excel') }}?type=${reportType}&kelas=${kelas}`;
+            const startDate = document.getElementById('start_date').value;
+            const endDate = document.getElementById('end_date').value;
+            const url =
+                `{{ route('laporan.export.excel') }}?type=${reportType}&kelas=${kelas}&start_date=${startDate}&end_date=${endDate}`;
             window.location.href = url;
         }
 

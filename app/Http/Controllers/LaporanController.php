@@ -2,12 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\kelas;
-use App\Models\penilaian;
+use App\Models\Kelas;
+use App\Models\Penilaian;
 use Illuminate\Http\Request;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\LaporanSkoringExport;
+use Carbon\Carbon;
 
 class LaporanController extends Controller
 {
@@ -26,6 +27,8 @@ class LaporanController extends Controller
         $kelas = $request->query('kelas');
         $tingkat = $request->query('tingkat');
         $jurusan = $request->query('jurusan');
+        $startDate = $request->query('start_date');
+        $endDate = $request->query('end_date');
 
         $query = Penilaian::with(['siswa.kelas', 'aspek_penilaian'])
             ->whereHas('aspek_penilaian', function ($q) use ($type) {
@@ -33,21 +36,22 @@ class LaporanController extends Controller
             });
 
         if ($kelas) {
-            $query->whereHas('siswa.kelas', function ($q) use ($kelas) {
-                $q->where('id_kelas', $kelas);
-            });
+            $query->whereHas('siswa.kelas', fn($q) => $q->where('id_kelas', $kelas));
         }
 
         if ($tingkat) {
-            $query->whereHas('siswa.kelas', function ($q) use ($tingkat) {
-                $q->where('tingkat', $tingkat);
-            });
+            $query->whereHas('siswa.kelas', fn($q) => $q->where('tingkat', $tingkat));
         }
 
         if ($jurusan) {
-            $query->whereHas('siswa.kelas', function ($q) use ($jurusan) {
-                $q->where('jurusan', $jurusan);
-            });
+            $query->whereHas('siswa.kelas', fn($q) => $q->where('jurusan', $jurusan));
+        }
+
+        if ($startDate && $endDate) {
+            $query->whereBetween('created_at', [
+                Carbon::parse($startDate)->startOfDay(),
+                Carbon::parse($endDate)->endOfDay(),
+            ]);
         }
 
         $data = $query->get();
@@ -58,9 +62,18 @@ class LaporanController extends Controller
             'kelas' => $kelas ? Kelas::find($kelas)->nama_kelas : 'Semua Kelas',
             'tingkat' => $tingkat ?: 'Semua Tingkat',
             'jurusan' => $jurusan ?: 'Semua Jurusan',
+            'startDate' => $startDate,
+            'endDate' => $endDate,
         ]);
 
-        return $pdf->download('laporan_' . $type . '_' . now()->format('YmdHis') . '.pdf');
+        // Generate dynamic filename
+        $fileName = 'laporan_' . $type;
+        if ($startDate && $endDate) {
+            $fileName .= '_' . $startDate . '_to_' . $endDate;
+        }
+        $fileName .= '.pdf';
+
+        return $pdf->download($fileName);
     }
 
     public function exportExcel(Request $request)
@@ -69,7 +82,19 @@ class LaporanController extends Controller
         $kelas = $request->query('kelas');
         $tingkat = $request->query('tingkat');
         $jurusan = $request->query('jurusan');
+        $startDate = $request->query('start_date');
+        $endDate = $request->query('end_date');
 
-        return Excel::download(new LaporanSkoringExport($type, $kelas, $tingkat, $jurusan), 'laporan_' . $type . '_' . now()->format('YmdHis') . '.xlsx');
+        // Generate dynamic filename
+        $fileName = 'laporan_' . $type;
+        if ($startDate && $endDate) {
+            $fileName .= '_' . $startDate . '_to_' . $endDate;
+        }
+        $fileName .= '.xlsx';
+
+        return Excel::download(
+            new LaporanSkoringExport($type, $kelas, $tingkat, $jurusan, $startDate, $endDate),
+            $fileName
+        );
     }
 }

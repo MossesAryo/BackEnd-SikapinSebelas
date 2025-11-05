@@ -18,20 +18,15 @@ use App\Http\Controllers\SuratPeringatanController;
 Route::post('/login', [AuthAPIcontroller::class, 'login']);
 Route::post('/logout', [AuthAPIcontroller::class, 'logout']);
 
-
-Route::middleware('auth:sanctum')->group(function () {
-    Route::get('/kelas', [KelasController::class, 'FetchApi'])->name('api.kelas');
-    Route::get('/aspekpenilaian', [Aspek_penilaianController::class, 'FetchApi'])->name('api.aspek');
-    Route::get('/Penghargaan', [PenghargaanController::class, 'FetchApi'])->name('api.penghargaan');
-    Route::get('/peringatan', [SuratPeringatanController::class, 'FetchApi'])->name('api.peringatan');
-    Route::get('/siswa', [SiswaController::class, 'FetchApi'])->name('api.siswa');
-    Route::get('/skoring_penghargaan', [SkoringPenghargaan::class, 'index']);
-    Route::get('/skoring_2pelanggaran', [SkoringPelanggaran::class, 'index']);
-    Route::get('/akumulasi', [AkumulasiContoller::class, 'fetchAPI']);
-    Route::get('/notifikasi', [NotifikasiController::class, 'index']);
-    Route::post('/skoring_penghargaan', [SkoringPenghargaan::class, 'store']);
-    Route::post('/skoring_pelanggaran', [skoringpelanggaran::class, 'store']);
-    Route::post('/AddCatatan/{nis}', [catatanController::class, 'AddCatatanAPI']);
-});
-
-
+Route::get('/kelas', [KelasController::class, 'FetchApi'])->name('api.kelas');
+Route::get('/aspekpenilaian', [Aspek_penilaianController::class, 'FetchApi'])->name('api.aspek');
+Route::get('/Penghargaan', [PenghargaanController::class, 'FetchApi'])->name('api.penghargaan');
+Route::get('/peringatan', [SuratPeringatanController::class, 'FetchApi'])->name('api.peringatan');
+Route::get('/siswa', [SiswaController::class, 'FetchApi'])->name('api.siswa');
+Route::get('/skoring_penghargaan', [SkoringPenghargaan::class, 'index']);
+Route::get('/skoring_2pelanggaran', [SkoringPelanggaran::class, 'index']);
+Route::get('/akumulasi', [AkumulasiContoller::class, 'fetchAPI']);
+Route::get('/notifikasi', [NotifikasiController::class, 'index']);
+Route::post('/skoring_penghargaan', [SkoringPenghargaan::class, 'store']);
+Route::post('/skoring_pelanggaran', [skoringpelanggaran::class, 'store']);
+Route::post('/AddCatatan/{nis}', [catatanController::class, 'AddCatatanAPI']);

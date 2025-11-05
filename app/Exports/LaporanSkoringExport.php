@@ -13,12 +13,16 @@ class LaporanSkoringExport implements FromCollection, WithHeadings, WithMapping
     protected $type;
     protected $kelas;
     protected $jurusan;
+    protected $startDate;
+    protected $endDate;
 
-    public function __construct($type, $kelas, $jurusan)
+    public function __construct($type, $kelas, $jurusan, $startDate = null, $endDate = null)
     {
         $this->type = $type;
         $this->kelas = $kelas;
         $this->jurusan = $jurusan;
+        $this->startDate = $startDate;
+        $this->endDate = $endDate;
     }
 
     public function collection()
@@ -38,6 +42,13 @@ class LaporanSkoringExport implements FromCollection, WithHeadings, WithMapping
             $query->whereHas('siswa.kelas', function ($q) {
                 $q->where('jurusan', $this->jurusan);
             });
+        }
+
+        if ($this->startDate && $this->endDate) {
+            $query->whereBetween('created_at', [
+                Carbon::parse($this->startDate)->startOfDay(),
+                Carbon::parse($this->endDate)->endOfDay()
+            ]);
         }
 
         return $query->get();
