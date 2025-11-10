@@ -13,7 +13,7 @@ class Guru_Bk_ExportExcel implements FromView
     */
     public function view(): View
     {
-        return view('export.guru_bk.excel', [
+        return view('Export.guru_bk.excel', [
             'guru_bk' => guru_bk::all()
         ]);
     }

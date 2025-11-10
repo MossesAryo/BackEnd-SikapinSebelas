@@ -14,7 +14,7 @@ class Aspek_Penghargaan_ExportExcel implements FromView
     */
     public function view(): View
     {
-        return view('export.aspek_penghargaan.excel', [
+        return view('Export.aspek_penghargaan.excel', [
             'aspek_penilaian' => aspek_penilaian::where('jenis_poin', 'Apresiasi')->get()
         ]);
     }

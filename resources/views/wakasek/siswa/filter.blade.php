@@ -50,7 +50,7 @@
                     class="w-full rounded-xl border-2 border-gray-200 px-4 py-3 text-sm focus:ring-4 focus:ring-blue-100 focus:border-blue-500 transition-all duration-200">
                     <option value="">-- Pilih Kelas --</option>
                     @foreach ($kelasList as $kelas)
-                        <option value="{{ $kelas->nama_kelas }}" data-jurusan="{{ $kelas->jurusan }}"
+                        <option value="{{ $kelas->id_kelas }}" data-jurusan="{{ $kelas->jurusan }}"
                             {{ request('kelas') == $kelas->nama_kelas ? 'selected' : '' }}>
                             {{ $kelas->nama_kelas }}
                         </option>

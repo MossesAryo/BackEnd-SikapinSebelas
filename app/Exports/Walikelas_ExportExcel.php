@@ -13,7 +13,7 @@ class Walikelas_ExportExcel implements FromView
     */
     public function view(): View
     {
-        return view('export.walikelas.excel', [
+        return view('Export.walikelas.excel', [
             'walikelas' => walikelas::all()
         ]);
     }

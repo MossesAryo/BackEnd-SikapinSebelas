@@ -25,11 +25,11 @@ class SiswaController extends Controller
      */
     public function index(Request $request)
 {
-    $jurusanList = Kelas::select('jurusan')->distinct()->pluck('jurusan');
-    $kelasList   = Kelas::select('id_kelas', 'nama_kelas', 'jurusan')->get();
+    $jurusanList = kelas::select('jurusan')->distinct()->pluck('jurusan');
+    $kelasList   = kelas::select('id_kelas', 'nama_kelas', 'jurusan')->get();
     $penghargaanList = siswa_penghargaan::all();
 
-    $query = Siswa::with('kelas');
+    $query = siswa::with('kelas');
 
     // Cek apakah yang login adalah guru BK
     if (Auth::user()->role === 'guru_bk') {
@@ -154,7 +154,7 @@ class SiswaController extends Controller
 
         return view('wakasek.siswa.show', [
             'siswa' => $siswa,
-            'kelasList' => Kelas::all(),
+            'kelasList' => kelas::all(),
             'activities' => $activities,
             'poinPositif' => $poinPositif,
             'poinNegatif' => $poinNegatif,
@@ -188,7 +188,7 @@ class SiswaController extends Controller
 
     public function destroy(string $nis)
     {
-        $siswa = Siswa::where('nis', $nis)->first();
+        $siswa = siswa::where('nis', $nis)->first();
 
         if (!$siswa) {
             return redirect()->route('siswa.index')->with('error', 'Siswa tidak ditemukan');
@@ -220,19 +220,44 @@ class SiswaController extends Controller
 
         return back()->with('success', 'Penghargaan berhasil dihapus');
     }
-      public function export_pdf()
-    {
-        $siswa = siswa::all();
+      public function exportPdf(Request $request)
+{
+    $query = siswa::with('kelas');
 
-        $pdf = PDF::loadView('export.siswa.pdf', compact('siswa'));
-        return $pdf->download('siswa.pdf');
-
+    if ($request->filled('jurusan')) {
+        $query->whereHas('kelas', function ($q) use ($request) {
+            $q->where('jurusan', $request->jurusan);
+        });
     }
 
-    public function export_excel()
-    {
-        return Excel::download(new Siswa_ExportExcel, 'siswa.xlsx');
+    if ($request->filled('kelas')) {
+        $query->where('id_kelas', $request->kelas);
     }
+
+    $siswa = $query->get();
+
+    $pdf = Pdf::loadView('wakasek.siswa.pdf', compact('siswa'));
+    return $pdf->download('Data_Siswa.pdf');
+}
+
+   public function exportExcel(Request $request)
+{
+    $query = siswa::with('kelas');
+
+    if ($request->filled('jurusan')) {
+        $query->whereHas('kelas', function ($q) use ($request) {
+            $q->where('jurusan', $request->jurusan);
+        });
+    }
+
+    if ($request->filled('kelas')) {
+        $query->where('id_kelas', $request->kelas);
+    }
+
+    $siswa = $query->get();
+
+    return Excel::download(new Siswa_ExportExcel($siswa), 'Data_Siswa.xlsx');
+}
 
       public function import(Request $request)
     {

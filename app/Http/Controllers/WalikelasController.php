@@ -135,7 +135,7 @@ class WalikelasController extends Controller
     {
         $walikelas = walikelas::all();
 
-        $pdf = PDF::loadView('export.walikelas.pdf', compact('walikelas'));
+        $pdf = PDF::loadView('Export.walikelas.pdf', compact('walikelas'));
         return $pdf->download('walikelas.pdf');
     }
 

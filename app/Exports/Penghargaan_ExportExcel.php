@@ -13,7 +13,7 @@ class Penghargaan_ExportExcel implements FromView
     */
    public function view(): View
     {
-        return view('export.penghargaan.excel', [
+        return view('Export.penghargaan.excel', [
             'penghargaan' => penghargaan::all()
         ]);
     }

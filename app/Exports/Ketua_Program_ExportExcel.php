@@ -11,7 +11,7 @@ class Ketua_Program_ExportExcel implements FromView
    
     public function view(): View
     {
-        return view('export.ketua_program.excel', [
+        return view('Export.ketua_program.excel', [
             'ketua_program' => ketua_program::all()
         ]);
     }

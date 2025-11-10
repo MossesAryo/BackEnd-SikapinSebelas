@@ -120,7 +120,7 @@ class Aspek_penilaianController extends Controller
     {
         $aspek_penilaian = aspek_penilaian::where('jenis_poin', 'Apresiasi')->get();
 
-        $pdf = PDF::loadView('export.aspek_penghargaan.pdf', compact('aspek_penilaian'));
+        $pdf = PDF::loadView('Export.aspek_penghargaan.pdf', compact('aspek_penilaian'));
         return $pdf->download('aspek_penghargaan.pdf');
     }
 
@@ -235,7 +235,7 @@ class Aspek_penilaianController extends Controller
     {
         $aspek_penilaian = aspek_penilaian::where('jenis_poin', 'Pelanggaran')->get();
 
-        $pdf = PDF::loadView('export.aspek_pelanggaran.pdf', compact('aspek_penilaian'));
+        $pdf = PDF::loadView('Export.aspek_pelanggaran.pdf', compact('aspek_penilaian'));
         return $pdf->download('aspek_pelanggaran.pdf');
 
     }

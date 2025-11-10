@@ -100,7 +100,7 @@ class KetuaProgramController extends Controller
     {
         $ketua_program = ketua_program::all();
 
-        $pdf = PDF::loadView('export.ketua_program.pdf', compact('ketua_program'));
+        $pdf = PDF::loadView('Export.ketua_program.pdf', compact('ketua_program'));
         return $pdf->download('ketuaprogram.pdf');
 
     }

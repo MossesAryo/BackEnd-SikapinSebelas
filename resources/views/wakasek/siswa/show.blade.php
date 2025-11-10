@@ -389,11 +389,7 @@
                             <i class="bi bi-clock-history text-gray-700"></i>
                             Aktivitas Terakhir
                         </h3>
-                        <button
-                            class="px-4 py-2 border border-gray-300 rounded-lg bg-white hover:bg-gray-50 transition flex items-center gap-2 text-sm font-medium text-gray-700 shadow-sm">
-                            <i class="bi bi-download text-gray-600"></i>
-                            Export
-                        </button>
+                        
                     </div>
                     <div class="p-6">
                         @if ($activities->count() > 0)

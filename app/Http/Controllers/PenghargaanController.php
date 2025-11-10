@@ -75,7 +75,7 @@ class PenghargaanController extends Controller
     {
         $penghargaan = penghargaan::all();
 
-        $pdf = PDF::loadView('export.penghargaan.pdf', compact('penghargaan'));
+        $pdf = PDF::loadView('Export.penghargaan.pdf', compact('penghargaan'));
         return $pdf->download('penghargaan.pdf');
 
     }

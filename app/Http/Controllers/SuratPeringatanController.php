@@ -75,7 +75,7 @@ class SuratPeringatanController extends Controller
     {
         $peringatan = surat_peringatan::all(); // ganti nama variabel jadi $peringatan
 
-        $pdf = PDF::loadView('export.peringatan.pdf', compact('peringatan'));
+        $pdf = PDF::loadView('Export.peringatan.pdf', compact('peringatan'));
         return $pdf->download('peringatan.pdf');
     }
 

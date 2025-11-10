@@ -7,6 +7,7 @@ use App\Models\walikelas;
 use App\Models\ketua_program;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
 class AuthAPIcontroller extends Controller
@@ -18,40 +19,43 @@ class AuthAPIcontroller extends Controller
             'password' => 'required'
         ]);
 
-        // Cek Kaprog
+        // ===== CEK KAPROG =====
         $kaprog = ketua_program::where('nip_kaprog', $request->nip)->first();
         if ($kaprog) {
             $user = User::where('username', $kaprog->username)->first();
+
             if ($user && Hash::check($request->password, $user->password)) {
-                $token = $user->createToken('api_token')->plainTextToken;
+                Auth::login($user); // ⬅️ Simpan user ke session
 
                 return response()->json([
                     'status' => true,
                     'role' => 4,
                     'user' => $user,
                     'detail' => $kaprog,
-                    'token' => $token
+                    'message' => 'Login berhasil (Kaprog)'
                 ]);
             }
         }
 
-        // Cek Wali Kelas
+        // ===== CEK WALI KELAS =====
         $waliKelas = walikelas::where('nip_walikelas', $request->nip)->first();
         if ($waliKelas) {
             $user = User::where('username', $waliKelas->username)->first();
+
             if ($user && Hash::check($request->password, $user->password)) {
-                $token = $user->createToken('api_token')->plainTextToken;
+                Auth::login($user); // ⬅️ Simpan user ke session
 
                 return response()->json([
                     'status' => true,
                     'role' => 3,
                     'user' => $user,
                     'detail' => $waliKelas,
-                    'token' => $token
+                    'message' => 'Login berhasil (Wali Kelas)'
                 ]);
             }
         }
 
+        // Jika gagal
         return response()->json([
             'status' => false,
             'message' => 'NIP atau password salah'
@@ -60,7 +64,10 @@ class AuthAPIcontroller extends Controller
 
     public function logout(Request $request)
     {
-        $request->user()->currentAccessToken()->delete();
+        Auth::logout(); // ⬅️ Hapus session user
+
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
 
         return response()->json([
             'status' => true,

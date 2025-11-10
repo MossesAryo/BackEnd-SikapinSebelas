@@ -13,7 +13,7 @@ class Surat_Peringatan_ExportExcel implements FromView
      */
     public function view(): View
     {
-        return view('export.peringatan.excel', [
+        return view('Export.peringatan.excel', [
             'surat_peringatan' => surat_peringatan::all()
         ]);
     }

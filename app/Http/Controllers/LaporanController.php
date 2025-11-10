@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Kelas;
-use App\Models\Penilaian;
+use App\Models\kelas;
+use App\Models\penilaian;
 use Illuminate\Http\Request;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Maatwebsite\Excel\Facades\Excel;
@@ -17,7 +17,7 @@ class LaporanController extends Controller
      */
     public function index()
     {
-        $kelas = Kelas::all();
+        $kelas = kelas::all();
         return view('wakasek.laporan.index', compact('kelas'));
     }
 
@@ -30,7 +30,7 @@ class LaporanController extends Controller
         $startDate = $request->query('start_date');
         $endDate = $request->query('end_date');
 
-        $query = Penilaian::with(['siswa.kelas', 'aspek_penilaian'])
+        $query = penilaian::with(['siswa.kelas', 'aspek_penilaian'])
             ->whereHas('aspek_penilaian', function ($q) use ($type) {
                 $q->where('jenis_poin', $type === 'pelanggaran' ? 'Pelanggaran' : 'Apresiasi');
             });
@@ -59,7 +59,7 @@ class LaporanController extends Controller
         $pdf = Pdf::loadView('Export.laporan.laporan', [
             'data' => $data,
             'type' => $type,
-            'kelas' => $kelas ? Kelas::find($kelas)->nama_kelas : 'Semua Kelas',
+            'kelas' => $kelas ? kelas::find($kelas)->nama_kelas : 'Semua Kelas',
             'tingkat' => $tingkat ?: 'Semua Tingkat',
             'jurusan' => $jurusan ?: 'Semua Jurusan',
             'startDate' => $startDate,

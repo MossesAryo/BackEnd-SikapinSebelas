@@ -101,7 +101,7 @@ public function destroy(string $id)
     {
         $guru_bk = guru_bk::all();
 
-        $pdf = PDF::loadView('export.guru_bk.pdf', compact('guru_bk'));
+        $pdf = PDF::loadView('Export.guru_bk.pdf', compact('guru_bk'));
         return $pdf->download('guru_bk.pdf');
 
     }

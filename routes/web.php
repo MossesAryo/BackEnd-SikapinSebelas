@@ -48,8 +48,8 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/siswa/{nis}/show/peringatan', [SiswaController::class, 'peringatan'])->name('siswa.peringatan');
     Route::post('/siswa/{nis}/show/catatan', [catatanController::class, 'AddCatatan'])->name('siswa.catatan');
 
-    Route::get('/siswa/export_pdf', [SiswaController::class, 'export_pdf'])->name('siswa.export.pdf');
-    Route::get('/siswa/export_excel', [SiswaController::class, 'export_excel'])->name('siswa.export.excel');
+    Route::get('/siswa/export_pdf', [SiswaController::class, 'exportPdf'])->name('siswa.export.pdf');
+    Route::get('/siswa/export_excel', [SiswaController::class, 'exportExcel'])->name('siswa.export.excel');
     Route::post('/siswa/import', [SiswaController::class, 'import'])->name('siswa.import');
 
     Route::get('/penghargaan', [PenghargaanController::class, 'index'])->name('penghargaan.index');

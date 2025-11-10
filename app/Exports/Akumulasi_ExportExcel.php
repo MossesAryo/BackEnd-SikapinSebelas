@@ -10,7 +10,7 @@ class Akumulasi_ExportExcel implements FromView
 {
     public function view(): View
     {
-        return view('export.akumulasi.excel', [
+        return view('Export.akumulasi.excel', [
             'akumulasi' => \App\Models\siswa::with('kelas')->get()
         ]);
     }

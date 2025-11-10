@@ -8,7 +8,7 @@ use App\Http\Controllers\catatanController;
 use App\Http\Controllers\AkumulasiContoller;
 use App\Http\Controllers\api\NotifikasiController;
 use App\Http\Controllers\PenghargaanController;
-use App\Http\Controllers\api\SkoringPelanggaran;
+use App\Http\Controllers\api\skoringpelanggaran;
 use App\Http\Controllers\api\SkoringPenghargaan;
 use App\Http\Controllers\Aspek_penilaianController;
 use App\Http\Controllers\AuthAPI\AuthAPIcontroller;
@@ -24,7 +24,7 @@ Route::get('/Penghargaan', [PenghargaanController::class, 'FetchApi'])->name('ap
 Route::get('/peringatan', [SuratPeringatanController::class, 'FetchApi'])->name('api.peringatan');
 Route::get('/siswa', [SiswaController::class, 'FetchApi'])->name('api.siswa');
 Route::get('/skoring_penghargaan', [SkoringPenghargaan::class, 'index']);
-Route::get('/skoring_2pelanggaran', [SkoringPelanggaran::class, 'index']);
+Route::get('/skoring_2pelanggaran', [skoringpelanggaran::class, 'index']);
 Route::get('/akumulasi', [AkumulasiContoller::class, 'fetchAPI']);
 Route::get('/notifikasi', [NotifikasiController::class, 'index']);
 Route::post('/skoring_penghargaan', [SkoringPenghargaan::class, 'store']);

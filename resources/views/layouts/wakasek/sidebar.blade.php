@@ -246,26 +246,28 @@
     }
 
     // Close dropdown kalau klik di luar
-    document.addEventListener("click", function(event) {
-        const dropdowns = [{
-                btn: "userArrow",
-                content: "userDropdown"
-            },
-            {
-                btn: "faqArrow",
-                content: "faqDropdown"
-            }
-        ];
-        dropdowns.forEach(d => {
-            const dropdown = document.getElementById(d.content);
-            const arrow = document.getElementById(d.btn);
-            if (!event.target.closest(`#${d.content}`) && !event.target.closest(`#${d.btn}`) && !event
-                .target.closest("button")) {
-                dropdown.classList.remove("show");
-                arrow.classList.remove("rotate");
-            }
-        });
+   document.addEventListener("click", function(event) {
+    const dropdowns = [
+        { btn: "userArrow", content: "userDropdown" },
+        { btn: "faqArrow", content: "faqDropdown" }
+    ];
+
+    dropdowns.forEach(d => {
+        const dropdown = document.getElementById(d.content);
+        const arrow = document.getElementById(d.btn);
+
+        // Pastikan elemen benar-benar ada
+        if (!dropdown || !arrow) return;
+
+        if (!event.target.closest(`#${d.content}`) &&
+            !event.target.closest(`#${d.btn}`) &&
+            !event.target.closest("button")) {
+            dropdown.classList.remove("show");
+            arrow.classList.remove("rotate");
+        }
     });
+});
+
 
 
     document.addEventListener("DOMContentLoaded", () => {
