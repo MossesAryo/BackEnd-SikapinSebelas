@@ -4,8 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\intervensi;
 use Illuminate\Http\Request;
-use App\Models\Kelas;
-use App\Models\Siswa;
+use App\Models\kelas;
+use App\Models\siswa;
 use Illuminate\Support\Facades\Auth;
 use App\Models\catatan;
 
