@@ -81,7 +81,7 @@
                         <span>Siswa</span>
                     </a>
                 </li>
-                @if (auth()->user()->role == 1)
+                @if (auth()->user()->role == 1 || auth()->user()->role == 2)
                     <li>
                         <a href="{{ route('kelas') }}"
                             class="flex items-center gap-3 px-4 py-3 rounded-lg menu-link
@@ -132,23 +132,23 @@
                             </ul>
                         </div>
                     </li>
-                @endif
-                <li>
-                    <a href="{{ route('penghargaan.index') }}"
+                    <li>
+                        <a href="{{ route('penghargaan.index') }}"
                         class="flex items-center gap-3 px-4 py-2  rounded-lg menu-link
-                                   {{ request()->routeIs('penghargaan.*') ? 'active-link' : 'text-gray-600 hover:bg-gray-50' }}">
+                        {{ request()->routeIs('penghargaan.*') ? 'active-link' : 'text-gray-600 hover:bg-gray-50' }}">
                         <i class="bi bi-trophy"></i>
                         <span>Penghargaan</span>
                     </a>
                 </li>
                 <li>
                     <a href="{{ route('peringatan.index') }}"
-                        class="flex items-center gap-3 px-4 py-2  rounded-lg menu-link
-                                   {{ request()->routeIs('peringatan.*') ? 'active-link' : 'text-gray-600 hover:bg-gray-50' }}">
-                        <i class="bi bi-shield-exclamation"></i>
-                        <span>Pelanggaran</span>
-                    </a>
-                </li>
+                    class="flex items-center gap-3 px-4 py-2  rounded-lg menu-link
+                    {{ request()->routeIs('peringatan.*') ? 'active-link' : 'text-gray-600 hover:bg-gray-50' }}">
+                    <i class="bi bi-shield-exclamation"></i>
+                    <span>Pelanggaran</span>
+                </a>
+            </li>
+            @endif
                 <li>
                     <a href="{{ route('aspek_penghargaan.index') }}"
                         class="flex items-center gap-3 px-4 py-2  rounded-lg menu-link
@@ -186,42 +186,43 @@
                         <span>Skoring Pelanggaran</span>
                     </a>
                 </li>
-                
-                @if (auth()->user()->role == 1)
+
                 <li>
                     <a href="{{ route('akumulasi.index') }}"
-                    class="flex items-center gap-3 px-4 py-3 rounded-lg menu-link
+                        class="flex items-center gap-3 px-4 py-3 rounded-lg menu-link
                     {{ request()->routeIs('akumulasi.*') ? 'active-link' : 'text-gray-600 hover:bg-gray-50' }}">
-                    <i class="bi bi-graph-up"></i>
-                    <span>Akumulasi</span>
-                </a>
-            </li>
-            <li>
-                <a href="{{ route('intervensi.index') }}"
+                        <i class="bi bi-graph-up"></i>
+                        <span>Akumulasi</span>
+                    </a>
+                </li>
+                @if (auth()->user()->role == 1 || auth()->user()->role == 2)
+                    
+                <li>
+                    <a href="{{ route('intervensi.index') }}"
                     class="flex items-center gap-3 px-4 py-3 rounded-lg menu-link
-                   {{ request()->routeIs('intervensi.*') ? 'active-link' : 'text-gray-600 hover:bg-gray-50' }}">
+                    {{ request()->routeIs('intervensi.*') ? 'active-link' : 'text-gray-600 hover:bg-gray-50' }}">
                     <i class="bi bi-life-preserver"></i>
                     <span>Penanganan</span>
                 </a>
             </li>
-                @endif
-                <li>
-                    <a href="{{ route('statusintervensi.index') }}"
-                        class="flex items-center gap-3 px-4 py-3 rounded-lg menu-link
-                       {{ request()->routeIs('statusintervensi.*') ? 'active-link' : 'text-gray-600 hover:bg-gray-50' }}">
-                        <i class="bi bi-clipboard-data"></i>
-                        <span>Status Penanganan</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="{{ route('catatan.index') }}"
-                        class="flex items-center gap-3 px-4 py-3 rounded-lg menu-link
-                       {{ request()->routeIs('catatan.*') ? 'active-link' : 'text-gray-600 hover:bg-gray-50' }}">
-                        <i class="bi bi-clipboard-check"></i>
-                        <span>Catatan</span>
-                    </a>
-                </li>
-
+            <li>
+                <a href="{{ route('statusintervensi.index') }}"
+                class="flex items-center gap-3 px-4 py-3 rounded-lg menu-link
+                {{ request()->routeIs('statusintervensi.*') ? 'active-link' : 'text-gray-600 hover:bg-gray-50' }}">
+                <i class="bi bi-clipboard-data"></i>
+                <span>Status Penanganan</span>
+            </a>
+        </li>
+        <li>
+            <a href="{{ route('catatan.index') }}"
+            class="flex items-center gap-3 px-4 py-3 rounded-lg menu-link
+            {{ request()->routeIs('catatan.*') ? 'active-link' : 'text-gray-600 hover:bg-gray-50' }}">
+            <i class="bi bi-clipboard-check"></i>
+            <span>Catatan</span>
+        </a>
+    </li>
+    
+    @endif
 
                 <li>
                     <a href="{{ route('laporan.index') }}"
@@ -246,27 +247,32 @@
     }
 
     // Close dropdown kalau klik di luar
-   document.addEventListener("click", function(event) {
-    const dropdowns = [
-        { btn: "userArrow", content: "userDropdown" },
-        { btn: "faqArrow", content: "faqDropdown" }
-    ];
+    document.addEventListener("click", function(event) {
+        const dropdowns = [{
+                btn: "userArrow",
+                content: "userDropdown"
+            },
+            {
+                btn: "faqArrow",
+                content: "faqDropdown"
+            }
+        ];
 
-    dropdowns.forEach(d => {
-        const dropdown = document.getElementById(d.content);
-        const arrow = document.getElementById(d.btn);
+        dropdowns.forEach(d => {
+            const dropdown = document.getElementById(d.content);
+            const arrow = document.getElementById(d.btn);
 
-        // Pastikan elemen benar-benar ada
-        if (!dropdown || !arrow) return;
+            // Pastikan elemen benar-benar ada
+            if (!dropdown || !arrow) return;
 
-        if (!event.target.closest(`#${d.content}`) &&
-            !event.target.closest(`#${d.btn}`) &&
-            !event.target.closest("button")) {
-            dropdown.classList.remove("show");
-            arrow.classList.remove("rotate");
-        }
+            if (!event.target.closest(`#${d.content}`) &&
+                !event.target.closest(`#${d.btn}`) &&
+                !event.target.closest("button")) {
+                dropdown.classList.remove("show");
+                arrow.classList.remove("rotate");
+            }
+        });
     });
-});
 
 
 

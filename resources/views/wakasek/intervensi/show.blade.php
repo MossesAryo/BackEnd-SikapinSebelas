@@ -7,7 +7,6 @@
 @section('content')
     <div class="max-w-4xl mx-auto">
         <!-- Header -->
-        <!-- Header -->
 <div class="bg-gradient-to-r from-blue-600 to-blue-500 text-white rounded-xl shadow-lg p-6 mb-6 flex justify-between items-center">
     <div>
         <h1 class="text-2xl font-bold">Detail Penanganan</h1>
