@@ -15,9 +15,10 @@ class penilaian extends Model
         'nip_wakasek',
         'nip_walikelas',
         'nip_bk',
-        'id_aspek_penilaian',
+        'id_aspekpenilaian',
         'nis',
-        'tanggal'
+        'created_at',
+        
     ];
 
     public function wakasek()
@@ -26,22 +27,33 @@ class penilaian extends Model
     }
     public function walikelas()
     {
-        return $this->belongsTo(Walikelas::class, 'nip_walikelas');
+        return $this->belongsTo(walikelas::class, 'nip_walikelas');
     }
 
     public function aspek_penilaian()
     {
-        return $this->belongsTo(Aspek_Penilaian::class, 'id_aspek_penilaian', 'id_aspek_penilaian');
+        return $this->belongsTo(aspek_penilaian::class, 'id_aspekpenilaian', 'id_aspekpenilaian');
     }
 
 
     public function siswa()
     {
-        return $this->belongsTo(Siswa::class, 'nis', 'nis');
+        return $this->belongsTo(siswa::class, 'nis', 'nis');
     }
 
     public function guruBk()
     {
         return $this->belongsTo(guru_bk::class, 'nip_bk', 'nip_bk');
+    }
+
+     public function aspekApresiasi()
+    {
+        return $this->belongsTo(aspek_penilaian::class, 'id_aspek_penilaian', 'id_aspek_penilaian')
+                    ->where('jenis_poin', 'Apresiasi');
+    }
+    public function aspekPelanggaran()
+    {
+        return $this->belongsTo(aspek_penilaian::class, 'id_aspek_penilaian', 'id_aspek_penilaian')
+                    ->where('jenis_poin', 'Pelanggaran');
     }
 }

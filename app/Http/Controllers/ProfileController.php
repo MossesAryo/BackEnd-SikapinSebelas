@@ -9,7 +9,9 @@ class ProfileController extends Controller
 {
     public function index()
     {
-        $user = Auth::user(); // Ambil data user yang login
-        return view('auth.profile', compact('user'));
+        $user = Auth::user();
+        return view('wakasek.profile.profilewakasek', compact('user'));
     }
+
+   
 }

@@ -6,9 +6,9 @@ use Illuminate\Http\Request;
 
 class PenilaianController extends Controller
 {
-       public function index()
+    public function index()
     {
-       
+
         return view('wakasek.penilaian');
     }
 }
