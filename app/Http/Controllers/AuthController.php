@@ -23,6 +23,8 @@ class AuthController extends Controller
             return view('wakasek.dashboard');
         } elseif ($role === 'gurubk') {
             return view('gurubk.dashboard');
+        } elseif ($role === 'ketua_program') {
+            return view('ketua_program.dashboard');
         }
     }
 

@@ -23,6 +23,7 @@
         <!-- Form -->
         <form method="GET" action="{{ route('siswa.index') }}" class="p-6 space-y-6">
 
+              @if (auth()->user()->role == 1 || auth()->user()->role == 2)
             <!-- Jurusan -->
             <div class="space-y-2">
                 <label class="block text-sm font-semibold text-gray-700 flex items-center gap-2">
@@ -39,6 +40,7 @@
                     @endforeach
                 </select>
             </div>
+            @endif
 
             <!-- Kelas -->
             <div class="space-y-2">

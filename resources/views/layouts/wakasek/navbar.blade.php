@@ -14,8 +14,10 @@
                      class="w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center text-white text-sm font-bold">
                      @if (auth()->user()->role == 2)
                          {{ strtoupper(substr(Auth::user()->gurubk->nama_guru_bk, 0, 1)) }}
-                     @else
+                     @elseif (auth()->user()->role == 1)
                          {{ strtoupper(substr(Auth::user()->wakasek->nama_wakasek, 0, 1)) }}
+                     @elseif (auth()->user()->role == 3)
+                         {{ strtoupper(substr(Auth::user()->ketua_program->nama_ketua_program, 0, 1)) }}
                      @endif
                  </div>
                  <span class="text-gray-700">
@@ -23,11 +25,15 @@
                          @auth
                              {{ Auth::user()->gurubk->nama_guru_bk }}
                          @endauth
-                     @else
+                     @elseif (auth()->user()->role == 1)
                          @auth
                              {{ Auth::user()->wakasek->nama_wakasek }}
                          @endauth
-                     @endif
+                     @elseif (auth()->user()->role == 3)
+                         @auth
+                             {{ Auth::user()->ketua_program->nama_ketua_program }}
+                         @endauth
+                     @endif 
                  </span>
              </a>
          </div>

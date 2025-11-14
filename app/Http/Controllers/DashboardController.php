@@ -11,6 +11,8 @@ use App\Models\penghargaan;
 use Illuminate\Http\Request;
 use App\Models\aspek_penilaian;
 use App\Models\siswa_penghargaan;
+use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 
 class DashboardController extends Controller
 {
@@ -56,18 +58,36 @@ class DashboardController extends Controller
         $pelanggaranData[] = $jumlahPelanggaran;
     }
 
-    return view('wakasek.dashboard', [
-        'totalSiswa' => $totalSiswa,
-        'totalApresiasi' => $totalApresiasi,
-        'totalPelanggaran' => $totalPelanggaran,
-        'rataSkor' => $rataRata,
-        'jurusanList' => $jurusanList,
-        'apresiasiData' => $apresiasiData,
-        'pelanggaranData' => $pelanggaranData,
-        'recentActivities' => $recentActivities,
-    ]);
+   $data = [
+            'totalSiswa' => $totalSiswa,
+            'totalApresiasi' => $totalApresiasi,
+            'totalPelanggaran' => $totalPelanggaran,
+            'rataSkor' => $rataRata,
+            'jurusanList' => $jurusanList,
+            'apresiasiData' => $apresiasiData,
+            'pelanggaranData' => $pelanggaranData,
+            'recentActivities' => $recentActivities,
+        ];
+
+        // === Tentukan view berdasarkan role ===
+        $role = Auth::user()->role;
+
+
+        if ($role == 1) {
+            // Wakasek
+            return view('wakasek.dashboard', $data);
+        } elseif ($role == 2) {
+            // Guru BK
+            return view('gurubk.dashboard', $data);
+        } elseif ($role == 3) {
+            // Ketua Program
+            return view('ketua_program.dashboard', $data);
+        } else {
+            // Default jika role tidak dikenali
+            abort(403, 'Role tidak dikenali.');
+        }
+    }
 
 
 }
 
-}

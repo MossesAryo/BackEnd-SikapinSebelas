@@ -73,6 +73,29 @@
                         <span>Dashboard</span>
                     </a>
                 </li>
+                
+
+
+                    @if (auth()->user()->role == 3)
+                    <li>
+                        <a href="{{ route('ketua_program.siswa') }}"
+                            class="flex items-center gap-3 px-4 py-3 rounded-lg menu-link
+                    {{ request()->routeIs('siswa.*') ? 'active-link' : 'text-gray-600 hover:bg-gray-50' }}">
+                            <i class="bi bi-person-badge"></i>
+                            <span>Siswa</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{ route('ketua_program.kelas') }}"
+                            class="flex items-center gap-3 px-4 py-3 rounded-lg menu-link
+                    {{ request()->routeIs('kelas*') ? 'active-link' : 'text-gray-600 hover:bg-gray-50' }}">
+                            <i class="bi bi-grid-3x3-gap"></i>
+                            <span>Kelas</span>
+                        </a>
+                    </li>
+                    @endif
+
+                @if (auth()->user()->role == 1 || auth()->user()->role == 2)
                 <li>
                     <a href="{{ route('siswa.index') }}"
                         class="flex items-center gap-3 px-4 py-3 rounded-lg menu-link
@@ -81,15 +104,14 @@
                         <span>Siswa</span>
                     </a>
                 </li>
-                @if (auth()->user()->role == 1 || auth()->user()->role == 2)
-                    <li>
-                        <a href="{{ route('kelas') }}"
-                            class="flex items-center gap-3 px-4 py-3 rounded-lg menu-link
-                       {{ request()->routeIs('kelas*') ? 'active-link' : 'text-gray-600 hover:bg-gray-50' }}">
-                            <i class="bi bi-grid-3x3-gap"></i>
-                            <span>Kelas</span>
-                        </a>
-                    </li>
+                <li>
+                    <a href="{{ route('kelas') }}"
+                        class="flex items-center gap-3 px-4 py-3 rounded-lg menu-link
+                   {{ request()->routeIs('kelas*') ? 'active-link' : 'text-gray-600 hover:bg-gray-50' }}">
+                        <i class="bi bi-grid-3x3-gap"></i>
+                        <span>Kelas</span>
+                    </a>
+                </li>
 
                     <!-- User Dropdown -->
                     <li>
@@ -149,6 +171,9 @@
                 </a>
             </li>
             @endif
+
+
+
                 <li>
                     <a href="{{ route('aspek_penghargaan.index') }}"
                         class="flex items-center gap-3 px-4 py-2  rounded-lg menu-link
@@ -195,6 +220,7 @@
                         <span>Akumulasi</span>
                     </a>
                 </li>
+                
                 @if (auth()->user()->role == 1 || auth()->user()->role == 2)
                     
                 <li>
@@ -205,6 +231,9 @@
                     <span>Penanganan</span>
                 </a>
             </li>
+         @endif
+
+
             <li>
                 <a href="{{ route('statusintervensi.index') }}"
                 class="flex items-center gap-3 px-4 py-3 rounded-lg menu-link
@@ -213,16 +242,8 @@
                 <span>Status Penanganan</span>
             </a>
         </li>
-        <li>
-            <a href="{{ route('catatan.index') }}"
-            class="flex items-center gap-3 px-4 py-3 rounded-lg menu-link
-            {{ request()->routeIs('catatan.*') ? 'active-link' : 'text-gray-600 hover:bg-gray-50' }}">
-            <i class="bi bi-clipboard-check"></i>
-            <span>Catatan</span>
-        </a>
-    </li>
     
-    @endif
+
 
                 <li>
                     <a href="{{ route('laporan.index') }}"

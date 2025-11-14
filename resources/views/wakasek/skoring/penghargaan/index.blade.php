@@ -34,11 +34,13 @@
                 <h1 class="text-2xl font-bold gradient-text">Skoring Penghargaan</h1>
                 <p class="text-gray-600 mt-1">Kelola Skoring Penghargaan</p>
             </div>
+             @if (auth()->user()->role == 1 || auth()->user()->role == 2)
             <button onclick="openCreateModal()"
                 class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg flex items-center gap-2 transition-colors">
                 <i class="bi bi-plus-lg"></i>
                 Tambah Skoring Penghargaan
             </button>
+            @endif
         </div>
 
         @if (session('success'))

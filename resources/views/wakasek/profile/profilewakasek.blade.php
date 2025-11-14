@@ -15,17 +15,23 @@
                         @auth
                             {{ Auth::user()->gurubk->nama_guru_bk }}
                         @endauth
-                    @else
+                    @elseif (auth()->user()->role == 1)
                         @auth
                             {{ Auth::user()->wakasek->nama_wakasek }}
+                        @endauth
+                    @elseif (auth()->user()->role == 3)
+                        @auth
+                            {{ Auth::user()->ketua_program->nama_ketua_program }}
                         @endauth
                     @endif
 
                 </h1>
                 @if (auth()->user()->role == 2)
                 <p class="profile-title text-blue-600 font-medium mb-6 text-sm">Guru BK</p>
-                @else
+                @elseif (auth()->user()->role == 1)
                 <p class="profile-title text-blue-600 font-medium mb-6 text-sm">Wakil Kepala Kesiswaan</p>
+                @elseif (auth()->user()->role == 3)
+                <p class="profile-title text-blue-600 font-medium mb-6 text-sm">Ketua Program</p>
                 @endif
                 
                 <div class="flex flex-col gap-3">
@@ -55,10 +61,16 @@
                                 @auth
                                     {{ Auth::user()->gurubk->nama_guru_bk }}
                                 @endauth
-                            @else
+                            @elseif (auth()->user()->role == 1)
                                 @auth
                                     {{ Auth::user()->wakasek->nama_wakasek }}
                                 @endauth
+                            @elseif (auth()->user()->role == 3)
+                               @auth
+                                    {{ Auth::user()->ketua_program->nama_ketua_program}}
+                                @endauth
+
+                                
                             @endif
                         </div>
                     </div>
@@ -69,9 +81,13 @@
                                 @auth
                                     {{ Auth::user()->gurubk->nip_bk }}
                                 @endauth
-                            @else
+                            @elseif (auth()->user()->role == 1)
                                 @auth
                                     {{ Auth::user()->wakasek->nip_wakasek }}
+                                @endauth
+                            @elseif (auth()->user()->role == 3)
+                                @auth
+                                    {{ Auth::user()->ketua_program->nip_kaprog }}
                                 @endauth
                             @endif
                         </div>
@@ -89,8 +105,10 @@
                         <div class="info-value text-sm font-medium text-slate-800">
                          @if (auth()->user()->role == 2)
                                 Guru Bimbingan Konseling    
-                            @else
+                            @elseif (auth()->user()->role == 1)
                                 Wakil Kepala Kesiswaan
+                            @elseif (auth()->user()->role == 3)
+                                Ketua Program
                             @endif</div>
                     </div>
 

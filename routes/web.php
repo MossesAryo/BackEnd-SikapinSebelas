@@ -32,6 +32,11 @@ Route::post('/login', [AController::class, 'login'])->name('login.submit');
 Route::get('/logout', [AController::class, 'logout'])->name('logout');
 
 Route::middleware(['auth'])->group(function () {
+    
+
+    });
+
+Route::middleware(['auth'])->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('wakasek.dashboard');
     Route::get('/profile', [ProfileController::class, 'index'])->name('profile');
 
@@ -104,16 +109,9 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/akumulasi/export_pdf', [AkumulasiContoller::class, 'export_pdf'])->name('akumulasi.export.pdf');
     Route::get('/akumulasi/export_excel', [AkumulasiContoller::class, 'export_excel'])->name('akumulasi.export.excel');
 
-
-
-    //
-    //
-    //
     route::get('/notifikasi', [NotifikasiWakasekController::class, 'index'])->name('notifikasi.index');
     Route::get('/laporanjammalam', [LaporanController::class, 'index'])->name('wakasek.laporanjammalam');
     Route::get('/penilaian', [PenilaianController::class, 'index'])->name('wakasek.penilaian');
-
-
 
 
 
@@ -133,14 +131,13 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/ketua_program/import', [KetuaProgramController::class, 'import'])->name('ketua_program.import');
 
 
-
-
-
-
     Route::get('/kelas', [KelasController::class, 'index'])->name('kelas');
     Route::post('/kelas/store', [KelasController::class, 'store'])->name('kelas.store');
     Route::put('/kelas/{id}/update', [KelasController::class, 'update'])->name('kelas.update');
     Route::delete('/kelas/{id}', [KelasController::class, 'destroy'])->name('kelas.destroy');
+
+    Route::get('/ketua-program/kelas', [KelasController::class, 'kelasKetuaProgram'])->name('ketua_program.kelas');
+    Route::get('/ketua-program/siswa', [SiswaController::class, 'siswa_ketua_program'])->name('ketua_program.siswa');
 
 
     Route::get('/grbk', [Guru_bkController::class, 'index'])->name('gurubk.index');

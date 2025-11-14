@@ -13,6 +13,7 @@ use App\Models\guru_bk;
 use App\Models\penghargaan;
 use App\Models\siswa_penghargaan;
 use App\Models\siswa_sp;
+use App\Models\ketua_program;
 use App\Models\surat_peringatan;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Maatwebsite\Excel\Facades\Excel;
@@ -37,7 +38,7 @@ class SiswaController extends Controller
         $guruBk = guru_bk::where('user_id', Auth::id())->first();
 
         if ($guruBk) {
-            // Ambil semua id_kelas yang dipegang guru BK ini
+            // Ambil ssemua id_kelas yang dipegang guru BK ini
             $kelasIds = $guruBk->kelas->pluck('id_kelas');
 
             // Filter siswa hanya dari kelas yang dipegang guru ini
@@ -76,7 +77,39 @@ class SiswaController extends Controller
         ], 200);
     }
 
+   public function siswa_ketua_program(Request $request)
+{
+    $user = Auth::user();
 
+    // Ambil data ketua program termasuk jurusannya
+    $ketua = ketua_program::where('username', $user->username)->first();
+
+    if (!$ketua) {
+        abort(403, "Data Ketua Program tidak ditemukan.");
+    }
+
+    // Ambil jurusan ketua program
+    $jurusanKetua = $ketua->jurusan;
+
+    // Query siswa
+    $query = siswa::with('kelas')
+        ->whereHas('kelas', function ($q) use ($jurusanKetua) {
+            $q->where('jurusan', $jurusanKetua);
+        });
+
+    // Filter berdasarkan kelas
+    if ($request->filled('kelas')) {
+        $query->where('id_kelas', $request->kelas);
+    }
+
+    // PAGINATION
+    $siswa = $query->paginate(10);
+
+    // List kelas jurusan ketua program
+    $kelasList = kelas::where('jurusan', $jurusanKetua)->get();
+
+    return view('wakasek.siswa.index', compact('siswa', 'kelasList'));
+}
 
 
 
@@ -301,14 +334,4 @@ class SiswaController extends Controller
 
     return back()->with('success', 'Semua siswa berhasil dinaikkan kelas');
 }
-
-
-
-
-
-
-
-
- 
-
 }

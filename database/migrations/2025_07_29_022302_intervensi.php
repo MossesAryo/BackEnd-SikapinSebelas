@@ -21,7 +21,7 @@ return new class extends Migration {
             $table->date('tanggal_Mulai_Perbaikan');
             $table->date('tanggal_Selesai_Perbaikan');
             $table->foreign('nip_bk')->references('nip_bk')->on('guru_bk')->onDelete('cascade');
-            $table->foreign('nip_walikelas')->references('nip_walikelas')->on('guru_bk')->onDelete('cascade');
+            $table->foreign('nip_walikelas')->references('nip_walikelas')->on('walikelas')->onDelete('cascade');
             $table->foreign('nip_wakasek')->references('nip_wakasek')->on('wakasek')->onDelete('cascade');
             $table->foreign('nis')->references('nis')->on('siswa')->onDelete('cascade');
             $table->timestamps();

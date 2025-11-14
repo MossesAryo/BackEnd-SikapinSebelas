@@ -52,19 +52,17 @@
                         class="px-3 py-1.5 border border-gray-300 rounded-lg hover:bg-gray-50 flex items-center gap-1.5">
                         <i class="bi bi-funnel"></i> Filter
                     </button>
-                    @if (auth()->user()->role == 1 || auth()->user()->role == 2)
+                    
                     <button id="exportImportBtn"
                         class="px-3 py-1.5 border border-gray-300 rounded-lg hover:bg-gray-50 flex items-center gap-1.5">
                         <i class="bi bi-download"></i> Export / Import
                     </button>
-                            @include('wakasek.siswa.modalExportImport')
-                    @endif
                 </div>
             </div>
         </div>
 
 
-
+        @include('wakasek.siswa.modalExportImport')
 
 
         <!-- Data Table -->
@@ -105,7 +103,7 @@
                                     Kelas
                                 </div>
                             </th>
-                
+
                             <th class="px-5 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
                                 <div class="flex items-center gap-2">
                                     <i class="bi bi-gear text-gray-400"></i>
@@ -164,7 +162,7 @@
 
                                 <td class="px-6 py-4 whitespace-nowrap">
                                     <div class="flex items-center gap-1">
-                                        @if (auth()->user()->role == 1 || auth()->user()->role == 2)
+                                        @if (auth()->user()->role == 1)
                                             <button
                                                 onclick="openEditModal('{{ $item->nis }}', '{{ $item->nama_siswa }}', '{{ $item->id_kelas }}')"
                                                 class="action-btn inline-flex items-center justify-center w-9 h-9 text-blue-600 hover:text-blue-800 hover:bg-blue-50 rounded-full"
@@ -177,7 +175,7 @@
                                             title="Edit Siswa">
                                             <i class="bi bi-eye text-sm"></i>
                                         </button>
-                                        @if (auth()->user()->role == 1 || auth()->user()->role == 2)
+                                        @if (auth()->user()->role == 1)
                                             <button
                                                 onclick="openDeleteModal('{{ $item->nis }}', '{{ $item->nama_siswa }}')"
                                                 class="action-btn inline-flex items-center justify-center w-9 h-9 text-red-600 hover:text-red-800 hover:bg-red-50 rounded-full"
@@ -209,13 +207,11 @@
             </div>
         </div>
     </div>
-      @if (auth()->user()->role == 1 || auth()->user()->role == 2)
     @include('wakasek.siswa.create')
     @include('wakasek.siswa.edit')
     @include('wakasek.siswa.delete')
-    @endif
     @include('wakasek.siswa.filter')
-    @endsection
+@endsection
 
 @push('js')
     <script src="{{ asset('js/wakasek/siswa.js') }}"></script>
