@@ -7,6 +7,7 @@ use App\Models\siswa;
 use App\Models\penilaian;
 use Illuminate\Http\Request;
 use App\Models\aspek_penilaian;
+use App\Models\ketua_program;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 
@@ -16,43 +17,67 @@ class Skoring_PenghargaanController extends Controller
      * Display a listing of the resource.
      */
    public function index(Request $request)
-    {
-        $query = penilaian::whereHas('aspek_penilaian', function ($q) {
-            $q->where('jenis_poin', 'Apresiasi');
-        });
+{
+    $query = penilaian::whereHas('aspek_penilaian', function ($q) {
+        $q->where('jenis_poin', 'Apresiasi');
+    });
 
-        // Filter berdasarkan kelas
-        if ($request->filled('kelas')) {
-            $query->whereHas('siswa', function ($q) use ($request) {
-                $q->where('id_kelas', $request->kelas);
+    $user = Auth::user();
+    $jurusanKetua = null;
+
+    // Jika user adalah ketua program (role 3)
+    if ($user->role == 3) {
+        $ketua = ketua_program::where('username', $user->username)->first();
+
+        if ($ketua && $ketua->jurusan) {
+            $jurusanKetua = $ketua->jurusan;
+
+            // Filter penilaian berdasarkan jurusan ketua program
+            $query->whereHas('siswa.kelas', function ($q) use ($jurusanKetua) {
+                $q->where('jurusan', $jurusanKetua);
             });
         }
-
-        // Filter berdasarkan tanggal mulai
-        if ($request->filled('tanggal_mulai')) {
-            $query->whereDate('created_at', '>=', $request->tanggal_mulai);
-        }
-
-        // Filter berdasarkan tanggal akhir
-        if ($request->filled('tanggal_akhir')) {
-            $query->whereDate('created_at', '<=', $request->tanggal_akhir);
-        }
-
-        // Filter berdasarkan jenis penghargaan
-        if ($request->filled('jenis_penghargaan')) {
-            $query->where('id_aspekpenilaian', $request->jenis_penghargaan);
-        }
-
-        // Sorting berdasarkan tanggal terbaru
-        $query->latest();
-
-        return view('wakasek.skoring.penghargaan.index', [
-            "penilaian" => $query->paginate(10)->withQueryString(),
-            "siswa"     => siswa::all(),
-            "aspekPel"  => aspek_penilaian::where('jenis_poin', 'Apresiasi')->get(),
-            "kelas"     => kelas::all(),
-        ]);
     }
+
+    // Filter berdasarkan kelas (tetap berjalan tetapi hanya pada kelas yang masuk jurusan ketua)
+    if ($request->filled('kelas')) {
+        $query->whereHas('siswa', function ($q) use ($request) {
+            $q->where('id_kelas', $request->kelas);
+        });
+    }
+
+    // Filter tanggal mulai
+    if ($request->filled('tanggal_mulai')) {
+        $query->whereDate('created_at', '>=', $request->tanggal_mulai);
+    }
+
+    // Filter tanggal akhir
+    if ($request->filled('tanggal_akhir')) {
+        $query->whereDate('created_at', '<=', $request->tanggal_akhir);
+    }
+
+    // Filter jenis penghargaan
+    if ($request->filled('jenis_penghargaan')) {
+        $query->where('id_aspekpenilaian', $request->jenis_penghargaan);
+    }
+
+    // Sorting data terbaru
+    $query->latest();
+
+    // Tentukan list kelas untuk dropdown filter
+    $kelasList = ($jurusanKetua)
+        ? kelas::where('jurusan', $jurusanKetua)->get()
+        : kelas::all();
+
+    return view('wakasek.skoring.penghargaan.index', [
+        "penilaian" => $query->paginate(10)->withQueryString(),
+        "siswa"     => siswa::all(),
+        "aspekPel"  => aspek_penilaian::where('jenis_poin', 'Apresiasi')->get(),
+        "kelas"     => $kelasList,
+        "jurusanKetua" => $jurusanKetua,
+    ]);
+}
+
     /**
      * Store a newly created resource in storage.
      */

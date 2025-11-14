@@ -10,6 +10,8 @@ use App\Exports\Akumulasi_ExportExcel;
 use App\Imports\Akumulasi_Import;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Maatwebsite\Excel\Facades\Excel;
+use Illuminate\Support\Facades\Auth;
+use App\Models\ketua_program;
 
 class AkumulasiContoller extends Controller
 {
@@ -17,26 +19,63 @@ class AkumulasiContoller extends Controller
      * Display a listing of the resource.
      */
     public function index(Request $request)
-    {
+{
+    $user = Auth::user();
+    $jurusanKetua = null;
 
-        $jurusanList = kelas::select('jurusan')->distinct()->pluck('jurusan');
+    // ==== Cek role 3 (ketua program) ====
+    if ($user->role == 3) {
+        $ketua = ketua_program::where('username', $user->username)->first();
 
-        $kelasList   = kelas::all();
-
-        $query = Siswa::query();
-
-        if ($request->filled('jurusan')) {
-            $query->whereHas('kelas', fn($q) => $q->where('jurusan', $request->jurusan));
+        if ($ketua && $ketua->jurusan) {
+            $jurusanKetua = $ketua->jurusan;
         }
-
-        if ($request->filled('kelas')) {
-            $query->whereHas('kelas', fn($q) => $q->where('nama_kelas', $request->kelas));
-        }
-
-        $siswa = $query->paginate(10)->withQueryString();
-
-        return view('wakasek.akumulasi.index', compact('siswa', 'jurusanList', 'kelasList'));
     }
+
+    // ==== List Jurusan (kalau ketua → hanya satu) ====
+    if ($jurusanKetua) {
+        $jurusanList = collect([$jurusanKetua]); // hanya jurusan ketua
+    } else {
+        $jurusanList = kelas::select('jurusan')->distinct()->pluck('jurusan');
+    }
+
+    // ==== List Kelas (kalau ketua → kelas sesuai jurusan ketua) ====
+    if ($jurusanKetua) {
+        $kelasList = kelas::where('jurusan', $jurusanKetua)->get();
+    } else {
+        $kelasList = kelas::all();
+    }
+
+    // ==== Query siswa ====
+    $query = siswa::query();
+
+    // Filter otomatis oleh jurusan ketua program
+    if ($jurusanKetua) {
+        $query->whereHas('kelas', function ($q) use ($jurusanKetua) {
+            $q->where('jurusan', $jurusanKetua);
+        });
+    }
+
+    // ==== Filter request jurusan (jika user bukan ketua) ====
+    if ($request->filled('jurusan') && !$jurusanKetua) {
+        $query->whereHas('kelas', fn ($q) => $q->where('jurusan', $request->jurusan));
+    }
+
+    // ==== Filter kelas ====
+    if ($request->filled('kelas')) {
+        $query->whereHas('kelas', fn ($q) => $q->where('nama_kelas', $request->kelas));
+    }
+
+    $siswa = $query->paginate(10)->withQueryString();
+
+    return view('wakasek.akumulasi.index', [
+        "siswa"        => $siswa,
+        "jurusanList"  => $jurusanList,
+        "kelasList"    => $kelasList,
+        "jurusanKetua" => $jurusanKetua, // untuk auto-select di blade
+    ]);
+}
+
 
     public function fetchAPI(Request $request)
     {

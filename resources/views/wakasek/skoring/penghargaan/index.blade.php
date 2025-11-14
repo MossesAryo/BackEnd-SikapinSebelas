@@ -179,12 +179,14 @@
                                     Skor
                                 </div>
                             </th>
+                            @if (auth()->user()->role == 1 || auth()->user()->role == 2)
                             <th class="px-5 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
                                 <div class="flex items-center gap-2">
                                     <i class="bi bi-gear text-gray-400"></i>
                                     Aksi
                                 </div>
                             </th>
+                            @endif
                         </tr>
                     </thead>
 
@@ -210,16 +212,12 @@
                                     </span>
                                 </td>
                                 <td class="px-6 py-4 text-sm text-gray-900">
-                                   
-                                        {{ $item->aspek_penilaian->uraian ?? '-' }}
-                                    
+                                        {{ $item->aspek_penilaian->uraian ?? '-' }}  
                                 </td>
-                                <td class="px-6 py-4 text-sm">
-                                    
-                                     
+                                <td class="px-6 py-4 text-sm"> 
                                         {{ $item->aspek_penilaian->indikator_poin ?? 0 }}
-                               
                                 </td>
+                                @if (auth()->user()->role == 1 || auth()->user()->role == 2)
                                 <td class="px-6 py-4 text-sm">
                                     <div class="flex gap-2">
                                         <button
@@ -229,6 +227,7 @@
                                         </button>
                                     </div>
                                 </td>
+                                @endif
                             </tr>
                         @empty
                             <tr>

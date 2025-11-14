@@ -8,6 +8,9 @@ use Illuminate\Http\Request;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\LaporanSkoringExport;
+use Illuminate\Support\Facades\Auth;
+use App\Models\user;
+use App\Models\ketua_program;
 use Carbon\Carbon;
 
 class LaporanController extends Controller
@@ -16,10 +19,37 @@ class LaporanController extends Controller
      * Tampilkan halaman laporan jam malam untuk Wakasek.
      */
     public function index()
-    {
+{
+    $user = Auth::user();
+
+    // Default: tidak ada jurusanKetua
+    $jurusanKetua = null;
+
+    // Jika role = 3 (ketua program)
+    if ($user->role == 3) {
+
+        // Ambil data ketua program berdasarkan username user
+        $ketua = ketua_program::where('username', $user->username)->first();
+
+        if (!$ketua) {
+            abort(403, "Data Ketua Program tidak ditemukan.");
+        }
+
+        // Ambil jurusan dari ketua program
+        $jurusanKetua = $ketua->jurusan;
+
+        // Hanya tampilkan kelas sesuai jurusan ketua program
+        $kelas = kelas::where('jurusan', $jurusanKetua)->get();
+
+    } else {
+
+        // Jika bukan ketua program → tampilkan semua kelas
         $kelas = kelas::all();
-        return view('wakasek.laporan.index', compact('kelas'));
     }
+
+    return view('wakasek.laporan.index', compact('kelas'));
+}
+
 
     public function exportPdf(Request $request)
     {

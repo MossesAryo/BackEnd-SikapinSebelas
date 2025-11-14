@@ -21,7 +21,7 @@
                     <i class="bi bi-plus"></i>
                     <span>Tambah Catatan Untuk BK</span>
                 </button>
-            @endif
+
 
             <a href="{{ route('siswa.index') }}"
                 class="flex items-center justify-center sm:justify-start gap-2 px-4 py-2 w-full sm:w-auto
@@ -30,6 +30,18 @@
                 <span>Kembali</span>
             </a>
         </div>
+        @endif
+        @if (auth()->user()->role == 3)
+         <a href="{{ route('ketua_program.siswa') }}"
+                class="flex items-center justify-center sm:justify-start gap-2 px-4 py-2 w-full sm:w-auto
+              rounded-lg bg-gray-600 text-white transition-colors hover:bg-gray-700">
+                <i class="bi bi-arrow-left"></i>
+                <span>Kembali</span>
+            </a>
+        </div>
+        @endif
+
+    
 
 
 
