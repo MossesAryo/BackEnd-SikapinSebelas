@@ -10,11 +10,12 @@
                         class="text-gray-500 hover:text-gray-700 text-xl">&times;</button>
                 </div>
                 <div class="space-y-4">
-                    <div>
+                      <div>
                         <label for="edit_nis" class="block text-sm font-medium text-gray-700 mb-1">NIS</label>
-                        <input type="text" id="edit_nis" name="nis" readonly
+                        <input type="text" id="edit_nis" name="nis" required
                             class="w-full border border-gray-300 rounded-lg px-3 py-2 bg-gray-50">
                     </div>
+                
                     <div>
                         <label for="edit_nama_siswa" class="block text-sm font-medium text-gray-700 mb-1">Nama Siswa</label>
                         <input type="text" id="edit_nama_siswa" name="nama_siswa" required
@@ -25,7 +26,7 @@
                         <select id="edit_id_kelas" name="id_kelas" required
                             class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-transparent">
                             <option value="" disabled>Pilih Kelas</option>
-                            @foreach ($kelas as $item)
+                            @foreach ($kelasList as $item)
                                 <option value="{{ $item->id_kelas }}">{{ $item->nama_kelas }}</option>
                             @endforeach
                         </select>

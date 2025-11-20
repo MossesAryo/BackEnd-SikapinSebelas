@@ -35,8 +35,18 @@
                             class="form-input w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:ring-0 focus:outline-none uppercase"
                             required>
                     </div>
+                   
 
-                     
+                    <div>
+                        <label for="jurusan" class="block text-sm font-semibold text-gray-700 mb-2">
+                            <i class="bi bi-tag mr-1"></i>Nama Jurusan
+                        </label>
+                        <input type="text" id="jurusan" name="jurusan"
+                            class="form-input w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:ring-0 focus:outline-none uppercase"
+                            required>
+                    </div>
+
+                  
 
                 </div>
 

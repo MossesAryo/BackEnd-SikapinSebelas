@@ -1,0 +1,458 @@
+@extends('layouts.wakasek.app')
+
+@push('css')
+    <style>
+        .table-hover tbody tr:hover {
+            background-color: rgba(59, 130, 246, 0.05);
+            transform: translateY(-1px);
+            transition: all 0.2s ease;
+        }
+
+        .action-btn {
+            transition: all 0.2s ease;
+        }
+
+        .action-btn:hover {
+            transform: scale(1.1);
+        }
+
+        .modal-overlay {
+            z-index: 9999 !important;
+        }
+
+        body.modal-open {
+            overflow: hidden;
+        }
+    </style>
+@endpush
+
+@section('content')
+    <div class="space-y-6">
+        <!-- Header -->
+        <div class="flex justify-between items-center">
+            <div>
+                <h1 class="text-2xl font-bold gradient-text">Skoring Penghargaan</h1>
+                <p class="text-gray-600 mt-1">Kelola Skoring Penghargaan</p>
+            </div>
+             @if (auth()->user()->role == 1 || auth()->user()->role == 2 || auth()->user()->role == 4 )
+            <button onclick="openCreateModal()"
+                class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg flex items-center gap-2 transition-colors">
+                <i class="bi bi-plus-lg"></i>
+                Tambah Skoring Penghargaan
+            </button>
+            @endif
+        </div>
+
+        @if (session('success'))
+            <div class="bg-green-50 border border-green-200 text-green-800 px-4 py-3 rounded-lg">
+                <p class="text-sm font-semibold flex items-center gap-2">
+                    <i class="bi bi-check-circle-fill text-green-600"></i>
+                    {{ session('success') }}
+                </p>
+            </div>
+        @endif
+
+        @if (session('error'))
+            <div class="bg-red-50 border border-red-200 text-red-800 px-4 py-3 rounded-lg">
+                <p class="text-sm font-semibold flex items-center gap-2">
+                    <i class="bi bi-exclamation-triangle-fill text-red-600"></i>
+                    {{ session('error') }}
+                </p>
+            </div>
+        @endif
+
+        <!-- Search and Filter -->
+        <div class="bg-white p-6 rounded-xl shadow-sm border">
+            <form method="GET" action="{{ route('skoring_penghargaan.index') }}">
+                <div class="flex flex-col md:flex-row gap-2 items-center justify-between">
+                    <div  class="relative w-full md:w-64">
+                        <i class="bi bi-search absolute left-3 top-2.5 text-gray-400"></i>
+                        <input id="inputSearch" type="text" placeholder="Cari Nama Siswa..."
+                            class="pl-10 pr-4 py-1.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent w-full">
+                    </div>
+                    <div class="flex gap-2">
+                        <button type="button" onclick="openFilterModal()"
+                            class="px-3 py-1.5 border border-gray-300 rounded-lg hover:bg-gray-50 flex items-center gap-1.5">
+                            <i class="bi bi-funnel"></i> Filter
+                            @if(request()->hasAny(['kelas', 'tanggal_mulai', 'tanggal_akhir', 'jenis_penghargaan']))
+                                <span class="ml-1 bg-green-600 text-white text-xs rounded-full px-2 py-0.5">●</span>
+                            @endif
+                        </button>
+                        <a href="{{ route('laporan.index') }}"
+                            class="px-3 py-1.5 border border-gray-300 rounded-lg hover:bg-gray-50 flex items-center gap-1.5">
+                            <i class="bi bi-download"></i> Export
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Active Filters Display -->
+                @if(request()->hasAny(['kelas', 'tanggal_mulai', 'tanggal_akhir', 'jenis_penghargaan']))
+                    <div class="mt-3 flex flex-wrap gap-2">
+                        @if(request('kelas'))
+                            <span class="inline-flex items-center gap-1 bg-green-100 text-green-800 text-sm px-3 py-1 rounded-full">
+                                <i class="bi bi-grid-3x3"></i>
+                                Kelas: {{ $kelas->find(request('kelas'))->nama_kelas ?? 'N/A' }}
+                                <a href="{{ route('skoring_penghargaan.index', array_filter(request()->except('kelas'))) }}" class="hover:text-green-900 ml-1">
+                                    <i class="bi bi-x-circle-fill"></i>
+                                </a>
+                            </span>
+                        @endif
+                        @if(request('tanggal_mulai'))
+                            <span class="inline-flex items-center gap-1 bg-green-100 text-green-800 text-sm px-3 py-1 rounded-full">
+                                <i class="bi bi-calendar-event"></i>
+                                Dari: {{ date('d M Y', strtotime(request('tanggal_mulai'))) }}
+                                <a href="{{ route('skoring_penghargaan.index', array_filter(request()->except('tanggal_mulai'))) }}" class="hover:text-green-900 ml-1">
+                                    <i class="bi bi-x-circle-fill"></i>
+                                </a>
+                            </span>
+                        @endif
+                        @if(request('tanggal_akhir'))
+                            <span class="inline-flex items-center gap-1 bg-green-100 text-green-800 text-sm px-3 py-1 rounded-full">
+                                <i class="bi bi-calendar-check"></i>
+                                Sampai: {{ date('d M Y', strtotime(request('tanggal_akhir'))) }}
+                                <a href="{{ route('skoring_penghargaan.index', array_filter(request()->except('tanggal_akhir'))) }}" class="hover:text-green-900 ml-1">
+                                    <i class="bi bi-x-circle-fill"></i>
+                                </a>
+                            </span>
+                        @endif
+                        @if(request('jenis_penghargaan'))
+                            <span class="inline-flex items-center gap-1 bg-green-100 text-green-800 text-sm px-3 py-1 rounded-full">
+                                <i class="bi bi-award"></i>
+                                Jenis: {{ $aspekPel->find(request('jenis_penghargaan'))->uraian ?? 'N/A' }}
+                                <a href="{{ route('skoring_penghargaan.index', array_filter(request()->except('jenis_penghargaan'))) }}" class="hover:text-green-900 ml-1">
+                                    <i class="bi bi-x-circle-fill"></i>
+                                </a>
+                            </span>
+                        @endif
+                        <a href="{{ route('skoring_penghargaan.index') }}" class="inline-flex items-center gap-1 text-sm text-red-600 hover:text-red-800 px-2 py-1">
+                            <i class="bi bi-x-octagon"></i>
+                            Hapus Semua Filter
+                        </a>
+                    </div>
+                @endif
+            </form>
+        </div>
+
+        <!-- Data Table -->
+        <div class="bg-white rounded-xl shadow-sm border overflow-hidden">
+            <div class="px-6 py-4 border-b border-gray-200">
+                <h3 class="text-lg font-semibold text-gray-900">Skoring Penghargaan</h3>
+            </div>
+
+            <div class="overflow-x-auto">
+                <table class="w-full table-hover">
+                    <thead class="bg-gray-50 border-b border-gray-200">
+                        <tr>
+                            <th class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                                <div class="flex items-center gap-2">
+                                    <i class="bi bi-hash text-gray-400"></i>
+                                    No
+                                </div>
+                            </th>
+                            <th class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                                <div class="flex items-center gap-2">
+                                    <i class="bi bi-person-badge text-gray-400"></i>
+                                    NIS
+                                </div>
+                            </th>
+                            <th class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                                <div class="flex items-center gap-2">
+                                    <i class="bi bi-person text-gray-400"></i>
+                                    Nama Siswa
+                                </div>
+                            </th>
+                            <th class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                                <div class="flex items-center gap-2">
+                                    <i class="bi bi-calendar3 text-gray-400"></i>
+                                    Tanggal Penghargaan
+                                </div>
+                            </th>
+                            <th class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                                <div class="flex items-center gap-2">
+                                    <i class="bi bi-award text-gray-400"></i>
+                                    Jenis Penghargaan
+                                </div>
+                            </th>
+                            <th class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                                <div class="flex items-center gap-2">
+                                    <i class="bi bi-star text-gray-400"></i>
+                                    Skor
+                                </div>
+                            </th>
+                            @if (auth()->user()->role == 1 || auth()->user()->role == 2 || auth()->user()->role == 4)
+                            <th class="px-5 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                                <div class="flex items-center gap-2">
+                                    <i class="bi bi-gear text-gray-400"></i>
+                                    Aksi
+                                </div>
+                            </th>
+                            @endif
+                        </tr>
+                    </thead>
+
+                    <tbody id="tableBody" class="bg-white divide-y divide-gray-100">
+                        @forelse ($penilaian as $item)
+                            <tr>
+                                <td class="px-6 py-4 text-sm text-gray-900">
+                                    {{ $loop->iteration + ($penilaian->currentPage() - 1) * $penilaian->perPage() }}
+                                </td>
+                                <td class="px-6 py-4 text-sm text-gray-900">{{ $item->siswa->nis ?? '-' }}</td>
+                                <td class="px-6 py-4 text-sm text-gray-900">
+                                    <div class="flex items-center gap-2">
+                            
+                                            
+                                        </div>
+                                        {{ $item->siswa->nama_siswa ?? '-' }}
+                                    </div>
+                                </td>
+                                <td class="px-6 py-4 text-sm text-gray-900">
+                                    <span class="inline-flex items-center gap-1">
+                                        <i class="bi bi-calendar-event text-gray-400"></i>
+                                        {{ $item->created_at }}
+                                    </span>
+                                </td>
+                                <td class="px-6 py-4 text-sm text-gray-900">
+                                        {{ $item->aspek_penilaian->uraian ?? '-' }}  
+                                </td>
+                                <td class="px-6 py-4 text-sm"> 
+                                        {{ $item->aspek_penilaian->indikator_poin ?? 0 }}
+                                </td>
+                                @if (auth()->user()->role == 1 || auth()->user()->role == 2 || auth()->user()->role == 4)
+                                <td class="px-6 py-4 text-sm">
+                                    <div class="flex gap-2">
+                                        <button
+                                            onclick="openDeleteModalPenghargaan('{{ $item->id_penilaian }}', '{{ $item->siswa->nama_siswa }}')"
+                                            class="text-red-600 hover:text-red-800 action-btn" title="Hapus">
+                                            <i class="bi bi-trash"></i>
+                                        </button>
+                                    </div>
+                                </td>
+                                @endif
+                            </tr>
+                        @empty
+                            <tr>
+                                <td colspan="7" class="px-6 py-12 text-center">
+                                    <div class="mx-auto w-24 h-24 bg-gray-100 rounded-full flex items-center justify-center mb-4">
+                                        <i class="bi bi-award text-3xl text-gray-400"></i>
+                                    </div>
+                                    <h3 class="text-lg font-medium text-gray-900 mb-2">Belum ada data Skoring Penghargaan</h3>
+                                    <p class="text-gray-500">Tambahkan data penghargaan untuk memulai.</p>
+                                </td>
+                            </tr>
+                        @endforelse
+                    </tbody>
+                </table>
+            </div>
+            
+            <!-- PAGINATION -->
+            <div id="pagination" class="px-6 py-4 border-t border-gray-200 bg-white">
+                @include('layouts.wakasek.pagination', ['data' => $penilaian])
+            </div>
+        </div>
+    </div>
+
+    <!-- Filter Modal -->
+    <div id="modal-filter" class="hidden fixed inset-0 bg-black bg-opacity-50 modal-overlay flex items-center justify-center p-4 z-50">
+        <div class="bg-white rounded-xl shadow-xl max-w-md w-full">
+            <div class="px-6 py-4 border-b border-gray-200">
+                <div class="flex items-center justify-between">
+                    <h3 class="text-lg font-semibold text-gray-900 flex items-center gap-2">
+                        <i class="bi bi-funnel text-green-600"></i>
+                        Filter Data Penghargaan
+                    </h3>
+                    <button onclick="closeModal('modal-filter')" class="text-gray-400 hover:text-gray-600 transition-colors">
+                        <i class="bi bi-x-lg"></i>
+                    </button>
+                </div>
+            </div>
+            
+            <form method="GET" action="{{ route('skoring_penghargaan.index') }}">
+                <div class="px-6 py-4 space-y-4">
+                    <!-- Filter Kelas -->
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">
+                            <i class="bi bi-grid-3x3 text-green-600"></i>
+                            Kelas
+                        </label>
+                        <select name="kelas" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent">
+                            <option value="">Semua Kelas</option>
+                            @foreach($kelas as $k)
+                                <option value="{{ $k->id_kelas }}" {{ request('kelas') == $k->id_kelas ? 'selected' : '' }}>
+                                    {{ $k->nama_kelas    }}
+                                </option>
+                            @endforeach
+                        </select>
+                    </div>
+
+                    <!-- Filter Jenis Penghargaan -->
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">
+                            <i class="bi bi-award text-green-600"></i>
+                            Jenis Penghargaan
+                        </label>
+                        <select name="jenis_penghargaan" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent">
+                            <option value="">Semua Jenis</option>
+                            @foreach($aspekPel as $aspek)
+                                <option value="{{ $aspek->id_aspekpenilaian }}" {{ request('jenis_penghargaan') == $aspek->id_aspekpenilaian ? 'selected' : '' }}>
+                                    {{ $aspek->uraian }} (+{{ $aspek->indikator_poin }} poin)
+                                </option>
+                            @endforeach
+                        </select>
+                    </div>
+
+                    <!-- Filter Tanggal -->
+                    <div class="grid grid-cols-2 gap-3">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">
+                                <i class="bi bi-calendar-event text-green-600"></i>
+                                Tanggal Mulai
+                            </label>
+                            <input type="date" name="tanggal_mulai" value="{{ request('tanggal_mulai') }}"
+                                class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent">
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">
+                                <i class="bi bi-calendar-check text-green-600"></i>
+                                Tanggal Akhir
+                            </label>
+                            <input type="date" name="tanggal_akhir" value="{{ request('tanggal_akhir') }}"
+                                class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="px-6 py-4 border-t border-gray-200 flex gap-3 justify-end bg-gray-50">
+                    <a href="{{ route('skoring_penghargaan.index') }}"
+                        class="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-100 transition-colors flex items-center gap-2">
+                        <i class="bi bi-arrow-counterclockwise"></i>
+                        Reset
+                    </a>
+                    <button type="submit"
+                        class="px-4 py-2 bg-green-600 hover:bg-green-700 text-white rounded-lg transition-colors flex items-center gap-2">
+                        <i class="bi bi-check-circle"></i>
+                        Terapkan Filter
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    @include('wakasek.skoring.penghargaan.create')
+    @include('wakasek.skoring.penghargaan.delete')
+@endsection
+
+@push('js')
+    <script>
+        function openModal(modalId) {
+            document.getElementById(modalId).classList.remove('hidden');
+            document.body.classList.add('modal-open');
+        }
+
+        function closeModal(modalId) {
+            document.getElementById(modalId).classList.add('hidden');
+            document.body.classList.remove('modal-open');
+        }
+
+        function openCreateModal() {
+            openModal('modal-create');
+        }
+
+        function openFilterModal() {
+            openModal('modal-filter');
+        }
+
+        function openDeleteModalPenghargaan(id_penghargaan, nama) {
+            document.getElementById('delete-penghargaan').innerText = nama;
+            document.getElementById('form-delete-penghargaan').action = `/skoring_penghargaan/${id_penghargaan}/destroy`;
+            openModal('modal-delete-penghargaan');
+        }
+
+        // Close modal on outside click
+        document.addEventListener('click', function(event) {
+            ['modal-create', 'modal-filter', 'modal-delete-penghargaan'].forEach(modalId => {
+                const modal = document.getElementById(modalId);
+                if (modal && !modal.classList.contains('hidden') && event.target === modal) {
+                    closeModal(modalId);
+                }
+            });
+        });
+
+        // Close modal on ESC key
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'Escape') {
+                ['modal-create', 'modal-filter', 'modal-delete-penghargaan'].forEach(modalId => {
+                    const modal = document.getElementById(modalId);
+                    if (modal && !modal.classList.contains('hidden')) {
+                        closeModal(modalId);
+                    }
+                });
+            }
+        });
+
+         // Search functionality
+    document.addEventListener("DOMContentLoaded", () => {
+    const input = document.getElementById("inputSearch");
+    const tableBody = document.getElementById("tableBody");
+    const pagination = document.getElementById("pagination");
+
+    let debounceTimer = null;
+
+    // Simpan halaman terakhir sebelum search
+    let lastPageUrl = window.location.href;
+
+    function fetchData(url) {
+        fetch(url)
+            .then(res => res.text())
+            .then(html => {
+                const parser = new DOMParser();
+                const doc = parser.parseFromString(html, "text/html");
+
+                tableBody.innerHTML = doc.querySelector("#tableBody").innerHTML;
+                pagination.innerHTML = doc.querySelector("#pagination").innerHTML;
+
+                activatePaginationLinks();
+            })
+            .catch(err => console.error("ERR:", err));
+    }
+
+    function activatePaginationLinks() {
+        const links = document.querySelectorAll("#pagination a");
+
+        links.forEach(link => {
+            link.addEventListener("click", function (e) {
+                e.preventDefault();
+
+                // Simpan page terakhir sebelum search
+                lastPageUrl = this.href;
+
+                fetchData(this.href);
+            });
+        });
+    }
+
+    activatePaginationLinks();
+
+    // Auto search
+    input.addEventListener("keyup", function () {
+        clearTimeout(debounceTimer);
+
+        debounceTimer = setTimeout(() => {
+            const query = input.value.trim();
+
+            if (query.length === 0) {
+                // User hapus search → kembali ke page terakhir
+                fetchData(lastPageUrl);
+                return;
+            }
+
+            // Search selalu mulai dari page 1
+            const url = `/skoring_penghargaan?search=${query}`;
+            fetchData(url);
+
+        }, 200);
+    });
+});
+
+    </script>
+@endpush

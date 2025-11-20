@@ -8,13 +8,24 @@ class kelas extends Model
 {
     protected $table = 'kelas';
     protected $primaryKey = 'id_kelas';
-    protected $fillable = ['id_kelas', 'nama_kelas', 'id_jurusan'];
+    protected $fillable = ['id_kelas', 'nama_kelas', 'jurusan'];
     public $timestamps = false;
     protected $keyType = 'string';
 
-
-    public function jurusan()
+    public function siswa()
     {
-        return $this->belongsTo(jurusan::class, 'id_jurusan', 'id_jurusan');
+        return $this->hasMany(siswa::class, 'id_kelas', 'id_kelas');
     }
+    public function walikelas()
+    {
+        return $this->hasOne(walikelas::class, 'id_kelas', 'id_kelas');
+    }
+
+    public function guruBkKelas()
+    {
+        return $this->hasMany(GuruBkKelas::class, 'kelas_id', 'id_kelas');
+    }
+
+
+   
 }
