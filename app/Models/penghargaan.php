@@ -8,8 +8,6 @@ class penghargaan extends Model
 {
     protected $table = 'penghargaan';
     protected $primaryKey = 'id_penghargaan';
-    public $incrementing = true; 
-    protected $keyType = 'integer'; 
     public $timestamps = false;
     protected $fillable = [
         'id_penghargaan',
@@ -18,4 +16,8 @@ class penghargaan extends Model
         'alasan',
     ];
 
+    public function siswa()
+    {
+        return $this->belongsTo(Siswa::class, 'nis', 'nis');
+    }
 }

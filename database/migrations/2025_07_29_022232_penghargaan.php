@@ -6,19 +6,19 @@ use Illuminate\Support\Facades\Schema;
 
 // 12. Penghargaan
 return new class extends Migration {
-    public function up()
-    {
+    public function up() {
         Schema::create('penghargaan', function (Blueprint $table) {
-            $table->integer('id_penghargaan')->autoIncrement();
+            $table->string('id_penghargaan')->unique();  
             $table->date('tanggal_penghargaan');
             $table->enum('level_penghargaan', ['PH1', 'PH2', 'PH3']);
             $table->string('alasan');
             $table->timestamps();
-           
+
+            
         });
     }
-    public function down()
-    {
+    public function down() {
         Schema::dropIfExists('penghargaan');
     }
 };
+

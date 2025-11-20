@@ -15,8 +15,4 @@ class guru_bk extends Model
     {
         return $this->belongsTo(User::class, 'username', 'username');
     }
-    public function kelas()
-    {
-        return $this->hasMany(GuruBkKelas::class, 'guru_bk_id', 'id');
-    }
 }

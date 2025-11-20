@@ -3,11 +3,9 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
-use App\Models\guru_bk;
+use App\Models\guru_bk; // Perbaiki kapitalisasi nama model
 use App\Models\User;
-use App\Models\wakasek;
-use App\Models\ketua_program;
-use App\Models\walikelas;
+use App\Models\Wakasek; // Perbaiki kapitalisasi nama model
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -29,12 +27,14 @@ class AuthController extends Controller
         $role = null;
         $user = null;
 
-        $wakasek = wakasek::where('nip_wakasek', $request->nip)->first();
+        // Cek wakasek dulu
+        $wakasek = Wakasek::where('nip_wakasek', $request->nip)->first();
         if ($wakasek) {
             $user = User::where('username', $wakasek->username)->first();
             $role = 'wakasek';
         }
 
+        // Jika belum, cek guru_bk
         if (!$user) {
             $guru_bk = guru_bk::where('nip_bk', $request->nip)->first();
             if ($guru_bk) {
@@ -43,33 +43,25 @@ class AuthController extends Controller
             }
         }
 
-        if (!$user) {
-            $ketua_program = ketua_program::where('nip_kaprog', $request->nip)->first();
-            if ($ketua_program) {
-                $user = User::where('username', $ketua_program->username)->first();
-                $role = 'ketua_program';
-            }
-        }
-
-        if (!$user) {
-            $walikelas = walikelas::where('nip_walikelas', $request->nip)->first();
-            if ($walikelas) {
-                $user = User::where('username', $walikelas->username)->first();
-                $role = 'walikelas';
-            }
-        }
-
+        // Jika user tidak ditemukan
         if (!$user) {
             return back()->withErrors(['nip' => 'NIP tidak ditemukan']);
         }
 
+        // Verifikasi password
         if (!Hash::check($request->password, $user->password)) {
             return back()->withErrors(['password' => 'Password salah']);
         }
 
+        // Login
         Auth::login($user);
 
-        return redirect()->route('wakasek.dashboard')->with('success', 'Berhasil login');
+        // Redirect berdasarkan role
+        if ($role === 'wakasek') {
+            return redirect()->route('wakasek.dashboard')->with('success', 'Berhasil login');
+        } elseif ($role === 'guru_bk') {
+            return redirect()->route('gurubk.index')->with('success', 'Berhasil login');
+        }
     }
 
     public function logout()

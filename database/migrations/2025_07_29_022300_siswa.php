@@ -8,17 +8,20 @@ use Illuminate\Support\Facades\Schema;
 return new class extends Migration {
     public function up() {
         Schema::create('siswa', function (Blueprint $table) {
-            $table->bigInteger('nis')->unique();
+            $table->integer('nis')->unique();
+            $table->string('id_penghargaan');
+            $table->string('id_sp');
             $table->string('id_kelas');
             $table->string('nama_siswa');
-            $table->integer('poin_apresiasi')->nullable();
-            $table->integer('poin_pelanggaran')->nullable();
-            $table->integer('poin_total')->nullable();
+            $table->integer('poin_apresiasi');
+            $table->integer('poin_pelanggaran');
+            $table->integer('poin_total');
             $table->timestamps();
 
 
             $table->foreign('id_kelas')->references('id_kelas')->on('kelas')->onDelete('cascade');
-
+            $table->foreign('id_penghargaan')->references('id_penghargaan')->on('penghargaan')->onDelete('cascade');
+            $table->foreign('id_sp')->references('id_sp')->on('surat_peringatan')->onDelete('cascade');
         });
     }
     public function down() {

@@ -19,14 +19,10 @@ class AuthController extends Controller
     if (Auth::attempt($credentials)) {
         $role = Auth::user()->role;
 
-        if ($role === '1') {
+        if ($role === 'wakasek') {
             return view('wakasek.dashboard');
-        } elseif ($role === '2') {
+        } elseif ($role === 'gurubk') {
             return view('gurubk.dashboard');
-        } elseif ($role === '3') {
-            return view('ketua_program.dashboard');
-        } elseif ($role === '4') {
-            return view('walikelas.dashboard');
         }
     }
 
