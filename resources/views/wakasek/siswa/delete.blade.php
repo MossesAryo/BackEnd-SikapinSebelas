@@ -1,6 +1,7 @@
  <!-- Modal Delete -->
-    <div id="modal-delete" class="fixed inset-0 bg-black bg-opacity-40 modal-overlay flex items-center justify-center hidden">
-        <div class="bg-white rounded-xl shadow-xl w-full max-w-md mx-4">
+<div id="modal-overlay" class="hidden bg-black bg-opacity-40"></div>
+<div id="modal-delete" class="hidden">
+    <div class="modal-box bg-white rounded-xl shadow-xl w-full max-w-md mx-4">
             <form id="form-delete" method="POST" class="p-6 space-y-4">
                 @csrf
                 @method('DELETE')
@@ -21,8 +22,9 @@
     </div>
 
  <!-- Modal Delete Penghargaan -->
-    <div id="modal-delete-penghargaan" class="fixed inset-0 bg-black bg-opacity-40 modal-overlay flex items-center justify-center hidden">
-        <div class="bg-white rounded-xl shadow-xl w-full max-w-md mx-4">
+<div id="modal-overlay" class="hidden bg-black bg-opacity-40"></div>
+<div id="modal-delete-penghargaan" class="hidden">
+    <div class="modal-box bg-white rounded-xl shadow-xl w-full max-w-md mx-4">
             <form id="form-delete-penghargaan" method="POST" class="p-6 space-y-4">
                 @csrf
                 @method('DELETE')
@@ -42,8 +44,9 @@
         </div>
     </div>
  <!-- Modal Delete peringatan -->
-    <div id="modal-delete-peringatan" class="fixed inset-0 bg-black bg-opacity-40 modal-overlay flex items-center justify-center hidden">
-        <div class="bg-white rounded-xl shadow-xl w-full max-w-md mx-4">
+<div id="modal-overlay" class="hidden bg-black bg-opacity-40"></div>
+<div id="modal-delete-peringatan" class="hidden">
+    <div class="modal-box bg-white rounded-xl shadow-xl w-full max-w-md mx-4">
             <form id="form-delete-peringatan" method="POST" class="p-6 space-y-4">
                 @csrf
                 @method('DELETE')

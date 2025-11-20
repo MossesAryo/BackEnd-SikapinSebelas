@@ -95,6 +95,17 @@
                     </li>
                     @endif
 
+                      @if (auth()->user()->role == 4)
+                    <li>
+                        <a href="{{ route('walikelas.siswa') }}"
+                            class="flex items-center gap-3 px-4 py-3 rounded-lg menu-link
+                    {{ request()->routeIs('siswa.*') ? 'active-link' : 'text-gray-600 hover:bg-gray-50' }}">
+                            <i class="bi bi-person-badge"></i>
+                            <span>Siswa</span>
+                        </a>
+                    </li>
+                    @endif
+
                 @if (auth()->user()->role == 1 || auth()->user()->role == 2)
                 <li>
                     <a href="{{ route('siswa.index') }}"
@@ -221,7 +232,7 @@
                     </a>
                 </li>
                 
-                @if (auth()->user()->role == 1 || auth()->user()->role == 2)
+                @if (auth()->user()->role == 1 || auth()->user()->role == 2  || auth()->user()->role == 4)
                     
                 <li>
                     <a href="{{ route('intervensi.index') }}"

@@ -23,6 +23,10 @@
                         @auth
                             {{ Auth::user()->ketua_program->nama_ketua_program }}
                         @endauth
+                    @elseif (auth()->user()->role == 4)
+                        @auth
+                            {{ Auth::user()->walikelas->nama_walikelas }}
+                        @endauth
                     @endif
 
                 </h1>
@@ -32,6 +36,8 @@
                 <p class="profile-title text-blue-600 font-medium mb-6 text-sm">Wakil Kepala Kesiswaan</p>
                 @elseif (auth()->user()->role == 3)
                 <p class="profile-title text-blue-600 font-medium mb-6 text-sm">Ketua Program</p>
+                @elseif (auth()->user()->role == 4)
+                <p class="profile-title text-blue-600 font-medium mb-6 text-sm">Wali Kelas</p>
                 @endif
                 
                 <div class="flex flex-col gap-3">
@@ -69,6 +75,10 @@
                                @auth
                                     {{ Auth::user()->ketua_program->nama_ketua_program}}
                                 @endauth
+                                @elseif (auth()->user()->role == 4)
+                                @auth
+                                 {{ Auth::user()->walikelas->nama_walikelas}}
+                                    @endauth
 
                                 
                             @endif
@@ -89,6 +99,10 @@
                                 @auth
                                     {{ Auth::user()->ketua_program->nip_kaprog }}
                                 @endauth
+                                @elseif (auth()->user()->role == 4)
+                                @auth
+                                    {{ Auth::user()->walikelas->nip_walikelas }}
+                                @endauth
                             @endif
                         </div>
                     </div>
@@ -97,7 +111,6 @@
                         <div class="info-value text-sm font-medium text-slate-800">
                            
                                     {{ Auth::user()->email }}
-                               
                         </div>
                     </div>
                     <div class="grid grid-cols-1 md:grid-cols-[140px_1fr] gap-4 py-3 border-b border-slate-100">
@@ -109,8 +122,27 @@
                                 Wakil Kepala Kesiswaan
                             @elseif (auth()->user()->role == 3)
                                 Ketua Program
+                            @elseif (auth()->user()->role == 4)
+                                WaliKelas
                             @endif</div>
                     </div>
+                                        @if (auth()->user()->role == 3)
+                    <div class="grid grid-cols-1 md:grid-cols-[140px_1fr] gap-4 py-3 border-b border-slate-100">
+                        <div class="text-sm font-medium text-slate-500">Jurusan</div>
+                        <div class="info-value text-sm font-medium text-slate-800">
+                            {{ Auth::user()->ketua_program->jurusan }}
+                            @endif
+                        </div>
+                    
+
+                    @if (auth()->user()->role == 4)
+                    <div class="grid grid-cols-1 md:grid-cols-[140px_1fr] gap-4 py-3 border-b border-slate-100">
+                        <div class="text-sm font-medium text-slate-500">walikelas</div>
+                        <div class="info-value text-sm font-medium text-slate-800">
+                            {{ Auth::user()->walikelas->id_kelas }}
+                            @endif
+                        </div>
+                    </div>  
 
                 </div>
             </div>

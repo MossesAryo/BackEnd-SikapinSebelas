@@ -8,6 +8,7 @@ use App\Models\penilaian;
 use Illuminate\Http\Request;
 use App\Models\aspek_penilaian;
 use App\Models\ketua_program;
+use App\Models\walikelas;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 
@@ -18,40 +19,54 @@ class Skoring_PenghargaanController extends Controller
      */
    public function index(Request $request)
 {
-    $query = penilaian::whereHas('aspek_penilaian', function ($q) {
-        $q->where('jenis_poin', 'Apresiasi');
-    });
-
     $user = Auth::user();
     $jurusanKetua = null;
+    $kelasWalikelas = null;
 
-    // Jika user adalah ketua program (role 3)
+    // Query awal: hanya aspek Apresiasi
+    $query = penilaian::whereHas('aspek_penilaian', function ($q) {
+        $q->where('jenis_poin', 'Apresiasi');
+    })->with(['siswa.kelas', 'aspek_penilaian']);
+
+    // Jika user adalah ketua program
     if ($user->role == 3) {
         $ketua = ketua_program::where('username', $user->username)->first();
 
         if ($ketua && $ketua->jurusan) {
             $jurusanKetua = $ketua->jurusan;
 
-            // Filter penilaian berdasarkan jurusan ketua program
+            // Filter berdasarkan jurusan ketua
             $query->whereHas('siswa.kelas', function ($q) use ($jurusanKetua) {
                 $q->where('jurusan', $jurusanKetua);
             });
         }
     }
 
-    // Filter berdasarkan kelas (tetap berjalan tetapi hanya pada kelas yang masuk jurusan ketua)
+    if ($user->role == 4) {
+        $walikelas = walikelas::where('username', $user->username)->first();
+
+        if ($walikelas && $walikelas->id_kelas) {
+            $kelasWalikelas = $walikelas->id_kelas;
+
+            // Filter berdasarkan jurusan ketua
+            $query->whereHas('siswa.kelas', function ($q) use ($kelasWalikelas) {
+                $q->where('id_kelas', $kelasWalikelas);
+            });
+        }
+    }
+
+    // Filter kelas
     if ($request->filled('kelas')) {
         $query->whereHas('siswa', function ($q) use ($request) {
             $q->where('id_kelas', $request->kelas);
         });
     }
 
-    // Filter tanggal mulai
+    // Filter range tanggal
     if ($request->filled('tanggal_mulai')) {
         $query->whereDate('created_at', '>=', $request->tanggal_mulai);
     }
 
-    // Filter tanggal akhir
     if ($request->filled('tanggal_akhir')) {
         $query->whereDate('created_at', '<=', $request->tanggal_akhir);
     }
@@ -61,23 +76,55 @@ class Skoring_PenghargaanController extends Controller
         $query->where('id_aspekpenilaian', $request->jenis_penghargaan);
     }
 
-    // Sorting data terbaru
-    $query->latest();
+    // 🔥 SEARCH — HARUS Lewat Relasi siswa (karena nama_siswa bukan di tabel penilaian)
+    if ($request->filled('search')) {
+        $search = $request->search;
 
-    // Tentukan list kelas untuk dropdown filter
-    $kelasList = ($jurusanKetua)
-        ? kelas::where('jurusan', $jurusanKetua)->get()
-        : kelas::all();
+        $query->whereHas('siswa', function ($q) use ($search) {
+            $q->where('nis', 'like', '%' . $search . '%')
+              ->orWhere('nama_siswa', 'like', '%' . $search . '%');
+        });
+    }
 
-    return view('wakasek.skoring.penghargaan.index', [
-        "penilaian" => $query->paginate(10)->withQueryString(),
-        "siswa"     => siswa::all(),
-        "aspekPel"  => aspek_penilaian::where('jenis_poin', 'Apresiasi')->get(),
-        "kelas"     => $kelasList,
-        "jurusanKetua" => $jurusanKetua,
-    ]);
+    // Urutan data (terbaru dulu)
+   $query->latest();
+
+$penilaian = $query->paginate(10)->appends($request->all());
+
+$kelasList = ($jurusanKetua)
+    ? kelas::where('jurusan', $jurusanKetua)->get()
+    : kelas::all();
+
+$kelasListWalikelas = ($kelasWalikelas)
+    ? kelas::where('id_kelas', $kelasWalikelas)->get()
+    : kelas::all();
+
+    $siswaList = siswa::with('kelas');
+
+if ($user->role == 3 && $jurusanKetua) {
+    // Kaprog hanya boleh melihat siswa dengan jurusan yang sama
+    $siswaList->whereHas('kelas', function ($q) use ($jurusanKetua) {
+        $q->where('jurusan', $jurusanKetua);
+    });
 }
 
+if ($user->role == 4 && isset($kelasWalikelas)) {
+    // Wali kelas hanya boleh melihat siswa kelasnya
+    $siswaList->where('id_kelas', $kelasWalikelas);
+}
+
+$siswaList = $siswaList->orderBy('nama_siswa')->get();
+
+return view('wakasek.skoring.penghargaan.index', [
+    "penilaian"    => $penilaian,
+    "siswa"        => $siswaList,
+    "aspekPel"     => aspek_penilaian::where('jenis_poin', 'Apresiasi')->get(),
+    "kelas"        => $kelasList,
+    "jurusanKetua" => $jurusanKetua,
+    "kelasWalikelas"    => $kelasListWalikelas,
+]);
+
+}
     /**
      * Store a newly created resource in storage.
      */

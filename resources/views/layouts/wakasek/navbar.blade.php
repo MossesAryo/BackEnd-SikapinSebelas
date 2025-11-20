@@ -18,6 +18,8 @@
                          {{ strtoupper(substr(Auth::user()->wakasek->nama_wakasek, 0, 1)) }}
                      @elseif (auth()->user()->role == 3)
                          {{ strtoupper(substr(Auth::user()->ketua_program->nama_ketua_program, 0, 1)) }}
+                        @elseif (auth()->user()->role == 4)
+                            {{ strtoupper(substr(Auth::user()->walikelas->nama_walikelas, 0, 1)) }}
                      @endif
                  </div>
                  <span class="text-gray-700">
@@ -32,6 +34,10 @@
                      @elseif (auth()->user()->role == 3)
                          @auth
                              {{ Auth::user()->ketua_program->nama_ketua_program }}
+                         @endauth
+                     @elseif (auth()->user()->role == 4)
+                         @auth
+                             {{ Auth::user()->walikelas->nama_walikelas }}
                          @endauth
                      @endif 
                  </span>

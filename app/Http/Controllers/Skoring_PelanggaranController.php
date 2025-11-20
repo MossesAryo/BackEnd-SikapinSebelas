@@ -8,6 +8,7 @@ use App\Models\penilaian;
 use Illuminate\Http\Request;
 use App\Models\aspek_penilaian;
 use App\Models\ketua_program;
+use App\Models\walikelas;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 
@@ -24,6 +25,7 @@ class Skoring_PelanggaranController extends Controller
 
     $user = Auth::user();
     $jurusanKetua = null;
+    $kelasWalikelas = null;
 
     // Jika user adalah ketua program (role 3)
     if ($user->role == 3) {
@@ -35,6 +37,19 @@ class Skoring_PelanggaranController extends Controller
             // Filter penilaian berdasarkan jurusan ketua program
             $query->whereHas('siswa.kelas', function ($q) use ($jurusanKetua) {
                 $q->where('jurusan', $jurusanKetua);
+            });
+        }
+    }
+
+     if ($user->role == 4) {
+        $walikelas = walikelas::where('username', $user->username)->first();
+
+        if ($walikelas && $walikelas->id_kelas) {
+            $kelasWalikelas = $walikelas->id_kelas;
+
+            // Filter berdasarkan jurusan ketua
+            $query->whereHas('siswa.kelas', function ($q) use ($kelasWalikelas) {
+                $q->where('id_kelas', $kelasWalikelas);
             });
         }
     }
@@ -61,6 +76,18 @@ class Skoring_PelanggaranController extends Controller
         $query->where('id_aspekpenilaian', $request->jenis_pelanggaran);
     }
 
+    // 🔥 SEARCH — HARUS Lewat Relasi siswa (karena nama_siswa bukan di tabel penilaian)
+    if ($request->filled('search')) {
+        $search = $request->search;
+
+        $query->whereHas('siswa', function ($q) use ($search) {
+            $q->where('nis', 'like', '%' . $search . '%')
+              ->orWhere('nama_siswa', 'like', '%' . $search . '%');
+        });
+    }
+
+    $penilaian = $query->paginate(10)->appends($request->all());
+
     // Sorting data terbaru
     $query->latest();
 
@@ -68,13 +95,34 @@ class Skoring_PelanggaranController extends Controller
     $kelasList = ($jurusanKetua)
         ? kelas::where('jurusan', $jurusanKetua)->get()
         : kelas::all();
+    $kelasListWalikelas = ($kelasWalikelas)
+    ? kelas::where('id_kelas', $kelasWalikelas)->get()
+    : kelas::all();
 
+   $siswaList = siswa::with('kelas');
+
+    if ($user->role == 3 && $jurusanKetua) {
+    // Kaprog hanya boleh melihat siswa dengan jurusan yang sama
+    $siswaList->whereHas('kelas', function ($q) use ($jurusanKetua) {
+        $q->where('jurusan', $jurusanKetua);
+    });
+}
+
+if ($user->role == 4 && isset($kelasWalikelas)) {
+    // Wali kelas hanya boleh melihat siswa kelasnya
+    $siswaList->where('id_kelas', $kelasWalikelas);
+}
+
+$siswaList = $siswaList->orderBy('nama_siswa')->get();
+
+   
     return view('wakasek.skoring.pelanggaran.index', [
-        "penilaian" => $query->paginate(10)->withQueryString(),
-        "siswa"     => siswa::all(),
+        "penilaian" => $penilaian,
+        "siswa"     => $siswaList,
         "aspekPel"  => aspek_penilaian::where('jenis_poin', 'Pelanggaran')->get(),
         "kelas"     => $kelasList,
         "jurusanKetua" => $jurusanKetua,
+        "kelasWalikelas"    => $kelasListWalikelas,
     ]);
 }
     /**
@@ -83,7 +131,6 @@ class Skoring_PelanggaranController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-
             'nis'               => 'required',
             'id_aspekpenilaian' => 'required',
         ]);

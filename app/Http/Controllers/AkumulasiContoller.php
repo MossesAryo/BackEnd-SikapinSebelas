@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\kelas;
 use Illuminate\Http\Request;
 use App\Models\siswa;
+use App\Models\walikelas;
+
 
 use App\Exports\Akumulasi_ExportExcel;
 use App\Imports\Akumulasi_Import;
@@ -22,6 +24,7 @@ class AkumulasiContoller extends Controller
 {
     $user = Auth::user();
     $jurusanKetua = null;
+    $kelasWalikelas = null;
 
     // ==== Cek role 3 (ketua program) ====
     if ($user->role == 3) {
@@ -31,6 +34,15 @@ class AkumulasiContoller extends Controller
             $jurusanKetua = $ketua->jurusan;
         }
     }
+
+    if ($user->role == 4) {
+        $walikelas = walikelas::where('username', $user->username)->first();
+
+        if ($walikelas && $walikelas->id_kelas) {
+            $kelasWalikelas = $walikelas->id_kelas;
+        }
+    }
+
 
     // ==== List Jurusan (kalau ketua → hanya satu) ====
     if ($jurusanKetua) {
@@ -46,6 +58,20 @@ class AkumulasiContoller extends Controller
         $kelasList = kelas::all();
     }
 
+    // ==== List Jurusan (kalau ketua → hanya satu) ====
+    if ($kelasWalikelas) {
+        $kelasList = collect([$kelasWalikelas]); // hanya jurusan ketua
+    } else {
+        $kelasList = kelas::select('id_kelas')->distinct()->pluck('id_kelas');
+    }
+
+    // ==== List Kelas (kalau ketua → kelas sesuai jurusan ketua) ====
+    if ($kelasWalikelas) {
+        $kelasList = kelas::where('id_kelas', $kelasWalikelas)->get();
+    } else {
+        $kelasList = kelas::all();
+    }
+
     // ==== Query siswa ====
     $query = siswa::query();
 
@@ -55,24 +81,48 @@ class AkumulasiContoller extends Controller
             $q->where('jurusan', $jurusanKetua);
         });
     }
+    if ($kelasWalikelas) {
+        $query->whereHas('kelas', function ($q) use ($kelasWalikelas) {
+            $q->where('id_kelas', $kelasWalikelas);
+        });
+    }
 
     // ==== Filter request jurusan (jika user bukan ketua) ====
     if ($request->filled('jurusan') && !$jurusanKetua) {
         $query->whereHas('kelas', fn ($q) => $q->where('jurusan', $request->jurusan));
     }
+    if ($request->filled('kelas') && !$kelasWalikelas) {
+        $query->whereHas('kelas', fn ($q) => $q->where('id_kelas', $request->kelas));
+    }
+
+    // 🔥 SEARCH — HARUS Lewat Relasi siswa (karena nama_siswa bukan di tabel penilaian)
+   // SEARCH
+if ($request->filled('search')) {
+    $search = $request->search;
+
+    $query->where(function ($q) use ($search) {
+        $q->where('nis', 'like', '%' . $search . '%')
+          ->orWhere('nama_siswa', 'like', '%' . $search . '%');
+    });
+}
+
+
+    $siswa = $query->paginate(10)->appends($request->all());
+
 
     // ==== Filter kelas ====
     if ($request->filled('kelas')) {
         $query->whereHas('kelas', fn ($q) => $q->where('nama_kelas', $request->kelas));
     }
 
-    $siswa = $query->paginate(10)->withQueryString();
-
     return view('wakasek.akumulasi.index', [
         "siswa"        => $siswa,
         "jurusanList"  => $jurusanList,
         "kelasList"    => $kelasList,
-        "jurusanKetua" => $jurusanKetua, // untuk auto-select di blade
+        "jurusanKetua" => $jurusanKetua,
+         "kelasWalikelas" => $kelasWalikelas, 
+         
+       
     ]);
 }
 

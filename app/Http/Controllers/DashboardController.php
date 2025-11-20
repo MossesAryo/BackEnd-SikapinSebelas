@@ -12,6 +12,10 @@ use Illuminate\Http\Request;
 use App\Models\aspek_penilaian;
 use App\Models\siswa_penghargaan;
 use App\Models\User;
+use App\Models\walikelas;
+
+use App\Models\GuruBkKelas;
+use App\Models\guru_bk;
 use App\Models\ketua_program;
 use Illuminate\Support\Facades\Auth;
 
@@ -20,63 +24,88 @@ class DashboardController extends Controller
     /**
      * Display a listing of the resource.
      */
-   public function index()
+public function index()
 {
     $user = Auth::user();
     $role = $user->role;
 
-    // === Jika Role 3 (Ketua Program), tentukan jurusan yang dipegang ===
-    $jurusanFilter = null;
+    // ====== 1. Tentukan FILTER berdasarkan ROLE ======
+    $kelasFilter = [];      // untuk Guru BK atau Walikelas
+    $jurusanFilter = null;  // untuk Kaprog
 
+    // === Role 3: Ketua Program → filter berdasarkan JURUSAN ===
     if ($role == 3) {
         $ketua = ketua_program::where('username', $user->username)->first();
-
-        if (!$ketua) {
-            abort(403, "Data Ketua Program tidak ditemukan.");
-        }
-
-        $jurusanFilter = $ketua->jurusan; 
+        if (!$ketua) abort(403, "Data Ketua Program tidak ditemukan.");
+        $jurusanFilter = $ketua->jurusan;
     }
 
-    // === Query Siswa Berdasarkan Role ===
+    // === Role 2: Guru BK → filter berdasarkan kelas yg diampu ===
+    if ($role == 2) {
+        $guruBK = guru_bk::where('username', $user->username)->first();
+        if (!$guruBK) abort(403, "Data Guru BK tidak ditemukan.");
+
+        // ambil kelas dari tabel guru_bk_kelas
+        $kelasFilter = $guruBK->kelas->pluck('id_kelas')->toArray();
+        if (empty($kelasFilter)) $kelasFilter = ['-null-']; // supaya kosong aman
+    }
+
+    // === Role 4: Walikelas → filter berdasarkan 1 kelas ===
+    if ($role == 4) {
+        $wali = walikelas::where('username', $user->username)->first();
+        if (!$wali) abort(403, "Data Wali Kelas tidak ditemukan.");
+        $kelasFilter = [$wali->id_kelas];
+    }
+
+
+    // ====== 2. Query SISWA ======
     $siswaQuery = siswa::query();
 
+    // filter Kaprog (jurusan)
     if ($jurusanFilter) {
         $siswaQuery->whereHas('kelas', function ($q) use ($jurusanFilter) {
             $q->where('jurusan', $jurusanFilter);
         });
     }
 
+    // filter Guru BK / Walikelas (kelas)
+    if (!empty($kelasFilter)) {
+        $siswaQuery->whereIn('id_kelas', $kelasFilter);
+    }
+
     $nisList = $siswaQuery->pluck('nis');
 
-    // === Hitungan Dashboard ===
-    $totalSiswa = $siswaQuery->count();
-    $rataRata = $siswaQuery->avg('poin_total');
+
+    // ====== 3. Hitung data DASHBOARD ======
+    $totalSiswa     = $siswaQuery->count();
+    $rataSkor       = $siswaQuery->avg('poin_total');
 
     $totalApresiasi = siswa_penghargaan::whereIn('nis', $nisList)
-        ->distinct('nis')
-        ->count('nis');
+        ->distinct('nis')->count('nis');
 
     $totalPelanggaran = siswa_sp::whereIn('nis', $nisList)
-        ->distinct('nis')
-        ->count('nis');
+        ->distinct('nis')->count('nis');
 
-    // === Aktivitas terbaru hanya untuk siswa jurusan tersebut ===
+
+    // ===== 4. Activity Log sesuai FILTER =====
     $recentActivities = ActivityLog::with(['user', 'siswa.kelas'])
         ->when($jurusanFilter, function ($q) use ($jurusanFilter) {
             $q->whereHas('siswa.kelas', function ($sub) use ($jurusanFilter) {
                 $sub->where('jurusan', $jurusanFilter);
             });
         })
+        ->when(!empty($kelasFilter), function ($q) use ($kelasFilter) {
+            $q->whereHas('siswa', function ($sub) use ($kelasFilter) {
+                $sub->whereIn('id_kelas', $kelasFilter);
+            });
+        })
         ->orderBy('created_at', 'desc')
         ->limit(5)
         ->get();
 
-    // === Data Chart Berdasarkan Jurusan ===
-    $jurusanList = $jurusanFilter 
-        ? collect([$jurusanFilter])
-        : kelas::select('jurusan')->distinct()->pluck('jurusan');
 
+    // ====== 5. Data Chart (per jurusan) ======
+    $jurusanList = kelas::select('jurusan')->distinct()->pluck('jurusan');
     $apresiasiData = [];
     $pelanggaranData = [];
 
@@ -94,26 +123,25 @@ class DashboardController extends Controller
             ->count('nis');
     }
 
-    // === data untuk view ===
+
+    // ====== 6. Return VIEW sesuai role ======
     $data = [
         'totalSiswa' => $totalSiswa,
         'totalApresiasi' => $totalApresiasi,
         'totalPelanggaran' => $totalPelanggaran,
-        'rataSkor' => $rataRata,
+        'rataSkor' => $rataSkor,
         'jurusanList' => $jurusanList,
         'apresiasiData' => $apresiasiData,
         'pelanggaranData' => $pelanggaranData,
         'recentActivities' => $recentActivities,
     ];
 
-    // === Tentukan view ===
     if ($role == 1) return view('wakasek.dashboard', $data);
     if ($role == 2) return view('gurubk.dashboard', $data);
     if ($role == 3) return view('ketua_program.dashboard', $data);
+    if ($role == 4) return view('walikelas.dashboard', $data);
 
     abort(403, 'Role tidak dikenali.');
 }
-
-
 
 }

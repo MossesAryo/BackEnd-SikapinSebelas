@@ -17,10 +17,26 @@ class Guru_bkController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
+         $query = guru_bk::with('kelas');
+
+
+           // Search (nama atau nis)
+        if ($request->filled('search')) {
+            $search = $request->search;
+            $query->where(function ($q) use ($search) {
+                $q->where('nama_guru_bk', 'like', '%' . $search . '%')
+                ->orWhere('nip_bk', 'like', '%' . $search . '%');
+            });
+        }
+          // Paginate — sertakan semua query params yang relevan supaya pagination mempertahankan filter/search
+    $guru_bk = $query->orderBy('nama_guru_bk')->paginate(10)
+                  ->appends($request->only(['search', 'nip_bk', 'kelas']));
+
+
         return view('wakasek.guru_bk.index', [
-            'guru_bk' => guru_bk::paginate(10),
+            'guru_bk' => $guru_bk,
         ]);
     }
 

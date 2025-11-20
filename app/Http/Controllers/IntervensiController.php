@@ -5,8 +5,9 @@ namespace App\Http\Controllers;
 use App\Models\intervensi;
 use Illuminate\Http\Request;
 use App\Models\kelas;
-use App\Models\siswa;
 use Illuminate\Support\Facades\Auth;
+use App\Models\siswa;
+use App\Models\walikelas;
 use App\Models\catatan;
 
 
@@ -16,15 +17,65 @@ class IntervensiController extends Controller
      * Display a listing of the resource.
      */
     public function index(Request $request)
-    {
-        $intervensi = intervensi::paginate(10);
-        $kelas = kelas::all();
-        $siswa = siswa::all();
-        $catatan = catatan::all();
+{
+    $user = Auth::user();
+    $kelas = kelas::all();
+    $catatan = catatan::all();
 
-        // Kirim data walikelas dan kelas ke view
-        return view('wakasek.intervensi.index', compact('intervensi', 'kelas', 'siswa', 'catatan'));
+    // ==========================
+    // FILTER DATA SISWA SEBELUM KE VIEW
+    // ==========================
+    $siswaList = siswa::query();
+
+    $kelasWalikelas = null;
+
+    if ($user->role == 4) {
+        // Ambil data wali kelas
+        $walikelas = walikelas::where('username', $user->username)->first();
+
+        if ($walikelas && $walikelas->id_kelas) {
+            $kelasWalikelas = $walikelas->id_kelas;
+
+            // Filter siswa sesuai kelas wali kelas
+            $siswaList->where('id_kelas', $kelasWalikelas);
+        }
     }
+
+    $siswa = $siswaList->orderBy('nama_siswa')->get();
+
+    // ==========================
+    // QUERY INTERVENSI
+    // ==========================
+    $query = intervensi::with(['siswa.kelas']);
+
+    // Jika role 4 → filter berdasarkan kelas wali kelas
+    if ($user->role == 4 && $kelasWalikelas) {
+        $query->whereHas('siswa', function ($q) use ($kelasWalikelas) {
+            $q->where('id_kelas', $kelasWalikelas);
+        });
+    }
+
+    // ==========================
+    // SEARCH
+    // ==========================
+    if ($request->filled('search')) {
+        $search = $request->search;
+
+        $query->whereHas('siswa', function ($q) use ($search) {
+            $q->where('nis', 'like', '%' . $search . '%')
+              ->orWhere('nama_siswa', 'like', '%' . $search . '%');
+        });
+    }
+
+    // ==========================
+    // PAGINATION
+    // ==========================
+    $query->latest();
+    $intervensi = $query->paginate(10)->appends($request->all());
+
+    return view('wakasek.intervensi.index', compact('intervensi', 'kelas', 'siswa', 'catatan'));
+}
+
 
     /**
      * Store a newly created resource in storage.

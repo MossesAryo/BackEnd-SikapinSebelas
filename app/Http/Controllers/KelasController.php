@@ -100,7 +100,18 @@ class KelasController extends Controller
             ->orderBy('nama_kelas', 'asc');
         }
         
-        $kelas = $query->paginate(10)->appends($request->all());
+        
+    if ($request->filled('search')) {
+        $search = $request->search;
+        $query->where(function ($q) use ($search) {
+            $q->where('nama_kelas', 'like', '%' . $search . '%')
+              ->orWhere('id_kelas', 'like', '%' . $search . '%');
+        });
+    }
+
+        // Paginate — sertakan semua query params yang relevan supaya pagination mempertahankan filter/search
+    $kelas = $query->orderBy('nama_kelas')->paginate(10)
+                  ->appends($request->only(['search', 'jurusan', 'kelas']));
         
         // Return view berdasarkan role user
         if ($user) {

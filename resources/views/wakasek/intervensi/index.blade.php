@@ -37,7 +37,7 @@
                 <div class="flex flex-col md:flex-row gap-2 items-center justify-between">
                     <div id="searchSiswa" class="relative w-full md:w-64">
                         <i class="bi bi-search absolute left-3 top-2.5 text-gray-400"></i>
-                        <input type="text" placeholder="Cari Penanganan..."
+                        <input id="inputSearch" type="text" placeholder="Cari Siswa..."
                             class="pl-10 pr-4 py-1.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent w-full">
                     </div>
                     <div class="flex gap-2">
@@ -125,7 +125,7 @@
                             </tr>
                         </thead>
 
-                        <tbody class="bg-white divide-y divide-gray-100">
+                        <tbody id="tableBody" class="bg-white divide-y divide-gray-100">
                             @forelse ($intervensi as $item)
                                 <tr class="hover:bg-gray-50 group">
                                     
@@ -195,7 +195,7 @@
                     </table>
                 </div>
                 <!-- PAGINATION -->
-                <div class="px-6 py-4 border-t border-gray-200 bg-white">
+                <div id="pagination" class="px-6 py-4 border-t border-gray-200 bg-white">
                     @include('layouts.wakasek.pagination', ['data' => $intervensi])
                 </div>
             </div>
@@ -228,6 +228,7 @@
         function openEditModal(id_intervensi, nis, nama_intervensi, isi_intervensi, status, tanggal_Mulai_Perbaikan,
             tanggal_Selesai_Perbaikan, perubahan_setelah_intervensi) {
             document.getElementById('nis_edit').value = nis;
+            document.getElementById('nis_hidden_edit').value = nis;
             document.getElementById('nama_intervensi_edit').value = nama_intervensi;
             document.getElementById('isi_intervensi_edit').value = isi_intervensi;
             document.getElementById('status_edit').value = status;
@@ -287,4 +288,68 @@
                 });
             }
         });
+
+         // Search functionality
+    document.addEventListener("DOMContentLoaded", () => {
+    const input = document.getElementById("inputSearch");
+    const tableBody = document.getElementById("tableBody");
+    const pagination = document.getElementById("pagination");
+
+    let debounceTimer = null;
+
+    // Simpan halaman terakhir sebelum search
+    let lastPageUrl = window.location.href;
+
+    function fetchData(url) {
+        fetch(url)
+            .then(res => res.text())
+            .then(html => {
+                const parser = new DOMParser();
+                const doc = parser.parseFromString(html, "text/html");
+
+                tableBody.innerHTML = doc.querySelector("#tableBody").innerHTML;
+                pagination.innerHTML = doc.querySelector("#pagination").innerHTML;
+
+                activatePaginationLinks();
+            })
+            .catch(err => console.error("ERR:", err));
+    }
+
+    function activatePaginationLinks() {
+        const links = document.querySelectorAll("#pagination a");
+
+        links.forEach(link => {
+            link.addEventListener("click", function (e) {
+                e.preventDefault();
+
+                // Simpan page terakhir sebelum search
+                lastPageUrl = this.href;
+
+                fetchData(this.href);
+            });
+        });
+    }
+
+    activatePaginationLinks();
+
+    // Auto search
+    input.addEventListener("keyup", function () {
+        clearTimeout(debounceTimer);
+
+        debounceTimer = setTimeout(() => {
+            const query = input.value.trim();
+
+            if (query.length === 0) {
+                // User hapus search → kembali ke page terakhir
+                fetchData(lastPageUrl);
+                return;
+            }
+
+            // Search selalu mulai dari page 1
+            const url = `/intervensi?search=${query}`;
+            fetchData(url);
+
+        }, 200);
+    });
+});
     </script>

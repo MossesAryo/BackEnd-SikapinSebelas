@@ -14,13 +14,32 @@
                 <p class="mt-1 text-gray-600">Informasi lengkap data siswa</p>
             </div>
 
-            @if (auth()->user()->role == 1)
-                <button onclick="opencatatanmodal('{{ $siswa->nis }}')"
-                    class="flex items-center justify-center sm:justify-start gap-2 px-4 py-2 w-full sm:w-auto
-              rounded-lg bg-blue-600 text-white transition-colors hover:bg-blue-700">
-                    <i class="bi bi-plus"></i>
-                    <span>Tambah Catatan Untuk BK</span>
-                </button>
+           @if (auth()->user()->role == 1 || auth()->user()->role == 2 || auth()->user()->role == 4)
+    <!-- TOMBOL TAMBAH PENGHARGAAN (HIJAU) -->
+    <button type="button"
+            onclick="openCreateModalPenghargaan('{{ $siswa->nis }}')"
+            class="flex items-center justify-center sm:justify-start gap-2 px-4 py-2 w-full sm:w-auto rounded-lg bg-green-600 text-white hover:bg-green-700 transition-colors">
+        <i class="bi bi-plus"></i>
+        <span>Tambah Skoring Penghargaan</span>
+    </button>
+
+    <!-- TOMBOL TAMBAH PELANGGARAN (MERAH) - GANTI NAMA FUNGSINYA! -->
+    <button type="button"
+            onclick="openCreateModalPelanggaran('{{ $siswa->nis }}')"
+            class="flex items-center justify-center sm:justify-start gap-2 px-4 py-2 w-full sm:w-auto rounded-lg bg-red-600 text-white hover:bg-red-700 transition-colors">
+        <i class="bi bi-plus"></i>
+        <span>Tambah Skoring Pelanggaran</span>
+    </button>
+
+    <button type="button"
+            onclick="openCreateModalPenanganan('{{ $siswa->nis }}')"
+            class="flex items-center justify-center sm:justify-start gap-2 px-4 py-2 w-full sm:w-auto rounded-lg bg-blue-600 text-white hover:bg-blue-700 transition-colors">
+        <i class="bi bi-plus"></i>
+        <span>Tambah Penanganan</span>
+    </button>
+
+
+@endif
 
 
             <a href="{{ route('siswa.index') }}"
@@ -30,7 +49,7 @@
                 <span>Kembali</span>
             </a>
         </div>
-        @endif
+      
         @if (auth()->user()->role == 3)
          <a href="{{ route('ketua_program.siswa') }}"
                 class="flex items-center justify-center sm:justify-start gap-2 px-4 py-2 w-full sm:w-auto
@@ -100,13 +119,7 @@
                             <i class="bi bi-award text-green-600"></i>
                             Penghargaan
                         </h3>
-                        @if (auth()->user()->role == 1)
-                            <button onclick="openpenghargaanModal('{{ $siswa->nis }}')"
-                                class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg flex items-center gap-2 transition-colors">
-                                <i class="bi bi-plus-circle"></i>
-                                Tambah
-                            </button>
-                        @endif
+                        
 
                     </div>
                     <div class="p-6">
@@ -144,13 +157,7 @@
                             <i class="bi bi-exclamation-triangle text-red-600"></i>
                             Surat Peringatan
                         </h3>
-                        @if (auth()->user()->role == 1)
-                            <button onclick="openperingatanModal('{{ $siswa->nis }}')"
-                                class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg flex items-center gap-2 transition-colors">
-                                <i class="bi bi-plus-circle"></i>
-                                Tambah
-                            </button>
-                        @endif
+                        
 
                     </div>
                     <div class="p-6">
@@ -467,13 +474,19 @@
     </div>
 
     {{-- Included Modals --}}
+    
+    @include('wakasek.siswa.create-penanganan')
+    @include('wakasek.siswa.create-penghargaan')
+    @include('wakasek.siswa.create-pelanggaran')
+    
     @include('wakasek.siswa.edit')
     @include('wakasek.siswa.delete')
     @include('wakasek.siswa.penghargaan')
     @include('wakasek.siswa.peringatan')
-    @include('wakasek.siswa.catatan')
-@endsection
 
-@push('js')
+
+    @endsection
+    
+    @push('js')
     <script src="{{ asset('js/wakasek/siswa.js') }}"></script>
-@endpush
+    @endpush

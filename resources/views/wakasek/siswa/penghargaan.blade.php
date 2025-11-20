@@ -1,7 +1,7 @@
 <!-- Modal penghargaan -->
-<div id="modal-penghargaan"
-    class="fixed inset-0 bg-black bg-opacity-40 modal-overlay flex items-center justify-center hidden">
-    <div class="bg-white rounded-xl shadow-xl w-full max-w-xl mx-4">
+<div id="modal-overlay" class="hidden bg-black bg-opacity-40"></div>
+<div id="modal-penghargaan" class="hidden">
+    <div class="modal-box bg-white rounded-xl shadow-xl w-full max-w-xl mx-4">
        
 
         <form action="{{ route('siswa.penghargaan', ['nis' => $siswa->nis]) }}" method="POST" class="p-6 space-y-4">

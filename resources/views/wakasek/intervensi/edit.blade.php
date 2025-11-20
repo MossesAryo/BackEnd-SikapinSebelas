@@ -15,14 +15,20 @@
                 {{-- Pilih Siswa --}}
                 <div>
                     <label for="nis_edit" class="block text-sm font-medium text-gray-700 mb-1">Pilih Siswa</label>
-                    <select id="nis_edit" name="nis" required
-                        class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-transparent">
-                        <option value="" disabled selected>Pilih Siswa</option>
-                        @foreach ($catatan as $item)
-                            <option value="{{ $item->nis }}">{{ $item->siswa->nama_siswa }}</option>
+
+                    <!-- SELECT hanya untuk tampilan (tidak bisa diubah) -->
+                    <select id="nis_edit" disabled
+                        class="w-full border border-gray-300 rounded-lg px-3 py-2 bg-gray-100 cursor-not-allowed">
+                        <option value="">Memuat...</option>
+                        @foreach ($siswa as $item)
+                            <option value="{{ $item->nis }}">{{ $item->nama_siswa }}</option>
                         @endforeach
                     </select>
+
+                    <!-- Hidden input agar nilai tetap terkirim -->
+                    <input type="hidden" id="nis_hidden_edit" name="nis">
                 </div>
+
 
                 <div>
                     <label for="nama_intervensi_edit" class="block text-sm font-medium text-gray-700 mb-1">
@@ -90,6 +96,7 @@
         const status = document.getElementById('status').value;
         const perubahanField = document.getElementById('perubahan-field');
         const perubahanTextarea = document.getElementById('perubahan_setelah_intervensi');
+        
 
         if (status === 'Selesai') {
             perubahanField.classList.remove('hidden');
