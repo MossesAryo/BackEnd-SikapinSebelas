@@ -34,11 +34,13 @@
                 <h1 class="text-2xl font-bold gradient-text">Skoring Penghargaan</h1>
                 <p class="text-gray-600 mt-1">Kelola Skoring Penghargaan</p>
             </div>
+             @if (auth()->user()->role == 1 || auth()->user()->role == 2 || auth()->user()->role == 4 )
             <button onclick="openCreateModal()"
                 class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg flex items-center gap-2 transition-colors">
                 <i class="bi bi-plus-lg"></i>
                 Tambah Skoring Penghargaan
             </button>
+            @endif
         </div>
 
         @if (session('success'))
@@ -63,9 +65,9 @@
         <div class="bg-white p-6 rounded-xl shadow-sm border">
             <form method="GET" action="{{ route('skoring_penghargaan.index') }}">
                 <div class="flex flex-col md:flex-row gap-2 items-center justify-between">
-                    <div id="searchPenghargaan" class="relative w-full md:w-64">
+                    <div  class="relative w-full md:w-64">
                         <i class="bi bi-search absolute left-3 top-2.5 text-gray-400"></i>
-                        <input type="text" placeholder="Cari Nama Siswa..."
+                        <input id="inputSearch" type="text" placeholder="Cari Nama Siswa..."
                             class="pl-10 pr-4 py-1.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent w-full">
                     </div>
                     <div class="flex gap-2">
@@ -177,16 +179,18 @@
                                     Skor
                                 </div>
                             </th>
+                            @if (auth()->user()->role == 1 || auth()->user()->role == 2 || auth()->user()->role == 4)
                             <th class="px-5 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
                                 <div class="flex items-center gap-2">
                                     <i class="bi bi-gear text-gray-400"></i>
                                     Aksi
                                 </div>
                             </th>
+                            @endif
                         </tr>
                     </thead>
 
-                    <tbody class="bg-white divide-y divide-gray-100">
+                    <tbody id="tableBody" class="bg-white divide-y divide-gray-100">
                         @forelse ($penilaian as $item)
                             <tr>
                                 <td class="px-6 py-4 text-sm text-gray-900">
@@ -208,16 +212,12 @@
                                     </span>
                                 </td>
                                 <td class="px-6 py-4 text-sm text-gray-900">
-                                   
-                                        {{ $item->aspek_penilaian->uraian ?? '-' }}
-                                    
+                                        {{ $item->aspek_penilaian->uraian ?? '-' }}  
                                 </td>
-                                <td class="px-6 py-4 text-sm">
-                                    
-                                     
+                                <td class="px-6 py-4 text-sm"> 
                                         {{ $item->aspek_penilaian->indikator_poin ?? 0 }}
-                               
                                 </td>
+                                @if (auth()->user()->role == 1 || auth()->user()->role == 2 || auth()->user()->role == 4)
                                 <td class="px-6 py-4 text-sm">
                                     <div class="flex gap-2">
                                         <button
@@ -227,6 +227,7 @@
                                         </button>
                                     </div>
                                 </td>
+                                @endif
                             </tr>
                         @empty
                             <tr>
@@ -244,7 +245,7 @@
             </div>
             
             <!-- PAGINATION -->
-            <div class="px-6 py-4 border-t border-gray-200 bg-white">
+            <div id="pagination" class="px-6 py-4 border-t border-gray-200 bg-white">
                 @include('layouts.wakasek.pagination', ['data' => $penilaian])
             </div>
         </div>
@@ -389,29 +390,69 @@
             }
         });
 
-        // Real-time search functionality
-        document.addEventListener("DOMContentLoaded", function() {
-            const searchInput = document.querySelector("#searchPenghargaan input");
-            const tableRows = document.querySelectorAll("tbody tr");
+         // Search functionality
+    document.addEventListener("DOMContentLoaded", () => {
+    const input = document.getElementById("inputSearch");
+    const tableBody = document.getElementById("tableBody");
+    const pagination = document.getElementById("pagination");
 
-            searchInput.addEventListener("keyup", function() {
-                const searchText = this.value.toLowerCase();
+    let debounceTimer = null;
 
-                tableRows.forEach(row => {
-                    // Skip empty state row
-                    if (row.querySelector("td[colspan]")) {
-                        row.style.display = searchText === "" ? "" : "none";
-                        return;
-                    }
+    // Simpan halaman terakhir sebelum search
+    let lastPageUrl = window.location.href;
 
-                    const rowText = row.innerText.toLowerCase();
-                    if (rowText.includes(searchText)) {
-                        row.style.display = "";
-                    } else {
-                        row.style.display = "none";
-                    }
-                });
+    function fetchData(url) {
+        fetch(url)
+            .then(res => res.text())
+            .then(html => {
+                const parser = new DOMParser();
+                const doc = parser.parseFromString(html, "text/html");
+
+                tableBody.innerHTML = doc.querySelector("#tableBody").innerHTML;
+                pagination.innerHTML = doc.querySelector("#pagination").innerHTML;
+
+                activatePaginationLinks();
+            })
+            .catch(err => console.error("ERR:", err));
+    }
+
+    function activatePaginationLinks() {
+        const links = document.querySelectorAll("#pagination a");
+
+        links.forEach(link => {
+            link.addEventListener("click", function (e) {
+                e.preventDefault();
+
+                // Simpan page terakhir sebelum search
+                lastPageUrl = this.href;
+
+                fetchData(this.href);
             });
         });
+    }
+
+    activatePaginationLinks();
+
+    // Auto search
+    input.addEventListener("keyup", function () {
+        clearTimeout(debounceTimer);
+
+        debounceTimer = setTimeout(() => {
+            const query = input.value.trim();
+
+            if (query.length === 0) {
+                // User hapus search → kembali ke page terakhir
+                fetchData(lastPageUrl);
+                return;
+            }
+
+            // Search selalu mulai dari page 1
+            const url = `/skoring_penghargaan?search=${query}`;
+            fetchData(url);
+
+        }, 200);
+    });
+});
+
     </script>
 @endpush

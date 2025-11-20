@@ -42,9 +42,9 @@
         <!-- Search and Filter -->
         <div class="bg-white p-6 rounded-xl shadow-sm border">
             <div class="flex flex-col md:flex-row gap-2 items-center justify-between">
-                <div id="searchWalikelas" class="relative w-full md:w-64">
+                <div class="relative w-full md:w-64">
                     <i class="bi bi-search absolute left-3 top-2.5 text-gray-400"></i>
-                    <input type="text" placeholder="Cari Walikelas..."
+                    <input id="inputSearch" type="text" placeholder="Cari Walikelas..."
                         class="pl-10 pr-4 py-1.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent w-full">
                 </div>
                 <div class="flex gap-2">
@@ -107,7 +107,7 @@
 
 
 
-                    <tbody class="bg-white divide-y divide-gray-100">
+                    <tbody id="tableBody" class="bg-white divide-y divide-gray-100">
                         @forelse ($walikelas as $item)
                             <tr class="hover:bg-gray-50 group">   
                                 <td class="px-6 py-4 whitespace-nowrap">
@@ -163,7 +163,7 @@
                 </table>
             </div>
             <!-- PAGINATION -->
-            <div class="px-6 py-4 border-t border-gray-200 bg-white">
+            <div id="pagination" class="px-6 py-4 border-t border-gray-200 bg-white">
                 @include('layouts.wakasek.pagination', ['data' => $walikelas])
             </div>
         </div>

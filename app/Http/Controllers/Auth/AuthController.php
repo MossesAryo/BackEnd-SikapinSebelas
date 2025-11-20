@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use App\Models\guru_bk;
 use App\Models\User;
 use App\Models\wakasek;
+use App\Models\ketua_program;
+use App\Models\walikelas;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -38,6 +40,22 @@ class AuthController extends Controller
             if ($guru_bk) {
                 $user = User::where('username', $guru_bk->username)->first();
                 $role = 'guru_bk';
+            }
+        }
+
+        if (!$user) {
+            $ketua_program = ketua_program::where('nip_kaprog', $request->nip)->first();
+            if ($ketua_program) {
+                $user = User::where('username', $ketua_program->username)->first();
+                $role = 'ketua_program';
+            }
+        }
+
+        if (!$user) {
+            $walikelas = walikelas::where('nip_walikelas', $request->nip)->first();
+            if ($walikelas) {
+                $user = User::where('username', $walikelas->username)->first();
+                $role = 'walikelas';
             }
         }
 

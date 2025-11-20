@@ -44,6 +44,17 @@ class UserSeeder extends Seeder
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
+            [
+                'id' => 9,
+                'username' => 'kepala_program',
+                'email' => 'kepala_program@example.com',
+                'role' => 3,
+                'password' => Hash::make('password123'),
+                'email_verified_at' => now(),
+                'remember_token' => null,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
 
             // ✅ Tambahan user guru BK real
             [
@@ -120,5 +131,17 @@ class UserSeeder extends Seeder
             'created_at' => now(),
             'updated_at' => now(),
         ]);
+
+        DB::table('ketua_program')->insert([
+            'nip_kaprog' => 777,
+            'username' => 'kepala_program',
+            'nama_ketua_program' => 'Pak Ketua Program',
+            'jurusan' => 'TKJ',
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
+
+        // 3️⃣ Guru BK
+    
     }
 }

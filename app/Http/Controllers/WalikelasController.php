@@ -17,11 +17,29 @@ class WalikelasController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $walikelas = Walikelas::paginate(10);
+     
         $kelas = kelas::all();
         $user = User::all();
+
+        $query = walikelas::with('kelas');
+
+
+        // Search (nama atau nis)
+    if ($request->filled('search')) {
+        $search = $request->search;
+        $query->where(function ($q) use ($search) {
+            $q->where('nama_walikelas', 'like', '%' . $search . '%')
+              ->orWhere('nip_walikelas', 'like', '%' . $search . '%')
+              ->orWhere('id_kelas', 'like', '%' . $search . '%');
+        });
+    }
+
+     // Paginate — sertakan semua query params yang relevan supaya pagination mempertahankan filter/search
+    $walikelas = $query->orderBy('nama_walikelas')->paginate(10)
+                  ->appends($request->only(['search', 'nip_walikelas', 'kelas', 'id_kelas']));
+
 
         
         return view('wakasek.walikelas.index', compact('walikelas', 'kelas', 'user'));

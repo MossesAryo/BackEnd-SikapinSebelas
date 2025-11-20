@@ -15,8 +15,8 @@
                     <select id="nis" name="nis" required
                         class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-transparent">
                         <option value="" disabled selected>Pilih Siswa</option>
-                        @foreach ($catatan as $item)
-                            <option value="{{ $item->nis }}">{{ $item->siswa->nama_siswa }}</option>
+                        @foreach ($siswa as $item)
+                            <option value="{{ $item->nis }}">{{ $item->nama_siswa }}</option>
                         @endforeach
                     </select>
                 </div>

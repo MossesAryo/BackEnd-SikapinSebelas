@@ -48,7 +48,7 @@
 
                                 <!-- Action -->
                                 <div class="col-span-2 flex justify-start md:justify-center">
-                                    <a href="{{ route('statusPenanganan.show', $item->id_intervensi) }}"
+                                    <a href="{{ route('statusintervensi.show', $item->id_intervensi) }}"
                                         class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium rounded-lg transition-colors flex items-center gap-2">
                                         <i class="bi bi-eye"></i>
                                         Detail

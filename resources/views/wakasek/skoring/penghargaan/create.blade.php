@@ -10,6 +10,7 @@
 
             <div class="space-y-4">
                 
+                @if (auth()->user()->role == 1 || auth()->user()->role == 2 || auth()->user()->role == 4)
                 <div>
                     <label for="nis" class="block text-sm font-medium text-gray-700 mb-1">Pilih Siswa</label>
                     <select id="nis" name="nis" required
@@ -20,6 +21,9 @@
                         @endforeach
                     </select>
                 </div>
+                @endif
+
+
 
                 <div>
                     <label for="id_aspekpenilaian" class="block text-sm font-medium text-gray-700 mb-1">Jenis

@@ -1,5 +1,6 @@
 <!-- Modal Filter -->
-<div id="modal-filter" class="hidden fixed inset-0 bg-black/50 flex items-center justify-center z-50 backdrop-blur-sm">
+<div id="modal-overlay" class="hidden bg-black/50"></div>
+<div id="modal-filter" class="hidden backdrop-blur-sm">
     <div class="bg-white rounded-2xl shadow-2xl w-full max-w-md mx-4 transform transition-all duration-300 scale-95"
         id="modal-content">
 
@@ -21,8 +22,8 @@
         </div>
 
         <!-- Form -->
+        @if (auth()->user()->role == 1 || auth()->user()->role == 2)
         <form method="GET" action="{{ route('siswa.index') }}" class="p-6 space-y-6">
-
             <!-- Jurusan -->
             <div class="space-y-2">
                 <label class="block text-sm font-semibold text-gray-700 flex items-center gap-2">
@@ -39,6 +40,7 @@
                     @endforeach
                 </select>
             </div>
+            
 
             <!-- Kelas -->
             <div class="space-y-2">
@@ -57,6 +59,27 @@
                     @endforeach
                 </select>
             </div>
+        @endif
+
+        @if (auth()->user()->role == 3)
+          <form method="GET" action="{{ route('ketua_program.siswa') }}" class="p-6 space-y-6">
+            <div class="space-y-2">
+                <label class="block text-sm font-semibold text-gray-700 flex items-center gap-2">
+                    <i class="bi bi-collection text-gray-500"></i>
+                    Kelas
+                </label>
+                <select id="kelas" name="kelas"
+                    class="w-full rounded-xl border-2 border-gray-200 px-4 py-3 text-sm focus:ring-4 focus:ring-blue-100 focus:border-blue-500 transition-all duration-200">
+                    <option value="">-- Pilih Kelas --</option>
+                    @foreach ($kelasList as $kelas)
+                        <option value="{{ $kelas->id_kelas }}" data-jurusan="{{ $kelas->jurusan }}"
+                            {{ request('kelas') == $kelas->nama_kelas ? 'selected' : '' }}>
+                            {{ $kelas->nama_kelas }}
+                        </option>
+                    @endforeach
+                </select>
+            </div>
+        @endif
 
             <!-- Action Buttons -->
             <div class="flex flex-col sm:flex-row justify-end gap-3 pt-6 border-t border-gray-100">
@@ -83,11 +106,21 @@
 </div>
 
 <script>
+    @if (auth()->user()->role == 3)
+    function resetForm() {
+        const form = document.querySelector('#modal-filter form');
+        form.reset();
+        window.location.href = "{{ route('ketua_program.siswa') }}";
+    }
+    @endif
+    
+    @if (auth()->user()->role == 1 || auth()->user()->role == 2)
     function resetForm() {
         const form = document.querySelector('#modal-filter form');
         form.reset();
         window.location.href = "{{ route('siswa.index') }}";
     }
+    @endif
 
     // Filter kelas sesuai jurusan
     document.getElementById('jurusan').addEventListener('change', function() {

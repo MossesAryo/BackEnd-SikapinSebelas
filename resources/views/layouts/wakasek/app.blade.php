@@ -1,4 +1,16 @@
     <!DOCTYPE html>
+
+    @push('css')
+<style>
+   .modal-open {
+        overflow: hidden !important;
+    }
+    [z-[999999]] {
+        z-index: 999999 !important;
+    }
+</style>
+@endpush
+
     <html lang="en">
 
     <head>

@@ -12,11 +12,7 @@
                 <h1 class="text-2xl font-bold gradient-text">Data Kelas</h1>
                 <p class="text-gray-600 mt-1">Kelola data Kelas</p>
             </div>
-            <button onclick="openCreateModal()"
-                class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg flex items-center gap-2 transition-colors">
-                <i class="bi bi-plus-lg"></i>
-                Tambah Kelas
-            </button>
+            
         </div>
 
         @if (session('success'))
@@ -40,13 +36,10 @@
         <!-- Search & Filter -->
         <div class="bg-white p-6 rounded-xl shadow-sm border">
             <div class="flex flex-col md:flex-row gap-2 items-center justify-between">
-            
-                  
-                   <div class="w-full md:w-64 relative">
+                <div id="searchKelas" class="relative w-full md:w-64">
                     <i class="bi bi-search absolute left-3 top-2.5 text-gray-400"></i>
-                    <input type="text" name="search" id="inputSearch"
-                        placeholder="Cari Kelas..."
-                        class="pl-10 pr-4 py-1.5 border border-gray-300 rounded-lg w-full">
+                    <input type="text" placeholder="Cari Kelas..."
+                        class="pl-10 pr-4 py-1.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent w-full">
                 </div>
                 <div class="flex gap-2">
                     <button onclick="openFilterModal()"
@@ -89,15 +82,10 @@
                                     Nama Kelas
                                 </div>
                             </th>
-                            <th class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                                <div class="flex items-center gap-2">
-                                    <i class="bi bi-gear text-gray-400"></i>
-                                    Aksi
-                                </div>
-                            </th>
+                           
                         </tr>
                     </thead>
-                    <tbody id="tableBody" class="bg-white divide-y divide-gray-100">
+                    <tbody class="bg-white divide-y divide-gray-100">
                         @forelse ($kelas as $item)
                             <tr class="hover:bg-gray-50 group">
                                 <td class="px-6 py-4">
@@ -113,21 +101,6 @@
                                 </td>
                                 <td class="px-6 py-4">
                                     <div class="text-sm font-semibold text-gray-900">{{ $item->nama_kelas }}</div>
-                                </td>
-                                <td class="px-6 py-4">
-                                    <div class="flex items-center gap-1">
-                                        <button onclick="openEditModal('{{ $item->id_kelas }}', '{{ $item->nama_kelas }}')"
-                                            class="action-btn inline-flex items-center justify-center w-9 h-9 text-blue-600 hover:text-blue-800 hover:bg-blue-50 rounded-full"
-                                            title="Edit Kelas">
-                                            <i class="bi bi-pencil-square text-sm"></i>
-                                        </button>
-                                        <button
-                                            onclick="openDeleteModal('{{ $item->id_kelas }}', '{{ $item->nama_kelas }}')"
-                                            class="action-btn inline-flex items-center justify-center w-9 h-9 text-red-600 hover:text-red-800 hover:bg-red-50 rounded-full"
-                                            title="Hapus Kelas">
-                                            <i class="bi bi-trash text-sm"></i>
-                                        </button>
-                                    </div>
                                 </td>
                             </tr>
                         @empty
@@ -146,54 +119,22 @@
                 </table>
             </div>
             <!-- PAGINATION -->
-            <div id="pagination" class="px-6 py-4 border-t border-gray-200 bg-white">
+            <div class="px-6 py-4 border-t border-gray-200 bg-white">
                 @include('layouts.wakasek.pagination', ['data' => $kelas])
             </div>
         </div>
     </div>
 
-    @include('wakasek.kelas.create')
-    @include('wakasek.kelas.edit')
-    @include('wakasek.kelas.delete')
-    @include('wakasek.kelas.modalFilter')
+    
+    @include('ketua_program.kelas.modalFilter')
+
     @push('js')
         <script>
-            function openCreateModal() {
-                const modal = document.getElementById('modal-create');
-                if (!modal) return console.warn('modal-create tidak ditemukan');
-                modal.classList.remove('hidden');
-            }
 
             function openFilterModal() {
                 const modal = document.getElementById('modal-filter');
                 if (!modal) return console.warn('modal-filter tidak ditemukan');
                 modal.classList.remove('hidden');
-            }
-
-            function openEditModal(id, nama, jurusann = null) {
-                const idK = document.getElementById('edit_id_kelas');
-                const nm = document.getElementById('edit_nama_kelas');
-                const jur = document.getElementById('jurusan');
-                const form = document.getElementById('form-edit');
-                const mdl = document.getElementById('modal-edit');
-
-                if (idK) idK.value = id;
-                if (nm) nm.value = nama;
-                if (jur && jurusann !== null) jur.value = jurusann;
-                if (form) form.action = `/kelas/${id}/update`;
-                if (!mdl) return console.warn('modal-edit tidak ditemukan');
-                mdl.classList.remove('hidden');
-            }
-
-            function openDeleteModal(id, nama) {
-                const nameEl = document.getElementById('delete-nama-kelas');
-                const form = document.getElementById('form-delete');
-                const mdl = document.getElementById('modal-delete');
-
-                if (nameEl) nameEl.textContent = nama;
-                if (form) form.action = `/kelas/${id}`;
-                if (!mdl) return console.warn('modal-delete tidak ditemukan');
-                mdl.classList.remove('hidden');
             }
 
             // --- CLOSERS / UX ---
@@ -220,70 +161,31 @@
             function openModal(id) {
                 document.getElementById(id).classList.remove('hidden');
             }
-
             // Search functionality
-           document.addEventListener("DOMContentLoaded", () => {
-    const input = document.getElementById("inputSearch");
-    const tableBody = document.getElementById("tableBody");
-    const pagination = document.getElementById("pagination");
+            document.addEventListener("DOMContentLoaded", function() {
+                        const searchInput = document.querySelector("#searchKelas input");
+                        const tableRows = document.querySelectorAll("tbody tr");
 
-    let debounceTimer = null;
+                        searchInput.addEventListener("keyup", function() {
+                            const searchText = this.value.toLowerCase();
 
-    // Simpan halaman terakhir sebelum search
-    let lastPageUrl = window.location.href;
+                            tableRows.forEach(row => {
 
-    function fetchData(url) {
-        fetch(url)
-            .then(res => res.text())
-            .then(html => {
-                const parser = new DOMParser();
-                const doc = parser.parseFromString(html, "text/html");
+                                if (row.querySelector("td[colspan]")) {
+                                    row.style.display = searchText === "" ? "" : "none";
+                                    return;
+                                }
 
-                tableBody.innerHTML = doc.querySelector("#tableBody").innerHTML;
-                pagination.innerHTML = doc.querySelector("#pagination").innerHTML;
-
-                activatePaginationLinks();
-            })
-            .catch(err => console.error("ERR:", err));
-    }
-
-    function activatePaginationLinks() {
-        const links = document.querySelectorAll("#pagination a");
-
-        links.forEach(link => {
-            link.addEventListener("click", function (e) {
-                e.preventDefault();
-
-                // Simpan page terakhir sebelum search
-                lastPageUrl = this.href;
-
-                fetchData(this.href);
-            });
-        });
-    }
-
-    activatePaginationLinks();
-
-    // Auto search
-    input.addEventListener("keyup", function () {
-        clearTimeout(debounceTimer);
-
-        debounceTimer = setTimeout(() => {
-            const query = input.value.trim();
-
-            if (query.length === 0) {
-                // User hapus search → kembali ke page terakhir
-                fetchData(lastPageUrl);
-                return;
-            }
-
-            // Search selalu mulai dari page 1
-            const url = `/kelas?search=${query}`;
-            fetchData(url);
-
-        }, 200);
-    });
-});
+                                const rowText = row.innerText.toLowerCase();
+                                if (rowText.includes(searchText)) {
+                                    row.style.display = "";
+                                } else {
+                                    row.style.display = "none";
+                                }
+                            });
+                        });
+                    });
         </script>
     @endpush
 @endsection
+

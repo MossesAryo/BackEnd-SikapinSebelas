@@ -27,7 +27,6 @@
                     <!-- Export Tab Content -->
                     <div id="exportContent" class="tab-content space-y-4">
     <h4 class="text-sm font-medium text-gray-700">Filter Export Data:</h4>
-
     <form id="exportFilterForm" class="space-y-3">
         <div>
             <label class="block text-sm text-gray-600">Pilih Jurusan:</label>
@@ -38,6 +37,7 @@
                 @endforeach
             </select>
         </div>
+        
 
         <div>
             <label class="block text-sm text-gray-600">Pilih Kelas:</label>
@@ -74,7 +74,6 @@
         </button>
     </div>
 </div>
-
 
                     <!-- Import Tab Content -->
                     <div id="importContent" class="tab-content hidden">

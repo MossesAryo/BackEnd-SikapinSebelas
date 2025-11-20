@@ -1,3 +1,4 @@
+
 @push('css')
     <style>
         .custom-pagination {
@@ -40,6 +41,8 @@
         }
     </style>
 @endpush
+
+<div id="pagination">
 
 
 @if ($data->hasPages())
@@ -111,3 +114,4 @@
         </div>
     </div>
 @endif
+</div>

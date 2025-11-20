@@ -64,9 +64,9 @@
         <!-- Search and Filter -->
         <div class="bg-white p-6 rounded-xl shadow-sm border">
             <div class="flex flex-col md:flex-row gap-2 items-center justify-between">
-                <div id="searchAspek_peng" class="relative w-full md:w-64">
+                <div  class="relative w-full md:w-64">
                     <i class="bi bi-search absolute left-3 top-2.5 text-gray-400"></i>
-                    <input type="text" placeholder="Cari Pelanggaran..."
+                    <input id="inputSearch" type="text" placeholder="Cari Penghargaan..."
                         class="pl-10 pr-4 py-1.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent w-full">
                 </div>
                 <div class="flex gap-2">
@@ -74,10 +74,12 @@
                         class="px-3 py-1.5 border border-gray-300 rounded-lg hover:bg-gray-50 flex items-center gap-1.5">
                         <i class="bi bi-funnel"></i> Filter
                     </button>
+                     @if (auth()->user()->role == 1 || auth()->user()->role == 2)
                     <button id="exportImportBtn"
                         class="px-3 py-1.5 border border-gray-300 rounded-lg hover:bg-gray-50 flex items-center gap-1.5">
                         <i class="bi bi-download"></i> Export / Import
                     </button>
+                    @endif
                 </div>
             </div>
         </div>
@@ -132,7 +134,7 @@
                         </tr>
                     </thead>
 
-                    <tbody class="bg-white divide-y divide-gray-100">
+                    <tbody id="tableBody" class="bg-white divide-y divide-gray-100">
                         @forelse ($aspek_penilaian as $item)
                             <tr class="hover:bg-gray-50 group">
                                 <td class="px-6 py-4 whitespace-nowrap">
@@ -181,7 +183,7 @@
                 </table>
             </div>
             <!-- PAGINATION -->
-            <div class="px-6 py-4 border-t border-gray-200 bg-white">
+            <div id="pagination" class="px-6 py-4 border-t border-gray-200 bg-white">
                 @include('layouts.wakasek.pagination', ['data' => $aspek_penilaian])
             </div>
         </div>
@@ -253,28 +255,68 @@
                 });
             }
         });
-        document.addEventListener("DOMContentLoaded", function() {
-            const searchInput = document.querySelector("#searchAspek_peng input");
-            const tableRows = document.querySelectorAll("tbody tr");
+        document.addEventListener("DOMContentLoaded", () => {
+    const input = document.getElementById("inputSearch");
+    const tableBody = document.getElementById("tableBody");
+    const pagination = document.getElementById("pagination");
 
-            searchInput.addEventListener("keyup", function() {
-                const searchText = this.value.toLowerCase();
+    let debounceTimer = null;
 
-                tableRows.forEach(row => {
+    // Simpan halaman terakhir sebelum search
+    let lastPageUrl = window.location.href;
 
-                    if (row.querySelector("td[colspan]")) {
-                        row.style.display = searchText === "" ? "" : "none";
-                        return;
-                    }
+    function fetchData(url) {
+        fetch(url)
+            .then(res => res.text())
+            .then(html => {
+                const parser = new DOMParser();
+                const doc = parser.parseFromString(html, "text/html");
 
-                    const rowText = row.innerText.toLowerCase();
-                    if (rowText.includes(searchText)) {
-                        row.style.display = "";
-                    } else {
-                        row.style.display = "none";
-                    }
-                });
+                tableBody.innerHTML = doc.querySelector("#tableBody").innerHTML;
+                pagination.innerHTML = doc.querySelector("#pagination").innerHTML;
+
+                activatePaginationLinks();
+            })
+            .catch(err => console.error("ERR:", err));
+    }
+
+    function activatePaginationLinks() {
+        const links = document.querySelectorAll("#pagination a");
+
+        links.forEach(link => {
+            link.addEventListener("click", function (e) {
+                e.preventDefault();
+
+                // Simpan page terakhir sebelum search
+                lastPageUrl = this.href;
+
+                fetchData(this.href);
             });
         });
+    }
+
+    activatePaginationLinks();
+
+    // Auto search
+    input.addEventListener("keyup", function () {
+        clearTimeout(debounceTimer);
+
+        debounceTimer = setTimeout(() => {
+            const query = input.value.trim();
+
+            if (query.length === 0) {
+                // User hapus search → kembali ke page terakhir
+                fetchData(lastPageUrl);
+                return;
+            }
+
+            // Search selalu mulai dari page 1
+            const url = `/aspek_penghargaan?search=${query}`;
+            fetchData(url);
+
+        }, 200);
+    });
+});
+
     </script>
 @endpush

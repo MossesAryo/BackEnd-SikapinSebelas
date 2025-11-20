@@ -17,7 +17,7 @@
     <button
         onclick="openEditModal(
             '{{ $intervensi->id_intervensi }}',
-            '{{ $intervensi->nis }}',
+            '{{ $intervensi->nis }}',            
             '{{ $intervensi->nama_intervensi }}',
             '{{ $intervensi->isi_intervensi }}',
             '{{ $intervensi->status }}',
@@ -138,6 +138,7 @@
         function openEditModal(id_intervensi, nis, nama_intervensi, isi_intervensi, status, tanggal_Mulai_Perbaikan,
             tanggal_Selesai_Perbaikan, perubahan_setelah_intervensi) {
             document.getElementById('nis_edit').value = nis;
+            document.getElementById('nis_hidden_edit').value = nis;
             document.getElementById('nama_intervensi_edit').value = nama_intervensi;
             document.getElementById('isi_intervensi_edit').value = isi_intervensi;
             document.getElementById('status_edit').value = status;

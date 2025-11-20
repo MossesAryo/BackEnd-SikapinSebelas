@@ -63,4 +63,8 @@ class User extends Authenticatable
     {
         return $this->hasOne(wakasek::class, 'username', 'username');
     }
+    public function ketua_program()
+    {
+        return $this->hasOne(ketua_program::class, 'username', 'username');
+    }
 }

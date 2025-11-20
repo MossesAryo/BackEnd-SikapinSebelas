@@ -32,6 +32,11 @@ Route::post('/login', [AController::class, 'login'])->name('login.submit');
 Route::get('/logout', [AController::class, 'logout'])->name('logout');
 
 Route::middleware(['auth'])->group(function () {
+    
+
+    });
+
+Route::middleware(['auth'])->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('wakasek.dashboard');
     Route::get('/profile', [ProfileController::class, 'index'])->name('profile');
 
@@ -46,7 +51,15 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/siswa/{nis}/show', [SiswaController::class, 'show'])->name('siswa.show');
     Route::post('/siswa/{nis}/show/penghargaan', [SiswaController::class, 'penghargaan'])->name('siswa.penghargaan');
     Route::post('/siswa/{nis}/show/peringatan', [SiswaController::class, 'peringatan'])->name('siswa.peringatan');
+
+    Route::post('/siswa/{nis}/show/skoringpPenghargaan', [SiswaController::class, 'skoringPenghargaan'])->name('siswa.skoringPenghargaan');
+    Route::post('/siswa/{nis}/show/skoringpPelanggaran', [SiswaController::class, 'skoringPelanggaran'])->name('siswa.skoringPelanggaran');
+    Route::post('/siswa/{nis}/show/penanganan', [SiswaController::class, 'createPenanganan'])->name('show.create.penanganan');
+
+    
     Route::post('/siswa/{nis}/show/catatan', [catatanController::class, 'AddCatatan'])->name('siswa.catatan');
+
+
 
     Route::get('/siswa/export_pdf', [SiswaController::class, 'exportPdf'])->name('siswa.export.pdf');
     Route::get('/siswa/export_excel', [SiswaController::class, 'exportExcel'])->name('siswa.export.excel');
@@ -104,16 +117,9 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/akumulasi/export_pdf', [AkumulasiContoller::class, 'export_pdf'])->name('akumulasi.export.pdf');
     Route::get('/akumulasi/export_excel', [AkumulasiContoller::class, 'export_excel'])->name('akumulasi.export.excel');
 
-
-
-    //
-    //
-    //
     route::get('/notifikasi', [NotifikasiWakasekController::class, 'index'])->name('notifikasi.index');
     Route::get('/laporanjammalam', [LaporanController::class, 'index'])->name('wakasek.laporanjammalam');
     Route::get('/penilaian', [PenilaianController::class, 'index'])->name('wakasek.penilaian');
-
-
 
 
 
@@ -133,17 +139,18 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/ketua_program/import', [KetuaProgramController::class, 'import'])->name('ketua_program.import');
 
 
-
-
-
-
     Route::get('/kelas', [KelasController::class, 'index'])->name('kelas');
     Route::post('/kelas/store', [KelasController::class, 'store'])->name('kelas.store');
     Route::put('/kelas/{id}/update', [KelasController::class, 'update'])->name('kelas.update');
     Route::delete('/kelas/{id}', [KelasController::class, 'destroy'])->name('kelas.destroy');
 
+    Route::get('/ketua-program/kelas', [KelasController::class, 'kelasKetuaProgram'])->name('ketua_program.kelas');
+    Route::get('/ketua-program/siswa', [SiswaController::class, 'siswa_ketua_program'])->name('ketua_program.siswa');
+    
 
-    Route::get('/grbk', [Guru_bkController::class, 'index'])->name('gurubk.index');
+    Route::get('/walikelas/siswa', [SiswaController::class, 'siswa_walikelas'])->name('walikelas.siswa');
+
+    Route::get('/gurubk', [Guru_bkController::class, 'index'])->name('gurubk.index');
     Route::post('/gurubk/store', [Guru_bkController::class, 'store'])->name('gurubk.store');
     Route::put('/gurubk/{nip}/update', [Guru_bkController::class, 'update'])->name('gurubk.update');
     Route::delete('/gurubk/{nip}/destroy', [Guru_bkController::class, 'destroy'])->name('gurubk.destroy');
@@ -155,7 +162,6 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/walikelas/store', [WalikelasController::class, 'store'])->name('walikelas.store');
     Route::put('/walikelas/{nip_walikelas}/{username}/update', [WalikelasController::class, 'update'])->name('walikelas.update');
     Route::delete('/walikelas/{nip_walikelas}', [WalikelasController::class, 'destroy'])->name('walikelas.destroy');
-    Route::get('/gurubk', [Guru_bkController::class, 'index'])->name('gurubk.index');
     Route::post('/gurubk/store', [Guru_bkController::class, 'store'])->name('gurubk.store');
     Route::put('/gurubk/{nip}/update', [Guru_bkController::class, 'update'])->name('gurubk.update');
     Route::delete('/gurubk/{nip}/destroy', [Guru_bkController::class, 'destroy'])->name('gurubk.destroy');
