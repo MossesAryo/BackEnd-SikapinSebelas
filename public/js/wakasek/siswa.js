@@ -1,12 +1,10 @@
-// siswa.js — FINAL & 100% WORKING (19 November 2025)
-// Semua Select2 & jQuery lama sudah DIHAPUS TOTAL
-// Modal Tambah Skoring Penghargaan DIPASTIKAN MUNCUL
 
 function openModal(modalId) {
     const modal = document.getElementById(modalId);
     if (modal) {
         modal.classList.remove('hidden');
-        document.body.classList.add('modal-open');
+        modal.style.display = 'flex';
+        document.body.style.overflow = 'hidden';
     }
 }
 
@@ -14,7 +12,8 @@ function closeModal(modalId) {
     const modal = document.getElementById(modalId);
     if (modal) {
         modal.classList.add('hidden');
-        document.body.classList.remove('modal-open');
+        modal.style.display = 'none';
+        document.body.style.overflow = '';
     }
 }
 
@@ -39,10 +38,9 @@ function openCreateModalPenghargaan(nis) {
     openModal('modal-create-penghargaan');
 }
 
-// Untuk tombol merah (Pelanggaran) — biar tidak error
+
 function openCreateModalPelanggaran(nis) {
-    // Nanti kamu isi modal pelanggaran sendiri
-    // Sementara cukup alert atau buka modal pelanggaran kalau sudah ada
+   
     const modal = document.getElementById('modal-create-pelanggaran');
     if (modal) {
         openModal('modal-create-pelanggaran');
@@ -60,7 +58,7 @@ function updateSkor(select, targetId) {
     }
 }
 
-// === SEMUA FUNGSI LAIN TETAP (TIDAK ADA YANG BERUBAH LOGICNYA) ===
+
 function openfilterModal() { openModal('modal-filter'); }
 
 function openpenghargaanModal(nis) {

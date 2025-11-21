@@ -18,7 +18,10 @@
 
         body.modal-open {
            
-            overflow: hidden;
+            overflow: hidden !important;
+        }
+            [id^="modal-"] {
+                transition: all 0.3s ease;
             position: fixed;
             width: 100%;
         }

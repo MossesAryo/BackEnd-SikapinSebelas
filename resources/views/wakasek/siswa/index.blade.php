@@ -57,18 +57,11 @@
                             class="px-3 py-1.5 border border-gray-300 rounded-lg hover:bg-gray-50 flex items-center gap-1.5">
                             <i class="bi bi-download"></i> Export / Import
                         </button>
-                                @include('wakasek.siswa.modalExportImport')
+
                         @endif
                     </div>
                 </div>
             </div>
-
-
-
-
-
-            <!-- Data Table -->
-
             <!-- Data Table -->
 
             <div class="bg-white rounded-xl shadow-sm border overflow-hidden">
@@ -202,21 +195,30 @@
                             @endforelse
                         </tbody>
                     </table>
-                    <!-- PAGINATION -->
-                    <div id="pagination" class="px-6 py-4 border-t border-gray-200 bg-white">
-                        @include('layouts.wakasek.pagination', ['data' => $siswa])
-                    </div>
+                                    <!-- PAGINATION -->
+                <div id="pagination" class="px-6 py-4 border-t border-gray-200 bg-white">
+                    @include('layouts.wakasek.pagination', ['data' => $siswa])
                 </div>
-            </div>
+           </div>
         </div>
-        @if (auth()->user()->role == 1 || auth()->user()->role == 2)
+    </div>
+</div>
+  
+    @if (auth()->user()->role == 1 || auth()->user()->role == 2)
         @include('wakasek.siswa.create')
         @include('wakasek.siswa.edit')
         @include('wakasek.siswa.delete')
-        @endif
-        @include('wakasek.siswa.filter')
-        @endsection
+    @endif
 
-    @push('js')
-        <script src="{{ asset('js/wakasek/siswa.js') }}"></script>
-    @endpush
+    @include('wakasek.siswa.filter')
+    @include('wakasek.siswa.modalExportImport')
+   
+
+    
+
+@endsection
+
+
+@push('js')
+    <script src="{{ asset('js/wakasek/siswa.js') }}"></script>
+@endpush
