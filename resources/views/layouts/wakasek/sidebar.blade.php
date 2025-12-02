@@ -54,7 +54,7 @@
                 <i class="bi bi-journal-check"></i>
             </div>
             <div>
-                <h1 class="text-lg font-bold text-gray-900">Sikapin</h1>
+                <h1 class="text-lg font-bold text-gray-900">SIJUAWARA</h1>
                 <p class="text-xs text-gray-500">Sistem Skoring</p>
             </div>
         </div>
