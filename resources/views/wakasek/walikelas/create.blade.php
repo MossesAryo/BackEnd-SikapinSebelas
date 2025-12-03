@@ -11,12 +11,12 @@
             <div class="space-y-4">
                 <div>
                     <label for="nip_walikelas" class="block text-sm font-medium text-gray-700 mb-1">NIP</label>
-                    <input type="text" id="nip_walikelas" name="nip_walikelas" required
+                    <input type="text" id="nip_walikelas" name="nip_walikelas" required placeholder="Contoh : 1902854768"
                         class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-transparent">
                 </div>
                 <div>
                     <label for="nama_walikelas" class="block text-sm font-medium text-gray-700 mb-1">Nama Walikelas</label>
-                    <input type="text" id="nama_walikelas" name="nama_walikelas" required
+                    <input type="text" id="nama_walikelas" name="nama_walikelas" required placeholder="Contoh : Ahmad Fauzi"
                         class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-transparent">
                 </div>
                 <div>

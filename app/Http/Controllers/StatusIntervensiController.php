@@ -51,7 +51,7 @@ public function index()
     }
 
     // Jika bukan ketua → tampilkan semua
-    $intervensi = $query->get();
+    $intervensi = $query->paginate(6); 
 
     return view('wakasek.statusIntervensi.index', compact('intervensi', 'jurusanKetua', 'kelasWalikelas'));
 }
@@ -62,3 +62,4 @@ public function index()
         return view('wakasek.statusIntervensi.show',compact('intervensi'));
     }
 }
+ 

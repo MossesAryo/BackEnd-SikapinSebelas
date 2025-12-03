@@ -14,25 +14,25 @@
                 
                 <div>
                     <label for="kategori" class="block text-sm font-medium text-gray-700 mb-1">Kategori</label>
-                    <input type="text" id="kategori" name="kategori" required
+                    <input type="text" id="kategori" name="kategori" required placeholder="Contoh : Ketidakhadiran"
                         class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-transparent">
                 </div>
                 <div>
                     <label for="uraian" class="block text-sm font-medium text-gray-700 mb-1">Uraian</label>
-                    <input type="text" id="uraian" name="uraian" required
+                    <input type="text" id="uraian" name="uraian" required placeholder="Contoh : Tidak masuk sekolah tanpa keterangan"
                         class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-transparent">
                 </div>
             </div>
                 <div>
                     <label for="pelanggaran_ke" class="block text-sm font-medium text-gray-700 mb-1">
                         Pelanggaran Ke</label>
-                    <input type="text" id="pelanggaran_ke" name="pelanggaran_ke" required
+                    <input type="text" id="pelanggaran_ke" name="pelanggaran_ke" required placeholder="Contoh : III"
                         class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-transparent">
                 </div>
                 <div>
                     <label for="indikator_poin" class="block text-sm font-medium text-gray-700 mb-1">
                         Poin</label>
-                    <input type="text" id="indikator_poin" name="indikator_poin" required
+                    <input type="text" id="indikator_poin" name="indikator_poin" required placeholder="Contoh : 30"
                         class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-transparent">
                 </div>
             <div class="flex justify-end gap-2 pt-4">
