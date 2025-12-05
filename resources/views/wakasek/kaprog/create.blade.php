@@ -11,17 +11,17 @@
                 <div class="space-y-4">
                     <div>
                         <label for="nip_kaprog" class="block text-sm font-medium text-gray-700 mb-1">NIP</label>
-                        <input type="text" id="nip_kaprog" name="nip_kaprog" required
+                        <input type="text" id="nip_kaprog" name="nip_kaprog" required placeholder="1907825673"
                             class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-transparent">
                     </div>
                     <div>
                         <label for="nama_ketua_program" class="block text-sm font-medium text-gray-700 mb-1">Nama Ketua Program</label>
-                        <input type="text" id="nama_ketua_program" name="nama_ketua_program" required
+                        <input type="text" id="nama_ketua_program" name="nama_ketua_program" required placeholder="Robi Jainud"
                             class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-transparent">
                     </div>
                     <div>
                         <label for="jurusan" class="block text-sm font-medium text-gray-700 mb-1">Jurusan</label>
-                        <input type="text" id="jurusan" name="jurusan" required
+                        <input type="text" id="jurusan" name="jurusan" required placeholder=" Contoh : TKJ, RPL, DKV"
                             class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-transparent">
                     </div>
                

@@ -13,19 +13,19 @@
                
                 <div>
                     <label for="kategori" class="block text-sm font-medium text-gray-700 mb-1">Kategori</label>
-                    <input type="text" id="kategori" name="kategori" required
+                    <input type="text" id="kategori" name="kategori" required placeholder="Contoh : Kejujuran"
                         class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-transparent">
                 </div>
                 <div>
                     <label for="uraian" class="block text-sm font-medium text-gray-700 mb-1">Uraian</label>
-                    <input type="text" id="uraian" name="uraian" required
+                    <input type="text" id="uraian" name="uraian" required placeholder="Contoh : Jujur dalam mengerjakan ujian sekolah"
                         class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-transparent">
                 </div>
             </div>
                 <div>
                     <label for="indikator_poin" class="block text-sm font-medium text-gray-700 mb-1">
                         Poin</label>
-                    <input type="text" id="indikator_poin" name="indikator_poin" required
+                    <input type="text" id="indikator_poin" name="indikator_poin" required placeholder="Contoh : 10"
                         class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-transparent">
                 </div>
             <div class="flex justify-end gap-2 pt-4">

@@ -73,24 +73,44 @@
             @if($intervensi->count() > 0)
                 <div
                     class="mt-6 flex flex-col sm:flex-row items-center justify-between gap-4 bg-white rounded-xl shadow-sm border border-gray-100 p-4">
-                    <p class="text-sm text-gray-600">Menampilkan <span class="font-semibold">1-6</span> dari <span
-                            class="font-semibold">24</span> siswa</p>
-                    <div class="flex gap-2">
-                        <button
-                            class="px-3 py-2 border border-gray-300 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
-                            disabled>
-                            <i class="bi bi-chevron-left"></i>
-                        </button>
-                        <button class="px-3 py-2 bg-blue-600 text-white rounded-lg text-sm font-medium">1</button>
-                        <button
-                            class="px-3 py-2 border border-gray-300 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-50">2</button>
-                        <button
-                            class="px-3 py-2 border border-gray-300 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-50">3</button>
-                        <button
-                            class="px-3 py-2 border border-gray-300 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-50">
-                            <i class="bi bi-chevron-right"></i>
-                        </button>
-                    </div>
+                   <p class="text-sm text-gray-600">
+                        Menampilkan
+                        <span class="font-semibold">{{ $intervensi->firstItem() }}</span>
+                        -
+                        <span class="font-semibold">{{ $intervensi->lastItem() }}</span>
+                        dari
+                        <span class="font-semibold">{{ $intervensi->total() }}</span>
+                        siswa
+                    </p>
+                   <div class="flex gap-2">
+
+    {{-- Tombol Previous --}}
+    <a href="{{ $intervensi->previousPageUrl() }}"
+       class="px-3 py-2 border border-gray-300 rounded-lg text-sm font-medium text-gray-700
+       hover:bg-gray-50 {{ $intervensi->onFirstPage() ? 'opacity-50 cursor-not-allowed' : '' }}">
+        <i class="bi bi-chevron-left"></i>
+    </a>
+
+    {{-- Number Pagination --}}
+    @foreach ($intervensi->getUrlRange(1, $intervensi->lastPage()) as $page => $url)
+        <a href="{{ $url }}"
+           class="px-3 py-2 rounded-lg text-sm font-medium
+           {{ $page == $intervensi->currentPage()
+                ? 'bg-blue-600 text-white'
+                : 'border border-gray-300 text-gray-700 hover:bg-gray-50' }}">
+            {{ $page }}
+        </a>
+    @endforeach
+
+    {{-- Tombol Next --}}
+    <a href="{{ $intervensi->nextPageUrl() }}"
+       class="px-3 py-2 border border-gray-300 rounded-lg text-sm font-medium text-gray-700
+       hover:bg-gray-50 {{ $intervensi->currentPage() == $intervensi->lastPage() ? 'opacity-50 cursor-not-allowed' : '' }}">
+        <i class="bi bi-chevron-right"></i>
+    </a>
+
+</div>
+
                 </div>
             @endif
         </div>

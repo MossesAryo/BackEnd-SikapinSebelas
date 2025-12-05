@@ -45,9 +45,10 @@
                                 <p class="text-gray-600 text-sm mb-2">
                                     Isi : "{{ $item->isi_intervensi }}"
                                 </p>
-                                <p class="text-gray-500 text-xs flex items-center gap-1">
-                                    Intervensi Oleh : {{ $item->guruBK->nama_guru_bk }} | Guru BK
-                                </p>
+                              <p class="text-gray-500 text-xs flex items-center gap-1">
+                                        Intervensi Oleh :
+                                        {{ $item->guruBK->nama_guru_bk ?? 'Guru BK belum ditentukan' }} | Guru BK
+                                    </p>
                                 <p class="text-gray-500 text-xs flex items-center gap-1">
                                     <i class="bi bi-clock"></i>
                                     {{ $item->created_at->diffForHumans() }}
