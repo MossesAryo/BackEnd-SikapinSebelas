@@ -14,12 +14,15 @@ class Aspek_Penghargaan_Import implements ToModel, WithHeadingRow
     {
         return 2;
     }
-    
+
     public function model(array $row)
     {
+        if (!isset($row['kategori']) || $row['kategori'] == null) {
+            return null;
+        }
 
         return new aspek_penilaian([
-            'jenis_poin'        => 'pelanggaran', 
+            'jenis_poin'        => 'apresiasi',
             'kategori'          => $row['kategori'] ?? null,
             'uraian'            => $row['uraian'] ?? null,
             'indikator_poin'    => $row['poin'] ?? null,
