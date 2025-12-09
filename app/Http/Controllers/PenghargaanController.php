@@ -12,11 +12,27 @@ use Maatwebsite\Excel\Facades\Excel;
 
 class PenghargaanController extends Controller
 {
-    public function index()
-    {
-        $penghargaan = penghargaan::paginate(10);
-        return view('wakasek.penghargaan.index', compact('penghargaan'));
+
+public function index(Request $request)
+{
+    $query = penghargaan::query();
+
+    // SEARCH
+    if ($request->filled('search')) {
+        $query->where(function ($q) use ($request) {
+            $q->where('tanggal_penghargaan', 'like', "%{$request->search}%")
+              ->orWhere('level_penghargaan', 'like', "%{$request->search}%")
+              ->orWhere('alasan', 'like', "%{$request->search}%");
+        });
     }
+
+    // HARUS PAKAI paginate() — BUKAN get()!
+    $penghargaan = $query->orderBy('tanggal_penghargaan', 'asc')
+                         ->paginate(10) // atau 10, 15, sesuai keinginan
+                         ->appends($request->only('search')); // biar search tetap di URL
+
+    return view('wakasek.penghargaan.index', compact('penghargaan'));
+}
 
     public function fetchApi(){
         $penghargaan = penghargaan::all();

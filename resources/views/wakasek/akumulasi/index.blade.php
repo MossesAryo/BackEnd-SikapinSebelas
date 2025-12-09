@@ -116,11 +116,21 @@
                                  <td class="px-6 py-4 whitespace-nowrap">{{ $item->poin_total ?? 0 }}</td>
                              </tr>
                          @empty
-                             <tr>
-                                 <td colspan="6" class="px-6 py-12 text-center text-gray-500">
-                                     Belum ada data Akumulasi
-                                 </td>
-                             </tr>
+<tr id="emptyState">
+    <td colspan="7" class="px-6 py-20 text-center">
+        <div class="mx-auto w-28 h-28 bg-gradient-to-br from-gray-50 to-gray-100 rounded-full flex items-center justify-center mb-6 shadow-xl border-4 border-white">
+            <i class="bi bi-calculator-fill text-6xl text-gray-600 drop-shadow-lg"></i>
+        </div>
+
+        <h3 class="text-2xl font-bold text-gray-900 mb-3">Belum Ada Data Akumulasi</h3>
+        <p class="text-gray-600 text-lg max-w-md mx-auto leading-relaxed">
+            Sistem belum dapat menghitung akumulasi poin karena belum ada data.
+        </p>
+        <p class="text-gray-500 text-base mt-3">
+            Tambahkan penghargaan atau pelanggaran untuk melihat total poin siswa.
+        </p>
+    </td>
+</tr>
                          @endforelse
                      </tbody>
                  </table>
@@ -133,8 +143,9 @@
          </div>
 
      </div>
-     @include('wakasek.akumulasi.filter')
+
      @include('wakasek.akumulasi.modalExportImport')
+     @include('wakasek.akumulasi.filter')
  @endsection
 
  @push('js')

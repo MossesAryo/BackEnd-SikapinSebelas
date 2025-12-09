@@ -37,14 +37,20 @@
                                 </div>
 
                                 <!-- Status -->
-                                <div class="col-span-3 mb-3 md:mb-0">
-                                    <p class="text-xs text-gray-500 md:hidden mb-1">Status</p>
-                                    <span
-                                        class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-blue-100 text-blue-700">
-                                        <span class="w-1.5 h-1.5 bg-blue-600 rounded-full mr-1.5 animate-pulse"></span>
-                                        {{ $item->status }}
-                                    </span>
-                                </div>
+                                    <div class="col-span-3 mb-3 md:mb-0">
+                                        <p class="text-xs text-gray-500 md:hidden mb-1">Status</p>
+                                        @php
+                                            $statusColor = match($item->status) {
+                                                'Selesai' => 'bg-green-100 text-green-800',
+                                                'Dalam Bimbingan' => 'bg-yellow-100 text-yellow-800',
+                                                'Dalam Pemantauan' => 'bg-orange-100 text-orange-800',
+                                                default => 'bg-gray-100 text-gray-800'
+                                            };
+                                        @endphp
+                                        <span class="inline-flex items-center px-3 py-1.5 rounded-full text-xs font-medium {{ $statusColor }}">
+                                            {{ $item->status }}
+                                        </span>
+                                    </div>
 
                                 <!-- Action -->
                                 <div class="col-span-2 flex justify-start md:justify-center">

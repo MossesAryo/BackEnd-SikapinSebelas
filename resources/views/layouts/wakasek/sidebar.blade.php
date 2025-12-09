@@ -78,32 +78,32 @@
 
                     @if (auth()->user()->role == 3)
                     <li>
-                        <a href="{{ route('ketua_program.siswa') }}"
+                            <a href="{{ route('ketua_program.siswa') }}"
                             class="flex items-center gap-3 px-4 py-3 rounded-lg menu-link
-                    {{ request()->routeIs('siswa.*') ? 'active-link' : 'text-gray-600 hover:bg-gray-50' }}">
-                            <i class="bi bi-person-badge"></i>
-                            <span>Siswa</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="{{ route('ketua_program.kelas') }}"
+                                    {{ request()->routeIs('ketua_program.siswa*') ? 'active-link' : 'text-gray-600 hover:bg-gray-50' }}">
+                                <i class="bi bi-person-badge"></i>
+                                <span>Siswa</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{{ route('ketua_program.kelas') }}"
                             class="flex items-center gap-3 px-4 py-3 rounded-lg menu-link
-                    {{ request()->routeIs('kelas*') ? 'active-link' : 'text-gray-600 hover:bg-gray-50' }}">
-                            <i class="bi bi-grid-3x3-gap"></i>
-                            <span>Kelas</span>
-                        </a>
-                    </li>
+                                    {{ request()->routeIs('ketua_program.kelas*') ? 'active-link' : 'text-gray-600 hover:bg-gray-50' }}">
+                                <i class="bi bi-grid-3x3-gap"></i>
+                                <span>Kelas</span>
+                            </a>
+                        </li>
                     @endif
 
                       @if (auth()->user()->role == 4)
                     <li>
-                        <a href="{{ route('walikelas.siswa') }}"
-                            class="flex items-center gap-3 px-4 py-3 rounded-lg menu-link
-                    {{ request()->routeIs('siswa.*') ? 'active-link' : 'text-gray-600 hover:bg-gray-50' }}">
-                            <i class="bi bi-person-badge"></i>
-                            <span>Siswa</span>
-                        </a>
-                    </li>
+                    <a href="{{ route('walikelas.siswa') }}"
+                        class="flex items-center gap-3 px-4 py-3 rounded-lg menu-link
+                       {{ request()->routeIs('walikelas.siswa') ? 'active-link' : 'text-gray-600 hover:bg-gray-50' }}">
+                        <i class="bi bi-person-badge"></i>
+                        <span>Siswa</span>
+                    </a>
+                </li>
                     @endif
 
                 @if (auth()->user()->role == 1 || auth()->user()->role == 2)

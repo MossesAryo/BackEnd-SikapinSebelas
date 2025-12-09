@@ -13,6 +13,9 @@ function openModal(modalId) {
             openModal('modal-create');
         }
 
+        function openFilterModal() { 
+       openModal('modal-filter'); }
+
         function openEditModal(nip, nama, jurusan, username) {
             document.getElementById('edit_nip').value = nip;
             document.getElementById('edit_nama').value = nama;
@@ -32,7 +35,7 @@ function openModal(modalId) {
 
 
         document.addEventListener('click', function(event) {
-            ['modal-create', 'modal-edit', 'modal-delete'].forEach(modalId => {
+            ['modal-create', 'modal-edit', 'modal-delete', 'modal-filter'].forEach(modalId => {
                 const modal = document.getElementById(modalId);
                 if (modal && !modal.classList.contains('hidden') && event.target === modal) {
                     closeModal(modalId);
@@ -42,7 +45,7 @@ function openModal(modalId) {
 
         document.addEventListener('keydown', function(event) {
             if (event.key === 'Escape') {
-                ['modal-create', 'modal-edit', 'modal-delete'].forEach(modalId => {
+                ['modal-create', 'modal-edit', 'modal-delete', 'modal-filter'].forEach(modalId => {
                     const modal = document.getElementById(modalId);
                     if (modal && !modal.classList.contains('hidden')) {
                         closeModal(modalId);
@@ -50,26 +53,67 @@ function openModal(modalId) {
                 });
             }
         });
-         document.addEventListener("DOMContentLoaded", function () {
-    const searchInput = document.querySelector("#searchKaprog input");
-    const tableRows = document.querySelectorAll("tbody tr");
 
-    searchInput.addEventListener("keyup", function () {
-        const searchText = this.value.toLowerCase();
 
-        tableRows.forEach(row => {
-            
-            if (row.querySelector("td[colspan]")) {
-                row.style.display = searchText === "" ? "" : "none";
+       document.addEventListener("DOMContentLoaded", () => {
+    const input = document.getElementById("inputSearch");
+    const tableBody = document.getElementById("tableBody");
+    const pagination = document.getElementById("pagination");
+
+    let debounceTimer = null;
+
+    // Simpan halaman terakhir sebelum search
+    let lastPageUrl = window.location.href;
+
+    function fetchData(url) {
+        fetch(url)
+            .then(res => res.text())
+            .then(html => {
+                const parser = new DOMParser();
+                const doc = parser.parseFromString(html, "text/html");
+
+                tableBody.innerHTML = doc.querySelector("#tableBody").innerHTML;
+                pagination.innerHTML = doc.querySelector("#pagination").innerHTML;
+
+                activatePaginationLinks();
+            })
+            .catch(err => console.error("ERR:", err));
+    }
+
+    function activatePaginationLinks() {
+        const links = document.querySelectorAll("#pagination a");
+
+        links.forEach(link => {
+            link.addEventListener("click", function (e) {
+                e.preventDefault();
+
+                // Simpan page terakhir sebelum search
+                lastPageUrl = this.href;
+
+                fetchData(this.href);
+            });
+        });
+    }
+
+    activatePaginationLinks();
+
+    // Auto search
+    input.addEventListener("keyup", function () {
+        clearTimeout(debounceTimer);
+
+        debounceTimer = setTimeout(() => {
+            const query = input.value.trim();
+
+            if (query.length === 0) {
+                // User hapus search → kembali ke page terakhir
+                fetchData(lastPageUrl);
                 return;
             }
 
-            const rowText = row.innerText.toLowerCase();
-            if (rowText.includes(searchText)) {
-                row.style.display = "";
-            } else {
-                row.style.display = "none";
-            }
-        });
+            // Search selalu mulai dari page 1
+            const url = `/kaprog?search=${query}`;
+            fetchData(url);
+
+        }, 200);
     });
 });

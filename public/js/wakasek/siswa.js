@@ -59,7 +59,8 @@ function updateSkor(select, targetId) {
 }
 
 
-function openfilterModal() { openModal('modal-filter'); }
+function openfilterModal() { 
+    openModal('modal-filter'); }
 
 function openpenghargaanModal(nis) {
     document.getElementById('id_penghargaan').value = '';
@@ -77,13 +78,16 @@ function opencatatanmodal(nis) {
     openModal('modal-catatan');
 }
 
-function openEditModal(nis, nama_siswa, id_kelas) {
+function openEditModal(nis, nama_siswa, id_kelas, redirect_to) {
     document.getElementById('edit_nis').value = nis;
-   
     document.getElementById('edit_nama_siswa').value = nama_siswa;
     document.getElementById('edit_id_kelas').value = id_kelas;
+    document.getElementById('redirect_to').value = redirect_to;
+
+    // Tambahan ini yang wajib!
     document.getElementById('form-edit').action = `/siswa/${nis}/update`;
-    openModal('modal-edit');
+
+    document.getElementById('modal-edit').classList.remove('hidden');
 }
 
 function openCreateModal() {
@@ -186,4 +190,10 @@ document.addEventListener("DOMContentLoaded", () => {
             }, 200);
         });
     }
+});
+
+document.getElementById('form-edit').addEventListener('submit', function() {
+    const btn = this.querySelector('button[type="submit"]');
+    btn.disabled = true;
+    btn.innerHTML = '<span class="inline-block animate-spin h-4 w-4 border-2 border-white border-t-transparent rounded-full mr-2"></span> Menyimpan...';
 });

@@ -149,6 +149,10 @@
             togglePerubahanFieldEdit();
 
             document.getElementById('form-edit').action = `/intervensi/${id_intervensi}/update`;
+            // make update redirect back to this page after saving
+            if (document.getElementById('return_to_edit')) {
+                document.getElementById('return_to_edit').value = window.location.href;
+            }
             openModal('modal-edit');
         }
 

@@ -24,9 +24,8 @@
             @foreach($walikelas as $item)
                 <tr>
                     <td>{{ $item->nip_walikelas }}</td>
-                    <td>{{ $item->username }}</td>
-                    <td>{{ $item->id_kelas }}</td>
                     <td>{{ $item->nama_walikelas }}</td>
+                    <td>{{ $item->id_kelas }}</td>
                 </tr>
             @endforeach
         </tbody>

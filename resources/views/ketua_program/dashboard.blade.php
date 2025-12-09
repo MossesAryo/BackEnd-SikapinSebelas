@@ -82,7 +82,7 @@
             </a>
 
             <!-- Lihat Data Siswa -->
-            <a href="{{ route('siswa.index') }}" 
+            <a href="{{ route('ketua_program.siswa') }}" 
                 class="group bg-blue-50 hover:bg-blue-100 border border-blue-200 rounded-xl p-4 flex flex-col items-center justify-center text-center transition-all">
                 <div class="w-10 h-10 flex items-center justify-center bg-blue-200 text-blue-700 rounded-full mb-2">
                     <i class="bi bi-people text-xl"></i>

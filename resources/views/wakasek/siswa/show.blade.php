@@ -41,7 +41,7 @@
 
 @endif
 
-
+ @if (auth()->user()->role == 1)
             <a href="{{ route('siswa.index') }}"
                 class="flex items-center justify-center sm:justify-start gap-2 px-4 py-2 w-full sm:w-auto
               rounded-lg bg-gray-600 text-white transition-colors hover:bg-gray-700">
@@ -49,6 +49,16 @@
                 <span>Kembali</span>
             </a>
         </div>
+        @endif
+ @if (auth()->user()->role == 4)
+            <a href="{{ route('walikelas.siswa') }}"
+                class="flex items-center justify-center sm:justify-start gap-2 px-4 py-2 w-full sm:w-auto
+              rounded-lg bg-gray-600 text-white transition-colors hover:bg-gray-700">
+                <i class="bi bi-arrow-left"></i>
+                <span>Kembali</span>
+            </a>
+        </div>
+        @endif
       
         @if (auth()->user()->role == 3)
          <a href="{{ route('ketua_program.siswa') }}"
@@ -196,12 +206,11 @@
                     <div class="px-6 py-4 border-b border-gray-200 flex items-center justify-between">
                         <h3 class="text-lg font-semibold text-gray-900">Informasi Siswa</h3>
                         @if (auth()->user()->role == 1)
-                            <button
-                                onclick="openEditModal('{{ $siswa->nis }}', '{{ $siswa->nama_siswa }}', '{{ $siswa->id_kelas }}')"
-                                class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg flex items-center gap-2 transition-colors">
-                                <i class="bi bi-pencil-square"></i>
-                                Edit
-                            </button>
+                                <button onclick="openEditModal('{{ $siswa->nis }}', '{{ addslashes($siswa->nama_siswa) }}', '{{ $siswa->id_kelas }}', 'show')"
+                                    class="bg-blue-600 hover:bg-blue-700 text-white px-5 py-3 rounded-lg flex items-center gap-2 transition-colors font-medium">
+                                    <i class="bi bi-pencil-square"></i>
+                                    Edit Profil Siswa
+                                </button>
                         @endif
 
                     </div>
@@ -241,6 +250,7 @@
                             @php
                                 $statistics = [
                                     [
+                                        'type' => 'penghargaan',
                                         'icon' => 'bi-plus-circle-fill',
                                         'label' => 'Poin Penghargaan',
                                         'value' => $poinPositif ?? 0,
@@ -252,6 +262,7 @@
                                         'valueColor' => 'text-green-700',
                                     ],
                                     [
+                                        'type' => 'pelanggaran',
                                         'icon' => 'bi-dash-circle-fill',
                                         'label' => 'Poin Pelanggaran',
                                         'value' => $poinNegatif ?? 0,
@@ -263,6 +274,7 @@
                                         'valueColor' => 'text-red-700',
                                     ],
                                     [
+                                        'type' => 'akumulasi',
                                         'icon' => 'bi-calculator-fill',
                                         'label' => 'Poin Total',
                                         'value' => $poinTotal ?? 0,
@@ -278,7 +290,8 @@
 
                             @foreach ($statistics as $stat)
                                 <div
-                                    class="bg-gradient-to-r {{ $stat['bgGradient'] }} p-4 rounded-lg border {{ $stat['borderColor'] }}">
+                                    class="stat-card bg-gradient-to-r {{ $stat['bgGradient'] }} p-4 rounded-lg border {{ $stat['borderColor'] }} cursor-pointer"
+                                    data-type="{{ $stat['type'] }}">
                                     <div class="text-center">
                                         <div
                                             class="w-12 h-12 {{ $stat['iconBg'] }} rounded-full flex items-center justify-center mx-auto mb-3">
@@ -304,99 +317,52 @@
                             </h3>
                         </div>
                         <div class="overflow-x-auto">
-                            <table class="w-full">
-                                <thead class="bg-gray-50">
-                                    <tr>
-                                        <th
-                                            class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                            Penanganan</th>
-                                        <th
-                                            class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                            Kesepakatan Waktu Perbaikan</th>
-                                        <th
-                                            class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                            Perubahan Setelah Perbaikan</th>
-
-                                    </tr>
-                                </thead>
-                                <tbody class="bg-white divide-y divide-gray-200">
-                                    {{-- Dummy data for now --}}
-                                    <tr class="hover:bg-gray-50">
-                                        <td class="px-6 py-4 whitespace-nowrap">
-                                            <div class="text-sm text-gray-900">
-                                                <p class="font-medium">Konseling Individual</p>
-                                                <p class="text-gray-500">Sesi konseling dengan psikolog sekolah</p>
-                                            </div>
-                                        </td>
-                                        <td class="px-6 py-4 whitespace-nowrap">
-                                            <div class="text-sm text-gray-900">
-                                                <p class="font-medium">2 Minggu</p>
-                                                <p class="text-gray-500">15 Jan - 29 Jan 2024</p>
-                                            </div>
-                                        </td>
-                                        <td class="px-6 py-4">
-                                            <div class="text-sm text-gray-900">
-                                                <span
-                                                    class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
-                                                    Membaik
-                                                </span>
-                                                <p class="text-gray-500 mt-1">Kedisiplinan meningkat, tidak ada pelanggaran
-                                                    baru</p>
-                                            </div>
-                                        </td>
-
-                                    </tr>
-                                    <tr class="hover:bg-gray-50">
-                                        <td class="px-6 py-4 whitespace-nowrap">
-                                            <div class="text-sm text-gray-900">
-                                                <p class="font-medium">Tugas Sosial</p>
-                                                <p class="text-gray-500">Membantu membersihkan lingkungan sekolah</p>
-                                            </div>
-                                        </td>
-                                        <td class="px-6 py-4 whitespace-nowrap">
-                                            <div class="text-sm text-gray-900">
-                                                <p class="font-medium">1 Minggu</p>
-                                                <p class="text-gray-500">1 Feb - 7 Feb 2024</p>
-                                            </div>
-                                        </td>
-                                        <td class="px-6 py-4">
-                                            <div class="text-sm text-gray-900">
-                                                <span
-                                                    class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800">
-                                                    Dalam Proses
-                                                </span>
-                                                <p class="text-gray-500 mt-1">Sedang menjalani tugas sosial dengan baik</p>
-                                            </div>
-                                        </td>
-
-                                    </tr>
-                                    <tr class="hover:bg-gray-50">
-                                        <td class="px-6 py-4 whitespace-nowrap">
-                                            <div class="text-sm text-gray-900">
-                                                <p class="font-medium">Pembinaan Orang Tua</p>
-                                                <p class="text-gray-500">Melibatkan orang tua dalam proses perbaikan</p>
-                                            </div>
-                                        </td>
-                                        <td class="px-6 py-4 whitespace-nowrap">
-                                            <div class="text-sm text-gray-900">
-                                                <p class="font-medium">1 Bulan</p>
-                                                <p class="text-gray-500">10 Feb - 10 Mar 2024</p>
-                                            </div>
-                                        </td>
-                                        <td class="px-6 py-4">
-                                            <div class="text-sm text-gray-900">
-                                                <span
-                                                    class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800">
-                                                    Perlu Evaluasi
-                                                </span>
-                                                <p class="text-gray-500 mt-1">Masih ada kendala, perlu pendekatan lebih
-                                                    intensif</p>
-                                            </div>
-                                        </td>
-
-                                    </tr>
-                                </tbody>
-                            </table>
+                            @if(isset($intervensiList) && $intervensiList->count() > 0)
+                                <table class="w-full">
+                                    <thead class="bg-gray-50">
+                                        <tr>
+                                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Penanganan</th>
+                                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Kesepakatan Waktu Perbaikan</th>
+                                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status Penanganan</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="bg-white divide-y divide-gray-200">
+                                        @foreach($intervensiList as $int)
+                                            <tr class="hover:bg-gray-50" style="cursor:pointer" onclick="window.location='{{ route('intervensi.show', $int->id_intervensi) }}'">
+                                                <td class="px-6 py-4 whitespace-nowrap">
+                                                    <div class="text-sm text-gray-900">
+                                                        <p class="font-medium">{{ $int->nama_intervensi }}</p>
+                                                        <p class="text-gray-500">{{ Str::limit($int->isi_intervensi, 80) }}</p>
+                                                    </div>
+                                                </td>
+                                                <td class="px-6 py-4 whitespace-nowrap">
+                                                    <div class="text-sm text-gray-900">
+                                                        <p class="font-medium">
+                                                            @if($int->tanggal_Mulai_Perbaikan && $int->tanggal_Selesai_Perbaikan)
+                                                                {{ \Carbon\Carbon::parse($int->tanggal_Mulai_Perbaikan)->format('d M Y') }} - {{ \Carbon\Carbon::parse($int->tanggal_Selesai_Perbaikan)->format('d M Y') }}
+                                                            @else
+                                                                -
+                                                            @endif
+                                                        </p>
+                                                        <p class="text-gray-500">{{ $int->created_at->format('d M Y') }}</p>
+                                                    </div>
+                                                </td>
+                                                <td class="px-6 py-4">
+                                                    <div class="text-sm text-gray-900">
+                                                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium {{ $int->status == 'Membaik' ? 'bg-green-100 text-green-800' : ($int->status == 'Selesai' ? 'bg-green-100 text-green-800' : ($int->status == 'Dalam Proses' ? 'bg-yellow-100 text-yellow-800' : 'bg-red-100 text-red-800')) }}">{{ $int->status }}</span>
+                                                        <p class="text-gray-500 mt-1">{{ Str::limit($int->isi_intervensi, 120) }}</p>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        @endforeach
+                                    </tbody>
+                                </table>
+                            @else
+                                <div class="py-8 text-center text-gray-500">
+                                    <i class="bi bi-calendar-x text-gray-400 text-4xl mb-3"></i>
+                                    <p class="text-sm">Belum ada penanganan</p>
+                                </div>
+                            @endif
                         </div>
                     </div>
                 @endif
@@ -489,4 +455,26 @@
     
     @push('js')
     <script src="{{ asset('js/wakasek/siswa.js') }}"></script>
+    <script>
+        // Statistik card click handlers
+        document.addEventListener('DOMContentLoaded', function () {
+            const nis = '{{ $siswa->nis }}';
+            const penghargaanUrl = '{{ route('skoring_penghargaan.index') }}';
+            const pelanggaranUrl = '{{ route('skoring_pelanggaran.index') }}';
+            const akumulasiUrl = '{{ route('akumulasi.index') }}';
+
+            document.querySelectorAll('.stat-card').forEach(card => {
+                card.addEventListener('click', () => {
+                    const type = card.dataset.type;
+                    if (type === 'penghargaan') {
+                        window.location.href = `${penghargaanUrl}?search=${nis}`;
+                    } else if (type === 'pelanggaran') {
+                        window.location.href = `${pelanggaranUrl}?search=${nis}`;
+                    } else if (type === 'akumulasi') {
+                        window.location.href = `${akumulasiUrl}?search=${nis}`;
+                    }
+                });
+            });
+        });
+    </script>
     @endpush

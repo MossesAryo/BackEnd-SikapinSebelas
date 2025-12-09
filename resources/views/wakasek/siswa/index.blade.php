@@ -18,8 +18,8 @@
                         <i class="bi bi-plus-lg"></i>
                         Tambah Siswa
                     </button>
-                @endif
-            </div>
+                    @endif
+                </div>
 
             @if (session('success'))
                 <div class="bg-green-50 border border-green-200 text-green-800 px-4 py-3 rounded-lg">
@@ -28,6 +28,7 @@
                         {{ session('success') }}
                     </p>
                 </div>
+
             @endif
 
             @if (session('error'))
@@ -40,6 +41,7 @@
             @endif
 
             <!-- Search and Filter -->
+            
             <div class="bg-white p-6 rounded-xl shadow-sm border">
                 <div class="flex flex-col md:flex-row gap-2 items-center justify-between">
                     <div  class="relative w-full md:w-64">
@@ -47,11 +49,16 @@
                         <input id="inputSearch" type="text" placeholder="Cari Siswa..."
                             class="pl-10 pr-4 py-1.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent w-full">
                     </div>
+                @if (auth()->user()->role == 1 || auth()->user()->role == 2 || auth()->user()->role == 3)
                     <div class="flex gap-2">
                         <button onclick="openfilterModal()"
                             class="px-3 py-1.5 border border-gray-300 rounded-lg hover:bg-gray-50 flex items-center gap-1.5">
                             <i class="bi bi-funnel"></i> Filter
                         </button>
+                        @endif
+                        
+                    
+
                         @if (auth()->user()->role == 1 || auth()->user()->role == 2)
                         <button id="exportImportBtn"
                             class="px-3 py-1.5 border border-gray-300 rounded-lg hover:bg-gray-50 flex items-center gap-1.5">
@@ -62,6 +69,9 @@
                     </div>
                 </div>
             </div>
+        
+
+            
             <!-- Data Table -->
 
             <div class="bg-white rounded-xl shadow-sm border overflow-hidden">
@@ -158,8 +168,7 @@
                                     <td class="px-6 py-4 whitespace-nowrap">
                                         <div class="flex items-center gap-1">
                                             @if (auth()->user()->role == 1 || auth()->user()->role == 2)
-                                                <button
-                                                    onclick="openEditModal('{{ $item->nis }}', '{{ $item->nama_siswa }}', '{{ $item->id_kelas }}')"
+                                                <button onclick="openEditModal('{{ $item->nis }}', '{{ addslashes($item->nama_siswa) }}', '{{ $item->id_kelas }}', 'index')"
                                                     class="action-btn inline-flex items-center justify-center w-9 h-9 text-blue-600 hover:text-blue-800 hover:bg-blue-50 rounded-full"
                                                     title="Edit Siswa">
                                                     <i class="bi bi-pencil-square text-sm"></i>
@@ -208,10 +217,10 @@
         @include('wakasek.siswa.create')
         @include('wakasek.siswa.edit')
         @include('wakasek.siswa.delete')
+        @include('wakasek.siswa.modalExportImport')
     @endif
 
     @include('wakasek.siswa.filter')
-    @include('wakasek.siswa.modalExportImport')
    
 
     

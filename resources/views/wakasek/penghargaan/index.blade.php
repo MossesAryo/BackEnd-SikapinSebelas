@@ -42,9 +42,9 @@
 
         <div class="bg-white p-6 rounded-xl shadow-sm border">
             <div class="flex flex-col md:flex-row gap-2 items-center justify-between">
-                <div id="searchApresiasi" class="relative w-full md:w-64">
+                <div class="relative w-full md:w-64">
                     <i class="bi bi-search absolute left-3 top-2.5 text-gray-400"></i>
-                    <input type="text" placeholder="Cari Ketua Program..."
+                    <input id="searchApresiasi" type="text" placeholder="Cari Penghargaan..."
                         class="pl-10 pr-4 py-1.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent w-full">
                 </div>
                 <div class="flex gap-2">
@@ -106,7 +106,7 @@
                         </tr>
                     </thead>
 
-                    <tbody class="bg-white divide-y divide-gray-100">
+                  <tbody id="tableBody" class="bg-white divide-y divide-gray-100">
                         @forelse ($penghargaan as $item)
                             <tr class="hover:bg-gray-50 group">
                                 <td class="px-6 py-4 whitespace-nowrap">
@@ -114,13 +114,10 @@
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap">
                                     <div class="flex items-center">
-                                        <div
-                                            class="w-2 h-2 bg-blue-400 rounded-full mr-3 opacity-0 group-hover:opacity-100 transition-opacity">
-                                        </div>
+                                        <div class="w-2 h-2 bg-blue-400 rounded-full mr-3 opacity-0 group-hover:opacity-100 transition-opacity"></div>
                                         <span class="text-sm font-medium text-gray-900">{{ $item->tanggal_penghargaan }}</span>
                                     </div>
                                 </td>
-                        
                                 <td class="px-6 py-4 whitespace-nowrap">
                                     <span class="text-lg font-bold text-black">{{ $item->level_penghargaan }}</span>
                                 </td>
@@ -130,14 +127,12 @@
                                 @if (auth()->user()->role == 1)
                                     <td class="px-6 py-4 whitespace-nowrap">
                                         <div class="flex items-center gap-1">
-                                            <button
-                                                onclick="openEditModal('{{ $item->id_penghargaan }}', '{{ $item->tanggal_penghargaan }}', '{{ $item->level_penghargaan }}', '{{ $item->alasan }}')"
+                                            <button onclick="openEditModal('{{ $item->id_penghargaan }}', '{{ $item->tanggal_penghargaan }}', '{{ $item->level_penghargaan }}', '{{ $item->alasan }}')"
                                                 class="action-btn inline-flex items-center justify-center w-9 h-9 text-blue-600 hover:text-blue-800 hover:bg-blue-50 rounded-full"
                                                 title="Edit Penghargaan">
                                                 <i class="bi bi-pencil-square text-sm"></i>
                                             </button>
-                                            <button
-                                                onclick="openDeleteModal('{{ $item->id_penghargaan }}', '{{ $item->level_penghargaan }}')"
+                                            <button onclick="openDeleteModal('{{ $item->id_penghargaan }}', '{{ $item->level_penghargaan }}')"
                                                 class="action-btn inline-flex items-center justify-center w-9 h-9 text-red-600 hover:text-red-800 hover:bg-red-50 rounded-full"
                                                 title="Hapus Penghargaan">
                                                 <i class="bi bi-trash text-sm"></i>
@@ -147,11 +142,11 @@
                                 @endif
                             </tr>
                         @empty
-                            <tr>
-                                <td colspan="6" class="px-6 py-12 text-center">
-                                    <div
-                                        class="mx-auto w-24 h-24 bg-gray-100 rounded-full flex items-center justify-center mb-4">
-                                        <i class="bi bi-people text-3xl text-gray-400"></i>
+                            <!-- TAMPILAN KOSONG — SAMA PERSIS SEPERTI WALIKELAS -->
+                            <tr id="emptyState">
+                                <td colspan="{{ auth()->user()->role == 1 ? '5' : '4' }}" class="px-6 py-12 text-center">
+                                    <div class="mx-auto w-24 h-24 bg-gray-100 rounded-full flex items-center justify-center mb-4">
+                                        <i class="bi bi-trophy text-3xl text-gray-400"></i>
                                     </div>
                                     <h3 class="text-lg font-medium text-gray-900 mb-2">Belum ada data Penghargaan</h3>
                                     <p class="text-gray-500">Tambahkan data Penghargaan untuk memulai.</p>
@@ -161,7 +156,7 @@
                     </tbody>
                 </table>
                 <!-- PAGINATION -->
-                <div class="px-6 py-4 border-t border-gray-200 bg-white">
+                <div id="pagination" class="px-6 py-4 border-t border-gray-200 bg-white">
                     @include('layouts.wakasek.pagination', ['data' => $penghargaan])
                 </div>
             </div>

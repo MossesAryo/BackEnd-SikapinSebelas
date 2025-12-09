@@ -141,6 +141,15 @@ class UserSeeder extends Seeder
             'updated_at' => now(),
         ]);
 
+        DB::table('walikelas')->insert([
+            'nip_walikelas' => 22,
+            'username' => 'walikelas22',
+            'nama_walikelas' => 'aku walikelas',
+            'jurusan' => 'RPL',
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
+
         // 3️⃣ Guru BK
     
     }

@@ -14,7 +14,7 @@
                     <label for="id_kelas" class="block text-sm font-medium text-gray-700 mb-1">ID Kelas</label>
                     <input type="text" id="id_kelas" name="id_kelas" required
                         class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                        placeholder="Contoh: RPL001, TKJ002">
+                        placeholder="Contoh: X-AK-2, XI-RPL-1, XII-TKJ-3">
                 </div>
 
                 <div>
@@ -28,7 +28,7 @@
                     <label for="nama_kelas" class="block text-sm font-medium text-gray-700 mb-1">Nama Kelas</label>
                     <input type="text" id="nama_kelas" name="nama_kelas" required
                         class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                        placeholder="Contoh: 12 RPL 1, 11 TKJ 2">
+                        placeholder="Contoh: X AK 2, XI RPL 1, XII TKJ 3">
                 </div>
             </div>
 

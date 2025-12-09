@@ -228,72 +228,95 @@
         </div>
     </div>
 
-    <!-- Filter Modal -->
-    <div id="modal-filter" class="hidden fixed inset-0 bg-black bg-opacity-50 modal-overlay flex items-center justify-center p-4 z-50">
-        <div class="bg-white rounded-xl shadow-xl max-w-md w-full">
-            <div class="px-6 py-4 border-b border-gray-200">
-                <div class="flex items-center justify-between">
-                    <h3 class="text-lg font-semibold text-gray-900">Filter Data</h3>
-                    <button onclick="closeModal('modal-filter')" class="text-gray-400 hover:text-gray-600">
-                        <i class="bi bi-x-lg"></i>
-                    </button>
+<!-- Filter Modal — Tema Biru Elegan (Sama seperti Skoring Penghargaan) -->
+<div id="modal-filter" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
+    <div class="bg-white rounded-2xl shadow-2xl w-full max-w-md mx-4 relative overflow-hidden">
+        <!-- Header dengan Gradient Biru -->
+        <div class="flex items-center justify-between p-6 border-b border-gray-100 bg-gradient-to-r from-blue-50 to-indigo-50 rounded-t-2xl">
+            <div class="flex items-center gap-3">
+                <div class="w-11 h-11 bg-blue-100 rounded-full flex items-center justify-center">
+                    <i class="bi bi-funnel-fill text-blue-600 text-xl"></i>
+                </div>
+                <h3 class="text-xl font-semibold text-gray-800">Filter Data Pelanggaran</h3>
+            </div>
+            <button onclick="closeModal('modal-filter')"
+                class="text-gray-400 hover:text-gray-600 hover:bg-gray-200 rounded-full p-2 transition">
+                <i class="bi bi-x-lg text-lg"></i>
+            </button>
+        </div>
+
+        <!-- Form Body -->
+        <form method="GET" action="{{ route('skoring_pelanggaran.index') }}">
+            <div class="p-6 space-y-6">
+                <!-- Filter Kelas -->
+                <div class="space-y-2">
+                    <label class="block text-sm font-semibold text-gray-700 flex items-center gap-2">
+                        <i class="bi bi-grid-3x3-gap-fill text-blue-600"></i>
+                        Kelas
+                    </label>
+                    <select name="kelas" class="w-full rounded-xl border-2 border-gray-200 px-4 py-3 focus:ring-4 focus:ring-blue-100 focus:border-blue-500 transition-all">
+                        <option value="">Semua Kelas</option>
+                        @foreach($kelas as $k)
+                            <option value="{{ $k->id_kelas }}" {{ request('kelas') == $k->id_kelas ? 'selected' : '' }}>
+                                {{ $k->nama_kelas }}
+                            </option>
+                        @endforeach
+                    </select>
+                </div>
+
+                <!-- Filter Jenis Pelanggaran -->
+                <div class="space-y-2">
+                    <label class="block text-sm font-semibold text-gray-700 flex items-center gap-2">
+                        <i class="bi bi-exclamation-triangle-fill text-blue-600"></i>
+                        Jenis Pelanggaran
+                    </label>
+                    <select name="jenis_pelanggaran" class="w-full rounded-xl border-2 border-gray-200 px-4 py-3 focus:ring-4 focus:ring-blue-100 focus:border-blue-500 transition-all">
+                        <option value="">Semua Jenis</option>
+                        @foreach($aspekPel as $aspek)
+                            <option value="{{ $aspek->id_aspekpenilaian }}" {{ request('jenis_pelanggaran') == $aspek->id_aspekpenilaian ? 'selected' : '' }}>
+                                {{ $aspek->uraian }} ({{ $aspek->indikator_poin }} poin)
+                            </option>
+                        @endforeach
+                    </select>
+                </div>
+
+                <!-- Filter Tanggal -->
+                <div class="grid grid-cols-2 gap-4">
+                    <div class="space-y-2">
+                        <label class="block text-sm font-semibold text-gray-700 flex items-center gap-2">
+                            <i class="bi bi-calendar-event text-blue-600"></i>
+                            Tanggal Mulai
+                        </label>
+                        <input type="date" name="tanggal_mulai" value="{{ request('tanggal_mulai') }}"
+                            class="w-full rounded-xl border-2 border-gray-200 px-4 py-3 focus:ring-4 focus:ring-blue-100 focus:border-blue-500 transition-all">
+                    </div>
+                    <div class="space-y-2">
+                        <label class="block text-sm font-semibold text-gray-700 flex items-center gap-2">
+                            <i class="bi bi-calendar-check text-blue-600"></i>
+                            Tanggal Akhir
+                        </label>
+                        <input type="date" name="tanggal_akhir" value="{{ request('tanggal_akhir') }}"
+                            class="w-full rounded-xl border-2 border-gray-200 px-4 py-3 focus:ring-4 focus:ring-blue-100 focus:border-blue-500 transition-all">
+                    </div>
                 </div>
             </div>
-            <form method="GET" action="{{ route('skoring_pelanggaran.index') }}">
-                <div class="px-6 py-4 space-y-4">
-                    <!-- Filter Kelas -->
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-2">Kelas</label>
-                        <select name="kelas" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
-                            <option value="">Semua Kelas</option>
-                            @foreach($kelas as $k)
-                                <option value="{{ $k->id_kelas }}" {{ request('kelas') == $k->id_kelas ? 'selected' : '' }}>
-                                    {{ $k->nama_kelas }}
-                                </option>
-                            @endforeach
-                        </select>
-                    </div>
 
-                    <!-- Filter Jenis Pelanggaran -->
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-2">Jenis Pelanggaran</label>
-                        <select name="jenis_pelanggaran" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
-                            <option value="">Semua Jenis</option>
-                            @foreach($aspekPel as $aspek)
-                                <option value="{{ $aspek->id_aspekpenilaian }}" {{ request('jenis_pelanggaran') == $aspek->id_aspekpenilaian ? 'selected' : '' }}>
-                                    {{ $aspek->uraian }} ({{ $aspek->indikator_poin }} poin)
-                                </option>
-                            @endforeach
-                        </select>
-                    </div>
-
-                    <!-- Filter Tanggal -->
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-2">Tanggal Mulai</label>
-                        <input type="date" name="tanggal_mulai" value="{{ request('tanggal_mulai') }}"
-                            class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
-                    </div>
-
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-2">Tanggal Akhir</label>
-                        <input type="date" name="tanggal_akhir" value="{{ request('tanggal_akhir') }}"
-                            class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
-                    </div>
-                </div>
-
-                <div class="px-6 py-4 border-t border-gray-200 flex gap-3 justify-end">
-                    <a href="{{ route('skoring_pelanggaran.index') }}"
-                        class="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors">
-                        Reset
-                    </a>
-                    <button type="submit"
-                        class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors">
-                        Terapkan Filter
-                    </button>
-                </div>
-            </form>
-        </div>
+            <!-- Footer Tombol -->
+            <div class="flex flex-col sm:flex-row justify-end gap-3 px-6 py-5 border-t bg-gray-50">
+                <a href="{{ route('skoring_pelanggaran.index') }}"
+                    class="order-last sm:order-none px-6 py-3 rounded-xl border-2 border-gray-300 text-gray-700 hover:bg-gray-100 transition flex items-center justify-center gap-2">
+                    <i class="bi bi-arrow-counterclockwise"></i>
+                    Reset
+                </a>
+                <button type="submit"
+                    class="px-6 py-3 rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 text-white hover:from-blue-700 hover:to-indigo-700 shadow-lg transition flex items-center justify-center gap-2">
+                    <i class="bi bi-check-circle-fill"></i>
+                    Terapkan Filter
+                </button>
+            </div>
+        </form>
     </div>
+</div>
 
     @include('wakasek.skoring.pelanggaran.create')
     @include('wakasek.skoring.pelanggaran.delete')

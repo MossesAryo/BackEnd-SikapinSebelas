@@ -27,7 +27,7 @@
                         </div>
                         <div>
                             <label for="edit_id_kelas" class="block text-sm font-medium text-gray-700 mb-1">Kelas</label>
-                            <select class="form-select" id="edit_id_kelas" name="id_kelas">
+                            <select class="form-select w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-transparent" id="edit_id_kelas" name="id_kelas" >
                                 <option value="">Pilih Kelas</option>
                                 @foreach ($kelas as $k)
                                     <option value="{{ $k->id_kelas }}" {{ isset($walikelas->id_kelas) && $k->id_kelas == $walikelas->id_kelas ? 'selected' : '' }}>

@@ -74,7 +74,7 @@ class SiswaController extends Controller
 
     // Filter kelas spesifik
     if ($request->filled('kelas')) {
-        $query->where('kelas_id', $request->kelas);
+        $query->where('id_kelas', $request->kelas);
     }
 
     // Paginate — sertakan semua query params yang relevan supaya pagination mempertahankan filter/search
@@ -241,11 +241,15 @@ class SiswaController extends Controller
     {
         $siswa = siswa::where('nis', $nis)->first();
         $penghargaan = penghargaan::all();
-        $penghargaanList = siswa_penghargaan::all();
+        // Ambil hanya penghargaan yang terkait siswa ini
+        $penghargaanList = siswa_penghargaan::where('nis', $nis)->get();
         $peringatan = surat_peringatan::all();
         $skoringpenghargaan = aspek_penilaian::where('jenis_poin', 'Apresiasi')->get();
         $skoringpelanggaran = aspek_penilaian::where('jenis_poin', 'Pelanggaran')->get();
-        $peringatanList = siswa_sp::all();
+        // Ambil hanya surat peringatan yang terkait siswa ini
+        $peringatanList = siswa_sp::where('nis', $nis)->get();
+        // Ambil data intervensi (penanganan) untuk siswa ini
+        $intervensiList = intervensi::where('nis', $nis)->orderBy('created_at', 'desc')->get();
 
         if (!$siswa) {
             return redirect()->route('siswa.index')->with('error', 'Siswa tidak ditemukan');
@@ -256,6 +260,10 @@ class SiswaController extends Controller
         $poinNegatif = $siswa->poin_pelanggaran ?? 0;
         $poinTotal   = $siswa->poin_total ?? 0;
 
+        // Pastikan penghargaan / surat peringatan otomatis tercipta sesuai akumulasi
+        // PH ditentukan dari poin total (bukan hanya poin apresiasi)
+        $this->cekPenghargaanOtomatis($siswa, $poinTotal);
+        $this->cekSPOtomatis($siswa, $poinTotal);
 
         $activities = ActivityLog::where('nis', $siswa->nis)
             ->orderBy('created_at', 'desc')
@@ -275,7 +283,119 @@ class SiswaController extends Controller
             'peringatan' => $peringatan,
             'skoringpenghargaan' => $skoringpenghargaan,
             'skoringpelanggaran' => $skoringpelanggaran,
+            'intervensiList' => $intervensiList,
         ]);
+    }
+
+    /**
+     * Cek dan buat penghargaan otomatis berdasarkan poin apresiasi
+     */
+    private function cekPenghargaanOtomatis($siswa, $poinTotal)
+    {
+        // Gunakan poin_total untuk menentukan PH. Jika poin_total <= -25 maka SP menang.
+        $poinTotal = $poinTotal ?? ($siswa->poin_total ?? 0);
+
+        if ($poinTotal <= -25) {
+            // jika SP berlaku, hapus semua PH relasi
+            siswa_penghargaan::where('nis', $siswa->nis)->delete();
+            return;
+        }
+
+        // Tentukan level PH tertinggi berdasarkan poin_total
+        $level = null;
+        if ($poinTotal >= 151) {
+            $level = 'PH3';
+        } elseif ($poinTotal >= 126) {
+            $level = 'PH2';
+        } elseif ($poinTotal >= 100) {
+            $level = 'PH1';
+        }
+
+        if ($level) {
+            $penghargaan = penghargaan::firstOrCreate(
+                ['level_penghargaan' => $level],
+                ['tanggal_penghargaan' => now(), 'alasan' => "Penghargaan otomatis – Poin total sesuai rentang"]
+            );
+
+            if (!siswa_penghargaan::where('nis', $siswa->nis)->where('id_penghargaan', $penghargaan->id_penghargaan)->exists()) {
+                siswa_penghargaan::create(['nis' => $siswa->nis, 'id_penghargaan' => $penghargaan->id_penghargaan]);
+
+                ActivityLog::create([
+                    'user_id' => Auth::id() ?? 1,
+                    'nis' => $siswa->nis,
+                    'kategori' => 'Apresiasi',
+                    'activity' => 'Penghargaan Otomatis',
+                    'description' => "Mendapatkan {$level}",
+                    'point' => 0,
+                ]);
+            }
+
+            // hapus relasi penghargaan lain yang tidak sesuai level ini
+            $otherPengh = siswa_penghargaan::where('nis', $siswa->nis)
+                ->whereHas('penghargaan', fn($q) => $q->where('level_penghargaan', '!=', $level));
+            if ($otherPengh->exists()) $otherPengh->delete();
+        } else {
+            // tidak masuk rentang PH -> hapus relasi PH
+            siswa_penghargaan::where('nis', $siswa->nis)->delete();
+        }
+    }
+
+    /**
+     * Cek dan buat SP otomatis berdasarkan poin total (negatif)
+     */
+    private function cekSPOtomatis($siswa, $poinTotal)
+    {
+        // Tentukan level SP tertinggi jika memenuhi
+        $level = null;
+        if ($poinTotal <= -76) {
+            $level = 'SP3';
+        } elseif ($poinTotal <= -51) {
+            $level = 'SP2';
+        } elseif ($poinTotal <= -25) {
+            $level = 'SP1';
+        }
+
+        if ($level) {
+            // hapus semua penghargaan relasi siswa kalau SP tercapai
+            siswa_penghargaan::where('nis', $siswa->nis)->delete();
+
+            $this->buatSP($siswa, $level, 'poin sesuai rentang');
+
+            // hapus SP lain yang tidak relevan
+            $otherSP = siswa_sp::where('nis', $siswa->nis)
+                ->whereHas('peringatan', fn($q) => $q->where('level_sp', '!=', $level));
+            if ($otherSP->exists()) $otherSP->delete();
+        } else {
+            // tidak memenuhi SP -> hapus relasi SP
+            siswa_sp::where('nis', $siswa->nis)->delete();
+        }
+    }
+
+    private function buatSP($siswa, $level, $keterangan)
+    {
+        $sp = surat_peringatan::firstOrCreate(
+            ['level_sp' => $level],
+            [
+                'tanggal_sp' => now(),
+                'alasan' => "Surat Peringatan otomatis – {$keterangan}",
+            ]
+        );
+
+        if (!siswa_sp::where('nis', $siswa->nis)->where('id_sp', $sp->id_sp)->exists()) {
+            siswa_sp::create([
+                'nis' => $siswa->nis,
+                'id_sp' => $sp->id_sp,
+            ]);
+
+            ActivityLog::create([
+                'user_id' => Auth::id() ?? 1,
+                'nis' => $siswa->nis,
+                'kategori' => 'Pelanggaran',
+                'activity' => 'Surat Peringatan Otomatis',
+                'description' => "Mendapatkan {$level} ({$keterangan})",
+                'point' => 0,
+            ]);
+        }
     }
 
 
@@ -294,6 +414,11 @@ class SiswaController extends Controller
             'nama_siswa' => $request->nama_siswa,
             'id_kelas' => $request->id_kelas,
         ]);
+        
+        $redirectTo = $request->input('redirect_to');
+        if ($redirectTo === 'show') {
+            return redirect()->route('siswa.show', $siswa->nis)->with('success', 'Data berhasil diperbarui.');
+        }
 
         return redirect()->route('siswa.index')->with('success', 'Data berhasil diperbarui.');
     }

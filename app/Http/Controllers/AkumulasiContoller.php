@@ -3,17 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\Models\kelas;
-use Illuminate\Http\Request;
 use App\Models\siswa;
 use App\Models\walikelas;
-
-
-use App\Exports\Akumulasi_ExportExcel;
-use App\Imports\Akumulasi_Import;
+use App\Models\ketua_program;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Maatwebsite\Excel\Facades\Excel;
-use Illuminate\Support\Facades\Auth;
-use App\Models\ketua_program;
+use App\Exports\Akumulasi_ExportExcel;
 
 class AkumulasiContoller extends Controller
 {
@@ -21,114 +18,37 @@ class AkumulasiContoller extends Controller
      * Display a listing of the resource.
      */
     public function index(Request $request)
-{
-    $user = Auth::user();
-    $jurusanKetua = null;
-    $kelasWalikelas = null;
+    {
+        [$jurusanKetua, $kelasWalikelas] = $this->resolveRoleScope(Auth::user());
 
-    // ==== Cek role 3 (ketua program) ====
-    if ($user->role == 3) {
-        $ketua = ketua_program::where('username', $user->username)->first();
+        // Jurusan list (dibatasi jika Kaprog)
+        $jurusanList = $jurusanKetua
+            ? collect([$jurusanKetua])
+            : kelas::select('jurusan')->distinct()->pluck('jurusan');
 
-        if ($ketua && $ketua->jurusan) {
-            $jurusanKetua = $ketua->jurusan;
-        }
+        // Kelas list (dibatasi jika Kaprog atau Walikelas)
+        $kelasList = kelas::query()
+            ->when($jurusanKetua, fn($q) => $q->where('jurusan', $jurusanKetua))
+            ->when($kelasWalikelas, fn($q) => $q->where('id_kelas', $kelasWalikelas))
+            ->get();
+
+        // Query siswa dengan filter role + request
+        $query = $this->buildSiswaQuery($request, $jurusanKetua, $kelasWalikelas);
+
+        $siswa = $query->paginate(10)->appends($request->all());
+
+        return view('wakasek.akumulasi.index', [
+            'siswa'          => $siswa,
+            'jurusanList'    => $jurusanList,
+            'kelasList'      => $kelasList,
+            'jurusanKetua'   => $jurusanKetua,
+            'kelasWalikelas' => $kelasWalikelas,
+        ]);
     }
-
-    if ($user->role == 4) {
-        $walikelas = walikelas::where('username', $user->username)->first();
-
-        if ($walikelas && $walikelas->id_kelas) {
-            $kelasWalikelas = $walikelas->id_kelas;
-        }
-    }
-
-
-    // ==== List Jurusan (kalau ketua → hanya satu) ====
-    if ($jurusanKetua) {
-        $jurusanList = collect([$jurusanKetua]); // hanya jurusan ketua
-    } else {
-        $jurusanList = kelas::select('jurusan')->distinct()->pluck('jurusan');
-    }
-
-    // ==== List Kelas (kalau ketua → kelas sesuai jurusan ketua) ====
-    if ($jurusanKetua) {
-        $kelasList = kelas::where('jurusan', $jurusanKetua)->get();
-    } else {
-        $kelasList = kelas::all();
-    }
-
-    // ==== List Jurusan (kalau ketua → hanya satu) ====
-    if ($kelasWalikelas) {
-        $kelasList = collect([$kelasWalikelas]); // hanya jurusan ketua
-    } else {
-        $kelasList = kelas::select('id_kelas')->distinct()->pluck('id_kelas');
-    }
-
-    // ==== List Kelas (kalau ketua → kelas sesuai jurusan ketua) ====
-    if ($kelasWalikelas) {
-        $kelasList = kelas::where('id_kelas', $kelasWalikelas)->get();
-    } else {
-        $kelasList = kelas::all();
-    }
-
-    // ==== Query siswa ====
-    $query = siswa::query();
-
-    // Filter otomatis oleh jurusan ketua program
-    if ($jurusanKetua) {
-        $query->whereHas('kelas', function ($q) use ($jurusanKetua) {
-            $q->where('jurusan', $jurusanKetua);
-        });
-    }
-    if ($kelasWalikelas) {
-        $query->whereHas('kelas', function ($q) use ($kelasWalikelas) {
-            $q->where('id_kelas', $kelasWalikelas);
-        });
-    }
-
-    // ==== Filter request jurusan (jika user bukan ketua) ====
-    if ($request->filled('jurusan') && !$jurusanKetua) {
-        $query->whereHas('kelas', fn ($q) => $q->where('jurusan', $request->jurusan));
-    }
-    if ($request->filled('kelas') && !$kelasWalikelas) {
-        $query->whereHas('kelas', fn ($q) => $q->where('id_kelas', $request->kelas));
-    }
-
-    // 🔥 SEARCH — HARUS Lewat Relasi siswa (karena nama_siswa bukan di tabel penilaian)
-   // SEARCH
-if ($request->filled('search')) {
-    $search = $request->search;
-
-    $query->where(function ($q) use ($search) {
-        $q->where('nis', 'like', '%' . $search . '%')
-          ->orWhere('nama_siswa', 'like', '%' . $search . '%');
-    });
-}
-
-
-    $siswa = $query->paginate(10)->appends($request->all());
-
-
-    // ==== Filter kelas ====
-    if ($request->filled('kelas')) {
-        $query->whereHas('kelas', fn ($q) => $q->where('nama_kelas', $request->kelas));
-    }
-
-    return view('wakasek.akumulasi.index', [
-        "siswa"        => $siswa,
-        "jurusanList"  => $jurusanList,
-        "kelasList"    => $kelasList,
-        "jurusanKetua" => $jurusanKetua,
-         "kelasWalikelas" => $kelasWalikelas, 
-         
-       
-    ]);
-}
-
 
     public function fetchAPI(Request $request)
     {
+        // (dibiarkan seperti semula; bisa disesuaikan dengan helper jika mau)
         $jurusanList = kelas::select('jurusan')->distinct()->pluck('jurusan');
         $kelasList   = kelas::all();
 
@@ -139,7 +59,8 @@ if ($request->filled('search')) {
         }
 
         if ($request->filled('kelas')) {
-            $query->whereHas('kelas', fn($q) => $q->where('nama_kelas', $request->kelas));
+            // gunakan id_kelas jika form mengirim id_kelas; sesuaikan jika mau pakai nama_kelas
+            $query->whereHas('kelas', fn($q) => $q->where('id_kelas', $request->kelas));
         }
 
         $siswa = $query->paginate(10)->withQueryString();
@@ -153,13 +74,11 @@ if ($request->filled('search')) {
         ], 200);
     }
 
-
-
     public function indexBK(Request $request)
     {
-
+        // (dibiarkan seperti semula; bisa disesuaikan dengan helper jika mau)
         $jurusanList = kelas::select('jurusan')->distinct()->pluck('jurusan');
-        $kelasList   = Kelas::all();
+        $kelasList   = kelas::all();
 
         $query = siswa::query();
 
@@ -167,7 +86,7 @@ if ($request->filled('search')) {
             $query->whereHas('kelas', fn($q) => $q->where('jurusan', $request->jurusan));
         }
         if ($request->filled('kelas')) {
-            $query->whereHas('kelas', fn($q) => $q->where('nama_kelas', $request->kelas));
+            $query->whereHas('kelas', fn($q) => $q->where('id_kelas', $request->kelas));
         }
 
         $siswa = $query->get();
@@ -175,64 +94,79 @@ if ($request->filled('search')) {
         return view('gurubk.akumulasi.index', compact('siswa', 'jurusanList', 'kelasList'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
+    public function export_pdf(Request $request)
     {
-        //
-    }
+        [$jurusanKetua, $kelasWalikelas] = $this->resolveRoleScope(Auth::user());
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
-    }
-
-    public function export_pdf()
-    {
-        $akumulasi = Siswa::with('kelas')->get();
+        $akumulasi = $this->buildSiswaQuery($request, $jurusanKetua, $kelasWalikelas)->get();
 
         $pdf = PDF::loadView('export.akumulasi.pdf', compact('akumulasi'));
         return $pdf->download('akumulasi.pdf');
     }
 
-    public function export_Excel()
+public function export_Excel(Request $request)
+{
+    [$jurusanKetua, $kelasWalikelas] = $this->resolveRoleScope(Auth::user());
+
+    // Data sudah terfilter sesuai role + filter jurusan/kelas/search
+    $akumulasi = $this->buildSiswaQuery($request, $jurusanKetua, $kelasWalikelas)->get();
+
+    return Excel::download(new \App\Exports\Akumulasi_ExportExcel($akumulasi), 'akumulasi.xlsx');
+}
+
+    /* ======================= Helper ======================= */
+
+    private function resolveRoleScope($user): array
     {
-        return Excel::download(new Akumulasi_ExportExcel, 'akumulasi.xlsx');
+        $jurusanKetua   = null; // Kaprog (role 3)
+        $kelasWalikelas = null; // Walikelas (role 4)
+
+        if ($user->role == 3) {
+            $ketua = ketua_program::where('username', $user->username)->first();
+            if ($ketua && $ketua->jurusan) {
+                $jurusanKetua = $ketua->jurusan;
+            }
+        }
+
+        if ($user->role == 4) {
+            $walikelas = walikelas::where('username', $user->username)->first();
+            if ($walikelas && $walikelas->id_kelas) {
+                $kelasWalikelas = $walikelas->id_kelas;
+            }
+        }
+
+        return [$jurusanKetua, $kelasWalikelas];
+    }
+
+    private function buildSiswaQuery(Request $request, $jurusanKetua, $kelasWalikelas)
+    {
+        $query = siswa::with('kelas');
+
+        // Filter otomatis berdasarkan role
+        if ($jurusanKetua) {
+            $query->whereHas('kelas', fn($q) => $q->where('jurusan', $jurusanKetua));
+        }
+        if ($kelasWalikelas) {
+            $query->whereHas('kelas', fn($q) => $q->where('id_kelas', $kelasWalikelas));
+        }
+
+        // Filter request (tidak menimpa filter role)
+        if ($request->filled('jurusan') && !$jurusanKetua) {
+            $query->whereHas('kelas', fn($q) => $q->where('jurusan', $request->jurusan));
+        }
+        if ($request->filled('kelas') && !$kelasWalikelas) {
+            $query->whereHas('kelas', fn($q) => $q->where('id_kelas', $request->kelas));
+        }
+
+        // Search NIS / nama_siswa
+        if ($request->filled('search')) {
+            $search = $request->search;
+            $query->where(function ($q) use ($search) {
+                $q->where('nis', 'like', '%' . $search . '%')
+                  ->orWhere('nama_siswa', 'like', '%' . $search . '%');
+            });
+        }
+
+        return $query;
     }
 }

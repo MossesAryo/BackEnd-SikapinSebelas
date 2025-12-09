@@ -14,6 +14,10 @@
             openModal('modal-create');
         }
 
+         function openFilterModal() {
+            openModal('modal-filter');
+        }
+
 
         function openEditModal(nip_walikelas, username, nama_walikelas, id_kelas) {
             document.getElementById('edit_nip_walikelas').value = nip_walikelas;
@@ -33,7 +37,7 @@
 
         
         document.addEventListener('click', function(event) {
-            ['modal-create', 'modal-edit', 'modal-delete'].forEach(modalId => {
+            ['modal-create', 'modal-edit', 'modal-delete', 'modal-filter'].forEach(modalId => {
                 const modal = document.getElementById(modalId);
                 if (modal && !modal.classList.contains('hidden') && event.target === modal) {
                     closeModal(modalId);
@@ -43,7 +47,7 @@
 
         document.addEventListener('keydown', function(event) {
             if (event.key === 'Escape') {
-                ['modal-create', 'modal-edit', 'modal-delete'].forEach(modalId => {
+                ['modal-create', 'modal-edit', 'modal-delete', 'modal-filter'].forEach(modalId => {
                     const modal = document.getElementById(modalId);
                     if (modal && !modal.classList.contains('hidden')) {
                         closeModal(modalId);

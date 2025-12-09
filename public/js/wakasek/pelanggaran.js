@@ -52,26 +52,49 @@ function openModal(modalId) {
             }
         });
 
-         document.addEventListener("DOMContentLoaded", function () {
-    const searchInput = document.querySelector("#searchPeringatan input");
-    const tableRows = document.querySelectorAll("tbody tr");
+document.addEventListener("DOMContentLoaded", () => {
+    const input = document.getElementById("searchPeringatan");
+    const tableBody = document.getElementById("tableBody");
+    const pagination = document.getElementById("pagination");
 
-    searchInput.addEventListener("keyup", function () {
-        const searchText = this.value.toLowerCase();
+    let debounceTimer = null;
+    let lastPageUrl = window.location.href;
 
-        tableRows.forEach(row => {
-            
-            if (row.querySelector("td[colspan]")) {
-                row.style.display = searchText === "" ? "" : "none";
+    function fetchData(url) {
+        fetch(url)
+            .then(res => res.text())
+            .then(html => {
+                const parser = new DOMParser();
+                const doc = parser.parseFromString(html, "text/html");
+
+                tableBody.innerHTML = doc.querySelector("#tableBody").innerHTML;
+                pagination.innerHTML = doc.querySelector("#pagination").innerHTML;
+
+                // Re-activate pagination links setelah diganti
+                document.querySelectorAll("#pagination a").forEach(link => {
+                    link.addEventListener("click", function (e) {
+                        e.preventDefault();
+                        lastPageUrl = this.href;
+                        fetchData(this.href);
+                    });
+                });
+            })
+            .catch(err => console.error("Fetch error:", err));
+    }
+
+    // Search dengan debounce
+    input.addEventListener("keyup", function () {
+        clearTimeout(debounceTimer);
+        debounceTimer = setTimeout(() => {
+            const query = this.value.trim();
+
+            if (query === "") {
+                fetchData(lastPageUrl);
                 return;
             }
 
-            const rowText = row.innerText.toLowerCase();
-            if (rowText.includes(searchText)) {
-                row.style.display = "";
-            } else {
-                row.style.display = "none";
-            }
-        });
+            const url = `/peringatan?search=${encodeURIComponent(query)}`;
+            fetchData(url);
+        }, 300);
     });
 });

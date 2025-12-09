@@ -132,7 +132,7 @@
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="3" class="px-6 py-12 text-center">
+                                <td colspan="4" class="px-6 py-12 text-center">
                                     <div
                                         class="mx-auto w-24 h-24 bg-gray-100 rounded-full flex items-center justify-center mb-4">
                                         <i class="bi bi-collection text-3xl text-gray-400"></i>

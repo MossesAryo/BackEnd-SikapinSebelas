@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\surat_peringatan;
-
 use App\Exports\Surat_Peringatan_ExportExcel;
 use App\Imports\Surat_Peringatan_Import;
 use Barryvdh\DomPDF\Facade\Pdf;
@@ -12,9 +11,24 @@ use Maatwebsite\Excel\Facades\Excel;
 
 class SuratPeringatanController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $peringatan = surat_peringatan::paginate(10);
+            $query = surat_peringatan::query();
+
+    // SEARCH
+    if ($request->filled('search')) {
+        $query->where(function ($q) use ($request) {
+            $q->where('tanggal_sp', 'like', "%{$request->search}%")
+              ->orWhere('level_sp', 'like', "%{$request->search}%")
+              ->orWhere('alasan', 'like', "%{$request->search}%");
+        });
+    }
+
+    // HARUS PAKAI paginate() — BUKAN get()!
+    $peringatan = $query->orderBy('tanggal_sp', 'asc')
+                         ->paginate(5) // atau 10, 15, sesuai keinginan
+                         ->appends($request->only('search')); // biar search tetap di URL
+
         return view('wakasek.peringatan.index', compact('peringatan'));
     }
 

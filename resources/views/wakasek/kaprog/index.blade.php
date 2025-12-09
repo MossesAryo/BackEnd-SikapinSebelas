@@ -40,13 +40,13 @@
         <!-- Search and Filter -->
         <div class="bg-white p-6 rounded-xl shadow-sm border">
             <div class="flex flex-col md:flex-row gap-2 items-center justify-between">
-                <div id="searchKaprog" class="relative w-full md:w-64">
+                <div  class="relative w-full md:w-64">
                     <i class="bi bi-search absolute left-3 top-2.5 text-gray-400"></i>
-                    <input type="text" placeholder="Cari Ketua Program..."
+                    <input id="inputSearch"  type="text" placeholder="Cari Ketua Program..."
                         class="pl-10 pr-4 py-1.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent w-full">
                 </div>
                 <div class="flex gap-2">
-                    <button
+                    <button id="openFilterModal"
                         class="px-3 py-1.5 border border-gray-300 rounded-lg hover:bg-gray-50 flex items-center gap-1.5">
                         <i class="bi bi-funnel"></i> Filter
                     </button>
@@ -104,7 +104,7 @@
                         </tr>
                     </thead>
 
-                    <tbody class="bg-white divide-y divide-gray-100">
+                    <tbody id="tableBody" class="bg-white divide-y divide-gray-100">
                         @forelse ($ketua_program as $item)
                             <tr class="hover:bg-gray-50 group">
                                 <td class="px-6 py-4 whitespace-nowrap">
@@ -158,7 +158,7 @@
                 </table>
             </div>
             <!-- PAGINATION -->
-            <div class="px-6 py-4 border-t border-gray-200 bg-white">
+            <div id="pagination" class="px-6 py-4 border-t border-gray-200 bg-white">
                 @include('layouts.wakasek.pagination', ['data' => $ketua_program])
             </div>
         </div>
@@ -167,6 +167,7 @@
     @include('wakasek.kaprog.create')
     @include('wakasek.kaprog.edit')
     @include('wakasek.kaprog.delete')
+    @include('wakasek.kaprog.filter')
 @endsection
 
 @push('js')

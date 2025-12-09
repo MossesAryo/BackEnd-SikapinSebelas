@@ -3,83 +3,86 @@
 namespace App\Http\Controllers;
 
 use App\Models\intervensi;
-use Illuminate\Http\Request;
 use App\Models\kelas;
-use Illuminate\Support\Facades\Auth;
 use App\Models\siswa;
 use App\Models\walikelas;
 use App\Models\catatan;
-
+use App\Models\aspek_penilaian;   // TAMBAHAN INI WAJIB!
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class IntervensiController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index(Request $request)
-{
-    $user = Auth::user();
-    $kelas = kelas::all();
-    $catatan = catatan::all();
+    {
+        $user = Auth::user();
+        $kelas   = kelas::all();
+        $catatan = catatan::all();
 
-    // ==========================
-    // FILTER DATA SISWA SEBELUM KE VIEW
-    // ==========================
-    $siswaList = siswa::query();
+        // Filter siswa untuk dropdown (create modal)
+        $siswaList = siswa::query();
+        $kelasWalikelas = null;
 
-    $kelasWalikelas = null;
-
-    if ($user->role == 4) {
-        // Ambil data wali kelas
-        $walikelas = walikelas::where('username', $user->username)->first();
-
-        if ($walikelas && $walikelas->id_kelas) {
-            $kelasWalikelas = $walikelas->id_kelas;
-
-            // Filter siswa sesuai kelas wali kelas
-            $siswaList->where('id_kelas', $kelasWalikelas);
+        if ($user->role == 4) {
+            $walikelas = walikelas::where('username', $user->username)->first();
+            if ($walikelas && $walikelas->id_kelas) {
+                $kelasWalikelas = $walikelas->id_kelas;
+                $siswaList->where('id_kelas', $kelasWalikelas);
+            }
         }
+        $siswa = $siswaList->orderBy('nama_siswa')->get();
+
+        // INI YANG SEBELUMNYA HILANG → PENYEBAB ERROR!
+        $aspekPel = aspek_penilaian::whereIn('jenis_poin', ['Apresiasi', 'Pelanggaran'])
+                    ->orderBy('jenis_poin')
+                    ->orderBy('uraian')
+                    ->get();
+
+        // Query intervensi
+        $query = intervensi::with(['siswa.kelas']);
+
+        if ($user->role == 4 && $kelasWalikelas) {
+            $query->whereHas('siswa', fn($q) => $q->where('id_kelas', $kelasWalikelas));
+        }
+
+        if ($request->filled('search')) {
+            $search = $request->search;
+            $query->whereHas('siswa', function ($q) use ($search) {
+                $q->where('nis', 'like', "%{$search}%")
+                  ->orWhere('nama_siswa', 'like', "%{$search}%");
+            });
+        }
+
+        if ($request->filled('kelas')) {
+            $query->whereHas('siswa', fn($q) => $q->where('id_kelas', $request->kelas));
+        }
+
+        if ($request->filled('status')) {
+            $query->where('status', $request->status);
+        }
+
+        if ($request->filled('tanggal_mulai')) {
+            $query->whereDate('tanggal_Mulai_Perbaikan', '>=', $request->tanggal_mulai);
+        }
+
+        if ($request->filled('tanggal_akhir')) {
+            $query->whereDate('tanggal_Selesai_Perbaikan', '<=', $request->tanggal_akhir);
+        }
+
+        $intervensi = $query->latest()
+                            ->paginate(10)
+                            ->appends($request->all());
+
+        return view('wakasek.intervensi.index', compact(
+            'intervensi',
+            'kelas',
+            'siswa',
+            'catatan',
+            'aspekPel'   // JANGAN LUPA KIRIM KE VIEW!
+        ));
     }
 
-    $siswa = $siswaList->orderBy('nama_siswa')->get();
-
-    // ==========================
-    // QUERY INTERVENSI
-    // ==========================
-    $query = intervensi::with(['siswa.kelas']);
-
-    // Jika role 4 → filter berdasarkan kelas wali kelas
-    if ($user->role == 4 && $kelasWalikelas) {
-        $query->whereHas('siswa', function ($q) use ($kelasWalikelas) {
-            $q->where('id_kelas', $kelasWalikelas);
-        });
-    }
-
-    // ==========================
-    // SEARCH
-    // ==========================
-    if ($request->filled('search')) {
-        $search = $request->search;
-
-        $query->whereHas('siswa', function ($q) use ($search) {
-            $q->where('nis', 'like', '%' . $search . '%')
-              ->orWhere('nama_siswa', 'like', '%' . $search . '%');
-        });
-    }
-
-    // ==========================
-    // PAGINATION
-    // ==========================
-    $query->latest();
-    $intervensi = $query->paginate(10)->appends($request->all());
-
-    return view('wakasek.intervensi.index', compact('intervensi', 'kelas', 'siswa', 'catatan'));
-}
-
-
-    /**
-     * Store a newly created resource in storage.
-     */
+    // === METHOD LAIN TIDAK DIUBAH SAMA SEKALI ===
     public function store(Request $request)
     {
         $request->validate([
@@ -89,14 +92,14 @@ class IntervensiController extends Controller
             'tanggal_Mulai_Perbaikan' => 'required|date',
             'tanggal_Selesai_Perbaikan' => 'required|date|after_or_equal:tanggal_Mulai_Perbaikan',
             'status' => 'required|string|max:50',
-
         ]);
+
         $user = Auth::user();
         intervensi::create([
             'nis' => $request->nis,
-            'nip_bk'=> $user->gurubk->nip_bk ?? null,
-            'nip_walikelas'=> $user->walikelas->nip_walikelas ?? null,
-            'nip_wakasek'=> $user->wakasek->nip_wakasek ?? null,
+            'nip_bk'        => $user->gurubk->nip_bk ?? null,
+            'nip_walikelas' => $user->walikelas->nip_walikelas ?? null,
+            'nip_wakasek'   => $user->wakasek->nip_wakasek ?? null,
             'nama_intervensi' => $request->nama_intervensi,
             'isi_intervensi' => $request->isi_intervensi,
             'tanggal_Mulai_Perbaikan' => $request->tanggal_Mulai_Perbaikan,
@@ -105,30 +108,20 @@ class IntervensiController extends Controller
             'created_at' => now(),
         ]);
 
-        return redirect()->route('intervensi.index')->with('success', 'Data intervensi berhasil ditambahkan.');
+        return redirect()->route('intervensi.index')
+            ->with('success', 'Data intervensi berhasil ditambahkan.');
     }
 
-    /**
-     * Display the specified resource.
-     */
     public function show($id_intervensi)
     {
-        $intervensi = Intervensi::with('siswa')
-            ->where('id_intervensi', $id_intervensi)
-            ->firstOrFail();
-        $kelas = kelas::all();
-        $siswa = siswa::all();
+        $intervensi = intervensi::with('siswa')->findOrFail($id_intervensi);
+        $kelas   = kelas::all();
+        $siswa   = siswa::all();
         $catatan = catatan::all();
 
         return view('wakasek.intervensi.show', compact('intervensi', 'kelas', 'siswa', 'catatan'));
     }
 
-
-
-
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(Request $request, string $id_intervensi)
     {
         $request->validate([
@@ -141,7 +134,7 @@ class IntervensiController extends Controller
             'status' => 'required|string|max:50',
         ]);
 
-        $intervensi = intervensi::where('id_intervensi', $id_intervensi)->firstOrFail();
+        $intervensi = intervensi::findOrFail($id_intervensi);
         $intervensi->update([
             'nis' => $request->nis,
             'nama_intervensi' => $request->nama_intervensi,
@@ -153,12 +146,14 @@ class IntervensiController extends Controller
             'updated_at' => now(),
         ]);
 
-        return back()->with('success', 'Data intervensi berhasil diperbarui.');
+        $returnTo = $request->input('return_to');
+        if ($returnTo) {
+            return redirect()->to($returnTo)->with('success', 'Data intervensi berhasil diperbarui.');
+        }
+
+        return redirect()->route('intervensi.index')->with('success', 'Data intervensi berhasil diperbarui.');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(string $id_intervensi)
     {
         $intervensi = intervensi::findOrFail($id_intervensi);

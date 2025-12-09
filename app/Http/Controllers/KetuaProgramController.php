@@ -8,20 +8,50 @@ use Illuminate\Http\Request;
 use App\Models\ketua_program;
 use Illuminate\Routing\Controller;
 
+
 use App\Exports\Ketua_Program_ExportExcel;
 use App\Imports\Ketua_Program_Import;
+use App\Models\kelas;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Maatwebsite\Excel\Facades\Excel;
 
 
 class KetuaProgramController extends Controller
 {
-    public function index()
-    {
-      return view('wakasek.kaprog.index', [
-            'ketua_program' => ketua_program::paginate(10),
-        ]);
+
+   public function index(Request $request)
+{
+    $query = ketua_program::query();
+
+    // FILTER JURUSAN
+    if ($request->filled('jurusan')) {
+        $query->where('jurusan', $request->jurusan);
     }
+
+    // SEARCH — SAMA PERSIS DENGAN WALIKELAS
+    if ($request->filled('search')) {
+        $query->where(function ($q) use ($request) {
+            $q->where('nama_ketua_program', 'like', "%{$request->search}%")
+              ->orWhere('nip_kaprog', 'like', "%{$request->search}%");
+        });
+    }
+
+    // PAGINATION + PERTAHANKAN FILTER & SEARCH
+    $ketua_program = $query->orderBy('jurusan')
+                           ->orderBy('nama_ketua_program')
+                           ->paginate(5) // atau 10, sama seperti walikelas
+                           ->appends($request->only(['jurusan', 'search']));
+
+    // AMBIL SEMUA JURUSAN DARI TABEL KELAS (sesuai permintaan sebelumnya)
+    $daftar_jurusan = kelas::distinct()
+                           ->whereNotNull('jurusan')
+                           ->orderBy('jurusan')
+                           ->pluck('jurusan')
+                           ->toArray();
+
+    return view('wakasek.kaprog.index', compact('ketua_program', 'daftar_jurusan'));
+}
+
     public function store(Request $request)
     {
         $request->validate([
@@ -85,7 +115,6 @@ class KetuaProgramController extends Controller
         ]);
         return redirect()->route('kaprog.index')->with('success', 'Data berhasil diperbarui.');
     }
-
 
     public function destroy($nip_kaprog)
     {

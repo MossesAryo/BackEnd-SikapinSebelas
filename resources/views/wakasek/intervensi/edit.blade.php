@@ -27,6 +27,7 @@
 
                     <!-- Hidden input agar nilai tetap terkirim -->
                     <input type="hidden" id="nis_hidden_edit" name="nis">
+                    <input type="hidden" id="return_to_edit" name="return_to">
                 </div>
 
 
@@ -92,19 +93,19 @@
 
 
 <script>
-    function togglePerubahanField() {
-        const status = document.getElementById('status').value;
-        const perubahanField = document.getElementById('perubahan-field');
-        const perubahanTextarea = document.getElementById('perubahan_setelah_intervensi');
-        
+    function togglePerubahanFieldEdit() {
+        const statusEl = document.getElementById('status_edit');
+        const status = statusEl ? statusEl.value : '';
+        const perubahanField = document.getElementById('perubahan-field-edit');
+        const perubahanTextarea = document.getElementById('perubahan_setelah_intervensi_edit');
 
         if (status === 'Selesai') {
             perubahanField.classList.remove('hidden');
-            perubahanTextarea.setAttribute('required', 'required'); // wajib diisi
+            if (perubahanTextarea) perubahanTextarea.setAttribute('required', 'required');
         } else {
             perubahanField.classList.add('hidden');
-            perubahanTextarea.removeAttribute('required'); // tidak wajib
-            perubahanTextarea.value = ''; // reset isi kalau ganti status
+            if (perubahanTextarea) perubahanTextarea.removeAttribute('required');
+            if (perubahanTextarea) perubahanTextarea.value = '';
         }
     }
 </script>

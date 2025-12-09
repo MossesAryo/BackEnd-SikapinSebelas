@@ -36,6 +36,11 @@ class WalikelasController extends Controller
         });
     }
 
+    // Filter kelas spesifik
+    if ($request->filled('kelas')) {
+        $query->where('id_kelas', $request->kelas);
+    }
+
      // Paginate — sertakan semua query params yang relevan supaya pagination mempertahankan filter/search
     $walikelas = $query->orderBy('nama_walikelas')->paginate(10)
                   ->appends($request->only(['search', 'nip_walikelas', 'kelas', 'id_kelas']));
