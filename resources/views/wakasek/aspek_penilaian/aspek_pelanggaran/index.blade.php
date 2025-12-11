@@ -150,7 +150,7 @@
                                 <tr class="hover:bg-gray-50 group">
 
                                     <td class="px-6 py-4 whitespace-nowrap">
-                                        <div class="text-sm font-semibold text-gray-900">{{ $loop->iteration }}</div>
+                                        <div class="text-sm font-semibold text-gray-900">{{ ($aspek_penilaian->firstItem() ?? 0) + $loop->iteration - 1 }}</div>
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap">
                                         <div class="text-sm font-semibold text-gray-900">{{ $item->kategori }}</div>

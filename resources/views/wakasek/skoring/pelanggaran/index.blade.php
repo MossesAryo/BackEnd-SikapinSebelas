@@ -89,6 +89,8 @@
                     </div>
                 </div>
 
+            </form>
+
                 <!-- Active Filters Display -->
                 {{-- @if(request()->hasAny(['kelas', 'tanggal_mulai', 'tanggal_akhir', 'jenis_pelanggaran']))
                     <div class="mt-3 flex flex-wrap gap-2">
@@ -203,7 +205,7 @@
                                     <div class="flex gap-2">
                                         <button
                                             onclick="openDeleteModalPelanggaran('{{ $item->id_penilaian }}', '{{ $item->siswa->nama_siswa }}')"
-                                            class="text-red-600 hover:text-red-800 action-btn">
+                                            type="button" class="text-red-600 hover:text-red-800 action-btn">
                                             <i class="bi bi-trash"></i>
                                         </button>
                                     </div>
@@ -353,9 +355,21 @@
             openModal('modal-delete-pelanggaran');
         }
 
+        // Allow ESC/backdrop close only for non-destructive modals
+        const overlayClosableModals = ['modal-create', 'modal-filter'];
+
+        document.addEventListener('click', function(event) {
+            overlayClosableModals.forEach(modalId => {
+                const modal = document.getElementById(modalId);
+                if (modal && !modal.classList.contains('hidden') && event.target === modal) {
+                    closeModal(modalId);
+                }
+            });
+        });
+
         document.addEventListener('keydown', function(event) {
             if (event.key === 'Escape') {
-                ['modal-create', 'modal-filter', 'modal-delete-pelanggaran'].forEach(modalId => {
+                overlayClosableModals.forEach(modalId => {
                     const modal = document.getElementById(modalId);
                     if (modal && !modal.classList.contains('hidden')) {
                         closeModal(modalId);

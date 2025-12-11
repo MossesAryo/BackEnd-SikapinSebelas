@@ -115,7 +115,7 @@
                      <tbody id="tableBody" class="bg-white divide-y divide-gray-100">
                          @forelse ($siswa as $item)
                              <tr class="hover:bg-gray-50 group">
-                                 <td class="px-6 py-4 whitespace-nowrap">{{ $loop->iteration }}</td>
+                                <td class="px-6 py-4 whitespace-nowrap">{{ ($siswa->firstItem() ?? 0) + $loop->iteration - 1 }}</td>
                                  <td class="px-6 py-4 whitespace-nowrap">{{ $item->nis }}</td>
                                  <td class="px-6 py-4 whitespace-nowrap">{{ $item->nama_siswa }}</td>
                                  <td class="px-6 py-4 whitespace-nowrap">{{ $item->kelas->nama_kelas }}</td>

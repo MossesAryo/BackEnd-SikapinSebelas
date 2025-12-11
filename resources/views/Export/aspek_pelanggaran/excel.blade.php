@@ -6,6 +6,7 @@
                 <th>Jenis Poin</th>
                 <th>Kategori</th>
                 <th>Uraian</th>
+                <th></th>
                 <th>Poin</th>
             </tr>
         </thead>

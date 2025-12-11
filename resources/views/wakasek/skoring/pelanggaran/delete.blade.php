@@ -1,6 +1,6 @@
 <!-- Modal Delete Pelanggaran -->
 <div id="modal-delete-pelanggaran"
-    class="fixed inset-0 bg-black bg-opacity-40 modal-overlay flex items-center justify-center hidden">
+    class="fixed inset-0 bg-black bg-opacity-40 modal-overlay flex items-center justify-center hidden z-50">
     <div class="bg-white rounded-xl shadow-xl w-full max-w-md mx-4">
         <form id="form-delete-pelanggaran" method="POST" class="p-6 space-y-4">
             @csrf

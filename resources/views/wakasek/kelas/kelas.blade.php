@@ -111,7 +111,7 @@
                                         <div
                                             class="w-2 h-2 bg-blue-400 rounded-full mr-3 opacity-0 group-hover:opacity-100 transition-opacity">
                                         </div>
-                                        <span class="text-sm font-medium text-gray-900">{{ $loop->iteration }}</span>
+                                        <span class="text-sm font-medium text-gray-900">{{ ($kelas->firstItem() ?? 0) + $loop->iteration - 1 }}</span>
                                     </div>
                                 </td>
                                 <td class="px-6 py-4">

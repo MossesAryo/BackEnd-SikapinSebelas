@@ -308,7 +308,7 @@
                 </div>
 
 
-                @if ($peringatanList->count() > 0)
+               
                     <div class="bg-white rounded-xl shadow-sm border">
                         <div class="px-6 py-4 border-b border-gray-200 flex items-center justify-between">
                             <h3 class="text-lg font-semibold text-gray-900 flex items-center gap-2">
@@ -365,7 +365,7 @@
                             @endif
                         </div>
                     </div>
-                @endif
+                
 
                 {{-- Recent Activities Card --}}
                 <div class="bg-white rounded-xl shadow-sm border">

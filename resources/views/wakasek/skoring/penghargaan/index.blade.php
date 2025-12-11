@@ -14,18 +14,6 @@
 
         .action-btn:hover {
             transform: scale(1.1);
-                                <div class="flex gap-2">
-                                    @php
-                                        $filterCount = collect(request()->except(['page','search','_token','_method']))->filter(function($v){ return $v !== null && $v !== ''; })->count();
-                                    @endphp
-                                    <button type="button" onclick="openFilterModal()"
-                                        class="px-3 py-1.5 border border-gray-300 rounded-lg hover:bg-gray-50 flex items-center gap-1.5">
-                                        <i class="bi bi-funnel"></i>
-                                        <span class="ml-1">Filter</span>
-                                        @if($filterCount > 0)
-                                            <span class="ml-2 inline-flex items-center justify-center bg-blue-600 text-white text-xs font-semibold rounded-full w-6 h-6">{{ $filterCount }}</span>
-                                        @endif
-                                    </button>
             overflow: hidden;
         }
     </style>
@@ -93,6 +81,8 @@
                     </div>
                 </div>
 
+                </form>
+
                 <!-- Active Filters Display -->
                 {{-- @if(request()->hasAny(['kelas', 'tanggal_mulai', 'tanggal_akhir', 'jenis_penghargaan']))
                     <div class="mt-3 flex flex-wrap gap-2">
@@ -137,8 +127,7 @@
                             Hapus Semua Filter
                         </a>
                     </div>
-                @endif
-            </form> --}}
+                @endif --}}
         </div>
 
         <!-- Data Table -->
@@ -230,7 +219,7 @@
                                     <div class="flex gap-2">
                                         <button
                                             onclick="openDeleteModalPenghargaan('{{ $item->id_penilaian }}', '{{ $item->siswa->nama_siswa }}')"
-                                            class="text-red-600 hover:text-red-800 action-btn" title="Hapus">
+                                            type="button" class="text-red-600 hover:text-red-800 action-btn" title="Hapus">
                                             <i class="bi bi-trash"></i>
                                         </button>
                                     </div>
@@ -380,9 +369,11 @@
             openModal('modal-delete-penghargaan');
         }
 
-        // Close modal on outside click
+        // Only allow background/ESC closing for non-destructive modals
+        const overlayClosableModals = ['modal-create', 'modal-filter'];
+
         document.addEventListener('click', function(event) {
-            ['modal-create', 'modal-filter', 'modal-delete-penghargaan'].forEach(modalId => {
+            overlayClosableModals.forEach(modalId => {
                 const modal = document.getElementById(modalId);
                 if (modal && !modal.classList.contains('hidden') && event.target === modal) {
                     closeModal(modalId);
@@ -390,10 +381,9 @@
             });
         });
 
-        // Close modal on ESC key
         document.addEventListener('keydown', function(event) {
             if (event.key === 'Escape') {
-                ['modal-create', 'modal-filter', 'modal-delete-penghargaan'].forEach(modalId => {
+                overlayClosableModals.forEach(modalId => {
                     const modal = document.getElementById(modalId);
                     if (modal && !modal.classList.contains('hidden')) {
                         closeModal(modalId);

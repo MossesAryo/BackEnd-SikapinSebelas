@@ -1,4 +1,4 @@
-<div id="modal-create" class="fixed inset-0 bg-black bg-opacity-40 modal-overlay flex items-center justify-center hidden">
+<div id="modal-create" class="fixed inset-0 bg-black bg-opacity-40 modal-overlay flex items-center justify-center hidden z-50">
     <div class="bg-white rounded-xl shadow-xl w-full max-w-xl mx-4">
         <form action="{{ route('skoring_penghargaan.store') }}" method="POST" class="p-6 space-y-4">
             @csrf
