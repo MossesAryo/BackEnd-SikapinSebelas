@@ -473,7 +473,7 @@ class SiswaController extends Controller
 
     $siswa = $query->get();
 
-    $pdf = Pdf::loadView('wakasek.siswa.pdf', compact('siswa'));
+    $pdf = Pdf::loadView('export.siswa.pdf', compact('siswa'));
     return $pdf->download('Data_Siswa.pdf');
 }
 

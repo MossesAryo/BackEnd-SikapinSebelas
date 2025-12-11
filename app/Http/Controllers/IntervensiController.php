@@ -60,6 +60,11 @@ class IntervensiController extends Controller
             $query->whereHas('siswa', fn($q) => $q->where('id_kelas', $request->kelas));
         }
 
+        if ($request->filled('jurusan')) {
+            $jur = $request->jurusan;
+            $query->whereHas('siswa', fn($q) => $q->whereHas('kelas', fn($q2) => $q2->where('jurusan', $jur)));
+        }
+
         if ($request->filled('status')) {
             $query->where('status', $request->status);
         }
@@ -181,6 +186,11 @@ class IntervensiController extends Controller
                 $query->whereHas('siswa', fn($q) => $q->where('id_kelas', $request->kelas));
             }
 
+            if ($request->filled('jurusan')) {
+                $jur = $request->jurusan;
+                $query->whereHas('siswa', fn($q) => $q->whereHas('kelas', fn($q2) => $q2->where('jurusan', $jur)));
+            }
+
             if ($request->filled('status')) {
                 $query->where('status', $request->status);
             }
@@ -213,6 +223,11 @@ class IntervensiController extends Controller
 
     if ($request->filled('kelas')) {
         $query->whereHas('siswa', fn($q) => $q->where('id_kelas', $request->kelas));
+    }
+
+    if ($request->filled('jurusan')) {
+        $jur = $request->jurusan;
+        $query->whereHas('siswa', fn($q) => $q->whereHas('kelas', fn($q2) => $q2->where('jurusan', $jur)));
     }
 
     if ($request->filled('status')) {

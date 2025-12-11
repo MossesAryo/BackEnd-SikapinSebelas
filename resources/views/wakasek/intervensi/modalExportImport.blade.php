@@ -25,9 +25,41 @@
                     <div id="exportContent" class="tab-content">
                         <div class="space-y-3">
                             <h4 class="text-sm font-medium text-gray-700 mb-3">Pilih format export:</h4>
-                            
-                                                        <button
-                                                        onclick="exportExcel()"
+                            <div class="grid grid-cols-1 gap-3">
+                                <div>
+                                    @php
+                                        $jurusanOptions = collect($kelas)->pluck('jurusan')->unique()->filter()->values();
+                                    @endphp
+                                    <label class="block text-sm font-medium text-gray-700">Filter Jurusan (opsional)</label>
+                                    <select id="export_jurusan" class="w-full mt-1 rounded-md border-gray-200 px-3 py-2">
+                                        <option value="">Semua Jurusan</option>
+                                        @foreach($jurusanOptions as $jur)
+                                            <option value="{{ $jur }}">{{ $jur }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700">Filter Kelas (opsional)</label>
+                                    <select id="export_kelas" class="w-full mt-1 rounded-md border-gray-200 px-3 py-2" disabled>
+                                        <option value="">Semua Kelas</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700">Filter Status (opsional)</label>
+                                    <select id="export_status" class="w-full mt-1 rounded-md border-gray-200 px-3 py-2">
+                                        <option value="">Semua Status</option>
+                                        <option value="Dalam Bimbingan">Dalam Bimbingan</option>
+                                        <option value="Dalam Pemantauan">Dalam Pemantauan</option>
+                                        <option value="Selesai">Selesai</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="flex items-center justify-between mt-2">
+                                <button type="button" onclick="resetFilters()" class="text-sm text-gray-600 hover:underline">Reset Filter</button>
+                                <div></div>
+                            </div>
+                            <button
+                            onclick="exportExcel()"
                              class="w-full flex items-center justify-center px-4 py-3 border border-green-300 rounded-md bg-green-50 hover:bg-green-100 text-green-700 transition-colors">
                                 <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20">
                                     <path d="M4 4a2 2 0 00-2 2v8a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2H4zm2 2h8v2H6V6zm0 4h8v2H6v-2zm0 4h8v2H6v-2z"/>
@@ -37,7 +69,7 @@
 
                                                         <button 
                                                         onclick="exportPdf()"
-                             class="w-full flex items-center justify-center px-4 py-3 border border-red-300 rounded-md bg-red-50 hover:bg-red-100 text-red-700 transition-colors">
+                                                           class="w-full flex items-center justify-center px-4 py-3 border border-red-300 rounded-md bg-red-50 hover:bg-red-100 text-red-700 transition-colors">
                                 <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20">
                                     <path d="M4 4a2 2 0 00-2 2v8a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2H4zm0 2h12v8H4V6z"/>
                                 </svg>
@@ -70,15 +102,83 @@
 <script>
         function exportExcel() {
             const base = "{{ route('intervensi.export.excel') }}";
-            const qs = window.location.search || '';
-            window.location = base + qs;
+            const params = new URLSearchParams(window.location.search);
+            const kelas = document.getElementById('export_kelas')?.value || '';
+            const status = document.getElementById('export_status')?.value || '';
+            const jurusan = document.getElementById('export_jurusan')?.value || '';
+            if (kelas) params.set('kelas', kelas); else params.delete('kelas');
+            if (status) params.set('status', status); else params.delete('status');
+            if (jurusan) params.set('jurusan', jurusan); else params.delete('jurusan');
+            params.delete('page');
+            const qs = params.toString();
+            window.location = base + (qs ? `?${qs}` : '');
         }
 
         function exportPdf() {
             const base = "{{ route('intervensi.export.pdf') }}";
-            const qs = window.location.search || '';
-            window.location = base + qs;
+            const params = new URLSearchParams(window.location.search);
+            const kelas = document.getElementById('export_kelas')?.value || '';
+            const status = document.getElementById('export_status')?.value || '';
+            const jurusan = document.getElementById('export_jurusan')?.value || '';
+            if (kelas) params.set('kelas', kelas); else params.delete('kelas');
+            if (status) params.set('status', status); else params.delete('status');
+            if (jurusan) params.set('jurusan', jurusan); else params.delete('jurusan');
+            params.delete('page');
+            const qs = params.toString();
+            window.location = base + (qs ? `?${qs}` : '');
         }
+        // Kelas data extracted from server-side $kelas collection
+        const kelasData = @json($kelas->map(function($k){
+            return ['id' => $k->id_kelas, 'nama' => $k->nama_kelas, 'jurusan' => $k->jurusan];
+        }));
+
+        function buildKelasOptions(filterJurusan = '') {
+            const sel = document.getElementById('export_kelas');
+            if (!sel) return;
+            // clear existing options
+            sel.innerHTML = '';
+            const optAll = document.createElement('option');
+            optAll.value = '';
+            optAll.text = 'Semua Kelas';
+            sel.appendChild(optAll);
+
+            const filtered = filterJurusan ? kelasData.filter(k => k.jurusan === filterJurusan) : [];
+            if (filterJurusan && filtered.length) {
+                filtered.forEach(k => {
+                    const o = document.createElement('option');
+                    o.value = k.id;
+                    o.text = k.nama;
+                    sel.appendChild(o);
+                });
+                sel.disabled = false;
+            } else {
+                // when no jurusan selected, keep disabled
+                sel.disabled = true;
+            }
+        }
+
+        function resetFilters() {
+            const jur = document.getElementById('export_jurusan');
+            const stat = document.getElementById('export_status');
+            const kel = document.getElementById('export_kelas');
+            if (jur) jur.value = '';
+            if (stat) stat.value = '';
+            if (kel) {
+                kel.value = '';
+                buildKelasOptions('');
+            }
+        }
+
+        function prepareModalFilters() {
+            const jur = document.getElementById('export_jurusan')?.value || '';
+            buildKelasOptions(jur);
+            // if jurusan pre-selected enable kelas (already handled in buildKelasOptions)
+        }
+
+        // listen for jurusan changes to populate kelas
+        document.getElementById('export_jurusan')?.addEventListener('change', function() {
+            buildKelasOptions(this.value || '');
+        });
         const modal = document.getElementById('exportImportModal');
         const exportImportBtn = document.getElementById('exportImportBtn');
         const cancelBtn = document.getElementById('cancelBtn');
@@ -89,7 +189,10 @@
         const processBtn = document.getElementById('processBtn');
 
         // Modal Controls
-        exportImportBtn.onclick = () => modal.classList.remove('hidden');
+        exportImportBtn.onclick = () => {
+            modal.classList.remove('hidden');
+            prepareModalFilters();
+        };
         closeModal.onclick = cancelBtn.onclick = () => {
             modal.classList.add('hidden');
             switchTab('export');
