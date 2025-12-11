@@ -60,7 +60,7 @@
         @include('wakasek.penghargaan.modalExportImport')
 
         <!-- Data Table -->
-        <div class="bg-white rounded-xl shadow-sm border overflow-hidden">
+        <div class="bg-white rounded-xl shadow-sm border overflow-visible">
             <div class="px-6 py-4 border-b border-gray-200">
                 <h3 class="text-lg font-semibold text-gray-900">Daftar Penghargaan</h3>
             </div>

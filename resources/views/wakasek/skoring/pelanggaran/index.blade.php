@@ -70,14 +70,18 @@
                         <input id="inputSearch" type="text" placeholder="Cari Nama Siswa..."
                             class="pl-10 pr-4 py-1.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent w-full">
                     </div>
-                    <div class="flex gap-2">
-                        <button type="button" onclick="openFilterModal()"
-                            class="px-3 py-1.5 border border-gray-300 rounded-lg hover:bg-gray-50 flex items-center gap-1.5">
-                            <i class="bi bi-funnel"></i> Filter
-                            @if(request()->hasAny(['kelas', 'tanggal_mulai', 'tanggal_akhir', 'jenis_pelanggaran']))
-                                <span class="ml-1 bg-blue-600 text-white text-xs rounded-full px-2 py-0.5">●</span>
-                            @endif
-                        </button>
+                        <div class="flex gap-2">
+                            @php
+                                $filterCount = collect(request()->except(['page','search','_token','_method']))->filter(function($v){ return $v !== null && $v !== ''; })->count();
+                            @endphp
+                            <button type="button" onclick="openFilterModal()"
+                                class="px-3 py-1.5 border border-gray-300 rounded-lg hover:bg-gray-50 flex items-center gap-1.5">
+                                <i class="bi bi-funnel"></i>
+                                <span class="ml-1">Filter</span>
+                                @if($filterCount > 0)
+                                    <span class="ml-2 inline-flex items-center justify-center bg-blue-600 text-white text-xs font-semibold rounded-full w-6 h-6">{{ $filterCount }}</span>
+                                @endif
+                            </button>
                         <a href="{{ route('laporan.index') }}"
                             class="px-3 py-1.5 border border-gray-300 rounded-lg hover:bg-gray-50 flex items-center gap-1.5">
                             <i class="bi bi-download"></i> Export
@@ -86,7 +90,7 @@
                 </div>
 
                 <!-- Active Filters Display -->
-                @if(request()->hasAny(['kelas', 'tanggal_mulai', 'tanggal_akhir', 'jenis_pelanggaran']))
+                {{-- @if(request()->hasAny(['kelas', 'tanggal_mulai', 'tanggal_akhir', 'jenis_pelanggaran']))
                     <div class="mt-3 flex flex-wrap gap-2">
                         @if(request('kelas'))
                             <span class="inline-flex items-center gap-1 bg-blue-100 text-blue-800 text-sm px-3 py-1 rounded-full">
@@ -125,11 +129,11 @@
                         </a>
                     </div>
                 @endif
-            </form>
+            </form> --}}
         </div>
 
         <!-- Data Table -->
-        <div class="bg-white rounded-xl shadow-sm border overflow-hidden">
+        <div class="bg-white rounded-xl shadow-sm border overflow-visible">
             <div class="px-6 py-4 border-b border-gray-200">
                 <h3 class="text-lg font-semibold text-gray-900">Skoring Pelanggaran</h3>
             </div>
@@ -230,7 +234,7 @@
 
 <!-- Filter Modal — Tema Biru Elegan (Sama seperti Skoring Penghargaan) -->
 <div id="modal-filter" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
-    <div class="bg-white rounded-2xl shadow-2xl w-full max-w-md mx-4 relative overflow-hidden">
+    <div class="bg-white rounded-2xl shadow-2xl w-full max-w-md mx-4 relative overflow-visible">
         <!-- Header dengan Gradient Biru -->
         <div class="flex items-center justify-between p-6 border-b border-gray-100 bg-gradient-to-r from-blue-50 to-indigo-50 rounded-t-2xl">
             <div class="flex items-center gap-3">

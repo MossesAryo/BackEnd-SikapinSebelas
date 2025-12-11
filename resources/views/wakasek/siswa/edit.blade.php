@@ -1,6 +1,6 @@
 <!-- Modal Edit -->
 <div id="modal-edit" class="fixed inset-0 bg-black bg-opacity-40 z-50 flex items-center justify-center hidden">
-    <div class="bg-white rounded-xl shadow-2xl w-full max-w-xl mx-4 my-8 overflow-hidden">
+    <div class="bg-white rounded-xl shadow-2xl w-full max-w-xl mx-4 my-8 overflow-visible">
         <form id="form-edit" method="POST" class="p-6 space-y-5">
             @csrf
             @method('PUT')

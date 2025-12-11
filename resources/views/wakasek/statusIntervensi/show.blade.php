@@ -3,7 +3,7 @@
 @section('content')
 <div class="w-full px-4 py-6 lg:px-8">
     <div class="max-w-5xl mx-auto">
-        <div class="bg-white rounded-2xl shadow-lg border border-gray-100 overflow-hidden">
+        <div class="bg-white rounded-2xl shadow-lg border border-gray-100 overflow-visible">
 
             <!-- Header -->
             <div class="bg-gradient-to-r from-blue-600 to-blue-700 px-4 py-5 sm:px-6 lg:px-8 flex justify-between items-center">
@@ -133,7 +133,25 @@
                     </div>
                 </div>
             </div>
+            
+            <!-- Footer -->
+            <div class="border-t bg-white">
+                <div class="max-w-5xl mx-auto px-6 py-4 flex flex-col sm:flex-row items-center sm:justify-between gap-3">
+                    <p class="text-sm text-gray-500">Dibuat pada: <span class="font-medium text-gray-700">{{ $intervensi->created_at->format('d M Y H:i') }}</span></p>
+
+                    <div class="flex items-center gap-3">
+                        <a href="{{ route('statusintervensi.index') }}"
+                           class="px-4 py-2 rounded-lg border border-gray-300 text-gray-600 hover:bg-gray-100">
+                            Kembali
+                        </a>
+
+                        {{-- Uncomment/edit next line to show an Edit button in the footer --}}
+                        {{-- <a href="{{ route('intervensi.edit', $intervensi->id) }}" class="px-4 py-2 rounded-lg bg-blue-600 text-white hover:bg-blue-700">Edit</a> --}}
+                    </div>
+                </div>
+            </div>
         </div>
+    </div>
     </div>
 </div>
 @endsection

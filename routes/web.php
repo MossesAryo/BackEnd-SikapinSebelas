@@ -188,6 +188,8 @@ Route::middleware(['auth'])->group(function () {
 
     Route::get('/intervensi', [IntervensiController::class, 'index'])->name('intervensi.index');
     Route::post('/intervensi/store', [IntervensiController::class, 'store'])->name('intervensi.store');
+    Route::get('/intervensi/export_pdf', [IntervensiController::class, 'exportPdf'])->name('intervensi.export.pdf');
+    Route::get('/intervensi/export_excel', [IntervensiController::class, 'exportExcel'])->name('intervensi.export.excel');
     Route::get('/intervensi/{id_intervensi}', [IntervensiController::class, 'show'])->name('intervensi.show');
     Route::put('/intervensi/{id_intervensi}/update', [IntervensiController::class, 'update'])->name('intervensi.update');
     Route::delete('/intervensi/{id_intervensi}/destroy', [IntervensiController::class, 'destroy'])->name('intervensi.destroy');

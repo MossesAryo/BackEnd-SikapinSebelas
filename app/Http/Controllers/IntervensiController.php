@@ -10,6 +10,9 @@ use App\Models\catatan;
 use App\Models\aspek_penilaian;   // TAMBAHAN INI WAJIB!
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Exports\Intervensi_ExportExcel;
+use Maatwebsite\Excel\Facades\Excel;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class IntervensiController extends Controller
 {
@@ -161,4 +164,72 @@ class IntervensiController extends Controller
 
         return back()->with('success', 'Data intervensi berhasil dihapus.');
     }
+
+          public function exportPdf(Request $request)
+{
+            $query = intervensi::with(['siswa.kelas']);
+
+            if ($request->filled('search')) {
+                $search = $request->search;
+                $query->whereHas('siswa', function ($q) use ($search) {
+                    $q->where('nis', 'like', "%{$search}%")
+                      ->orWhere('nama_siswa', 'like', "%{$search}%");
+                });
+            }
+
+            if ($request->filled('kelas')) {
+                $query->whereHas('siswa', fn($q) => $q->where('id_kelas', $request->kelas));
+            }
+
+            if ($request->filled('status')) {
+                $query->where('status', $request->status);
+            }
+
+            if ($request->filled('tanggal_mulai')) {
+                $query->whereDate('tanggal_Mulai_Perbaikan', '>=', $request->tanggal_mulai);
+            }
+
+            if ($request->filled('tanggal_akhir')) {
+                $query->whereDate('tanggal_Selesai_Perbaikan', '<=', $request->tanggal_akhir);
+            }
+
+            $intervensi = $query->latest()->get();
+
+            $pdf = Pdf::loadView('wakasek.intervensi.pdf', compact('intervensi'));
+            return $pdf->download('Data_Intervensi.pdf');
+}
+
+   public function exportExcel(Request $request)
+{
+    $query = intervensi::with(['siswa.kelas']);
+
+    if ($request->filled('search')) {
+        $search = $request->search;
+        $query->whereHas('siswa', function ($q) use ($search) {
+            $q->where('nis', 'like', "%{$search}%")
+              ->orWhere('nama_siswa', 'like', "%{$search}%");
+        });
+    }
+
+    if ($request->filled('kelas')) {
+        $query->whereHas('siswa', fn($q) => $q->where('id_kelas', $request->kelas));
+    }
+
+    if ($request->filled('status')) {
+        $query->where('status', $request->status);
+    }
+
+    if ($request->filled('tanggal_mulai')) {
+        $query->whereDate('tanggal_Mulai_Perbaikan', '>=', $request->tanggal_mulai);
+    }
+
+    if ($request->filled('tanggal_akhir')) {
+        $query->whereDate('tanggal_Selesai_Perbaikan', '<=', $request->tanggal_akhir);
+    }
+
+    $intervensi = $query->latest()->get();
+
+    return Excel::download(new Intervensi_ExportExcel($intervensi), 'Data_Intervensi.xlsx');
+}
+
 }
