@@ -64,25 +64,25 @@
 
         <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
             <!-- Tambah Penghargaan -->
-            <a href="{{ route('penghargaan.index') }}" 
+            <a href="{{ route('penghargaan.index') }}"
                 class="group bg-green-50 hover:bg-green-100 border border-green-200 rounded-xl p-4 flex flex-col items-center justify-center text-center transition-all">
                 <div class="w-10 h-10 flex items-center justify-center bg-green-200 text-green-700 rounded-full mb-2">
                     <i class="bi bi-award text-xl"></i>
                 </div>
-                <p class="text-sm font-medium text-green-800 group-hover:text-green-900">Tambah Penghargaan</p>
+                <p class="text-sm font-medium text-green-800 group-hover:text-green-900">Lihat Penghargaan</p>
             </a>
 
             <!-- Tambah Pelanggaran -->
-            <a href="{{ route('peringatan.index') }}" 
+            <a href="{{ route('peringatan.index') }}"
                 class="group bg-red-50 hover:bg-red-100 border border-red-200 rounded-xl p-4 flex flex-col items-center justify-center text-center transition-all">
                 <div class="w-10 h-10 flex items-center justify-center bg-red-200 text-red-700 rounded-full mb-2">
                     <i class="bi bi-exclamation-triangle text-xl"></i>
                 </div>
-                <p class="text-sm font-medium text-red-800 group-hover:text-red-900">Tambah Pelanggaran</p>
+                <p class="text-sm font-medium text-red-800 group-hover:text-red-900">Lihat Pelanggaran</p>
             </a>
 
             <!-- Lihat Data Siswa -->
-            <a href="{{ route('siswa.index') }}" 
+            <a href="{{ route('siswa.index') }}"
                 class="group bg-blue-50 hover:bg-blue-100 border border-blue-200 rounded-xl p-4 flex flex-col items-center justify-center text-center transition-all">
                 <div class="w-10 h-10 flex items-center justify-center bg-blue-200 text-blue-700 rounded-full mb-2">
                     <i class="bi bi-people text-xl"></i>
@@ -91,7 +91,7 @@
             </a>
 
             <!-- Export Laporan -->
-            <a href="{{ route('laporan.index') }}" 
+            <a href="{{ route('laporan.index') }}"
                 class="group bg-yellow-50 hover:bg-yellow-100 border border-yellow-200 rounded-xl p-4 flex flex-col items-center justify-center text-center transition-all">
                 <div class="w-10 h-10 flex items-center justify-center bg-yellow-200 text-yellow-700 rounded-full mb-2">
                     <i class="bi bi-file-earmark-text text-xl"></i>
@@ -100,7 +100,7 @@
             </a>
 
             <!-- Notifikasi -->
-            <a href="{{ route('notifikasi.index') }}" 
+            <a href="{{ route('notifikasi.index') }}"
                 class="group bg-purple-50 hover:bg-purple-100 border border-purple-200 rounded-xl p-4 flex flex-col items-center justify-center text-center transition-all">
                 <div class="w-10 h-10 flex items-center justify-center bg-purple-200 text-purple-700 rounded-full mb-2">
                     <i class="bi bi-bell text-xl"></i>
@@ -122,14 +122,14 @@
             <div class="space-y-4">
                 @forelse ($recentActivities as $log)
                     <div class="flex items-center gap-4">
-                        <div class="w-2 h-2 rounded-full 
+                        <div class="w-2 h-2 rounded-full
                             {{ $log->kategori === 'Pelanggaran' ? 'bg-red-500' : 'bg-green-500' }}">
                         </div>
                         <div class="flex-1">
                             <p class="text-gray-900 font-medium">
                                 <span class="font-semibold">{{ Str::upper($log->siswa->nama_siswa ?? $log->nis)  }} Kelas {{ Str::upper($log->siswa->kelas->nama_kelas) }}</span>
-                                mendapat 
-                                {{ strtolower($log->kategori) }} 
+                                mendapat
+                                {{ strtolower($log->kategori) }}
                                 "<span class="italic">{{ $log->description }}</span>"
                             </p>
                             <p class="text-gray-500 text-sm">{{ $log->created_at->diffForHumans() }}</p>

@@ -47,7 +47,7 @@ public function index()
 
         // ambil kelas dari tabel guru_bk_kelas
         $kelasFilter = $guruBK->kelas->pluck('id_kelas')->toArray();
-        if (empty($kelasFilter)) $kelasFilter = ['-null-']; // supaya kosong aman
+        // if (empty($kelasFilter)) $kelasFilter = ['-null-']; // supaya kosong aman
     }
 
     // === Role 4: Walikelas → filter berdasarkan 1 kelas ===
