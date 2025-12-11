@@ -6,6 +6,7 @@ use App\Models\intervensi;
 use App\Models\kelas;
 use App\Models\siswa;
 use App\Models\walikelas;
+use App\Models\ketua_program;
 use App\Models\catatan;
 use App\Models\aspek_penilaian;   // TAMBAHAN INI WAJIB!
 use Illuminate\Http\Request;
@@ -21,6 +22,8 @@ class IntervensiController extends Controller
         $user = Auth::user();
         $kelas   = kelas::all();
         $catatan = catatan::all();
+        $selectedKelas = null;
+        $selectedJurusan = null;
 
         // Filter siswa untuk dropdown (create modal)
         $siswaList = siswa::query();
@@ -31,6 +34,18 @@ class IntervensiController extends Controller
             if ($walikelas && $walikelas->id_kelas) {
                 $kelasWalikelas = $walikelas->id_kelas;
                 $siswaList->where('id_kelas', $kelasWalikelas);
+                $selectedKelas = $kelasWalikelas;
+                $kelasEntity = kelas::where('id_kelas', $kelasWalikelas)->first();
+                $selectedJurusan = $kelasEntity->jurusan ?? null;
+                // batasi daftar kelas agar tidak membingungkan walikelas
+                $kelas = kelas::where('id_kelas', $kelasWalikelas)->get();
+            }
+        } elseif ($user->role == 3) {
+            // ketua program: jurusan otomatis
+            $ketua = ketua_program::where('username', $user->username)->first();
+            if ($ketua && $ketua->jurusan) {
+                $selectedJurusan = $ketua->jurusan;
+                $kelas = kelas::where('jurusan', $selectedJurusan)->get();
             }
         }
         $siswa = $siswaList->orderBy('nama_siswa')->get();
@@ -46,6 +61,9 @@ class IntervensiController extends Controller
 
         if ($user->role == 4 && $kelasWalikelas) {
             $query->whereHas('siswa', fn($q) => $q->where('id_kelas', $kelasWalikelas));
+        }
+        if ($user->role == 3 && $selectedJurusan) {
+            $query->whereHas('siswa', fn($q) => $q->whereHas('kelas', fn($k) => $k->where('jurusan', $selectedJurusan)));
         }
 
         if ($request->filled('search')) {
@@ -86,7 +104,9 @@ class IntervensiController extends Controller
             'kelas',
             'siswa',
             'catatan',
-            'aspekPel'   // JANGAN LUPA KIRIM KE VIEW!
+            'aspekPel',   // JANGAN LUPA KIRIM KE VIEW!
+            'selectedKelas',
+            'selectedJurusan'
         ));
     }
 
@@ -174,6 +194,20 @@ class IntervensiController extends Controller
 {
             $query = intervensi::with(['siswa.kelas']);
 
+            $user = Auth::user();
+            // enforce role-based defaults
+            if ($user && $user->role == 4) {
+                $walikelas = walikelas::where('username', $user->username)->first();
+                if ($walikelas && $walikelas->id_kelas) {
+                    $request->merge(['kelas' => $walikelas->id_kelas]);
+                }
+            } elseif ($user && $user->role == 3) {
+                $ketua = \App\Models\ketua_program::where('username', $user->username)->first();
+                if ($ketua && $ketua->jurusan) {
+                    $request->merge(['jurusan' => $ketua->jurusan]);
+                }
+            }
+
             if ($request->filled('search')) {
                 $search = $request->search;
                 $query->whereHas('siswa', function ($q) use ($search) {
@@ -212,6 +246,19 @@ class IntervensiController extends Controller
    public function exportExcel(Request $request)
 {
     $query = intervensi::with(['siswa.kelas']);
+
+    $user = Auth::user();
+    if ($user && $user->role == 4) {
+        $walikelas = walikelas::where('username', $user->username)->first();
+        if ($walikelas && $walikelas->id_kelas) {
+            $request->merge(['kelas' => $walikelas->id_kelas]);
+        }
+    } elseif ($user && $user->role == 3) {
+        $ketua = \App\Models\ketua_program::where('username', $user->username)->first();
+        if ($ketua && $ketua->jurusan) {
+            $request->merge(['jurusan' => $ketua->jurusan]);
+        }
+    }
 
     if ($request->filled('search')) {
         $search = $request->search;

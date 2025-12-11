@@ -26,24 +26,41 @@
                         <div class="space-y-3">
                             <h4 class="text-sm font-medium text-gray-700 mb-3">Pilih format export:</h4>
                             <div class="grid grid-cols-1 gap-3">
-                                <div>
-                                    @php
-                                        $jurusanOptions = collect($kelas)->pluck('jurusan')->unique()->filter()->values();
-                                    @endphp
-                                    <label class="block text-sm font-medium text-gray-700">Filter Jurusan (opsional)</label>
-                                    <select id="export_jurusan" class="w-full mt-1 rounded-md border-gray-200 px-3 py-2">
-                                        <option value="">Semua Jurusan</option>
-                                        @foreach($jurusanOptions as $jur)
-                                            <option value="{{ $jur }}">{{ $jur }}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                                <div>
-                                    <label class="block text-sm font-medium text-gray-700">Filter Kelas (opsional)</label>
-                                    <select id="export_kelas" class="w-full mt-1 rounded-md border-gray-200 px-3 py-2" disabled>
-                                        <option value="">Semua Kelas</option>
-                                    </select>
-                                </div>
+                                @php
+                                    $jurusanOptions = collect($kelas)->pluck('jurusan')->unique()->filter()->values();
+                                    $userRole = auth()->user()->role ?? null;
+                                @endphp
+                                @if($userRole == 4)
+                                    <div class="px-4 py-3 bg-blue-50 border border-blue-200 rounded-lg">
+                                        <div class="flex items-center gap-2">
+                                            <i class="bi bi-bookmark-fill text-blue-600"></i>
+                                            <div>
+                                                <p class="text-xs text-gray-600 font-medium">Kelas Wali</p>
+                                                <p class="text-sm font-semibold text-gray-900">{{ $kelas->first()->nama_kelas ?? '-' }}</p>
+                                                <p class="text-xs text-gray-500">Jurusan: {{ $selectedJurusan ?? '-' }}</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <input type="hidden" id="export_jurusan" value="{{ $selectedJurusan }}">
+                                    <input type="hidden" id="export_kelas" value="{{ $selectedKelas }}">
+                                @else
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-700">Filter Jurusan (opsional)</label>
+                                        <select id="export_jurusan" class="w-full mt-1 rounded-md border-gray-200 px-3 py-2" @if($userRole==3 && $selectedJurusan) disabled @endif>
+                                            <option value="">Semua Jurusan</option>
+                                            @foreach($jurusanOptions as $jur)
+                                                <option value="{{ $jur }}" {{ ($selectedJurusan ?? '') === $jur ? 'selected' : '' }}>{{ $jur }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-700">Filter Kelas (opsional)</label>
+                                        <select id="export_kelas" class="w-full mt-1 rounded-md border-gray-200 px-3 py-2" disabled>
+                                            <option value="">Semua Kelas</option>
+                                        </select>
+                                    </div>
+                                @endif
+                                
                                 <div>
                                     <label class="block text-sm font-medium text-gray-700">Filter Status (opsional)</label>
                                     <select id="export_status" class="w-full mt-1 rounded-md border-gray-200 px-3 py-2">
@@ -134,7 +151,8 @@
 
         function buildKelasOptions(filterJurusan = '') {
             const sel = document.getElementById('export_kelas');
-            if (!sel) return;
+            // if not a select (e.g., hidden input for role 4), skip building options
+            if (!sel || sel.tagName !== 'SELECT') return;
             // clear existing options
             sel.innerHTML = '';
             const optAll = document.createElement('option');
@@ -170,9 +188,11 @@
         }
 
         function prepareModalFilters() {
-            const jur = document.getElementById('export_jurusan')?.value || '';
+            const jurEl = document.getElementById('export_jurusan');
+            const jur = jurEl?.value || '';
             buildKelasOptions(jur);
             // if jurusan pre-selected enable kelas (already handled in buildKelasOptions)
+            // if kelas value already set (e.g., role 4 hidden input), keep it
         }
 
         // listen for jurusan changes to populate kelas

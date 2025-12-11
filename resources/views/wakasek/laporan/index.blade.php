@@ -115,11 +115,20 @@
                             <input type="hidden" id="kelas" name="kelas">
                         @else
                             {{-- Untuk walikelas, jangan tampilkan pilihan kelas. set nilai hidden input ke kelas walikelas --}}
-                            <p class="text-sm text-gray-600">Kelas Anda: {{ $kelas->first()->nama_kelas ?? '-' }}</p>
+                            <div class="mt-1 px-4 py-3 bg-blue-50 border border-blue-200 rounded-lg">
+                                <div class="flex items-center gap-2">
+                                    <i class="bi bi-bookmark-fill text-blue-600"></i>
+                                    <div>
+                                        <p class="text-xs text-gray-600 font-medium">Kelas Walikelas</p>
+                                        <p class="text-sm font-semibold text-gray-900">{{ $kelas->first()->nama_kelas ?? '-' }}</p>
+                                    </div>
+                                </div>
+                            </div>
                             <input type="hidden" id="kelas" name="kelas" value="{{ $walikelasId }}">
                         @endif
                     </div>
                 </div>
+                
                 <div>
                     <label for="start_date" class="block text-sm font-medium text-gray-700">Tanggal Mulai</label>
                     <input type="date" id="start_date" name="start_date"
