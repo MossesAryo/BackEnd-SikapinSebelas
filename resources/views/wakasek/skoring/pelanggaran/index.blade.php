@@ -252,6 +252,7 @@
         <!-- Form Body -->
         <form method="GET" action="{{ route('skoring_pelanggaran.index') }}">
             <div class="p-6 space-y-6">
+        @if (auth()->user()->role == 1 || auth()->user()->role == 2 || auth()->user()->role == 3)
                 <!-- Filter Kelas -->
                 <div class="space-y-2">
                     <label class="block text-sm font-semibold text-gray-700 flex items-center gap-2">
@@ -267,7 +268,7 @@
                         @endforeach
                     </select>
                 </div>
-
+        @endif
                 <!-- Filter Jenis Pelanggaran -->
                 <div class="space-y-2">
                     <label class="block text-sm font-semibold text-gray-700 flex items-center gap-2">

@@ -24,6 +24,7 @@ class LaporanController extends Controller
 
     // Default: tidak ada jurusanKetua
     $jurusanKetua = null;
+    $walikelasId = null;
 
     // Jika role = 3 (ketua program)
     if ($user->role == 3) {
@@ -47,7 +48,20 @@ class LaporanController extends Controller
         $kelas = kelas::all();
     }
 
-    return view('wakasek.laporan.index', compact('kelas'));
+    // Jika role = 4 (walikelas) ambil id_kelas walikelas untuk penggunaan default export
+    if ($user->role == 4) {
+        $walikelas = \App\Models\walikelas::where('username', $user->username)->first();
+        if ($walikelas && $walikelas->id_kelas) {
+            $walikelasId = $walikelas->id_kelas;
+            // still pass kelas list (optional) — keep only walikelas class for clarity
+            $kelas = kelas::where('id_kelas', $walikelasId)->get();
+        } else {
+            // jika walikelas tidak ditemukan, jangan crash — biarkan kelas tetap semua
+            $walikelasId = null;
+        }
+    }
+
+    return view('wakasek.laporan.index', compact('kelas', 'walikelasId'));
 }
 
 
@@ -83,6 +97,17 @@ class LaporanController extends Controller
             Carbon::parse($startDate)->startOfDay(),
             Carbon::parse($endDate)->endOfDay(),
         ]);
+    }
+
+    // Jika user adalah walikelas (role 4) dan user tidak memilih tanggal, batasi export ke kelas walikelas
+    $user = Auth::user();
+    if (!$startDate && !$endDate && $user && $user->role == 4) {
+        $walikelas = \App\Models\walikelas::where('username', $user->username)->first();
+        if ($walikelas && $walikelas->id_kelas) {
+            $query->whereHas('siswa.kelas', fn($q) => $q->where('id_kelas', $walikelas->id_kelas));
+            // update labels later by setting $kelas variable
+            $kelas = $walikelas->id_kelas;
+        }
     }
 
     $data = $query->get();
@@ -130,6 +155,15 @@ class LaporanController extends Controller
         $jurusan = $request->query('jurusan');
         $startDate = $request->query('start_date');
         $endDate = $request->query('end_date');
+
+        // Jika user adalah walikelas (role 4) dan user tidak memilih tanggal, batasi export ke kelas walikelas
+        $user = Auth::user();
+        if (!$startDate && !$endDate && $user && $user->role == 4) {
+            $walikelas = \App\Models\walikelas::where('username', $user->username)->first();
+            if ($walikelas && $walikelas->id_kelas) {
+                $kelas = $walikelas->id_kelas;
+            }
+        }
 
         // Generate dynamic filename
         $fileName = 'laporan_' . $type;

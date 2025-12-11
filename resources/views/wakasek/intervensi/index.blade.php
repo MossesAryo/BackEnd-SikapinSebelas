@@ -25,8 +25,8 @@
 
     <!-- Alert -->
     @if (session('success'))
-        <div class="bg-blue-50 border border-blue-200 text-blue-800 px-4 py-3 rounded-lg flex items-center gap-2">
-            <i class="bi bi-check-circle-fill text-blue-600"></i>
+        <div class="bg-green-50 border border-green-200 text-green-800 px-4 py-3 rounded-lg flex items-center gap-2">
+            <i class="bi bi-check-circle-fill text-green-600"></i>
             <span>{{ session('success') }}</span>
         </div>
     @endif
@@ -202,6 +202,7 @@
 
         <form method="GET" action="{{ route('intervensi.index') }}">
             <div class="p-6 space-y-6">
+                @if (auth()->user()->role == 1 || auth()->user()->role == 2 || auth()->user()->role == 3)
                 <div class="space-y-2">
                     <label class="block text-sm font-semibold text-gray-700 flex items-center gap-2">
                         <i class="bi bi-grid-3x3-gap-fill text-blue-600"></i> Kelas
@@ -213,6 +214,7 @@
                         @endforeach
                     </select>
                 </div>
+                @endif
 
                 <div class="space-y-2">
                     <label class="block text-sm font-semibold text-gray-700 flex items-center gap-2">

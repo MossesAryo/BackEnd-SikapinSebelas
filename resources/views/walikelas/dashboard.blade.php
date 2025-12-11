@@ -33,7 +33,7 @@
         <div class="stat-card stat-card-hover bg-white p-6 rounded-xl shadow-sm border">
             <div class="flex items-center justify-between">
                 <div>
-                    <p class="text-gray-600 text-sm">Total Pelanggar</p>
+                    <p class="text-gray-600 text-sm">Total Pelanggaran</p>
                     <p class="text-2xl font-bold text-red-600">{{ number_format($totalPelanggaran) }}</p>
                 </div>
                 <div class="w-12 h-12 bg-red-100 rounded-lg flex items-center justify-center">

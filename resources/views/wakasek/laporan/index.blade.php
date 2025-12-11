@@ -96,21 +96,28 @@
             </div>
             <form id="filterForm">
                 <div class="space-y-4">
+                    {{-- @if (auth()->user()->role == 1 || auth()->user()->role == 2 || auth()->user()->role == 3) --}}
                     <div>
                         <label for="kelas" class="block text-sm font-medium text-gray-700">Kelas</label>
-                        <!-- Custom Searchable Dropdown -->
-                        <div class="dropdown-container">
-                            <input type="text" id="kelasSearch" placeholder="Cari kelas..." class="dropdown-search">
-                            <div id="kelasList" class="dropdown-list">
-                                <div class="dropdown-item" data-value="">Semua Kelas</div>
-                                @foreach ($kelas as $item)
-                                    <div class="dropdown-item" data-value="{{ $item->id_kelas }}">
-                                        {{ $item->nama_kelas }}
-                                    </div>
-                                @endforeach
+                        @if(auth()->user()->role != 4)
+                            <!-- Custom Searchable Dropdown -->
+                            <div class="dropdown-container">
+                                <input type="text" id="kelasSearch" placeholder="Cari kelas..." class="dropdown-search">
+                                <div id="kelasList" class="dropdown-list">
+                                    <div class="dropdown-item" data-value="">Semua Kelas</div>
+                                    @foreach ($kelas as $item)
+                                        <div class="dropdown-item" data-value="{{ $item->id_kelas }}">
+                                            {{ $item->nama_kelas }}
+                                        </div>
+                                    @endforeach
+                                </div>
                             </div>
-                        </div>
-                        <input type="hidden" id="kelas" name="kelas">
+                            <input type="hidden" id="kelas" name="kelas">
+                        @else
+                            {{-- Untuk walikelas, jangan tampilkan pilihan kelas. set nilai hidden input ke kelas walikelas --}}
+                            <p class="text-sm text-gray-600">Kelas Anda: {{ $kelas->first()->nama_kelas ?? '-' }}</p>
+                            <input type="hidden" id="kelas" name="kelas" value="{{ $walikelasId }}">
+                        @endif
                     </div>
                 </div>
                 <div>
@@ -173,36 +180,38 @@
             window.location.href = url;
         }
 
-        // Searchable Dropdown Logic
+        // Searchable Dropdown Logic (only if elements are present)
         const searchInput = document.getElementById('kelasSearch');
         const list = document.getElementById('kelasList');
         const hiddenInput = document.getElementById('kelas');
 
-        searchInput.addEventListener('focus', () => {
-            list.style.display = 'block';
-        });
-
-        searchInput.addEventListener('input', () => {
-            const filter = searchInput.value.toLowerCase();
-            const items = list.getElementsByClassName('dropdown-item');
-            Array.from(items).forEach(item => {
-                const text = item.textContent.toLowerCase();
-                item.style.display = text.includes(filter) ? 'block' : 'none';
+        if (searchInput && list) {
+            searchInput.addEventListener('focus', () => {
+                list.style.display = 'block';
             });
-        });
 
-        list.addEventListener('click', (e) => {
-            if (e.target.classList.contains('dropdown-item')) {
-                searchInput.value = e.target.textContent;
-                hiddenInput.value = e.target.getAttribute('data-value');
-                list.style.display = 'none';
-            }
-        });
+            searchInput.addEventListener('input', () => {
+                const filter = searchInput.value.toLowerCase();
+                const items = list.getElementsByClassName('dropdown-item');
+                Array.from(items).forEach(item => {
+                    const text = item.textContent.toLowerCase();
+                    item.style.display = text.includes(filter) ? 'block' : 'none';
+                });
+            });
 
-        document.addEventListener('click', (e) => {
-            if (!e.target.closest('.dropdown-container')) {
-                list.style.display = 'none';
-            }
-        });
+            list.addEventListener('click', (e) => {
+                if (e.target.classList.contains('dropdown-item')) {
+                    searchInput.value = e.target.textContent;
+                    if (hiddenInput) hiddenInput.value = e.target.getAttribute('data-value');
+                    list.style.display = 'none';
+                }
+            });
+
+            document.addEventListener('click', (e) => {
+                if (!e.target.closest('.dropdown-container')) {
+                    list.style.display = 'none';
+                }
+            });
+        }
     </script>
 @endpush
