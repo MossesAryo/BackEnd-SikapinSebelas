@@ -48,8 +48,8 @@
                 <i class="bi bi-arrow-left"></i>
                 <span>Kembali</span>
             </a>
+            @endif
         </div>
-        @endif
  @if (auth()->user()->role == 4)
             <a href="{{ route('walikelas.siswa') }}"
                 class="flex items-center justify-center sm:justify-start gap-2 px-4 py-2 w-full sm:w-auto
@@ -59,7 +59,7 @@
             </a>
         </div>
         @endif
-      
+
         @if (auth()->user()->role == 3)
          <a href="{{ route('ketua_program.siswa') }}"
                 class="flex items-center justify-center sm:justify-start gap-2 px-4 py-2 w-full sm:w-auto
@@ -70,7 +70,7 @@
         </div>
         @endif
 
-    
+
 
 
 
@@ -129,7 +129,7 @@
                             <i class="bi bi-award text-green-600"></i>
                             Penghargaan
                         </h3>
-                        
+
 
                     </div>
                     <div class="p-6">
@@ -167,7 +167,7 @@
                             <i class="bi bi-exclamation-triangle text-red-600"></i>
                             Surat Peringatan
                         </h3>
-                        
+
 
                     </div>
                     <div class="p-6">
@@ -374,7 +374,7 @@
                             <i class="bi bi-clock-history text-gray-700"></i>
                             Aktivitas Terakhir
                         </h3>
-                        
+
                     </div>
                     <div class="p-6">
                         @if ($activities->count() > 0)
@@ -440,11 +440,11 @@
     </div>
 
     {{-- Included Modals --}}
-    
+
     @include('wakasek.siswa.create-penanganan')
     @include('wakasek.siswa.create-penghargaan')
     @include('wakasek.siswa.create-pelanggaran')
-    
+
     @include('wakasek.siswa.edit')
     @include('wakasek.siswa.delete')
     @include('wakasek.siswa.penghargaan')
@@ -452,7 +452,7 @@
 
 
     @endsection
-    
+
     @push('js')
     <script src="{{ asset('js/wakasek/siswa.js') }}"></script>
     <script>
