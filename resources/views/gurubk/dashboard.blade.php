@@ -126,8 +126,12 @@
                             {{ $log->kategori === 'Pelanggaran' ? 'bg-red-500' : 'bg-green-500' }}">
                         </div>
                         <div class="flex-1">
+                            @php
+                                $namaSiswa = optional($log->siswa)->nama_siswa ?? $log->nis;
+                                $namaKelas = optional(optional($log->siswa)->kelas)->nama_kelas;
+                            @endphp
                             <p class="text-gray-900 font-medium">
-                                <span class="font-semibold">{{ Str::upper($log->siswa->nama_siswa ?? $log->nis)  }} Kelas {{ Str::upper($log->siswa->kelas->nama_kelas) }}</span>
+                                <span class="font-semibold">{{ Str::upper($namaSiswa) }}@if($namaKelas) Kelas {{ Str::upper($namaKelas) }}@endif</span>
                                 mendapat
                                 {{ strtolower($log->kategori) }}
                                 "<span class="italic">{{ $log->description }}</span>"
