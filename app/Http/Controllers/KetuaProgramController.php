@@ -65,7 +65,7 @@ class KetuaProgramController extends Controller
             'username' => $request->nama_ketua_program,
             'email' => strtolower(Str::slug($request->nama_ketua_program)) . '@gmail.com',
             'password' => bcrypt('password'),
-            'role' => 4,
+            'role' => 3,
         ]);
 
 
