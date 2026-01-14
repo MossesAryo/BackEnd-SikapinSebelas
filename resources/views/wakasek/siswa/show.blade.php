@@ -14,64 +14,53 @@
                 <p class="mt-1 text-gray-600">Informasi lengkap data siswa</p>
             </div>
 
-           @if (auth()->user()->role == 1 || auth()->user()->role == 2 || auth()->user()->role == 4)
-    <!-- TOMBOL TAMBAH PENGHARGAAN (HIJAU) -->
-    <button type="button"
-            onclick="openCreateModalPenghargaan('{{ $siswa->nis }}')"
-            class="flex items-center justify-center sm:justify-start gap-2 px-4 py-2 w-full sm:w-auto rounded-lg bg-green-600 text-white hover:bg-green-700 transition-colors">
-        <i class="bi bi-plus"></i>
-        <span>Tambah Skoring Penghargaan</span>
-    </button>
+            @if (auth()->user()->role == 1 || auth()->user()->role == 2 || auth()->user()->role == 4)
+                <!-- TOMBOL TAMBAH PENGHARGAAN (HIJAU) -->
+                <button type="button" onclick="openCreateModalPenghargaan('{{ $siswa->nis }}')"
+                    class="flex items-center justify-center sm:justify-start gap-2 px-4 py-2 w-full sm:w-auto rounded-lg bg-green-600 text-white hover:bg-green-700 transition-colors">
+                    <i class="bi bi-plus"></i>
+                    <span>Tambah Skoring Penghargaan</span>
+                </button>
 
-    <!-- TOMBOL TAMBAH PELANGGARAN (MERAH) - GANTI NAMA FUNGSINYA! -->
-    <button type="button"
-            onclick="openCreateModalPelanggaran('{{ $siswa->nis }}')"
-            class="flex items-center justify-center sm:justify-start gap-2 px-4 py-2 w-full sm:w-auto rounded-lg bg-red-600 text-white hover:bg-red-700 transition-colors">
-        <i class="bi bi-plus"></i>
-        <span>Tambah Skoring Pelanggaran</span>
-    </button>
+                <!-- TOMBOL TAMBAH PELANGGARAN (MERAH) - GANTI NAMA FUNGSINYA! -->
+                <button type="button" onclick="openCreateModalPelanggaran('{{ $siswa->nis }}')"
+                    class="flex items-center justify-center sm:justify-start gap-2 px-4 py-2 w-full sm:w-auto rounded-lg bg-red-600 text-white hover:bg-red-700 transition-colors">
+                    <i class="bi bi-plus"></i>
+                    <span>Tambah Skoring Pelanggaran</span>
+                </button>
 
-    <button type="button"
-            onclick="openCreateModalPenanganan('{{ $siswa->nis }}')"
-            class="flex items-center justify-center sm:justify-start gap-2 px-4 py-2 w-full sm:w-auto rounded-lg bg-blue-600 text-white hover:bg-blue-700 transition-colors">
-        <i class="bi bi-plus"></i>
-        <span>Tambah Penanganan</span>
-    </button>
+                <button type="button" onclick="openCreateModalPenanganan('{{ $siswa->nis }}')"
+                    class="flex items-center justify-center sm:justify-start gap-2 px-4 py-2 w-full sm:w-auto rounded-lg bg-blue-600 text-white hover:bg-blue-700 transition-colors">
+                    <i class="bi bi-plus"></i>
+                    <span>Tambah Penanganan</span>
+                </button>
+            @endif
 
-
-@endif
-
- @if (auth()->user()->role == 1)
-            <a href="{{ route('siswa.index') }}"
-                class="flex items-center justify-center sm:justify-start gap-2 px-4 py-2 w-full sm:w-auto
+            @if (auth()->user()->role == 1 || auth()->user()->role == 2)
+                <a href="{{ route('siswa.index') }}"
+                    class="flex items-center justify-center sm:justify-start gap-2 px-4 py-2 w-full sm:w-auto
               rounded-lg bg-gray-600 text-white transition-colors hover:bg-gray-700">
-                <i class="bi bi-arrow-left"></i>
-                <span>Kembali</span>
-            </a>
+                    <i class="bi bi-arrow-left"></i>
+                    <span>Kembali</span>
+                </a>
+            @endif
+            @if (auth()->user()->role == 4)
+                <a href="{{ route('walikelas.siswa') }}"
+                    class="flex items-center justify-center sm:justify-start gap-2 px-4 py-2 w-full sm:w-auto
+              rounded-lg bg-gray-600 text-white transition-colors hover:bg-gray-700">
+                    <i class="bi bi-arrow-left"></i>
+                    <span>Kembali</span>
+                </a>
+            @endif
+            @if (auth()->user()->role == 3)
+                <a href="{{ route('ketua_program.siswa') }}"
+                    class="flex items-center justify-center sm:justify-start gap-2 px-4 py-2 w-full sm:w-auto
+              rounded-lg bg-gray-600 text-white transition-colors hover:bg-gray-700">
+                    <i class="bi bi-arrow-left"></i>
+                    <span>Kembali</span>
+                </a>
             @endif
         </div>
- @if (auth()->user()->role == 4)
-            <a href="{{ route('walikelas.siswa') }}"
-                class="flex items-center justify-center sm:justify-start gap-2 px-4 py-2 w-full sm:w-auto
-              rounded-lg bg-gray-600 text-white transition-colors hover:bg-gray-700">
-                <i class="bi bi-arrow-left"></i>
-                <span>Kembali</span>
-            </a>
-        </div>
-        @endif
-
-        @if (auth()->user()->role == 3)
-         <a href="{{ route('ketua_program.siswa') }}"
-                class="flex items-center justify-center sm:justify-start gap-2 px-4 py-2 w-full sm:w-auto
-              rounded-lg bg-gray-600 text-white transition-colors hover:bg-gray-700">
-                <i class="bi bi-arrow-left"></i>
-                <span>Kembali</span>
-            </a>
-        </div>
-        @endif
-
-
-
 
 
         @if (session('success'))
@@ -206,11 +195,12 @@
                     <div class="px-6 py-4 border-b border-gray-200 flex items-center justify-between">
                         <h3 class="text-lg font-semibold text-gray-900">Informasi Siswa</h3>
                         @if (auth()->user()->role == 1)
-                                <button onclick="openEditModal('{{ $siswa->nis }}', '{{ addslashes($siswa->nama_siswa) }}', '{{ $siswa->id_kelas }}', 'show')"
-                                    class="bg-blue-600 hover:bg-blue-700 text-white px-5 py-3 rounded-lg flex items-center gap-2 transition-colors font-medium">
-                                    <i class="bi bi-pencil-square"></i>
-                                    Edit Profil Siswa
-                                </button>
+                            <button
+                                onclick="openEditModal('{{ $siswa->nis }}', '{{ addslashes($siswa->nama_siswa) }}', '{{ $siswa->id_kelas }}', 'show')"
+                                class="bg-blue-600 hover:bg-blue-700 text-white px-5 py-3 rounded-lg flex items-center gap-2 transition-colors font-medium">
+                                <i class="bi bi-pencil-square"></i>
+                                Edit Profil Siswa
+                            </button>
                         @endif
 
                     </div>
@@ -289,8 +279,7 @@
                             @endphp
 
                             @foreach ($statistics as $stat)
-                                <div
-                                    class="stat-card bg-gradient-to-r {{ $stat['bgGradient'] }} p-4 rounded-lg border {{ $stat['borderColor'] }} cursor-pointer"
+                                <div class="stat-card bg-gradient-to-r {{ $stat['bgGradient'] }} p-4 rounded-lg border {{ $stat['borderColor'] }} cursor-pointer"
                                     data-type="{{ $stat['type'] }}">
                                     <div class="text-center">
                                         <div
@@ -308,64 +297,77 @@
                 </div>
 
 
-               
-                    <div class="bg-white rounded-xl shadow-sm border">
-                        <div class="px-6 py-4 border-b border-gray-200 flex items-center justify-between">
-                            <h3 class="text-lg font-semibold text-gray-900 flex items-center gap-2">
-                                <i class="bi bi-clipboard-check text-orange-600"></i>
-                                Penanganan Siswa
-                            </h3>
-                        </div>
-                        <div class="overflow-x-auto">
-                            @if(isset($intervensiList) && $intervensiList->count() > 0)
-                                <table class="w-full">
-                                    <thead class="bg-gray-50">
-                                        <tr>
-                                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Penanganan</th>
-                                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Kesepakatan Waktu Perbaikan</th>
-                                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status Penanganan</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody class="bg-white divide-y divide-gray-200">
-                                        @foreach($intervensiList as $int)
-                                            <tr class="hover:bg-gray-50" style="cursor:pointer" onclick="window.location='{{ route('intervensi.show', $int->id_intervensi) }}'">
-                                                <td class="px-6 py-4 whitespace-nowrap">
-                                                    <div class="text-sm text-gray-900">
-                                                        <p class="font-medium">{{ $int->nama_intervensi }}</p>
-                                                        <p class="text-gray-500">{{ Str::limit($int->isi_intervensi, 80) }}</p>
-                                                    </div>
-                                                </td>
-                                                <td class="px-6 py-4 whitespace-nowrap">
-                                                    <div class="text-sm text-gray-900">
-                                                        <p class="font-medium">
-                                                            @if($int->tanggal_Mulai_Perbaikan && $int->tanggal_Selesai_Perbaikan)
-                                                                {{ \Carbon\Carbon::parse($int->tanggal_Mulai_Perbaikan)->format('d M Y') }} - {{ \Carbon\Carbon::parse($int->tanggal_Selesai_Perbaikan)->format('d M Y') }}
-                                                            @else
-                                                                -
-                                                            @endif
-                                                        </p>
-                                                        <p class="text-gray-500">{{ $int->created_at->format('d M Y') }}</p>
-                                                    </div>
-                                                </td>
-                                                <td class="px-6 py-4">
-                                                    <div class="text-sm text-gray-900">
-                                                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium {{ $int->status == 'Membaik' ? 'bg-green-100 text-green-800' : ($int->status == 'Selesai' ? 'bg-green-100 text-green-800' : ($int->status == 'Dalam Proses' ? 'bg-yellow-100 text-yellow-800' : 'bg-red-100 text-red-800')) }}">{{ $int->status }}</span>
-                                                        <p class="text-gray-500 mt-1">{{ Str::limit($int->isi_intervensi, 120) }}</p>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                        @endforeach
-                                    </tbody>
-                                </table>
-                            @else
-                                <div class="py-8 text-center text-gray-500">
-                                    <i class="bi bi-calendar-x text-gray-400 text-4xl mb-3"></i>
-                                    <p class="text-sm">Belum ada penanganan</p>
-                                </div>
-                            @endif
-                        </div>
+
+                <div class="bg-white rounded-xl shadow-sm border">
+                    <div class="px-6 py-4 border-b border-gray-200 flex items-center justify-between">
+                        <h3 class="text-lg font-semibold text-gray-900 flex items-center gap-2">
+                            <i class="bi bi-clipboard-check text-orange-600"></i>
+                            Penanganan Siswa
+                        </h3>
                     </div>
-                
+                    <div class="overflow-x-auto">
+                        @if (isset($intervensiList) && $intervensiList->count() > 0)
+                            <table class="w-full">
+                                <thead class="bg-gray-50">
+                                    <tr>
+                                        <th
+                                            class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                            Penanganan</th>
+                                        <th
+                                            class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                            Kesepakatan Waktu Perbaikan</th>
+                                        <th
+                                            class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                            Status Penanganan</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="bg-white divide-y divide-gray-200">
+                                    @foreach ($intervensiList as $int)
+                                        <tr class="hover:bg-gray-50" style="cursor:pointer"
+                                            onclick="window.location='{{ route('intervensi.show', $int->id_intervensi) }}'">
+                                            <td class="px-6 py-4 whitespace-nowrap">
+                                                <div class="text-sm text-gray-900">
+                                                    <p class="font-medium">{{ $int->nama_intervensi }}</p>
+                                                    <p class="text-gray-500">{{ Str::limit($int->isi_intervensi, 80) }}
+                                                    </p>
+                                                </div>
+                                            </td>
+                                            <td class="px-6 py-4 whitespace-nowrap">
+                                                <div class="text-sm text-gray-900">
+                                                    <p class="font-medium">
+                                                        @if ($int->tanggal_Mulai_Perbaikan && $int->tanggal_Selesai_Perbaikan)
+                                                            {{ \Carbon\Carbon::parse($int->tanggal_Mulai_Perbaikan)->format('d M Y') }}
+                                                            -
+                                                            {{ \Carbon\Carbon::parse($int->tanggal_Selesai_Perbaikan)->format('d M Y') }}
+                                                        @else
+                                                            -
+                                                        @endif
+                                                    </p>
+                                                    <p class="text-gray-500">{{ $int->created_at->format('d M Y') }}</p>
+                                                </div>
+                                            </td>
+                                            <td class="px-6 py-4">
+                                                <div class="text-sm text-gray-900">
+                                                    <span
+                                                        class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium {{ $int->status == 'Membaik' ? 'bg-green-100 text-green-800' : ($int->status == 'Selesai' ? 'bg-green-100 text-green-800' : ($int->status == 'Dalam Proses' ? 'bg-yellow-100 text-yellow-800' : 'bg-red-100 text-red-800')) }}">{{ $int->status }}</span>
+                                                    <p class="text-gray-500 mt-1">
+                                                        {{ Str::limit($int->isi_intervensi, 120) }}
+                                                    </p>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+                        @else
+                            <div class="py-8 text-center text-gray-500">
+                                <i class="bi bi-calendar-x text-gray-400 text-4xl mb-3"></i>
+                                <p class="text-sm">Belum ada penanganan</p>
+                            </div>
+                        @endif
+                    </div>
+                </div>
+
 
                 {{-- Recent Activities Card --}}
                 <div class="bg-white rounded-xl shadow-sm border">
@@ -451,13 +453,13 @@
     @include('wakasek.siswa.peringatan')
 
 
-    @endsection
+@endsection
 
-    @push('js')
+@push('js')
     <script src="{{ asset('js/wakasek/siswa.js') }}"></script>
     <script>
         // Statistik card click handlers
-        document.addEventListener('DOMContentLoaded', function () {
+        document.addEventListener('DOMContentLoaded', function() {
             const nis = '{{ $siswa->nis }}';
             const penghargaanUrl = '{{ route('skoring_penghargaan.index') }}';
             const pelanggaranUrl = '{{ route('skoring_pelanggaran.index') }}';
@@ -477,4 +479,4 @@
             });
         });
     </script>
-    @endpush
+@endpush
