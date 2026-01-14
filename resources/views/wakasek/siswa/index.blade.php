@@ -65,12 +65,11 @@
                         
                     
 
-                        @if (auth()->user()->role == 1 || auth()->user()->role == 2)
+                        @if (auth()->user()->role == 1)
                         <button id="exportImportBtn"
                             class="px-3 py-1.5 border border-gray-300 rounded-lg hover:bg-gray-50 flex items-center gap-1.5">
                             <i class="bi bi-download"></i> Export / Import
                         </button>
-
                         @endif
                     </div>
                 </div>

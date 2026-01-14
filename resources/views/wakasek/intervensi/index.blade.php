@@ -56,10 +56,12 @@
                         <span class="ml-2 inline-flex items-center justify-center bg-blue-600 text-white text-xs font-semibold rounded-full w-6 h-6">{{ $filterCount }}</span>
                     @endif
                 </button>
+                @if (auth()->user()->role == 1)
                 <button id="exportImportBtn"
                     class="px-5 py-2.5 border border-gray-300 rounded-lg hover:bg-blue-50 flex items-center gap-2 transition">
                     <i class="bi bi-download"></i> Export
                 </button>
+                @endif
             </div>
         </div>
 

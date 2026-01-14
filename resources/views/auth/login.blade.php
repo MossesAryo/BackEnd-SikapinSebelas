@@ -55,8 +55,10 @@
         <div class="w-full max-w-sm" x-data="{ email: '', password: '', isLoading: false, showPassword: false }">
             <!-- Header -->
             <div class="text-center mb-10">
-                <h1 class="text-3xl font-bold text-[#56A6E8]">LOGIN</h1>
-                <p class="text-gray-400 text-base">Selamat Datang di Sistem Skoring</p>
+                <h1 class="text-3xl font-bold text-[#56A6E8]">SIJUWARA</h1>
+                <h1 class="text-1xl font-bold text-[#56A6E8]">(Sistem Jurnal Siswa Aktif)</h1>
+
+                </p>
             </div>
 
             <!-- Session Error Message -->
@@ -127,7 +129,7 @@
             <div class="w-14 h-14 mr-3 bg-[#EAF4FE] rounded-full flex items-center justify-center">
                 <img src="{{ asset('img/logo-sekolah.png') }}" alt="Logo" class="w-12 h-12 object-contain">
             </div>
-            <h2 class="text-2xl font-bold">SIKAPIN SEBELAS</h2>
+           
         </div>
 
         <!-- Content Center -->

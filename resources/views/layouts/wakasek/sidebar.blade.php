@@ -54,7 +54,7 @@
                 <i class="bi bi-journal-check"></i>
             </div>
             <div>
-                <h1 class="text-lg font-bold text-gray-900">SIJUAWARA</h1>
+                <h1 class="text-lg font-bold text-gray-900">SIJUWARA</h1>
                 <p class="text-xs text-gray-500">Sistem Skoring</p>
             </div>
         </div>
@@ -125,6 +125,7 @@
                 </li>
 
                     <!-- User Dropdown -->
+                    @if (auth()->user()->role == 1) 
                     <li>
                         <button onclick="toggleDropdown('userDropdown','userArrow')"
                             class="flex items-center justify-between w-full px-4 py-3 text-gray-600 hover:bg-gray-50 rounded-lg">
@@ -165,6 +166,9 @@
                             </ul>
                         </div>
                     </li>
+                    @endif
+                    @if(auth()->user()->role == 1 )
+                   
                     <li>
                         <a href="{{ route('penghargaan.index') }}"
                         class="flex items-center gap-3 px-4 py-2  rounded-lg menu-link
@@ -181,6 +185,7 @@
                     <span>Pelanggaran</span>
                 </a>
             </li>
+             @endif
             @endif
 
 

@@ -82,10 +82,12 @@
                                     <span class="ml-2 inline-flex items-center justify-center bg-blue-600 text-white text-xs font-semibold rounded-full w-6 h-6">{{ $filterCount }}</span>
                                 @endif
                             </button>
+                            @if (auth()->user()->role == 1)
                         <a href="{{ route('laporan.index') }}"
                             class="px-3 py-1.5 border border-gray-300 rounded-lg hover:bg-gray-50 flex items-center gap-1.5">
                             <i class="bi bi-download"></i> Export
                         </a>
+                        @endif
                     </div>
                 </div>
 
