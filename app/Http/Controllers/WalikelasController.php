@@ -19,7 +19,7 @@ class WalikelasController extends Controller
      */
     public function index(Request $request)
     {
-     
+
         $kelas = kelas::all();
         $user = User::all();
 
@@ -46,7 +46,7 @@ class WalikelasController extends Controller
                   ->appends($request->only(['search', 'nip_walikelas', 'kelas', 'id_kelas']));
 
 
-        
+
         return view('wakasek.walikelas.index', compact('walikelas', 'kelas', 'user'));
     }
 
