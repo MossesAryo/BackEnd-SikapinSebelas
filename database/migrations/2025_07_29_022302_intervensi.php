@@ -9,14 +9,14 @@ return new class extends Migration {
     public function up()
     {
         Schema::create('intervensi', function (Blueprint $table) {
-            $table->integer('id_intervensi')->unique();
+            $table->integer('id_intervensi')->unique()->autoIncrement(1);
             $table->bigInteger('nip_bk')->nullable();
             $table->bigInteger('nip_walikelas')->nullable();
             $table->bigInteger('nip_wakasek')->nullable();
             $table->bigInteger('nis');
             $table->string('nama_intervensi');
             $table->string('isi_intervensi');
-            $table->enum('status', ['Dalam Bimbingan', 'Dalam Pemantauan', 'Selesai']);
+            $table->enum('status', ['Catatan Khusus', 'Dalam Pemantauan', 'Selesai']);
             $table->string('perubahan_setelah_intervensi')->nullable();
             $table->date('tanggal_Mulai_Perbaikan');
             $table->date('tanggal_Selesai_Perbaikan');
@@ -25,7 +25,7 @@ return new class extends Migration {
             $table->foreign('nip_wakasek')->references('nip_wakasek')->on('wakasek')->onDelete('cascade');
             $table->foreign('nis')->references('nis')->on('siswa')->onDelete('cascade');
             $table->timestamps();
-        }); 
+        });
     }
     public function down()
     {
