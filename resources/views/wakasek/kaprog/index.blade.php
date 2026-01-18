@@ -19,7 +19,7 @@
             </button>
         </div>
 
-       @if (session('success'))
+        @if (session('success'))
             <div class="bg-green-50 border border-green-200 text-green-800 px-4 py-3 rounded-lg">
                 <p class="text-sm font-semibold flex items-center gap-2">
                     <i class="bi bi-check-circle-fill text-green-600"></i>
@@ -40,20 +40,25 @@
         <!-- Search and Filter -->
         <div class="bg-white p-6 rounded-xl shadow-sm border">
             <div class="flex flex-col md:flex-row gap-2 items-center justify-between">
-                <div  class="relative w-full md:w-64">
+                <div class="relative w-full md:w-64">
                     <i class="bi bi-search absolute left-3 top-2.5 text-gray-400"></i>
-                    <input id="inputSearch"  type="text" placeholder="Cari Ketua Program..."
+                    <input id="inputSearch" type="text" placeholder="Cari Ketua Program..."
                         class="pl-10 pr-4 py-1.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent w-full">
                 </div>
                 <div class="flex gap-2">
                     @php
-                        $filterCount = collect(request()->except(['page','search','_token','_method']))->filter(function($v){ return $v !== null && $v !== ''; })->count();
+                        $filterCount = collect(request()->except(['page', 'search', '_token', '_method']))
+                            ->filter(function ($v) {
+                                return $v !== null && $v !== '';
+                            })
+                            ->count();
                     @endphp
                     <button id="openFilterModal"
                         class="px-3 py-1.5 border border-gray-300 rounded-lg hover:bg-gray-50 flex items-center gap-1.5">
                         <i class="bi bi-funnel"></i> Filter
-                        @if($filterCount > 0)
-                            <span class="ml-2 inline-flex items-center justify-center bg-blue-600 text-white text-xs font-semibold rounded-full w-6 h-6">{{ $filterCount }}</span>
+                        @if ($filterCount > 0)
+                            <span
+                                class="ml-2 inline-flex items-center justify-center bg-blue-600 text-white text-xs font-semibold rounded-full w-6 h-6">{{ $filterCount }}</span>
                         @endif
                     </button>
                     <button id="exportImportBtn"
@@ -63,8 +68,6 @@
                 </div>
             </div>
         </div>
-
-        @include('wakasek.kaprog.modalExportImport')
 
         <!-- Data Table -->
         <div class="bg-white rounded-xl shadow-sm border overflow-visible">
@@ -94,7 +97,7 @@
                                     Nama Ketua Program
                                 </div>
                             </th>
-                           
+
                             <th class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
                                 <div class="flex items-center gap-2">
                                     <i class="bi bi-shield-check text-gray-400"></i>
@@ -114,7 +117,8 @@
                         @forelse ($ketua_program as $item)
                             <tr class="hover:bg-gray-50 group">
                                 <td class="px-6 py-4 whitespace-nowrap">
-                                    <div class="text-sm font-semibold text-gray-900">{{ ($ketua_program->firstItem() ?? 0) + $loop->iteration - 1 }}</div>
+                                    <div class="text-sm font-semibold text-gray-900">
+                                        {{ ($ketua_program->firstItem() ?? 0) + $loop->iteration - 1 }}</div>
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap">
                                     <div class="flex items-center">
@@ -127,7 +131,7 @@
                                 <td class="px-6 py-4 whitespace-nowrap">
                                     <div class="text-sm font-semibold text-gray-900">{{ $item->nama_ketua_program }}</div>
                                 </td>
-                               
+
                                 <td class="px-6 py-4 whitespace-nowrap">
                                     <span class="text-lg font-bold text-black">{{ $item->jurusan }}</span>
                                 </td>
@@ -170,6 +174,7 @@
         </div>
     </div>
 
+    @include('wakasek.kaprog.modalExportImport')
     @include('wakasek.kaprog.create')
     @include('wakasek.kaprog.edit')
     @include('wakasek.kaprog.delete')

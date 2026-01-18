@@ -48,7 +48,7 @@
                         class="pl-10 pr-4 py-1.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent w-full">
                 </div>
                 <div class="flex gap-2">
-                    
+
                     <button id="exportImportBtn"
                         class="px-3 py-1.5 border border-gray-300 rounded-lg hover:bg-gray-50 flex items-center gap-1.5">
                         <i class="bi bi-download"></i> Export / Import
@@ -56,8 +56,6 @@
                 </div>
             </div>
         </div>
-
-        @include('wakasek.peringatan.modalExportImport')
 
         <!-- Data Table -->
         <div class="bg-white rounded-xl shadow-sm border overflow-hidden">
@@ -68,7 +66,7 @@
             <div class="overflow-x-auto">
                 <table class="w-full">
                     <thead class="bg-gray-50 border-b border-gray-200">
-                        <tr>  
+                        <tr>
                             <th class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
                                 <div class="flex items-center gap-2">
                                     <i class="bi bi-hash text-gray-400"></i>
@@ -110,7 +108,8 @@
                         @forelse ($peringatan as $item)
                             <tr class="hover:bg-gray-50 group">
                                 <td class="px-6 py-4 whitespace-nowrap">
-                                    <div class="text-sm font-semibold text-gray-900">{{ ($peringatan->firstItem() ?? 0) + $loop->iteration - 1 }}</div>
+                                    <div class="text-sm font-semibold text-gray-900">
+                                        {{ ($peringatan->firstItem() ?? 0) + $loop->iteration - 1 }}</div>
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap">
                                     <div class="flex items-center">
@@ -120,7 +119,7 @@
                                         <span class="text-sm font-medium text-gray-900">{{ $item->tanggal_sp }}</span>
                                     </div>
                                 </td>
-                                
+
                                 <td class="px-6 py-4 whitespace-nowrap">
                                     <span class="text-lg font-bold text-black">{{ $item->level_sp }}</span>
                                 </td>
@@ -167,11 +166,11 @@
             </div>
         </div>
     </div>
+
+    @include('wakasek.peringatan.modalExportImport')
     @include('wakasek.peringatan.create')
     @include('wakasek.peringatan.edit')
     @include('wakasek.peringatan.delete')
-
-
 @endsection
 
 @push('js')

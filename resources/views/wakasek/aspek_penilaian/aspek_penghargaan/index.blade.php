@@ -64,36 +64,37 @@
         <!-- Search and Filter -->
         <div class="bg-white p-6 rounded-xl shadow-sm border">
             <div class="flex flex-col md:flex-row gap-2 items-center justify-between">
-                <div  class="relative w-full md:w-64">
+                <div class="relative w-full md:w-64">
                     <i class="bi bi-search absolute left-3 top-2.5 text-gray-400"></i>
                     <input id="inputSearch" type="text" placeholder="Cari Penghargaan..."
                         class="pl-10 pr-4 py-1.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent w-full">
                 </div>
                 <div class="flex gap-2">
                     @php
-                        $filterCount = collect(request()->except(['page','search','_token','_method']))->filter(function($v){ return $v !== null && $v !== ''; })->count();
+                        $filterCount = collect(request()->except(['page', 'search', '_token', '_method']))
+                            ->filter(function ($v) {
+                                return $v !== null && $v !== '';
+                            })
+                            ->count();
                     @endphp
                     <button onclick="openfilterModal()"
                         class="px-3 py-1.5 border border-gray-300 rounded-lg hover:bg-gray-50 flex items-center gap-1.5">
                         <i class="bi bi-funnel"></i>
                         <span class="ml-1">Filter</span>
-                        @if($filterCount > 0)
-                            <span class="ml-2 inline-flex items-center justify-center bg-blue-600 text-white text-xs font-semibold rounded-full w-6 h-6">{{ $filterCount }}</span>
+                        @if ($filterCount > 0)
+                            <span
+                                class="ml-2 inline-flex items-center justify-center bg-blue-600 text-white text-xs font-semibold rounded-full w-6 h-6">{{ $filterCount }}</span>
                         @endif
                     </button>
-                     @if (auth()->user()->role == 1 || auth()->user()->role == 2)
-                    <button id="exportImportBtn"
-                        class="px-3 py-1.5 border border-gray-300 rounded-lg hover:bg-gray-50 flex items-center gap-1.5">
-                        <i class="bi bi-download"></i> Export / Import
-                    </button>
+                    @if (auth()->user()->role == 1 || auth()->user()->role == 2)
+                        <button id="exportImportBtn"
+                            class="px-3 py-1.5 border border-gray-300 rounded-lg hover:bg-gray-50 flex items-center gap-1.5">
+                            <i class="bi bi-download"></i> Export / Import
+                        </button>
                     @endif
                 </div>
             </div>
         </div>
-
-        @include('wakasek.aspek_penilaian.aspek_penghargaan.modalExportImport')
-
-
 
         <!-- Data Table -->
         <div class="bg-white rounded-xl shadow-sm border overflow-visible">
@@ -145,7 +146,8 @@
                         @forelse ($aspek_penilaian as $item)
                             <tr class="hover:bg-gray-50 group">
                                 <td class="px-6 py-4 whitespace-nowrap">
-                                    <div class="text-sm font-semibold text-gray-900">{{ ($aspek_penilaian->firstItem() ?? 0) + $loop->iteration - 1 }}</div>
+                                    <div class="text-sm font-semibold text-gray-900">
+                                        {{ ($aspek_penilaian->firstItem() ?? 0) + $loop->iteration - 1 }}</div>
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap">
                                     <div class="text-sm font-semibold text-gray-900">{{ $item->kategori }}</div>
@@ -196,6 +198,7 @@
         </div>
     </div>
 
+    @include('wakasek.aspek_penilaian.aspek_penghargaan.modalExportImport')
     @include('wakasek.aspek_penilaian.aspek_penghargaan.create')
     @include('wakasek.aspek_penilaian.aspek_penghargaan.edit')
     @include('wakasek.aspek_penilaian.aspek_penghargaan.delete')
@@ -263,67 +266,66 @@
             }
         });
         document.addEventListener("DOMContentLoaded", () => {
-    const input = document.getElementById("inputSearch");
-    const tableBody = document.getElementById("tableBody");
-    const pagination = document.getElementById("pagination");
+            const input = document.getElementById("inputSearch");
+            const tableBody = document.getElementById("tableBody");
+            const pagination = document.getElementById("pagination");
 
-    let debounceTimer = null;
+            let debounceTimer = null;
 
-    // Simpan halaman terakhir sebelum search
-    let lastPageUrl = window.location.href;
+            // Simpan halaman terakhir sebelum search
+            let lastPageUrl = window.location.href;
 
-    function fetchData(url) {
-        fetch(url)
-            .then(res => res.text())
-            .then(html => {
-                const parser = new DOMParser();
-                const doc = parser.parseFromString(html, "text/html");
+            function fetchData(url) {
+                fetch(url)
+                    .then(res => res.text())
+                    .then(html => {
+                        const parser = new DOMParser();
+                        const doc = parser.parseFromString(html, "text/html");
 
-                tableBody.innerHTML = doc.querySelector("#tableBody").innerHTML;
-                pagination.innerHTML = doc.querySelector("#pagination").innerHTML;
+                        tableBody.innerHTML = doc.querySelector("#tableBody").innerHTML;
+                        pagination.innerHTML = doc.querySelector("#pagination").innerHTML;
 
-                activatePaginationLinks();
-            })
-            .catch(err => console.error("ERR:", err));
-    }
-
-    function activatePaginationLinks() {
-        const links = document.querySelectorAll("#pagination a");
-
-        links.forEach(link => {
-            link.addEventListener("click", function (e) {
-                e.preventDefault();
-
-                // Simpan page terakhir sebelum search
-                lastPageUrl = this.href;
-
-                fetchData(this.href);
-            });
-        });
-    }
-
-    activatePaginationLinks();
-
-    // Auto search
-    input.addEventListener("keyup", function () {
-        clearTimeout(debounceTimer);
-
-        debounceTimer = setTimeout(() => {
-            const query = input.value.trim();
-
-            if (query.length === 0) {
-                // User hapus search → kembali ke page terakhir
-                fetchData(lastPageUrl);
-                return;
+                        activatePaginationLinks();
+                    })
+                    .catch(err => console.error("ERR:", err));
             }
 
-            // Search selalu mulai dari page 1
-            const url = `/aspek_penghargaan?search=${query}`;
-            fetchData(url);
+            function activatePaginationLinks() {
+                const links = document.querySelectorAll("#pagination a");
 
-        }, 200);
-    });
-});
+                links.forEach(link => {
+                    link.addEventListener("click", function(e) {
+                        e.preventDefault();
 
+                        // Simpan page terakhir sebelum search
+                        lastPageUrl = this.href;
+
+                        fetchData(this.href);
+                    });
+                });
+            }
+
+            activatePaginationLinks();
+
+            // Auto search
+            input.addEventListener("keyup", function() {
+                clearTimeout(debounceTimer);
+
+                debounceTimer = setTimeout(() => {
+                    const query = input.value.trim();
+
+                    if (query.length === 0) {
+                        // User hapus search → kembali ke page terakhir
+                        fetchData(lastPageUrl);
+                        return;
+                    }
+
+                    // Search selalu mulai dari page 1
+                    const url = `/aspek_penghargaan?search=${query}`;
+                    fetchData(url);
+
+                }, 200);
+            });
+        });
     </script>
 @endpush
