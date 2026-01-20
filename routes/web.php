@@ -13,28 +13,26 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\AkumulasiContoller;
 use App\Http\Controllers\AkumulasiController;
 use App\Http\Controllers\DashboardController;
-use App\Http\Controllers\KetuaProgramController;
 use App\Http\Controllers\PenilaianController;
 use App\Http\Controllers\WalikelasController;
 use App\Http\Controllers\IntervensiController;
+use App\Http\Controllers\listcatatanController;
 use App\Http\Controllers\PenghargaanController;
+use App\Http\Controllers\TahunAjaranController;
+use App\Http\Controllers\KetuaProgramController;
 use App\Http\Controllers\Aspek_penilaianController;
 use App\Http\Controllers\SuratPeringatanController;
+use App\Http\Controllers\StatusIntervensiController;
+use App\Http\Controllers\NotifikasiWakasekController;
 use App\Http\Controllers\Skoring_PelanggaranController;
 use App\Http\Controllers\Skoring_PenghargaanController;
 use App\Http\Controllers\Auth\AuthController as AController;
-use App\Http\Controllers\listcatatanController;
-use App\Http\Controllers\NotifikasiWakasekController;
-use App\Http\Controllers\StatusIntervensiController;
 
 Route::get('/', [AController::class, 'index'])->name('login');
 Route::post('/login', [AController::class, 'login'])->name('login.submit');
 Route::get('/logout', [AController::class, 'logout'])->name('logout');
 
-Route::middleware(['auth'])->group(function () {
-    
-
-    });
+Route::middleware(['auth'])->group(function () {});
 
 Route::middleware(['auth'])->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('wakasek.dashboard');
@@ -56,7 +54,7 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/siswa/{nis}/show/skoringpPelanggaran', [SiswaController::class, 'skoringPelanggaran'])->name('siswa.skoringPelanggaran');
     Route::post('/siswa/{nis}/show/penanganan', [SiswaController::class, 'createPenanganan'])->name('show.create.penanganan');
 
-    
+
     Route::post('/siswa/{nis}/show/catatan', [catatanController::class, 'AddCatatan'])->name('siswa.catatan');
 
 
@@ -146,7 +144,7 @@ Route::middleware(['auth'])->group(function () {
 
     Route::get('/ketua-program/kelas', [KelasController::class, 'kelasKetuaProgram'])->name('ketua_program.kelas');
     Route::get('/ketua-program/siswa', [SiswaController::class, 'siswa_ketua_program'])->name('ketua_program.siswa');
-    
+
 
     Route::get('/walikelas/siswa', [SiswaController::class, 'siswa_walikelas'])->name('walikelas.siswa');
 
@@ -193,4 +191,8 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/intervensi/{id_intervensi}', [IntervensiController::class, 'show'])->name('intervensi.show');
     Route::put('/intervensi/{id_intervensi}/update', [IntervensiController::class, 'update'])->name('intervensi.update');
     Route::delete('/intervensi/{id_intervensi}/destroy', [IntervensiController::class, 'destroy'])->name('intervensi.destroy');
+
+    Route::get('tahun_ajaran', [TahunAjaranController::class, 'index'])->name('tahun_ajaran.index');
+    Route::post('tahun_ajaran/proses', [TahunAjaranController::class, 'proses'])->name('tahun_ajaran.proses');
+    Route::post('tahun_ajaran/preview', [TahunAjaranController::class, 'preview'])->name('tahun_ajaran.preview');
 });
