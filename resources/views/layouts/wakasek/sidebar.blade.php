@@ -266,14 +266,16 @@
                     </a>
                 </li>
 
-                <li>
-                    <a href="{{ route('laporan.index') }}"
-                        class="flex items-center gap-3 px-4 py-3 rounded-lg menu-link
+                @if (auth()->user()->role == 1)
+                    <li>
+                        <a href="{{ route('laporan.index') }}"
+                            class="flex items-center gap-3 px-4 py-3 rounded-lg menu-link
                        {{ request()->routeIs('laporan.*') ? 'active-link' : 'text-gray-600 hover:bg-gray-50' }}">
-                        <i class="bi bi-file-earmark-text"></i>
-                        <span>laporan</span>
-                    </a>
-                </li>
+                            <i class="bi bi-file-earmark-text"></i>
+                            <span>laporan</span>
+                        </a>
+                    </li>
+                @endif
             </ul>
         </nav>
     </div>
