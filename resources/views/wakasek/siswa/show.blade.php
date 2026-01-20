@@ -428,17 +428,26 @@
             </div>
         </div>
         @if (auth()->user()->role == 1)
-            {{-- Action Buttons --}}
-            <div class="flex justify-end pt-6 border-t border-gray-200">
+            <div class="flex justify-end gap-3 pt-6 border-t border-gray-200">
+
+                {{-- NONAKTIFKAN SISWA --}}
+                @if ($siswa->status === 'aktif')
+                    <button onclick="openNonaktifModal('{{ $siswa->nis }}', '{{ $siswa->nama_siswa }}')"
+                        class="bg-gray-600 hover:bg-gray-700 text-white px-6 py-2 rounded-lg flex items-center gap-2 transition-colors">
+                        <i class="bi bi-person-dash"></i>
+                        Nonaktifkan Siswa
+                    </button>
+                @endif
+
+                {{-- HAPUS SISWA --}}
                 <button onclick="openDeleteModal('{{ $siswa->nis }}', '{{ $siswa->nama_siswa }}')"
                     class="bg-red-600 hover:bg-red-700 text-white px-6 py-2 rounded-lg flex items-center gap-2 transition-colors">
                     <i class="bi bi-trash"></i>
                     Hapus Siswa
                 </button>
+
             </div>
         @endif
-
-
     </div>
 
     {{-- Included Modals --}}
@@ -451,6 +460,48 @@
     @include('wakasek.siswa.delete')
     @include('wakasek.siswa.penghargaan')
     @include('wakasek.siswa.peringatan')
+
+    {{-- modal nonaktif siswa --}}
+    <div id="nonaktifModal" class="fixed inset-0 bg-black bg-opacity-50 hidden z-50 flex items-center justify-center">
+
+        <div class="bg-white rounded-xl shadow-lg w-full max-w-md mx-4">
+            <div class="px-6 py-4 border-b flex items-center gap-2">
+                <i class="bi bi-exclamation-triangle-fill text-red-600"></i>
+                <h3 class="text-lg font-semibold">Nonaktifkan Siswa</h3>
+            </div>
+
+            <div class="px-6 py-5 text-sm text-gray-700">
+                <p>
+                    Siswa <b id="nonaktifNama"></b> akan:
+                </p>
+                <ul class="list-disc pl-5 mt-2 text-gray-600">
+                    <li>Status diubah menjadi <b>Nonaktif</b></li>
+                    <li>Dipindahkan ke kelas <b>NONAKTIF</b></li>
+                    <li>Tidak ikut kenaikan kelas</li>
+                </ul>
+                {{-- <p class="mt-3 text-red-600 font-semibold">
+                    Tindakan ini dapat dibatalkan dengan edit manual.
+                </p> --}}
+            </div>
+
+            <div class="px-6 py-4 border-t flex justify-end gap-2">
+                <button onclick="closeNonaktifModal()" class="px-4 py-2 rounded-lg border hover:bg-gray-50">
+                    Batal
+                </button>
+
+                <form method="POST" id="nonaktifForm">
+                    @csrf
+                    @method('PATCH')
+                    <button
+                        class="px-4 py-2 rounded-lg bg-red-600 text-white hover:bg-red-700 flex items-center gap-2">
+                        <i class="bi bi-check-circle"></i>
+                        Ya, Nonaktifkan
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
 
 
 @endsection
@@ -478,5 +529,18 @@
                 });
             });
         });
+
+        // Nonaktifkan Siswa Modal Functions
+        function openNonaktifModal(nis, nama) {
+            document.getElementById('nonaktifNama').innerText = nama;
+            document.getElementById('nonaktifForm').action =
+                "{{ route('siswa.nonaktif', ':nis') }}".replace(':nis', nis);
+
+            document.getElementById('nonaktifModal').classList.remove('hidden');
+        }
+
+        function closeNonaktifModal() {
+            document.getElementById('nonaktifModal').classList.add('hidden');
+        }
     </script>
 @endpush

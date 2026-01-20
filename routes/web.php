@@ -57,6 +57,7 @@ Route::middleware(['auth'])->group(function () {
 
     Route::post('/siswa/{nis}/show/catatan', [catatanController::class, 'AddCatatan'])->name('siswa.catatan');
 
+    Route::patch('siswa/{nis}/nonaktif', [SiswaController::class, 'nonaktif'])->name('siswa.nonaktif');
 
 
     Route::get('/siswa/export_pdf', [SiswaController::class, 'exportPdf'])->name('siswa.export.pdf');
