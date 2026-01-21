@@ -12,12 +12,7 @@ class TahunAjaranController extends Controller
 {
     public function index()
     {
-        $belumDiproses = Siswa::where('status', 'aktif')
-            ->where(function ($q) {
-                $q->where('id_kelas', 'like', 'X-%')
-                    ->orWhere('id_kelas', 'like', 'XI-%');
-            })
-            ->exists();
+        $belumDiproses = Siswa::where('status', 'aktif')->exists();
 
         $preview = [
             'x_ke_xi' => 0,

@@ -35,7 +35,7 @@ class KelasSeeder extends Seeder
 
             ['id_kelas' => 'XI-BR-1', 'nama_kelas' => 'XI BR 1', 'jurusan' => 'PM'],
             ['id_kelas' => 'XI-BR-2', 'nama_kelas' => 'XI BR 2', 'jurusan' => 'PM'],
-
+            ['id_kelas' => 'XI-BR-3', 'nama_kelas' => 'XI BR 3', 'jurusan' => 'PM'],
 
 
             ['id_kelas' => 'XII-BR-1', 'nama_kelas' => 'XII BR 1', 'jurusan' => 'PM'],
@@ -47,6 +47,7 @@ class KelasSeeder extends Seeder
             ['id_kelas' => 'X-AK-1', 'nama_kelas' => 'X AK 1', 'jurusan' => 'AK'],
             ['id_kelas' => 'X-AK-2', 'nama_kelas' => 'X AK 2', 'jurusan' => 'AK'],
             ['id_kelas' => 'X-AK-3', 'nama_kelas' => 'X AK 3', 'jurusan' => 'AK'],
+            ['id_kelas' => 'X-AK-4', 'nama_kelas' => 'X AK 4', 'jurusan' => 'AK'],
 
 
             ['id_kelas' => 'XI-AK-1', 'nama_kelas' => 'XI AK 1', 'jurusan' => 'AK'],
@@ -58,6 +59,7 @@ class KelasSeeder extends Seeder
             ['id_kelas' => 'XII-AK-1', 'nama_kelas' => 'XII AK 1', 'jurusan' => 'AK'],
             ['id_kelas' => 'XII-AK-2', 'nama_kelas' => 'XII AK 2', 'jurusan' => 'AK'],
             ['id_kelas' => 'XII-AK-3', 'nama_kelas' => 'XII AK 3', 'jurusan' => 'AK'],
+            ['id_kelas' => 'XII-AK-4', 'nama_kelas' => 'XII AK 4', 'jurusan' => 'AK'],
 
 
 
@@ -112,11 +114,13 @@ class KelasSeeder extends Seeder
             ['id_kelas' => 'XI-MP-1', 'nama_kelas' => 'XI MP 1', 'jurusan' => 'MP'],
             ['id_kelas' => 'XI-MP-2', 'nama_kelas' => 'XI MP 2', 'jurusan' => 'MP'],
             ['id_kelas' => 'XI-MP-3', 'nama_kelas' => 'XI MP 3', 'jurusan' => 'MP'],
+            ['id_kelas' => 'XI-MP-4', 'nama_kelas' => 'XI MP 4', 'jurusan' => 'MP'],
 
 
             ['id_kelas' => 'XII-MP-1', 'nama_kelas' => 'XII MP 1', 'jurusan' => 'MP'],
             ['id_kelas' => 'XII-MP-2', 'nama_kelas' => 'XII MP 2', 'jurusan' => 'MP'],
             ['id_kelas' => 'XII-MP-3', 'nama_kelas' => 'XII MP 3', 'jurusan' => 'MP'],
+            ['id_kelas' => 'XII-MP-4', 'nama_kelas' => 'XII MP 4', 'jurusan' => 'MP'],
 
             ['id_kelas' => 'ALUMNI', 'nama_kelas' => 'ALUMNI', 'jurusan' => 'ALUMNI'],
             ['id_kelas' => 'NONAKTIF', 'nama_kelas' => 'NONAKTIF', 'jurusan' => 'NONAKTIF'],
