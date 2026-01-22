@@ -18,7 +18,7 @@ class Aspek_penilaianController extends Controller
      * Display a listing of the resource.
      */
 
-    
+
     public function FetchApi()
     {
         $aspek_penilaian = aspek_penilaian::all();
@@ -32,7 +32,7 @@ class Aspek_penilaianController extends Controller
 
 
 
-    
+
 
     /**
      * Remove the specified resource from storage.
@@ -76,15 +76,15 @@ class Aspek_penilaianController extends Controller
     public function storePenghargaan(Request $request)
     {
         $request->validate([
-     
-            
+
+
             'kategori' => 'required',
             'uraian' => 'required',
             'indikator_poin' => 'required',
         ]);
 
         aspek_penilaian::create([
-            
+
             'jenis_poin' => 'Apresiasi',
             'kategori' => $request->kategori,
             'uraian' => $request->uraian,
@@ -99,8 +99,8 @@ class Aspek_penilaianController extends Controller
     public function updatePenghargaan(Request $request, string $id)
     {
         $data = $request->validate([
-     
-           
+
+
             'kategori' => 'required',
             'uraian' => 'required',
             'indikator_poin' => 'required',
@@ -109,10 +109,11 @@ class Aspek_penilaianController extends Controller
         $aspek_penilaian = aspek_penilaian::where('id_aspekpenilaian', $id)->firstOrFail();
 
         $aspek_penilaian->update([
-           
+
             'jenis_poin' => 'Apresiasi',
             'kategori' => $data['kategori'],
             'uraian' => $data['uraian'],
+            'indikator_poin' => $data['indikator_poin'],
         ]);
 
         return redirect()->route('aspek_penghargaan.index')->with('success', 'Aspek Penilaian berhasil diedit');
@@ -196,14 +197,14 @@ class Aspek_penilaianController extends Controller
     public function storePelanggaran(Request $request)
     {
         $request->validate([
-         
+
             'kategori' => 'required',
             'uraian' => 'required',
             'indikator_poin' => 'required',
         ]);
 
         aspek_penilaian::create([
-            
+
             'jenis_poin' => 'Pelanggaran',
             'kategori' => $request->kategori,
             'uraian' => $request->uraian,
@@ -219,8 +220,8 @@ class Aspek_penilaianController extends Controller
     public function updatePelanggaran(Request $request, string $id)
     {
         $data = $request->validate([
-       
-            
+
+
             'kategori' => 'required',
             'uraian' => 'required',
             'pelanggaran_ke' => 'required',
@@ -230,7 +231,7 @@ class Aspek_penilaianController extends Controller
         $aspek_penilaian = aspek_penilaian::where('id_aspekpenilaian', $id)->firstOrFail();
 
         $aspek_penilaian->update([
-            
+
             'jenis_poin' => 'Pelanggaran',
             'kategori' => $data['kategori'],
             'uraian' => $data['uraian'],
