@@ -51,8 +51,8 @@
                         class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                         onchange="togglePerubahanFieldEdit()">
                         <option value="" disabled selected>Pilih Status</option>
-                        <option value="Catatan Khusus">Catatan Khusus</option>
-                        <option value="Dalam Pemantauan">Dalam Pemantauan</option>
+                        <option value="Binaan Khusus">Binaan Khusus</option>
+                        <option value="Dalam Binaan">Dalam Binaan</option>
                         <option value="Selesai">Selesai</option>
                     </select>
                 </div>

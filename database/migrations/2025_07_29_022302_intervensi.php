@@ -16,7 +16,7 @@ return new class extends Migration {
             $table->bigInteger('nis');
             $table->string('nama_intervensi');
             $table->string('isi_intervensi');
-            $table->enum('status', ['Catatan Khusus', 'Dalam Pemantauan', 'Selesai']);
+            $table->enum('status', ['Binaan Khusus', 'Dalam Binaan', 'Selesai']);
             $table->string('perubahan_setelah_intervensi')->nullable();
             $table->date('tanggal_Mulai_Perbaikan');
             $table->date('tanggal_Selesai_Perbaikan');

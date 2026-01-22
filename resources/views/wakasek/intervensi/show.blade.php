@@ -17,7 +17,7 @@
     <button
         onclick="openEditModal(
             '{{ $intervensi->id_intervensi }}',
-            '{{ $intervensi->nis }}',            
+            '{{ $intervensi->nis }}',
             '{{ $intervensi->nama_intervensi }}',
             '{{ $intervensi->isi_intervensi }}',
             '{{ $intervensi->status }}',
@@ -96,8 +96,8 @@
                 <span
                     class="px-3 py-1 rounded-full text-sm font-medium
                         @if ($intervensi->status == 'Selesai') bg-green-100 text-green-700
-                        @elseif($intervensi->status == 'Dalam Bimbingan') bg-blue-100 text-blue-700
-                        @elseif($intervensi->status == 'Dalam Pemantauan') bg-yellow-100 text-yellow-700
+                        @elseif($intervensi->status == 'Dalam Binaan') bg-blue-100 text-blue-700
+                        @elseif($intervensi->status == 'Binaan Khusus') bg-yellow-100 text-yellow-700
                         @else bg-gray-100 text-gray-700 @endif">
                     {{ $intervensi->status }}
                 </span>
