@@ -118,7 +118,7 @@
 
                     @if (auth()->user()->role != 4)
                         <!-- Custom Searchable Dropdown -->
-                        <div class="relative">
+                        <div class="relative dropdown-container">
                             <input type="text" id="kelasSearch" placeholder="Cari kelas..."
                                 class="w-full rounded-xl border-2 border-gray-200 px-4 py-3
                                    focus:ring-4 focus:ring-blue-100 focus:border-blue-500">
