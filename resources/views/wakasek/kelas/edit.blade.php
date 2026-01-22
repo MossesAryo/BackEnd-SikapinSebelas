@@ -22,7 +22,7 @@
                      </label>
                      <input type="text" id="edit_id_kelas" name="id_kelas"
                          class="form-input w-full px-4 py-3 rounded-xl border-2 border-gray-300 bg-gray-50 uppercase"
-                         required>
+                         required readonly>
                      <p class="text-xs text-gray-500 mt-1">ID kelas tidak dapat diubah</p>
                  </div>
 
