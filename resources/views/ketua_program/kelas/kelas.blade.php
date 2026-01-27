@@ -12,7 +12,7 @@
                 <h1 class="text-2xl font-bold gradient-text">Data Kelas</h1>
                 <p class="text-gray-600 mt-1">Kelola data Kelas</p>
             </div>
-           
+
         </div>
 
         @if (session('success'))
@@ -36,12 +36,11 @@
         <!-- Search & Filter -->
         <div class="bg-white p-6 rounded-xl shadow-sm border">
             <div class="flex flex-col md:flex-row gap-2 items-center justify-between">
-            
-                  
-                   <div class="w-full md:w-64 relative">
+
+
+                <div class="w-full md:w-64 relative">
                     <i class="bi bi-search absolute left-3 top-2.5 text-gray-400"></i>
-                    <input type="text" name="search" id="inputSearch"
-                        placeholder="Cari Kelas..."
+                    <input type="text" name="search" id="inputSearch" placeholder="Cari Kelas..."
                         class="pl-10 pr-4 py-1.5 border border-gray-300 rounded-lg w-full">
                 </div>
                 <div class="flex gap-2">
@@ -49,7 +48,7 @@
                         class="px-3 py-1.5 border border-gray-300 rounded-lg hover:bg-gray-50 flex items-center gap-1.5">
                         <i class="bi bi-funnel"></i> Filter
                     </button>
-                  
+
                 </div>
             </div>
         </div>
@@ -85,12 +84,15 @@
                                     Nama Kelas
                                 </div>
                             </th>
-                            <th class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                                <div class="flex items-center gap-2">
-                                    <i class="bi bi-gear text-gray-400"></i>
-                                    Aksi
-                                </div>
-                            </th>
+                            @if (auth()->user()->role == 1)
+                                <th
+                                    class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                                    <div class="flex items-center gap-2">
+                                        <i class="bi bi-gear text-gray-400"></i>
+                                        Aksi
+                                    </div>
+                                </th>
+                            @endif
                         </tr>
                     </thead>
                     <tbody id="tableBody" class="bg-white divide-y divide-gray-100">
@@ -110,21 +112,24 @@
                                 <td class="px-6 py-4">
                                     <div class="text-sm font-semibold text-gray-900">{{ $item->nama_kelas }}</div>
                                 </td>
-                                <td class="px-6 py-4">
-                                    <div class="flex items-center gap-1">
-                                        <button onclick="openEditModal('{{ $item->id_kelas }}', '{{ $item->nama_kelas }}')"
-                                            class="action-btn inline-flex items-center justify-center w-9 h-9 text-blue-600 hover:text-blue-800 hover:bg-blue-50 rounded-full"
-                                            title="Edit Kelas">
-                                            <i class="bi bi-pencil-square text-sm"></i>
-                                        </button>
-                                        <button
-                                            onclick="openDeleteModal('{{ $item->id_kelas }}', '{{ $item->nama_kelas }}')"
-                                            class="action-btn inline-flex items-center justify-center w-9 h-9 text-red-600 hover:text-red-800 hover:bg-red-50 rounded-full"
-                                            title="Hapus Kelas">
-                                            <i class="bi bi-trash text-sm"></i>
-                                        </button>
-                                    </div>
-                                </td>
+                                @if (auth()->user()->role == 1)
+                                    <td class="px-6 py-4">
+                                        <div class="flex items-center gap-1">
+                                            <button
+                                                onclick="openEditModal('{{ $item->id_kelas }}', '{{ $item->nama_kelas }}')"
+                                                class="action-btn inline-flex items-center justify-center w-9 h-9 text-blue-600 hover:text-blue-800 hover:bg-blue-50 rounded-full"
+                                                title="Edit Kelas">
+                                                <i class="bi bi-pencil-square text-sm"></i>
+                                            </button>
+                                            <button
+                                                onclick="openDeleteModal('{{ $item->id_kelas }}', '{{ $item->nama_kelas }}')"
+                                                class="action-btn inline-flex items-center justify-center w-9 h-9 text-red-600 hover:text-red-800 hover:bg-red-50 rounded-full"
+                                                title="Hapus Kelas">
+                                                <i class="bi bi-trash text-sm"></i>
+                                            </button>
+                                        </div>
+                                    </td>
+                                @endif
                             </tr>
                         @empty
                             <tr>
@@ -216,68 +221,68 @@
             }
 
             // Search functionality
-           document.addEventListener("DOMContentLoaded", () => {
-    const input = document.getElementById("inputSearch");
-    const tableBody = document.getElementById("tableBody");
-    const pagination = document.getElementById("pagination");
+            document.addEventListener("DOMContentLoaded", () => {
+                const input = document.getElementById("inputSearch");
+                const tableBody = document.getElementById("tableBody");
+                const pagination = document.getElementById("pagination");
 
-    let debounceTimer = null;
+                let debounceTimer = null;
 
-    // Simpan halaman terakhir sebelum search
-    let lastPageUrl = window.location.href;
+                // Simpan halaman terakhir sebelum search
+                let lastPageUrl = window.location.href;
 
-    function fetchData(url) {
-        fetch(url)
-            .then(res => res.text())
-            .then(html => {
-                const parser = new DOMParser();
-                const doc = parser.parseFromString(html, "text/html");
+                function fetchData(url) {
+                    fetch(url)
+                        .then(res => res.text())
+                        .then(html => {
+                            const parser = new DOMParser();
+                            const doc = parser.parseFromString(html, "text/html");
 
-                tableBody.innerHTML = doc.querySelector("#tableBody").innerHTML;
-                pagination.innerHTML = doc.querySelector("#pagination").innerHTML;
+                            tableBody.innerHTML = doc.querySelector("#tableBody").innerHTML;
+                            pagination.innerHTML = doc.querySelector("#pagination").innerHTML;
+
+                            activatePaginationLinks();
+                        })
+                        .catch(err => console.error("ERR:", err));
+                }
+
+                function activatePaginationLinks() {
+                    const links = document.querySelectorAll("#pagination a");
+
+                    links.forEach(link => {
+                        link.addEventListener("click", function(e) {
+                            e.preventDefault();
+
+                            // Simpan page terakhir sebelum search
+                            lastPageUrl = this.href;
+
+                            fetchData(this.href);
+                        });
+                    });
+                }
 
                 activatePaginationLinks();
-            })
-            .catch(err => console.error("ERR:", err));
-    }
 
-    function activatePaginationLinks() {
-        const links = document.querySelectorAll("#pagination a");
+                // Auto search
+                input.addEventListener("keyup", function() {
+                    clearTimeout(debounceTimer);
 
-        links.forEach(link => {
-            link.addEventListener("click", function (e) {
-                e.preventDefault();
+                    debounceTimer = setTimeout(() => {
+                        const query = input.value.trim();
 
-                // Simpan page terakhir sebelum search
-                lastPageUrl = this.href;
+                        if (query.length === 0) {
+                            // User hapus search → kembali ke page terakhir
+                            fetchData(lastPageUrl);
+                            return;
+                        }
 
-                fetchData(this.href);
+                        // Search selalu mulai dari page 1
+                        const url = `/kelas?search=${query}`;
+                        fetchData(url);
+
+                    }, 200);
+                });
             });
-        });
-    }
-
-    activatePaginationLinks();
-
-    // Auto search
-    input.addEventListener("keyup", function () {
-        clearTimeout(debounceTimer);
-
-        debounceTimer = setTimeout(() => {
-            const query = input.value.trim();
-
-            if (query.length === 0) {
-                // User hapus search → kembali ke page terakhir
-                fetchData(lastPageUrl);
-                return;
-            }
-
-            // Search selalu mulai dari page 1
-            const url = `/kelas?search=${query}`;
-            fetchData(url);
-
-        }, 200);
-    });
-});
         </script>
     @endpush
 @endsection

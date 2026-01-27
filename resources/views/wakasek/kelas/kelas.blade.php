@@ -99,12 +99,15 @@
                                     Nama Kelas
                                 </div>
                             </th>
-                            <th class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                                <div class="flex items-center gap-2">
-                                    <i class="bi bi-gear text-gray-400"></i>
-                                    Aksi
-                                </div>
-                            </th>
+                            @if (auth()->user()->role == 1)
+                                <th
+                                    class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                                    <div class="flex items-center gap-2">
+                                        <i class="bi bi-gear text-gray-400"></i>
+                                        Aksi
+                                    </div>
+                                </th>
+                            @endif
                         </tr>
                     </thead>
                     <tbody id="tableBody" class="bg-white divide-y divide-gray-100">
@@ -125,22 +128,24 @@
                                 <td class="px-6 py-4">
                                     <div class="text-sm font-semibold text-gray-900">{{ $item->nama_kelas }}</div>
                                 </td>
-                                <td class="px-6 py-4">
-                                    <div class="flex items-center gap-1">
-                                        <button
-                                            onclick="openEditModal('{{ $item->id_kelas }}', '{{ $item->nama_kelas }}', '{{ $item->jurusan }}')"
-                                            class="action-btn inline-flex items-center justify-center w-9 h-9 text-blue-600 hover:text-blue-800 hover:bg-blue-50 rounded-full"
-                                            title="Edit Kelas">
-                                            <i class="bi bi-pencil-square text-sm"></i>
-                                        </button>
-                                        <button
-                                            onclick="openDeleteModal('{{ $item->id_kelas }}', '{{ $item->nama_kelas }}')"
-                                            class="action-btn inline-flex items-center justify-center w-9 h-9 text-red-600 hover:text-red-800 hover:bg-red-50 rounded-full"
-                                            title="Hapus Kelas">
-                                            <i class="bi bi-trash text-sm"></i>
-                                        </button>
-                                    </div>
-                                </td>
+                                @if (auth()->user()->role == 1)
+                                    <td class="px-6 py-4">
+                                        <div class="flex items-center gap-1">
+                                            <button
+                                                onclick="openEditModal('{{ $item->id_kelas }}', '{{ $item->nama_kelas }}', '{{ $item->jurusan }}')"
+                                                class="action-btn inline-flex items-center justify-center w-9 h-9 text-blue-600 hover:text-blue-800 hover:bg-blue-50 rounded-full"
+                                                title="Edit Kelas">
+                                                <i class="bi bi-pencil-square text-sm"></i>
+                                            </button>
+                                            <button
+                                                onclick="openDeleteModal('{{ $item->id_kelas }}', '{{ $item->nama_kelas }}')"
+                                                class="action-btn inline-flex items-center justify-center w-9 h-9 text-red-600 hover:text-red-800 hover:bg-red-50 rounded-full"
+                                                title="Hapus Kelas">
+                                                <i class="bi bi-trash text-sm"></i>
+                                            </button>
+                                        </div>
+                                    </td>
+                                @endif
                             </tr>
                         @empty
                             <tr>

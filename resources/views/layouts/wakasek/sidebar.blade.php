@@ -257,16 +257,16 @@
                     </a>
                 </li>
 
-                <li>
-                    <a href="{{ route('tahun_ajaran.index') }}"
-                        class="flex items-center gap-3 px-4 py-3 rounded-lg menu-link
-                       {{ request()->routeIs('tahun_ajaran.*') ? 'active-link' : 'text-gray-600 hover:bg-gray-50' }}">
-                        <i class="bi bi-file-earmark-text"></i>
-                        <span>Tahun Ajaran</span>
-                    </a>
-                </li>
-
                 @if (auth()->user()->role == 1)
+                    <li>
+                        <a href="{{ route('tahun_ajaran.index') }}"
+                            class="flex items-center gap-3 px-4 py-3 rounded-lg menu-link
+                       {{ request()->routeIs('tahun_ajaran.*') ? 'active-link' : 'text-gray-600 hover:bg-gray-50' }}">
+                            <i class="bi bi-file-earmark-text"></i>
+                            <span>Tahun Ajaran</span>
+                        </a>
+                    </li>
+
                     <li>
                         <a href="{{ route('laporan.index') }}"
                             class="flex items-center gap-3 px-4 py-3 rounded-lg menu-link
