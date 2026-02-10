@@ -18,8 +18,8 @@
                     <!-- WARNA STATUS DISESUAIKAN DENGAN TABEL PENANGANAN -->
                     <span class="px-4 py-2 rounded-full text-xs font-bold
                         @if($intervensi->status === 'Selesai') bg-green-100 text-green-800
-                        @elseif($intervensi->status === 'Dalam Bimbingan') bg-yellow-100 text-yellow-800
-                        @elseif($intervensi->status === 'Dalam Pemantauan') bg-orange-100 text-orange-800
+                        @elseif($intervensi->status === 'Dalam Binaan') bg-yellow-100 text-yellow-800
+                        @elseif($intervensi->status === 'Binaan Khusus') bg-orange-100 text-orange-800
                         @else bg-gray-100 text-gray-800 @endif">
                         {{ $intervensi->status }}
                     </span>
@@ -34,7 +34,7 @@
                 @php
                     $status = $intervensi->status;
                     function stepClass($current, $status) {
-                        $order = ['Intervensi Dibuat', 'Dalam Bimbingan', 'Dalam Pemantauan', 'Selesai'];
+                        $order = ['Intervensi Dibuat', 'Dalam Binaan', 'Binaan Khusus', 'Selesai'];
                         $currIndex = array_search($current, $order);
                         $statusIndex = array_search($status, $order);
                         if ($currIndex < $statusIndex) return 'done';
@@ -65,7 +65,7 @@
                 </div>
 
                 <!-- Step 2: Dalam Bimbingan -->
-                @php $step = stepClass('Dalam Bimbingan', $status); @endphp
+                @php $step = stepClass('Dalam Binaan', $status); @endphp
                 <div class="relative flex items-start group mb-6">
                     <div class="absolute left-0 w-6 h-6 flex items-center justify-center rounded-full 
                         {{ $step === 'done' || $step === 'active' ? 'bg-yellow-500 ring-4 ring-yellow-100' : 'bg-gray-300 ring-4 ring-gray-100' }} flex-shrink-0">
@@ -75,7 +75,7 @@
                         {{ $step === 'done' || $step === 'active' ? 'bg-yellow-50 border-yellow-200' : 'bg-gray-50 border-gray-200 opacity-70' }}">
                         <div class="flex justify-between items-start mb-2">
                             <div>
-                                <p class="font-bold text-yellow-700">Dalam Bimbingan</p>
+                                <p class="font-bold text-yellow-700">Dalam Binaan</p>
                                 <p class="text-gray-600 text-sm mt-1">Siswa sedang dibimbing secara aktif</p>
                             </div>
                             <span class="{{ $step === 'done' || $step === 'active' ? 'bg-yellow-500 text-white' : 'bg-gray-300 text-gray-600' }} text-xs px-3 py-1 rounded-full">
@@ -86,7 +86,7 @@
                 </div>
 
                 <!-- Step 3: Dalam Pemantauan -->
-                @php $step = stepClass('Dalam Pemantauan', $status); @endphp
+                @php $step = stepClass('Binaan Khusus', $status); @endphp
                 <div class="relative flex items-start group mb-6">
                     <div class="absolute left-0 w-6 h-6 flex items-center justify-center rounded-full 
                         {{ $step === 'done' || $step === 'active' ? 'bg-orange-500 ring-4 ring-orange-100' : 'bg-gray-300 ring-4 ring-gray-100' }} flex-shrink-0">
@@ -96,8 +96,8 @@
                         {{ $step === 'done' || $step === 'active' ? 'bg-orange-50 border-orange-200' : 'bg-gray-50 border-gray-200 opacity-70' }}">
                         <div class="flex justify-between items-start mb-2">
                             <div>
-                                <p class="font-bold text-orange-700">Dalam Pemantauan</p>
-                                <p class="text-gray-600 text-sm mt-1">Perkembangan siswa sedang dipantau</p>
+                                <p class="font-bold text-orange-700">Binaan Khusus</p>
+                                <p class="text-gray-600 text-sm mt-1">Siswa sedang dibimbing secara Khusus</p>
                             </div>
                             <span class="{{ $step === 'done' || $step === 'active' ? 'bg-orange-500 text-white' : 'bg-gray-300 text-gray-600' }} text-xs px-3 py-1 rounded-full">
                                 {{ $step === 'active' ? 'Aktif' : ($step === 'done' ? 'Selesai' : 'Belum') }}
