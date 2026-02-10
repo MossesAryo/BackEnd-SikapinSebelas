@@ -58,7 +58,7 @@
                                 <p class="text-gray-600 text-sm mt-1">Data Penanganan telah ditambahkan</p>
                             </div>
                             <span class="{{ $step === 'done' || $step === 'active' ? 'bg-green-500 text-white' : 'bg-gray-300 text-gray-600' }} text-xs px-3 py-1 rounded-full">
-                                {{ $step === 'active' ? 'Aktif' : ($step === 'done' ? 'Selesai' : 'Belum') }}
+                                {{ $step === 'active' ? 'Aktif' : ($step === 'done' ? 'Selesai' : 'Dalam Proses') }}
                             </span>
                         </div>
                     </div>
@@ -79,7 +79,7 @@
                                 <p class="text-gray-600 text-sm mt-1">Siswa sedang dibimbing secara aktif</p>
                             </div>
                             <span class="{{ $step === 'done' || $step === 'active' ? 'bg-yellow-500 text-white' : 'bg-gray-300 text-gray-600' }} text-xs px-3 py-1 rounded-full">
-                                {{ $step === 'active' ? 'Aktif' : ($step === 'done' ? 'Selesai' : 'Belum') }}
+                                {{ $step === 'active' ? 'Aktif' : ($step === 'done' ? 'Selesai' : 'Dalam Proses') }}
                             </span>
                         </div>
                     </div>
@@ -100,7 +100,7 @@
                                 <p class="text-gray-600 text-sm mt-1">Siswa sedang dibimbing secara Khusus</p>
                             </div>
                             <span class="{{ $step === 'done' || $step === 'active' ? 'bg-orange-500 text-white' : 'bg-gray-300 text-gray-600' }} text-xs px-3 py-1 rounded-full">
-                                {{ $step === 'active' ? 'Aktif' : ($step === 'done' ? 'Selesai' : 'Belum') }}
+                                {{ $step === 'active' ? 'Aktif' : ($step === 'done' ? 'Selesai' : 'Dalam Proses') }}
                             </span>
                         </div>
                     </div>
@@ -127,7 +127,7 @@
                                 @endif
                             </div>
                             <span class="{{ $step === 'done' || $step === 'active' ? 'bg-green-600 text-white' : 'bg-gray-300 text-gray-600' }} text-xs px-3 py-1 rounded-full">
-                                {{ $step === 'active' ? 'Aktif' : ($step === 'done' ? 'Selesai' : 'Belum') }}
+                                {{ $step === 'active' ? 'Aktif' : ($step === 'done' ? 'Selesai' : 'Dalam Proses') }}
                             </span>
                         </div>
                     </div>
