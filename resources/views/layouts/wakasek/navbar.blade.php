@@ -2,7 +2,7 @@
      <div class="flex items-center justify-between">
          <div>
              <h1 class="text-2xl font-bold text-gray-900">SIJUWARA SEBELAS</h1>
-             <p class="text-gray-600">Selamat datang di Sistem Skoring SIJUWARA (Sistem Informasi Jurnal Siswa Aktif)</p>
+             <p class="text-gray-600">Selamat datang di Sistem Skoring SIJUWARA (Sistem Jurnal Siswa Aktif)</p>
          </div>
          <div class="flex items-center gap-4">
              <a href="{{ route('notifikasi.index') }}" class="p-2 text-gray-600 hover:bg-gray-100 rounded-lg">
