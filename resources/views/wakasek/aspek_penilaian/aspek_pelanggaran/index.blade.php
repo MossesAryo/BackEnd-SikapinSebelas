@@ -71,27 +71,29 @@
                     </div>
                     <div class="flex gap-2">
                         @php
-                            $filterCount = collect(request()->except(['page','search','_token','_method']))->filter(function($v){ return $v !== null && $v !== ''; })->count();
+                            $filterCount = collect(request()->except(['page', 'search', '_token', '_method']))
+                                ->filter(function ($v) {
+                                    return $v !== null && $v !== '';
+                                })
+                                ->count();
                         @endphp
                         <button onclick="openfilterModal()"
                             class="px-3 py-1.5 border border-gray-300 rounded-lg hover:bg-gray-50 flex items-center gap-1.5">
                             <i class="bi bi-funnel"></i> Filter
-                            @if($filterCount > 0)
-                                <span class="ml-2 inline-flex items-center justify-center bg-blue-600 text-white text-xs font-semibold rounded-full w-6 h-6">{{ $filterCount }}</span>
+                            @if ($filterCount > 0)
+                                <span
+                                    class="ml-2 inline-flex items-center justify-center bg-blue-600 text-white text-xs font-semibold rounded-full w-6 h-6">{{ $filterCount }}</span>
                             @endif
                         </button>
-                      @if (auth()->user()->role == 1 || auth()->user()->role == 2)
-                        <button id="exportImportBtn"
-                            class="px-3 py-1.5 border border-gray-300 rounded-lg hover:bg-gray-50 flex items-center gap-1.5">
-                            <i class="bi bi-download"></i> Export / Import
-                        </button>
+                        @if (auth()->user()->role == 1 || auth()->user()->role == 2)
+                            <button id="exportImportBtn"
+                                class="px-3 py-1.5 border border-gray-300 rounded-lg hover:bg-gray-50 flex items-center gap-1.5">
+                                <i class="bi bi-download"></i> Export / Import
+                            </button>
                         @endif
                     </div>
                 </div>
             </div>
-
-            @include('wakasek.aspek_penilaian.aspek_pelanggaran.modalExportImport')
-
 
             <!-- Data Table -->
             <div class="bg-white rounded-xl shadow-sm border overflow-visible">
@@ -103,31 +105,36 @@
                     <table class="w-full">
                         <thead class="bg-gray-50 border-b border-gray-200">
                             <tr>
-                                <th class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                                <th
+                                    class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
                                     <div class="flex items-center gap-2">
                                         <i class="bi bi-hash text-gray-400"></i>
-                                         No
+                                        No
                                     </div>
                                 </th>
-                                <th class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                                <th
+                                    class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
                                     <div class="flex items-center gap-2">
                                         <i class="bi bi-person text-gray-400"></i>
                                         Kategori
                                     </div>
                                 </th>
-                                <th class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                                <th
+                                    class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
                                     <div class="flex items-center gap-2">
                                         <i class="bi bi-shield-check text-gray-400"></i>
                                         Uraian
                                     </div>
                                 </th>
-                                <th class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                                <th
+                                    class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
                                     <div class="flex items-center gap-2">
                                         <i class="bi bi-shield-check text-gray-400"></i>
                                         Pelanggaran ke
                                     </div>
                                 </th>
-                                <th class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                                <th
+                                    class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
                                     <div class="flex items-center gap-2">
                                         <i class="bi bi-shield-check text-gray-400"></i>
                                         Poin
@@ -150,7 +157,8 @@
                                 <tr class="hover:bg-gray-50 group">
 
                                     <td class="px-6 py-4 whitespace-nowrap">
-                                        <div class="text-sm font-semibold text-gray-900">{{ ($aspek_penilaian->firstItem() ?? 0) + $loop->iteration - 1 }}</div>
+                                        <div class="text-sm font-semibold text-gray-900">
+                                            {{ ($aspek_penilaian->firstItem() ?? 0) + $loop->iteration - 1 }}</div>
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap">
                                         <div class="text-sm font-semibold text-gray-900">{{ $item->kategori }}</div>
@@ -189,7 +197,8 @@
                                             class="mx-auto w-24 h-24 bg-gray-100 rounded-full flex items-center justify-center mb-4">
                                             <i class="bi bi-people text-3xl text-gray-400"></i>
                                         </div>
-                                        <h3 class="text-lg font-medium text-gray-900 mb-2">Belum ada data Aspek Pelanggaran</h3>
+                                        <h3 class="text-lg font-medium text-gray-900 mb-2">Belum ada data Aspek Pelanggaran
+                                        </h3>
                                         <p class="text-gray-500">Tambahkan data Aspek Pelanggaran untuk memulai.</p>
                                     </td>
                                 </tr>
@@ -204,6 +213,7 @@
             </div>
         </div>
 
+        @include('wakasek.aspek_penilaian.aspek_pelanggaran.modalExportImport')
         @include('wakasek.aspek_penilaian.aspek_pelanggaran.create')
         @include('wakasek.aspek_penilaian.aspek_pelanggaran.edit')
         @include('wakasek.aspek_penilaian.aspek_pelanggaran.delete')
@@ -272,68 +282,68 @@
                 }
             });
 
-              // Search functionality
-    document.addEventListener("DOMContentLoaded", () => {
-    const input = document.getElementById("inputSearch");
-    const tableBody = document.getElementById("tableBody");
-    const pagination = document.getElementById("pagination");
+            // Search functionality
+            document.addEventListener("DOMContentLoaded", () => {
+                const input = document.getElementById("inputSearch");
+                const tableBody = document.getElementById("tableBody");
+                const pagination = document.getElementById("pagination");
 
-    let debounceTimer = null;
+                let debounceTimer = null;
 
-    // Simpan halaman terakhir sebelum search
-    let lastPageUrl = window.location.href;
+                // Simpan halaman terakhir sebelum search
+                let lastPageUrl = window.location.href;
 
-    function fetchData(url) {
-        fetch(url)
-            .then(res => res.text())
-            .then(html => {
-                const parser = new DOMParser();
-                const doc = parser.parseFromString(html, "text/html");
+                function fetchData(url) {
+                    fetch(url)
+                        .then(res => res.text())
+                        .then(html => {
+                            const parser = new DOMParser();
+                            const doc = parser.parseFromString(html, "text/html");
 
-                tableBody.innerHTML = doc.querySelector("#tableBody").innerHTML;
-                pagination.innerHTML = doc.querySelector("#pagination").innerHTML;
+                            tableBody.innerHTML = doc.querySelector("#tableBody").innerHTML;
+                            pagination.innerHTML = doc.querySelector("#pagination").innerHTML;
+
+                            activatePaginationLinks();
+                        })
+                        .catch(err => console.error("ERR:", err));
+                }
+
+                function activatePaginationLinks() {
+                    const links = document.querySelectorAll("#pagination a");
+
+                    links.forEach(link => {
+                        link.addEventListener("click", function(e) {
+                            e.preventDefault();
+
+                            // Simpan page terakhir sebelum search
+                            lastPageUrl = this.href;
+
+                            fetchData(this.href);
+                        });
+                    });
+                }
 
                 activatePaginationLinks();
-            })
-            .catch(err => console.error("ERR:", err));
-    }
 
-    function activatePaginationLinks() {
-        const links = document.querySelectorAll("#pagination a");
+                // Auto search
+                input.addEventListener("keyup", function() {
+                    clearTimeout(debounceTimer);
 
-        links.forEach(link => {
-            link.addEventListener("click", function (e) {
-                e.preventDefault();
+                    debounceTimer = setTimeout(() => {
+                        const query = input.value.trim();
 
-                // Simpan page terakhir sebelum search
-                lastPageUrl = this.href;
+                        if (query.length === 0) {
+                            // User hapus search → kembali ke page terakhir
+                            fetchData(lastPageUrl);
+                            return;
+                        }
 
-                fetchData(this.href);
+                        // Search selalu mulai dari page 1
+                        const url = `/aspek_pelanggaran?search=${query}`;
+                        fetchData(url);
+
+                    }, 200);
+                });
             });
-        });
-    }
-
-    activatePaginationLinks();
-
-    // Auto search
-    input.addEventListener("keyup", function () {
-        clearTimeout(debounceTimer);
-
-        debounceTimer = setTimeout(() => {
-            const query = input.value.trim();
-
-            if (query.length === 0) {
-                // User hapus search → kembali ke page terakhir
-                fetchData(lastPageUrl);
-                return;
-            }
-
-            // Search selalu mulai dari page 1
-            const url = `/aspek_pelanggaran?search=${query}`;
-            fetchData(url);
-
-        }, 200);
-    });
-});
         </script>
     @endpush

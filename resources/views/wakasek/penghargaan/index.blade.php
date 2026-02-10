@@ -48,7 +48,7 @@
                         class="pl-10 pr-4 py-1.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent w-full">
                 </div>
                 <div class="flex gap-2">
-                  
+
                     <button id="exportImportBtn"
                         class="px-3 py-1.5 border border-gray-300 rounded-lg hover:bg-gray-50 flex items-center gap-1.5">
                         <i class="bi bi-download"></i> Export / Import
@@ -56,8 +56,6 @@
                 </div>
             </div>
         </div>
-
-        @include('wakasek.penghargaan.modalExportImport')
 
         <!-- Data Table -->
         <div class="bg-white rounded-xl shadow-sm border overflow-visible">
@@ -69,7 +67,7 @@
                 <table class="w-full">
                     <thead class="bg-gray-50 border-b border-gray-200">
                         <tr>
-                           
+
                             <th class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
                                 <div class="flex items-center gap-2">
                                     <i class="bi bi-hash text-gray-400"></i>
@@ -106,16 +104,20 @@
                         </tr>
                     </thead>
 
-                  <tbody id="tableBody" class="bg-white divide-y divide-gray-100">
+                    <tbody id="tableBody" class="bg-white divide-y divide-gray-100">
                         @forelse ($penghargaan as $item)
                             <tr class="hover:bg-gray-50 group">
                                 <td class="px-6 py-4 whitespace-nowrap">
-                                    <div class="text-sm font-semibold text-gray-900">{{ ($penghargaan->firstItem() ?? 0) + $loop->iteration - 1 }}</div>
+                                    <div class="text-sm font-semibold text-gray-900">
+                                        {{ ($penghargaan->firstItem() ?? 0) + $loop->iteration - 1 }}</div>
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap">
                                     <div class="flex items-center">
-                                        <div class="w-2 h-2 bg-blue-400 rounded-full mr-3 opacity-0 group-hover:opacity-100 transition-opacity"></div>
-                                        <span class="text-sm font-medium text-gray-900">{{ $item->tanggal_penghargaan }}</span>
+                                        <div
+                                            class="w-2 h-2 bg-blue-400 rounded-full mr-3 opacity-0 group-hover:opacity-100 transition-opacity">
+                                        </div>
+                                        <span
+                                            class="text-sm font-medium text-gray-900">{{ $item->tanggal_penghargaan }}</span>
                                     </div>
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap">
@@ -127,12 +129,14 @@
                                 @if (auth()->user()->role == 1)
                                     <td class="px-6 py-4 whitespace-nowrap">
                                         <div class="flex items-center gap-1">
-                                            <button onclick="openEditModal('{{ $item->id_penghargaan }}', '{{ $item->tanggal_penghargaan }}', '{{ $item->level_penghargaan }}', '{{ $item->alasan }}')"
+                                            <button
+                                                onclick="openEditModal('{{ $item->id_penghargaan }}', '{{ $item->tanggal_penghargaan }}', '{{ $item->level_penghargaan }}', '{{ $item->alasan }}')"
                                                 class="action-btn inline-flex items-center justify-center w-9 h-9 text-blue-600 hover:text-blue-800 hover:bg-blue-50 rounded-full"
                                                 title="Edit Penghargaan">
                                                 <i class="bi bi-pencil-square text-sm"></i>
                                             </button>
-                                            <button onclick="openDeleteModal('{{ $item->id_penghargaan }}', '{{ $item->level_penghargaan }}')"
+                                            <button
+                                                onclick="openDeleteModal('{{ $item->id_penghargaan }}', '{{ $item->level_penghargaan }}')"
                                                 class="action-btn inline-flex items-center justify-center w-9 h-9 text-red-600 hover:text-red-800 hover:bg-red-50 rounded-full"
                                                 title="Hapus Penghargaan">
                                                 <i class="bi bi-trash text-sm"></i>
@@ -145,7 +149,8 @@
                             <!-- TAMPILAN KOSONG — SAMA PERSIS SEPERTI WALIKELAS -->
                             <tr id="emptyState">
                                 <td colspan="{{ auth()->user()->role == 1 ? '5' : '4' }}" class="px-6 py-12 text-center">
-                                    <div class="mx-auto w-24 h-24 bg-gray-100 rounded-full flex items-center justify-center mb-4">
+                                    <div
+                                        class="mx-auto w-24 h-24 bg-gray-100 rounded-full flex items-center justify-center mb-4">
                                         <i class="bi bi-trophy text-3xl text-gray-400"></i>
                                     </div>
                                     <h3 class="text-lg font-medium text-gray-900 mb-2">Belum ada data Penghargaan</h3>
@@ -162,6 +167,8 @@
             </div>
         </div>
     </div>
+
+    @include('wakasek.penghargaan.modalExportImport')
     @include('wakasek.penghargaan.create')
     @include('wakasek.penghargaan.edit')
     @include('wakasek.penghargaan.delete')

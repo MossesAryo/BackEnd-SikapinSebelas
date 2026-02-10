@@ -476,26 +476,26 @@ class SiswaController extends Controller
         return $pdf->download('Data_Siswa.pdf');
     }
 
-public function exportExcel(Request $request)
-{
-    $query = siswa::with('kelas');
+    public function exportExcel(Request $request)
+    {
+        $query = siswa::with('kelas');
 
-    if ($request->filled('jurusan')) {
-        $query->whereHas('kelas', function ($q) use ($request) {
-            $q->where('jurusan', $request->jurusan);
-        });
+        if ($request->filled('jurusan')) {
+            $query->whereHas('kelas', function ($q) use ($request) {
+                $q->where('jurusan', $request->jurusan);
+            });
+        }
+
+        if ($request->filled('kelas')) {
+            $query->where('id_kelas', $request->kelas);
+        }
+
+        $siswa = $query->get();
+
+        return Excel::download(new Siswa_ExportExcel($siswa), 'Data_Siswa.xlsx');
     }
 
-    if ($request->filled('kelas')) {
-        $query->where('id_kelas', $request->kelas);
-    }
-
-    $siswa = $query->get();
-
-    return Excel::download(new Siswa_ExportExcel($siswa), 'Data_Siswa.xlsx');
-}
-
-      public function import(Request $request)
+    public function import(Request $request)
     {
         $siswa = siswa::all();
 
@@ -667,5 +667,24 @@ public function exportExcel(Request $request)
 
         return redirect()->route('siswa.show', $request->nis)
             ->with('success', 'Data Penanganan berhasil ditambahkan.');
+    }
+
+    public function nonaktif($nis)
+    {
+        $siswa = Siswa::where('nis', $nis)->firstOrFail();
+
+        // Cegah nonaktif ganda
+        if ($siswa->status !== 'aktif') {
+            return back()->with('error', 'Siswa sudah tidak aktif');
+        }
+
+        $siswa->update([
+            'status'   => 'nonaktif',
+            'id_kelas' => 'NONAKTIF',
+        ]);
+
+        return redirect()
+            ->route('siswa.show', $nis)
+            ->with('success', 'Siswa berhasil dinonaktifkan');
     }
 }

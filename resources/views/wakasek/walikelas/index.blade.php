@@ -20,7 +20,7 @@
         </div>
 
 
-       @if (session('success'))
+        @if (session('success'))
             <div class="bg-green-50 border border-green-200 text-green-800 px-4 py-3 rounded-lg">
                 <p class="text-sm font-semibold flex items-center gap-2">
                     <i class="bi bi-check-circle-fill text-green-600"></i>
@@ -49,28 +49,31 @@
                 </div>
                 <div class="flex gap-2">
                     @php
-                        $filterCount = collect(request()->except(['page','search','_token','_method']))->filter(function($v){ return $v !== null && $v !== ''; })->count();
+                        $filterCount = collect(request()->except(['page', 'search', '_token', '_method']))
+                            ->filter(function ($v) {
+                                return $v !== null && $v !== '';
+                            })
+                            ->count();
                     @endphp
                     <button id="openFilterModal"
                         class="px-3 py-1.5 border border-gray-300 rounded-lg hover:bg-gray-50 flex items-center gap-1.5">
                         <i class="bi bi-funnel"></i> Filter
-                        @if($filterCount > 0)
-                            <span class="ml-2 inline-flex items-center justify-center bg-blue-600 text-white text-xs font-semibold rounded-full w-6 h-6">{{ $filterCount }}</span>
+                        @if ($filterCount > 0)
+                            <span
+                                class="ml-2 inline-flex items-center justify-center bg-blue-600 text-white text-xs font-semibold rounded-full w-6 h-6">{{ $filterCount }}</span>
                         @endif
                     </button>
-                    
-                        
-                    
+
+
+
                     <button id="exportImportBtn"
                         class="px-3 py-1.5 border border-gray-300 rounded-lg hover:bg-gray-50 flex items-center gap-1.5">
                         <i class="bi bi-download"></i> Export / Import
                     </button>
-                
+
                 </div>
             </div>
         </div>
-
-        @include('wakasek.walikelas.modalExportImport')
 
         <!-- Data Table -->
         <div class="bg-white rounded-xl shadow-sm border overflow-visible">
@@ -119,10 +122,11 @@
 
                     <tbody id="tableBody" class="bg-white divide-y divide-gray-100">
                         @forelse ($walikelas as $item)
-                            <tr class="hover:bg-gray-50 group">   
+                            <tr class="hover:bg-gray-50 group">
                                 <td class="px-6 py-4 whitespace-nowrap">
-                                    <div class="text-sm font-semibold text-gray-900">{{ ($walikelas->firstItem() ?? 0) + $loop->iteration - 1 }}</div>
-                                </td>                            
+                                    <div class="text-sm font-semibold text-gray-900">
+                                        {{ ($walikelas->firstItem() ?? 0) + $loop->iteration - 1 }}</div>
+                                </td>
                                 <td class="px-6 py-4 whitespace-nowrap">
                                     <div class="flex items-center">
                                         <div
@@ -179,13 +183,12 @@
     </div>
 
 
-
+    @include('wakasek.walikelas.modalExportImport')
     @include('wakasek.walikelas.create')
     @include('wakasek.walikelas.edit')
     @include('wakasek.walikelas.delete')
-    
-    @include('wakasek.walikelas.filter')
 
+    @include('wakasek.walikelas.filter')
 @endsection
 
 @push('js')

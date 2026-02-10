@@ -1,6 +1,6 @@
 <div id="modal-edit"
     class="fixed inset-0 bg-black bg-opacity-40 modal-overlay flex items-center justify-center hidden z-50">
-    <div class="bg-white rounded-xl shadow-xl w-full max-w-2xl mx-4 
+    <div class="bg-white rounded-xl shadow-xl w-full max-w-2xl mx-4
                 max-h-[90vh] overflow-y-auto"> <!-- Tambahan ini -->
         <form id="form-edit" method="POST" class="p-6 space-y-4">
             @csrf
@@ -51,8 +51,8 @@
                         class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                         onchange="togglePerubahanFieldEdit()">
                         <option value="" disabled selected>Pilih Status</option>
-                        <option value="Dalam Bimbingan">Dalam Bimbingan</option>
-                        <option value="Dalam Pemantauan">Dalam Pemantauan</option>
+                        <option value="Binaan Khusus">Binaan Khusus</option>
+                        <option value="Dalam Binaan">Dalam Binaan</option>
                         <option value="Selesai">Selesai</option>
                     </select>
                 </div>

@@ -19,7 +19,7 @@
             </button>
         </div>
 
-       @if (session('success'))
+        @if (session('success'))
             <div class="bg-green-50 border border-green-200 text-green-800 px-4 py-3 rounded-lg">
                 <p class="text-sm font-semibold flex items-center gap-2">
                     <i class="bi bi-check-circle-fill text-green-600"></i>
@@ -45,19 +45,13 @@
                     class="pl-10 pr-4 py-1.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent w-full">
             </div>
             <div class="flex gap-2">
-               
+
                 <button id="exportImportBtn"
                     class="px-3 py-1.5 border border-gray-300 rounded-lg hover:bg-gray-50 flex items-center gap-1.5">
                     <i class="bi bi-download"></i> Export / Import
                 </button>
             </div>
         </div>
-
-        @include('wakasek.guru_bk.modalExportImport')
-
-
-
-       
 
         <!-- Data Table -->
 
@@ -81,7 +75,7 @@
                                     <i class="bi bi-hash text-gray-400"></i>
                                     NIP
                                 </div>
-                            </th>                           
+                            </th>
                             <th class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
                                 <div class="flex items-center gap-2">
                                     <i class="bi bi-person text-gray-400"></i>
@@ -101,7 +95,8 @@
                         @forelse ($guru_bk as $item)
                             <tr class="hover:bg-gray-50 group">
                                 <td class="px-6 py-4 whitespace-nowrap">
-                                    <div class="text-sm font-semibold text-gray-900">{{ ($guru_bk->firstItem() ?? 0) + $loop->iteration - 1 }}</div>
+                                    <div class="text-sm font-semibold text-gray-900">
+                                        {{ ($guru_bk->firstItem() ?? 0) + $loop->iteration - 1 }}</div>
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap">
                                     <div class="flex items-center">
@@ -111,7 +106,7 @@
                                         <span class="text-sm font-medium text-gray-900">{{ $item->nip_bk }}</span>
                                     </div>
                                 </td>
-                               
+
                                 <td class="px-6 py-4 whitespace-nowrap">
                                     <div class="text-sm font-semibold text-gray-900">{{ $item->nama_guru_bk }}</div>
                                 </td>
@@ -154,6 +149,7 @@
         </div>
     </div>
 
+    @include('wakasek.guru_bk.modalExportImport')
     @include('wakasek.guru_bk.create')
     @include('wakasek.guru_bk.edit')
     @include('wakasek.guru_bk.delete')

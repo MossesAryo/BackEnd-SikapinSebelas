@@ -140,9 +140,9 @@
                             <td class="px-6 py-4">
                                 @php
                                     $statusColor = match($item->status) {
+                                        'Binaan Khusus' => 'bg-yellow-100 text-yellow-800',
+                                        'Dalam Binaan' => 'bg-orange-100 text-orange-800',
                                         'Selesai' => 'bg-green-100 text-green-800',
-                                        'Dalam Bimbingan' => 'bg-yellow-100 text-yellow-800',
-                                        'Dalam Pemantauan' => 'bg-orange-100 text-orange-800',
                                         default => 'bg-gray-100 text-gray-800'
                                     };
                                 @endphp
@@ -224,8 +224,8 @@
                     </label>
                     <select name="status" class="w-full rounded-xl border-2 border-gray-200 px-4 py-3 focus:ring-4 focus:ring-blue-100 focus:border-blue-500 transition">
                         <option value="">Semua Status</option>
-                        <option value="Dalam Bimbingan" {{ request('status') == 'Dalam Bimbingan' ? 'selected' : '' }}>Dalam Bimbingan</option>
-                        <option value="Dalam Pemantauan" {{ request('status') == 'Dalam Pemantauan' ? 'selected' : '' }}>Dalam Pemantauan</option>
+                        <option value="Binaan Khusus" {{ request('status') == 'Binaan Khusus' ? 'selected' : '' }}>Binaan Khusus</option>
+                        <option value="Dalam Binaan" {{ request('status') == 'Dalam Binaan' ? 'selected' : '' }}>Dalam Binaan</option>
                         <option value="Selesai" {{ request('status') == 'Selesai' ? 'selected' : '' }}>Selesai</option>
                     </select>
                 </div>

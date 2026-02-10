@@ -40,24 +40,28 @@
         <!-- Search & Filter -->
         <div class="bg-white p-6 rounded-xl shadow-sm border">
             <div class="flex flex-col md:flex-row gap-2 items-center justify-between">
-            
-                  
-                   <div class="w-full md:w-64 relative">
+
+
+                <div class="w-full md:w-64 relative">
                     <i class="bi bi-search absolute left-3 top-2.5 text-gray-400"></i>
-                    <input type="text" name="search" id="inputSearch"
-                        placeholder="Cari Kelas..."
+                    <input type="text" name="search" id="inputSearch" placeholder="Cari Kelas..."
                         class="pl-10 pr-4 py-1.5 border border-gray-300 rounded-lg w-full">
                 </div>
                 <div class="flex gap-2">
                     @php
-                        $filterCount = collect(request()->except(['page','search','_token','_method']))->filter(function($v){ return $v !== null && $v !== ''; })->count();
+                        $filterCount = collect(request()->except(['page', 'search', '_token', '_method']))
+                            ->filter(function ($v) {
+                                return $v !== null && $v !== '';
+                            })
+                            ->count();
                     @endphp
                     <button onclick="openFilterModal()"
                         class="px-3 py-1.5 border border-gray-300 rounded-lg hover:bg-gray-50 flex items-center gap-1.5">
                         <i class="bi bi-funnel"></i>
                         <span class="ml-1">Filter</span>
-                        @if($filterCount > 0)
-                            <span class="ml-2 inline-flex items-center justify-center bg-blue-600 text-white text-xs font-semibold rounded-full w-6 h-6">{{ $filterCount }}</span>
+                        @if ($filterCount > 0)
+                            <span
+                                class="ml-2 inline-flex items-center justify-center bg-blue-600 text-white text-xs font-semibold rounded-full w-6 h-6">{{ $filterCount }}</span>
                         @endif
                     </button>
                 </div>
@@ -95,12 +99,15 @@
                                     Nama Kelas
                                 </div>
                             </th>
-                            <th class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                                <div class="flex items-center gap-2">
-                                    <i class="bi bi-gear text-gray-400"></i>
-                                    Aksi
-                                </div>
-                            </th>
+                            @if (auth()->user()->role == 1)
+                                <th
+                                    class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                                    <div class="flex items-center gap-2">
+                                        <i class="bi bi-gear text-gray-400"></i>
+                                        Aksi
+                                    </div>
+                                </th>
+                            @endif
                         </tr>
                     </thead>
                     <tbody id="tableBody" class="bg-white divide-y divide-gray-100">
@@ -111,7 +118,8 @@
                                         <div
                                             class="w-2 h-2 bg-blue-400 rounded-full mr-3 opacity-0 group-hover:opacity-100 transition-opacity">
                                         </div>
-                                        <span class="text-sm font-medium text-gray-900">{{ ($kelas->firstItem() ?? 0) + $loop->iteration - 1 }}</span>
+                                        <span
+                                            class="text-sm font-medium text-gray-900">{{ ($kelas->firstItem() ?? 0) + $loop->iteration - 1 }}</span>
                                     </div>
                                 </td>
                                 <td class="px-6 py-4">
@@ -120,21 +128,24 @@
                                 <td class="px-6 py-4">
                                     <div class="text-sm font-semibold text-gray-900">{{ $item->nama_kelas }}</div>
                                 </td>
-                                <td class="px-6 py-4">
-                                    <div class="flex items-center gap-1">
-                                        <button onclick="openEditModal('{{ $item->id_kelas }}', '{{ $item->nama_kelas }}')"
-                                            class="action-btn inline-flex items-center justify-center w-9 h-9 text-blue-600 hover:text-blue-800 hover:bg-blue-50 rounded-full"
-                                            title="Edit Kelas">
-                                            <i class="bi bi-pencil-square text-sm"></i>
-                                        </button>
-                                        <button
-                                            onclick="openDeleteModal('{{ $item->id_kelas }}', '{{ $item->nama_kelas }}')"
-                                            class="action-btn inline-flex items-center justify-center w-9 h-9 text-red-600 hover:text-red-800 hover:bg-red-50 rounded-full"
-                                            title="Hapus Kelas">
-                                            <i class="bi bi-trash text-sm"></i>
-                                        </button>
-                                    </div>
-                                </td>
+                                @if (auth()->user()->role == 1)
+                                    <td class="px-6 py-4">
+                                        <div class="flex items-center gap-1">
+                                            <button
+                                                onclick="openEditModal('{{ $item->id_kelas }}', '{{ $item->nama_kelas }}', '{{ $item->jurusan }}')"
+                                                class="action-btn inline-flex items-center justify-center w-9 h-9 text-blue-600 hover:text-blue-800 hover:bg-blue-50 rounded-full"
+                                                title="Edit Kelas">
+                                                <i class="bi bi-pencil-square text-sm"></i>
+                                            </button>
+                                            <button
+                                                onclick="openDeleteModal('{{ $item->id_kelas }}', '{{ $item->nama_kelas }}')"
+                                                class="action-btn inline-flex items-center justify-center w-9 h-9 text-red-600 hover:text-red-800 hover:bg-red-50 rounded-full"
+                                                title="Hapus Kelas">
+                                                <i class="bi bi-trash text-sm"></i>
+                                            </button>
+                                        </div>
+                                    </td>
+                                @endif
                             </tr>
                         @empty
                             <tr>
@@ -162,134 +173,140 @@
     @include('wakasek.kelas.edit')
     @include('wakasek.kelas.delete')
     @include('wakasek.kelas.modalFilter')
-    @push('js')
-        <script>
-            function openCreateModal() {
-                const modal = document.getElementById('modal-create');
-                if (!modal) return console.warn('modal-create tidak ditemukan');
-                modal.classList.remove('hidden');
-            }
+@endsection
 
-            function openFilterModal() {
-                const modal = document.getElementById('modal-filter');
-                if (!modal) return console.warn('modal-filter tidak ditemukan');
-                modal.classList.remove('hidden');
-            }
+@push('js')
+    <script>
+        function openCreateModal() {
+            const modal = document.getElementById('modal-create');
+            if (!modal) return console.warn('modal-create tidak ditemukan');
+            modal.classList.remove('hidden');
+        }
 
-            function openEditModal(id, nama, jurusann = null) {
-                const idK = document.getElementById('edit_id_kelas');
-                const nm = document.getElementById('edit_nama_kelas');
-                const jur = document.getElementById('jurusan');
-                const form = document.getElementById('form-edit');
-                const mdl = document.getElementById('modal-edit');
+        function openFilterModal() {
+            const modal = document.getElementById('modal-filter');
+            if (!modal) return console.warn('modal-filter tidak ditemukan');
+            modal.classList.remove('hidden');
+        }
 
-                if (idK) idK.value = id;
-                if (nm) nm.value = nama;
-                if (jur && jurusann !== null) jur.value = jurusann;
-                if (form) form.action = `/kelas/${id}/update`;
-                if (!mdl) return console.warn('modal-edit tidak ditemukan');
-                mdl.classList.remove('hidden');
-            }
+        function openEditModal(id, nama, jurusanVal) {
+            const idK = document.getElementById('edit_id_kelas');
+            const nm = document.getElementById('edit_nama_kelas');
+            const jur = document.getElementById('edit_jurusan');
+            const form = document.getElementById('form-edit');
+            const mdl = document.getElementById('modal-edit');
 
-            function openDeleteModal(id, nama) {
-                const nameEl = document.getElementById('delete-nama-kelas');
-                const form = document.getElementById('form-delete');
-                const mdl = document.getElementById('modal-delete');
+            console.log('Jurusan diterima:', jurusanVal, typeof jurusanVal);
 
-                if (nameEl) nameEl.textContent = nama;
-                if (form) form.action = `/kelas/${id}`;
-                if (!mdl) return console.warn('modal-delete tidak ditemukan');
-                mdl.classList.remove('hidden');
-            }
+            if (idK) idK.value = id;
+            if (nm) nm.value = nama;
+            if (jur) jur.value = jurusanVal ?? '';
 
-            // --- CLOSERS / UX ---
-            function closeAllModals() {
-                document.querySelectorAll('[id^="modal-"]').forEach(m => m.classList.add('hidden'));
-            }
+            if (form) form.action = `/kelas/${id}/update`;
+            if (!mdl) return console.warn('modal-edit tidak ditemukan');
 
-            // ESC to close
-            document.addEventListener('keydown', (e) => {
-                if (e.key === 'Escape') closeAllModals();
-            });
+            mdl.classList.remove('hidden');
+        }
 
-            // Klik di overlay untuk menutup (pastikan elemen overlay adalah elemen dengan id modal-*)
-            document.querySelectorAll('[id^="modal-"]').forEach(modal => {
-                modal.addEventListener('click', function(e) {
-                    if (e.target === modal) modal.classList.add('hidden');
-                });
-            });
 
-            function closeModal(id) {
-                document.getElementById(id).classList.add('hidden');
-            }
+        function openDeleteModal(id, nama) {
+            const nameEl = document.getElementById('delete-nama-kelas');
+            const form = document.getElementById('form-delete');
+            const mdl = document.getElementById('modal-delete');
 
-            function openModal(id) {
-                document.getElementById(id).classList.remove('hidden');
-            }
+            if (nameEl) nameEl.textContent = nama;
+            if (form) form.action = `/kelas/${id}`;
+            if (!mdl) return console.warn('modal-delete tidak ditemukan');
+            mdl.classList.remove('hidden');
+        }
 
-            // Search functionality
-           document.addEventListener("DOMContentLoaded", () => {
-    const input = document.getElementById("inputSearch");
-    const tableBody = document.getElementById("tableBody");
-    const pagination = document.getElementById("pagination");
+        // --- CLOSERS / UX ---
+        function closeAllModals() {
+            document.querySelectorAll('[id^="modal-"]').forEach(m => m.classList.add('hidden'));
+        }
 
-    let debounceTimer = null;
+        // ESC to close
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') closeAllModals();
+        });
 
-    // Simpan halaman terakhir sebelum search
-    let lastPageUrl = window.location.href;
-
-    function fetchData(url) {
-        fetch(url)
-            .then(res => res.text())
-            .then(html => {
-                const parser = new DOMParser();
-                const doc = parser.parseFromString(html, "text/html");
-
-                tableBody.innerHTML = doc.querySelector("#tableBody").innerHTML;
-                pagination.innerHTML = doc.querySelector("#pagination").innerHTML;
-
-                activatePaginationLinks();
-            })
-            .catch(err => console.error("ERR:", err));
-    }
-
-    function activatePaginationLinks() {
-        const links = document.querySelectorAll("#pagination a");
-
-        links.forEach(link => {
-            link.addEventListener("click", function (e) {
-                e.preventDefault();
-
-                // Simpan page terakhir sebelum search
-                lastPageUrl = this.href;
-
-                fetchData(this.href);
+        // Klik di overlay untuk menutup (pastikan elemen overlay adalah elemen dengan id modal-*)
+        document.querySelectorAll('[id^="modal-"]').forEach(modal => {
+            modal.addEventListener('click', function(e) {
+                if (e.target === modal) modal.classList.add('hidden');
             });
         });
-    }
 
-    activatePaginationLinks();
+        function closeModal(id) {
+            document.getElementById(id).classList.add('hidden');
+        }
 
-    // Auto search
-    input.addEventListener("keyup", function () {
-        clearTimeout(debounceTimer);
+        function openModal(id) {
+            document.getElementById(id).classList.remove('hidden');
+        }
 
-        debounceTimer = setTimeout(() => {
-            const query = input.value.trim();
+        // Search functionality
+        document.addEventListener("DOMContentLoaded", () => {
+            const input = document.getElementById("inputSearch");
+            const tableBody = document.getElementById("tableBody");
+            const pagination = document.getElementById("pagination");
 
-            if (query.length === 0) {
-                // User hapus search → kembali ke page terakhir
-                fetchData(lastPageUrl);
-                return;
+            let debounceTimer = null;
+
+            // Simpan halaman terakhir sebelum search
+            let lastPageUrl = window.location.href;
+
+            function fetchData(url) {
+                fetch(url)
+                    .then(res => res.text())
+                    .then(html => {
+                        const parser = new DOMParser();
+                        const doc = parser.parseFromString(html, "text/html");
+
+                        tableBody.innerHTML = doc.querySelector("#tableBody").innerHTML;
+                        pagination.innerHTML = doc.querySelector("#pagination").innerHTML;
+
+                        activatePaginationLinks();
+                    })
+                    .catch(err => console.error("ERR:", err));
             }
 
-            // Search selalu mulai dari page 1
-            const url = `/kelas?search=${query}`;
-            fetchData(url);
+            function activatePaginationLinks() {
+                const links = document.querySelectorAll("#pagination a");
 
-        }, 200);
-    });
-});
-        </script>
-    @endpush
-@endsection
+                links.forEach(link => {
+                    link.addEventListener("click", function(e) {
+                        e.preventDefault();
+
+                        // Simpan page terakhir sebelum search
+                        lastPageUrl = this.href;
+
+                        fetchData(this.href);
+                    });
+                });
+            }
+
+            activatePaginationLinks();
+
+            // Auto search
+            input.addEventListener("keyup", function() {
+                clearTimeout(debounceTimer);
+
+                debounceTimer = setTimeout(() => {
+                    const query = input.value.trim();
+
+                    if (query.length === 0) {
+                        // User hapus search → kembali ke page terakhir
+                        fetchData(lastPageUrl);
+                        return;
+                    }
+
+                    // Search selalu mulai dari page 1
+                    const url = `/kelas?search=${query}`;
+                    fetchData(url);
+
+                }, 200);
+            });
+        });
+    </script>
+@endpush

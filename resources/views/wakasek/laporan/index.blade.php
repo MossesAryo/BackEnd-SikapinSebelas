@@ -86,74 +86,111 @@
     </div>
 
     <!-- Filter Modal -->
-    <div id="filterModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
-        <div class="bg-white rounded-xl p-6 w-full max-w-md">
-            <div class="flex justify-between items-center mb-4">
-                <h3 class="text-lg font-semibold text-gray-900">Filter Laporan</h3>
-                <button onclick="closeFilterModal()" class="text-gray-500 hover:text-gray-700">
-                    <i class="bi bi-x-lg"></i>
+    <div id="filterModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden z-[9999]">
+
+        <div class="bg-white rounded-2xl shadow-2xl w-full max-w-md mx-4 relative">
+
+            <!-- Header -->
+            <div
+                class="flex items-center justify-between p-6 border-b border-gray-100
+                   bg-gradient-to-r from-blue-50 to-indigo-50 rounded-t-2xl">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center">
+                        <i class="bi bi-funnel text-blue-600"></i>
+                    </div>
+                    <h2 class="text-xl font-semibold text-gray-800">Filter Laporan</h2>
+                </div>
+
+                <button onclick="closeFilterModal()"
+                    class="text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded-full p-2 transition">
+                    <i class="bi bi-x-lg text-lg"></i>
                 </button>
             </div>
-            <form id="filterForm">
-                <div class="space-y-4">
-                    {{-- @if (auth()->user()->role == 1 || auth()->user()->role == 2 || auth()->user()->role == 3) --}}
-                    <div>
-                        <label for="kelas" class="block text-sm font-medium text-gray-700">Kelas</label>
-                        @if(auth()->user()->role != 4)
-                            <!-- Custom Searchable Dropdown -->
-                            <div class="dropdown-container">
-                                <input type="text" id="kelasSearch" placeholder="Cari kelas..." class="dropdown-search">
-                                <div id="kelasList" class="dropdown-list">
-                                    <div class="dropdown-item" data-value="">Semua Kelas</div>
-                                    @foreach ($kelas as $item)
-                                        <div class="dropdown-item" data-value="{{ $item->id_kelas }}">
-                                            {{ $item->nama_kelas }}
-                                        </div>
-                                    @endforeach
+
+            <!-- Form -->
+            <form id="filterForm" class="p-6 space-y-5">
+
+                {{-- Kelas --}}
+                <div class="space-y-2">
+                    <label class="block text-sm font-semibold text-gray-700 flex items-center gap-2">
+                        <i class="bi bi-collection text-gray-500"></i> Kelas
+                    </label>
+
+                    @if (auth()->user()->role != 4)
+                        <!-- Custom Searchable Dropdown -->
+                        <div class="relative dropdown-container">
+                            <input type="text" id="kelasSearch" placeholder="Cari kelas..."
+                                class="w-full rounded-xl border-2 border-gray-200 px-4 py-3
+                                   focus:ring-4 focus:ring-blue-100 focus:border-blue-500">
+
+                            <div id="kelasList"
+                                class="absolute z-50 mt-2 w-full bg-white border border-gray-200
+                                   rounded-xl shadow-lg max-h-48 overflow-y-auto hidden">
+                                <div class="dropdown-item px-4 py-2 hover:bg-gray-100 cursor-pointer" data-value="">
+                                    Semua Kelas
                                 </div>
-                            </div>
-                            <input type="hidden" id="kelas" name="kelas">
-                        @else
-                            {{-- Untuk walikelas, jangan tampilkan pilihan kelas. set nilai hidden input ke kelas walikelas --}}
-                            <div class="mt-1 px-4 py-3 bg-blue-50 border border-blue-200 rounded-lg">
-                                <div class="flex items-center gap-2">
-                                    <i class="bi bi-bookmark-fill text-blue-600"></i>
-                                    <div>
-                                        <p class="text-xs text-gray-600 font-medium">Kelas Walikelas</p>
-                                        <p class="text-sm font-semibold text-gray-900">{{ $kelas->first()->nama_kelas ?? '-' }}</p>
+                                @foreach ($kelas as $item)
+                                    <div class="dropdown-item px-4 py-2 hover:bg-gray-100 cursor-pointer"
+                                        data-value="{{ $item->id_kelas }}">
+                                        {{ $item->nama_kelas }}
                                     </div>
+                                @endforeach
+                            </div>
+                        </div>
+                        <input type="hidden" id="kelas" name="kelas">
+                    @else
+                        <!-- Walikelas -->
+                        <div class="px-4 py-3 bg-blue-50 border border-blue-200 rounded-xl">
+                            <div class="flex items-center gap-2">
+                                <i class="bi bi-bookmark-fill text-blue-600"></i>
+                                <div>
+                                    <p class="text-xs text-gray-600 font-medium">Kelas Walikelas</p>
+                                    <p class="text-sm font-semibold text-gray-900">
+                                        {{ $kelas->first()->nama_kelas ?? '-' }}
+                                    </p>
                                 </div>
                             </div>
-                            <input type="hidden" id="kelas" name="kelas" value="{{ $walikelasId }}">
-                        @endif
-                    </div>
+                        </div>
+                        <input type="hidden" id="kelas" name="kelas" value="{{ $walikelasId }}">
+                    @endif
                 </div>
-                
-                <div>
-                    <label for="start_date" class="block text-sm font-medium text-gray-700">Tanggal Mulai</label>
+
+                {{-- Tanggal Mulai --}}
+                <div class="space-y-2">
+                    <label class="block text-sm font-semibold text-gray-700 flex items-center gap-2">
+                        <i class="bi bi-calendar-event text-gray-500"></i> Tanggal Mulai
+                    </label>
                     <input type="date" id="start_date" name="start_date"
-                        class="mt-1 w-full border border-gray-300 rounded-lg p-2 focus:ring focus:ring-blue-200 focus:outline-none">
+                        class="w-full rounded-xl border-2 border-gray-200 px-4 py-3
+                           focus:ring-4 focus:ring-blue-100 focus:border-blue-500">
                 </div>
 
-                <div>
-                    <label for="end_date" class="block text-sm font-medium text-gray-700">Tanggal Selesai</label>
+                {{-- Tanggal Selesai --}}
+                <div class="space-y-2">
+                    <label class="block text-sm font-semibold text-gray-700 flex items-center gap-2">
+                        <i class="bi bi-calendar-check text-gray-500"></i> Tanggal Selesai
+                    </label>
                     <input type="date" id="end_date" name="end_date"
-                        class="mt-1 w-full border border-gray-300 rounded-lg p-2 focus:ring focus:ring-blue-200 focus:outline-none">
+                        class="w-full rounded-xl border-2 border-gray-200 px-4 py-3
+                           focus:ring-4 focus:ring-blue-100 focus:border-blue-500">
                 </div>
 
-                <div class="mt-6 flex justify-end gap-2">
+                <!-- Action -->
+                <div class="flex flex-col sm:flex-row justify-end gap-3 pt-4 border-t">
                     <button type="button" onclick="exportToPDF()"
-                        class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg flex items-center gap-2">
-                        <i class="bi bi-file-earmark-pdf"></i> Ekspor PDF
+                        class="px-6 py-3 rounded-xl bg-red-600 text-white hover:bg-red-700 flex items-center gap-2 shadow">
+                        <i class="bi bi-file-earmark-pdf"></i> PDF
                     </button>
+
                     <button type="button" onclick="exportToExcel()"
-                        class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg flex items-center gap-2">
-                        <i class="bi bi-file-earmark-excel"></i> Ekspor Excel
+                        class="px-6 py-3 rounded-xl bg-green-600 text-white hover:bg-green-700 flex items-center gap-2 shadow">
+                        <i class="bi bi-file-earmark-excel"></i> Excel
                     </button>
                 </div>
             </form>
         </div>
     </div>
+
 @endsection
 
 @push('js')

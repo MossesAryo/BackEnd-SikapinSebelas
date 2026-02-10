@@ -73,120 +73,119 @@
                         <span>Dashboard</span>
                     </a>
                 </li>
-                
 
 
-                    @if (auth()->user()->role == 3)
+
+                @if (auth()->user()->role == 3)
                     <li>
-                            <a href="{{ route('ketua_program.siswa') }}"
+                        <a href="{{ route('ketua_program.siswa') }}"
                             class="flex items-center gap-3 px-4 py-3 rounded-lg menu-link
                                     {{ request()->routeIs('ketua_program.siswa*') ? 'active-link' : 'text-gray-600 hover:bg-gray-50' }}">
-                                <i class="bi bi-person-badge"></i>
-                                <span>Siswa</span>
+                            <i class="bi bi-person-badge"></i>
+                            <span>Siswa</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{ route('ketua_program.kelas') }}"
+                            class="flex items-center gap-3 px-4 py-3 rounded-lg menu-link
+                                    {{ request()->routeIs('ketua_program.kelas*') ? 'active-link' : 'text-gray-600 hover:bg-gray-50' }}">
+                            <i class="bi bi-grid-3x3-gap"></i>
+                            <span>Kelas</span>
+                        </a>
+                    </li>
+                @endif
+
+                @if (auth()->user()->role == 4)
+                    <li>
+                        <a href="{{ route('walikelas.siswa') }}"
+                            class="flex items-center gap-3 px-4 py-3 rounded-lg menu-link
+                       {{ request()->routeIs('walikelas.siswa') ? 'active-link' : 'text-gray-600 hover:bg-gray-50' }}">
+                            <i class="bi bi-person-badge"></i>
+                            <span>Siswa</span>
+                        </a>
+                    </li>
+                @endif
+
+                @if (auth()->user()->role == 1 || auth()->user()->role == 2)
+                    <li>
+                        <a href="{{ route('siswa.index') }}"
+                            class="flex items-center gap-3 px-4 py-3 rounded-lg menu-link
+                       {{ request()->routeIs('siswa.*') ? 'active-link' : 'text-gray-600 hover:bg-gray-50' }}">
+                            <i class="bi bi-person-badge"></i>
+                            <span>Siswa</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{ route('kelas') }}"
+                            class="flex items-center gap-3 px-4 py-3 rounded-lg menu-link
+                   {{ request()->routeIs('kelas*') ? 'active-link' : 'text-gray-600 hover:bg-gray-50' }}">
+                            <i class="bi bi-grid-3x3-gap"></i>
+                            <span>Kelas</span>
+                        </a>
+                    </li>
+
+                    <!-- User Dropdown -->
+                    @if (auth()->user()->role == 1)
+                        <li>
+                            <button onclick="toggleDropdown('userDropdown','userArrow')"
+                                class="flex items-center justify-between w-full px-4 py-3 text-gray-600 hover:bg-gray-50 rounded-lg">
+                                <div class="flex items-center gap-3">
+                                    <i class="bi bi-people-fill"></i>
+                                    <span>User</span>
+                                </div>
+                                <i class="bi bi-chevron-down dropdown-arrow text-sm" id="userArrow"></i>
+                            </button>
+                            <div id="userDropdown"
+                                class="dropdown-content ml-4 mt-1
+                        {{ request()->routeIs('walikelas.*') || request()->routeIs('gurubk.*') || request()->routeIs('kaprog.*') ? 'show' : '' }}">
+                                <ul class="space-y-1">
+                                    <li>
+                                        <a href="{{ route('walikelas.index') }}"
+                                            class="flex items-center gap-3 px-4 py-2 text-sm rounded-lg menu-link
+                                   {{ request()->routeIs('walikelas.*') ? 'active-link' : 'text-gray-600 hover:bg-gray-50' }}">
+                                            <i class="bi bi-person-vcard"></i>
+                                            <span>Wali Kelas</span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="{{ route('gurubk.index') }}"
+                                            class="flex items-center gap-3 px-4 py-2 text-sm rounded-lg menu-link
+                                   {{ request()->routeIs('gurubk.*') ? 'active-link' : 'text-gray-600 hover:bg-gray-50' }}">
+                                            <i class="bi bi-person-hearts"></i>
+                                            <span>Guru BK</span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="{{ route('kaprog.index') }}"
+                                            class="flex items-center gap-3 px-4 py-2 text-sm rounded-lg menu-link
+                                   {{ request()->routeIs('kaprog.*') ? 'active-link' : 'text-gray-600 hover:bg-gray-50' }}">
+                                            <i class="bi bi-mortarboard"></i>
+                                            <span>Kaprog</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </li>
+                    @endif
+                    @if (auth()->user()->role == 1)
+                        <li>
+                            <a href="{{ route('penghargaan.index') }}"
+                                class="flex items-center gap-3 px-4 py-2  rounded-lg menu-link
+                        {{ request()->routeIs('penghargaan.*') ? 'active-link' : 'text-gray-600 hover:bg-gray-50' }}">
+                                <i class="bi bi-trophy"></i>
+                                <span>Penghargaan</span>
                             </a>
                         </li>
                         <li>
-                            <a href="{{ route('ketua_program.kelas') }}"
-                            class="flex items-center gap-3 px-4 py-3 rounded-lg menu-link
-                                    {{ request()->routeIs('ketua_program.kelas*') ? 'active-link' : 'text-gray-600 hover:bg-gray-50' }}">
-                                <i class="bi bi-grid-3x3-gap"></i>
-                                <span>Kelas</span>
+                            <a href="{{ route('peringatan.index') }}"
+                                class="flex items-center gap-3 px-4 py-2  rounded-lg menu-link
+                    {{ request()->routeIs('peringatan.*') ? 'active-link' : 'text-gray-600 hover:bg-gray-50' }}">
+                                <i class="bi bi-shield-exclamation"></i>
+                                <span>Pelanggaran</span>
                             </a>
                         </li>
                     @endif
-
-                      @if (auth()->user()->role == 4)
-                    <li>
-                    <a href="{{ route('walikelas.siswa') }}"
-                        class="flex items-center gap-3 px-4 py-3 rounded-lg menu-link
-                       {{ request()->routeIs('walikelas.siswa') ? 'active-link' : 'text-gray-600 hover:bg-gray-50' }}">
-                        <i class="bi bi-person-badge"></i>
-                        <span>Siswa</span>
-                    </a>
-                </li>
-                    @endif
-
-                @if (auth()->user()->role == 1 || auth()->user()->role == 2)
-                <li>
-                    <a href="{{ route('siswa.index') }}"
-                        class="flex items-center gap-3 px-4 py-3 rounded-lg menu-link
-                       {{ request()->routeIs('siswa.*') ? 'active-link' : 'text-gray-600 hover:bg-gray-50' }}">
-                        <i class="bi bi-person-badge"></i>
-                        <span>Siswa</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="{{ route('kelas') }}"
-                        class="flex items-center gap-3 px-4 py-3 rounded-lg menu-link
-                   {{ request()->routeIs('kelas*') ? 'active-link' : 'text-gray-600 hover:bg-gray-50' }}">
-                        <i class="bi bi-grid-3x3-gap"></i>
-                        <span>Kelas</span>
-                    </a>
-                </li>
-
-                    <!-- User Dropdown -->
-                    @if (auth()->user()->role == 1) 
-                    <li>
-                        <button onclick="toggleDropdown('userDropdown','userArrow')"
-                            class="flex items-center justify-between w-full px-4 py-3 text-gray-600 hover:bg-gray-50 rounded-lg">
-                            <div class="flex items-center gap-3">
-                                <i class="bi bi-people-fill"></i>
-                                <span>User</span>
-                            </div>
-                            <i class="bi bi-chevron-down dropdown-arrow text-sm" id="userArrow"></i>
-                        </button>
-                        <div id="userDropdown"
-                            class="dropdown-content ml-4 mt-1
-                        {{ request()->routeIs('walikelas.*') || request()->routeIs('gurubk.*') || request()->routeIs('kaprog.*') ? 'show' : '' }}">
-                            <ul class="space-y-1">
-                                <li>
-                                    <a href="{{ route('walikelas.index') }}"
-                                        class="flex items-center gap-3 px-4 py-2 text-sm rounded-lg menu-link
-                                   {{ request()->routeIs('walikelas.*') ? 'active-link' : 'text-gray-600 hover:bg-gray-50' }}">
-                                        <i class="bi bi-person-vcard"></i>
-                                        <span>Wali Kelas</span>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="{{ route('gurubk.index') }}"
-                                        class="flex items-center gap-3 px-4 py-2 text-sm rounded-lg menu-link
-                                   {{ request()->routeIs('gurubk.*') ? 'active-link' : 'text-gray-600 hover:bg-gray-50' }}">
-                                        <i class="bi bi-person-hearts"></i>
-                                        <span>Guru BK</span>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="{{ route('kaprog.index') }}"
-                                        class="flex items-center gap-3 px-4 py-2 text-sm rounded-lg menu-link
-                                   {{ request()->routeIs('kaprog.*') ? 'active-link' : 'text-gray-600 hover:bg-gray-50' }}">
-                                        <i class="bi bi-mortarboard"></i>
-                                        <span>Kaprog</span>
-                                    </a>
-                                </li>
-                            </ul>
-                        </div>
-                    </li>
-                    @endif
-                    @if(auth()->user()->role == 1 )
-                   
-                    <li>
-                        <a href="{{ route('penghargaan.index') }}"
-                        class="flex items-center gap-3 px-4 py-2  rounded-lg menu-link
-                        {{ request()->routeIs('penghargaan.*') ? 'active-link' : 'text-gray-600 hover:bg-gray-50' }}">
-                        <i class="bi bi-trophy"></i>
-                        <span>Penghargaan</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="{{ route('peringatan.index') }}"
-                    class="flex items-center gap-3 px-4 py-2  rounded-lg menu-link
-                    {{ request()->routeIs('peringatan.*') ? 'active-link' : 'text-gray-600 hover:bg-gray-50' }}">
-                    <i class="bi bi-shield-exclamation"></i>
-                    <span>Pelanggaran</span>
-                </a>
-            </li>
-             @endif
-            @endif
+                @endif
 
 
 
@@ -236,39 +235,47 @@
                         <span>Akumulasi</span>
                     </a>
                 </li>
-                
-                @if (auth()->user()->role == 1 || auth()->user()->role == 2  || auth()->user()->role == 4)
-                    
-                <li>
-                    <a href="{{ route('intervensi.index') }}"
-                    class="flex items-center gap-3 px-4 py-3 rounded-lg menu-link
+
+                @if (auth()->user()->role == 1 || auth()->user()->role == 2 || auth()->user()->role == 4)
+                    <li>
+                        <a href="{{ route('intervensi.index') }}"
+                            class="flex items-center gap-3 px-4 py-3 rounded-lg menu-link
                     {{ request()->routeIs('intervensi.*') ? 'active-link' : 'text-gray-600 hover:bg-gray-50' }}">
-                    <i class="bi bi-life-preserver"></i>
-                    <span>Penanganan</span>
-                </a>
-            </li>
-         @endif
-
-
-            <li>
-                <a href="{{ route('statusintervensi.index') }}"
-                class="flex items-center gap-3 px-4 py-3 rounded-lg menu-link
-                {{ request()->routeIs('statusintervensi.*') ? 'active-link' : 'text-gray-600 hover:bg-gray-50' }}">
-                <i class="bi bi-clipboard-data"></i>
-                <span>Status Penanganan</span>
-            </a>
-        </li>
-    
+                            <i class="bi bi-life-preserver"></i>
+                            <span>Penanganan</span>
+                        </a>
+                    </li>
+                @endif
 
 
                 <li>
-                    <a href="{{ route('laporan.index') }}"
+                    <a href="{{ route('statusintervensi.index') }}"
                         class="flex items-center gap-3 px-4 py-3 rounded-lg menu-link
-                       {{ request()->routeIs('laporan.*') ? 'active-link' : 'text-gray-600 hover:bg-gray-50' }}">
-                        <i class="bi bi-file-earmark-text"></i>
-                        <span>laporan</span>
+                {{ request()->routeIs('statusintervensi.*') ? 'active-link' : 'text-gray-600 hover:bg-gray-50' }}">
+                        <i class="bi bi-clipboard-data"></i>
+                        <span>Status Penanganan</span>
                     </a>
                 </li>
+
+                @if (auth()->user()->role == 1)
+                    <li>
+                        <a href="{{ route('tahun_ajaran.index') }}"
+                            class="flex items-center gap-3 px-4 py-3 rounded-lg menu-link
+                       {{ request()->routeIs('tahun_ajaran.*') ? 'active-link' : 'text-gray-600 hover:bg-gray-50' }}">
+                            <i class="bi bi-file-earmark-text"></i>
+                            <span>Tahun Ajaran</span>
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="{{ route('laporan.index') }}"
+                            class="flex items-center gap-3 px-4 py-3 rounded-lg menu-link
+                       {{ request()->routeIs('laporan.*') ? 'active-link' : 'text-gray-600 hover:bg-gray-50' }}">
+                            <i class="bi bi-file-earmark-text"></i>
+                            <span>laporan</span>
+                        </a>
+                    </li>
+                @endif
             </ul>
         </nav>
     </div>

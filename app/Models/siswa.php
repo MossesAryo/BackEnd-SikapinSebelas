@@ -13,6 +13,7 @@ class siswa extends Model
     protected $fillable = [
         'nis',
         'id_kelas',
+        'status',
         'id_aspekpenilaian',
         'nama_siswa',
         'poin_apresiasi',
