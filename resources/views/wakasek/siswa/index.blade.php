@@ -40,7 +40,7 @@
             @endif
 
             <!-- Search and Filter -->
-            <div>
+            <div class="py-4">
                 <div class="bg-white p-6 rounded-xl shadow-sm border px-4">
                     <div class="flex flex-col md:flex-row gap-2 items-center justify-between">
                         <div class="relative w-full md:w-64">
@@ -83,7 +83,7 @@
 
             <!-- Data Table -->
 
-            <div class="bg-white rounded-xl shadow-sm border overflow-visible">
+            <div class="bg-white rounded-xl shadow-sm border overflow-visible mt-6">
                 <div class="px-6 py-4 border-b border-gray-200">
                     <h3 class="text-lg font-semibold text-gray-900">Daftar Siswa</h3>
                 </div>
