@@ -1,0 +1,35 @@
+name: Deploy Laravel to Shared Hosting
+
+on:
+  push:
+    branches:
+      - main-local   
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: 8.2
+
+      - name: Install Composer Dependencies
+        run: composer install --no-dev --optimize-autoloader
+
+      - name: Deploy via FTP
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.4
+        with:
+          server: ${{ secrets.FTP_SERVER }}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          server-dir: /public_html/BackEnd-SikapinSebelas/
+          exclude: |
+            **/.git*
+            **/.github*
+            node_modules/**
+            .env
