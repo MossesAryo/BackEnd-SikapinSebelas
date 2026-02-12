@@ -45,9 +45,11 @@ class KetuaProgramController extends Controller
     // AMBIL SEMUA JURUSAN DARI TABEL KELAS (sesuai permintaan sebelumnya)
     $daftar_jurusan = kelas::distinct()
                            ->whereNotNull('jurusan')
+                           ->whereNotIn('jurusan', ['NONAKTIF', 'ALUMNI'])
                            ->orderBy('jurusan')
                            ->pluck('jurusan')
                            ->toArray();
+                        
 
     return view('wakasek.kaprog.index', compact('ketua_program', 'daftar_jurusan'));
 }
@@ -65,7 +67,7 @@ class KetuaProgramController extends Controller
             'username' => $request->nama_ketua_program,
             'email' => strtolower(Str::slug($request->nama_ketua_program)) . '@gmail.com',
             'password' => bcrypt('password'),
-            'role' => 3,
+            'role' => 4,
         ]);
 
 
