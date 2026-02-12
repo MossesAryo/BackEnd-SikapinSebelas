@@ -32,8 +32,10 @@ class SiswaController extends Controller
      * Display a listing of the resource.
      */
     public function index(Request $request)
+
 {
     // Data dropdown / helper
+   
     $jurusanList = Kelas::select('jurusan')->distinct()->pluck('jurusan');
     $kelasList   = Kelas::select('id_kelas', 'nama_kelas', 'jurusan')->get();
     $penghargaanList = siswa_penghargaan::all();
@@ -42,8 +44,9 @@ class SiswaController extends Controller
     $query = Siswa::with('kelas');
 
     // Hardcode kelas per guru BK
-    if (Auth::user()->role === '2') {
-        $guruBk = guru_bk::where('user_id', Auth::id())->first();
+    if (Auth::user()->role == '2') {
+       $guruBk = guru_bk::where('username', Auth::user()->username)
+                     ->first();
         if ($guruBk) {
             
            $kelasByGuru = [
@@ -66,7 +69,7 @@ class SiswaController extends Controller
 
 
             $kelasNames = $kelasByGuru[$guruBk->nama_guru_bk] ?? [];
-            dd($guruBk->nama_guru_bk, $kelasNames);
+         
 
             if (!empty($kelasNames)) {
                 // Ambil ID kelas dari nama kelas
