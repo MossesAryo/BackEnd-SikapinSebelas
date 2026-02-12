@@ -44,8 +44,8 @@
                     <label for="status" class="block text-sm font-medium text-gray-700 mb-1">Status</label>
                     <select id="status" name="status" required
                         class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-transparent">
-                        <option value="Dalam Bimbingan">Dalam Bimbingan</option>
-                        <option value="Dalam Pemantauan">Dalam Pemantauan</option>
+                        <option value="Dalam Binaan">Dalam Binaan</option>
+                        <option value="Binaan Khusus">Binaan Khusus</option>
                         <option value="Selesai">Selesai</option>
                     </select>
                 </div>
