@@ -30,7 +30,5 @@ jobs:
                php8.3 artisan config:cache
                php8.3 artisan route:cache
                 php8.3 artisan view:cache
-
-               rsync -av --delete ./ /home/IDN2306510507/web/sjuwara.student.smkn11bdg.sch.id/public_html/BackEnd-SikapinSebelas/
-
+                
                php8.3 artisan up
