@@ -48,7 +48,7 @@
                             <input id="inputSearch" type="text" placeholder="Cari Siswa..."
                                 class="pl-10 pr-4 py-1.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent w-full">
                         </div>
-                        @if (auth()->user()->role == 1 || auth()->user()->role == 2 || auth()->user()->role == 3)
+                        @if (auth()->user()->role == 1 || auth()->user()->role == 2 || auth()->user()->role == 4)
                             <div class="flex gap-2">
                                 @php
                                     $filterCount = collect(request()->except(['page', 'search', '_token', '_method']))
@@ -57,14 +57,17 @@
                                         })
                                         ->count();
                                 @endphp
+                                
+                                    
                                 <button onclick="openfilterModal()"
-                                    class="px-3 py-1.5 border border-gray-300 rounded-lg hover:bg-gray-50 flex items-center gap-1.5">
-                                    <i class="bi bi-funnel"></i> Filter
-                                    @if ($filterCount > 0)
-                                        <span
-                                            class="ml-2 inline-flex items-center justify-center bg-blue-600 text-white text-xs font-semibold rounded-full w-6 h-6">{{ $filterCount }}</span>
-                                    @endif
-                                </button>
+                                class="px-3 py-1.5 border border-gray-300 rounded-lg hover:bg-gray-50 flex items-center gap-1.5">
+                                <i class="bi bi-funnel"></i> Filter
+                                @if ($filterCount > 0)
+                                <span
+                                class="ml-2 inline-flex items-center justify-center bg-blue-600 text-white text-xs font-semibold rounded-full w-6 h-6">{{ $filterCount }}</span>
+                               
+                            </button>
+                            @endif
                         @endif
 
 
