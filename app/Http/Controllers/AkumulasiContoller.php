@@ -100,7 +100,7 @@ class AkumulasiContoller extends Controller
 
         $akumulasi = $this->buildSiswaQuery($request, $jurusanKetua, $kelasWalikelas)->get();
 
-        $pdf = PDF::loadView('export.akumulasi.pdf', compact('akumulasi'));
+        $pdf = PDF::loadView('Export.akumulasi.pdf', compact('akumulasi'));
         return $pdf->download('akumulasi.pdf');
     }
 
