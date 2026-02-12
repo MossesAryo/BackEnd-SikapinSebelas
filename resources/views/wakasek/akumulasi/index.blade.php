@@ -64,7 +64,7 @@
                          class="pl-10 pr-4 py-1.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent w-full">
                  </div>
                  <div class="flex gap-2">
-                    @if (auth()->user()->role == 1 || auth()->user()->role == 2 || auth()->user()->role == 3)
+                    @if (auth()->user()->role == 1 || auth()->user()->role == 2 || auth()->user()->role == 4)
                     @php
                         $filterCount = collect(request()->except(['page','search','_token','_method']))->filter(function($v){ return $v !== null && $v !== ''; })->count();
                     @endphp
