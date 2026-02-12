@@ -29,7 +29,7 @@ class IntervensiController extends Controller
         $siswaList = siswa::query();
         $kelasWalikelas = null;
 
-        if ($user->role == 4) {
+        if ($user->role == 3) {
             $walikelas = walikelas::where('username', $user->username)->first();
             if ($walikelas && $walikelas->id_kelas) {
                 $kelasWalikelas = $walikelas->id_kelas;
@@ -40,7 +40,7 @@ class IntervensiController extends Controller
                 // batasi daftar kelas agar tidak membingungkan walikelas
                 $kelas = kelas::where('id_kelas', $kelasWalikelas)->get();
             }
-        } elseif ($user->role == 3) {
+        } elseif ($user->role == 4) {
             // ketua program: jurusan otomatis
             $ketua = ketua_program::where('username', $user->username)->first();
             if ($ketua && $ketua->jurusan) {
@@ -59,10 +59,10 @@ class IntervensiController extends Controller
         // Query intervensi
         $query = intervensi::with(['siswa.kelas']);
 
-        if ($user->role == 4 && $kelasWalikelas) {
+        if ($user->role == 3 && $kelasWalikelas) {
             $query->whereHas('siswa', fn($q) => $q->where('id_kelas', $kelasWalikelas));
         }
-        if ($user->role == 3 && $selectedJurusan) {
+        if ($user->role == 4 && $selectedJurusan) {
             $query->whereHas('siswa', fn($q) => $q->whereHas('kelas', fn($k) => $k->where('jurusan', $selectedJurusan)));
         }
 

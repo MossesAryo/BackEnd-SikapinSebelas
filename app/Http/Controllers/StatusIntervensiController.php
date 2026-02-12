@@ -19,7 +19,7 @@ public function index()
     $kelasWalikelas = null;
 
     // ==== Jika role 3 (ketua program) → hanya tampil jurusan sesuai ketua ====
-    if ($user->role == 3) {
+    if ($user->role == 4) {
 
         $ketua = ketua_program::where('username', $user->username)->first();
 
