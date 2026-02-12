@@ -66,6 +66,7 @@ class SiswaController extends Controller
 
 
             $kelasNames = $kelasByGuru[$guruBk->nama_guru_bk] ?? [];
+            dd($guruBk->nama_guru_bk, $kelasNames);
 
             if (!empty($kelasNames)) {
                 // Ambil ID kelas dari nama kelas
