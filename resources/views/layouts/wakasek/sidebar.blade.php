@@ -236,7 +236,7 @@
                     </a>
                 </li>
 
-                @if (auth()->user()->role == 1 || auth()->user()->role == 2 || auth()->user()->role == 4)
+                @if (auth()->user()->role == 1 || auth()->user()->role == 2 || auth()->user()->role == 3)
                     <li>
                         <a href="{{ route('intervensi.index') }}"
                             class="flex items-center gap-3 px-4 py-3 rounded-lg menu-link
@@ -248,14 +248,6 @@
                 @endif
 
 
-                <li>
-                    <a href="{{ route('statusintervensi.index') }}"
-                        class="flex items-center gap-3 px-4 py-3 rounded-lg menu-link
-                {{ request()->routeIs('statusintervensi.*') ? 'active-link' : 'text-gray-600 hover:bg-gray-50' }}">
-                        <i class="bi bi-clipboard-data"></i>
-                        <span>Status Penanganan</span>
-                    </a>
-                </li>
 
                 @if (auth()->user()->role == 1)
                     <li>
