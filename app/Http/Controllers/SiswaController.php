@@ -74,7 +74,7 @@ class SiswaController extends Controller
             if (!empty($kelasNames)) {
                 // Ambil ID kelas dari nama kelas
                 $kelasIds = Kelas::whereIn('nama_kelas', $kelasNames)->pluck('id_kelas')->toArray();
-                $query->whereIn('kelas_id', $kelasIds);
+                $query->whereIn('id_kelas', $kelasIds);
             } else {
                 $siswa = collect([])->paginate(10);
                 return view('wakasek.siswa.index', compact('siswa', 'jurusanList', 'kelasList', 'penghargaanList'));
