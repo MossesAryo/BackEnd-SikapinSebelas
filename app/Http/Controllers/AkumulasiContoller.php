@@ -18,33 +18,39 @@ class AkumulasiContoller extends Controller
      * Display a listing of the resource.
      */
     public function index(Request $request)
-    {
-        [$jurusanKetua, $kelasWalikelas] = $this->resolveRoleScope(Auth::user());
+{
+    $user = Auth::user();
+    [$jurusanKetua, $kelasWalikelas] = $this->resolveRoleScope($user);
 
-        // Jurusan list (dibatasi jika Kaprog)
-        $jurusanList = $jurusanKetua
-            ? collect([$jurusanKetua])
-            : kelas::select('jurusan')->distinct()->pluck('jurusan');
+    // Jurusan list (jika role=4/Kaprog dibatasi jurusan sendiri)
+    $jurusanList = $user->role == 4
+        ? collect([$jurusanKetua])  // hanya jurusan ketua
+        : kelas::select('jurusan')->distinct()->pluck('jurusan');
 
-        // Kelas list (dibatasi jika Kaprog atau Walikelas)
-        $kelasList = kelas::query()
-            ->when($jurusanKetua, fn($q) => $q->where('jurusan', $jurusanKetua))
-            ->when($kelasWalikelas, fn($q) => $q->where('id_kelas', $kelasWalikelas))
-            ->get();
+    // Kelas list (jika role=3/Walikelas dibatasi kelas sendiri)
+    $kelasList = kelas::query()
+        ->when($user->role == 4, fn($q) => $q->where('jurusan', $jurusanKetua))
+        ->when($user->role == 3, fn($q) => $q->where('id_kelas', $kelasWalikelas))
+        ->get();
 
-        // Query siswa dengan filter role + request
-        $query = $this->buildSiswaQuery($request, $jurusanKetua, $kelasWalikelas);
+    // Query siswa dengan filter role + request
+    $query = $this->buildSiswaQuery($request, $jurusanKetua, $kelasWalikelas);
 
-        $siswa = $query->paginate(10)->appends($request->all());
+    // Tambahkan filter role di query siswa
+    $query->when($user->role == 4, fn($q) => $q->where('jurusan', $jurusanKetua))
+          ->when($user->role == 3, fn($q) => $q->where('id_kelas', $kelasWalikelas));
 
-        return view('wakasek.akumulasi.index', [
-            'siswa'          => $siswa,
-            'jurusanList'    => $jurusanList,
-            'kelasList'      => $kelasList,
-            'jurusanKetua'   => $jurusanKetua,
-            'kelasWalikelas' => $kelasWalikelas,
-        ]);
-    }
+    $siswa = $query->paginate(10)->appends($request->all());
+
+    return view('wakasek.akumulasi.index', [
+        'siswa'          => $siswa,
+        'jurusanList'    => $jurusanList,
+        'kelasList'      => $kelasList,
+        'jurusanKetua'   => $jurusanKetua,
+        'kelasWalikelas' => $kelasWalikelas,
+    ]);
+}
+
 
     public function fetchAPI(Request $request)
     {
