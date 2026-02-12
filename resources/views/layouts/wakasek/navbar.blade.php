@@ -31,11 +31,11 @@
                          @auth
                              {{ Auth::user()->wakasek->nama_wakasek }}
                          @endauth
-                     @elseif (auth()->user()->role == 3)
+                     @elseif (auth()->user()->role == 4)
                          @auth
                              {{ Auth::user()->ketua_program->nama_ketua_program }}
                          @endauth
-                     @elseif (auth()->user()->role == 4)
+                     @elseif (auth()->user()->role == 3)
                          @auth
                              {{ Auth::user()->walikelas->nama_walikelas }}
                          @endauth
