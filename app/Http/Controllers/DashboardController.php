@@ -34,7 +34,7 @@ public function index()
     $jurusanFilter = null;  // untuk Kaprog
 
     // === Role 3: Ketua Program → filter berdasarkan JURUSAN ===
-    if ($role == 3) {
+    if ($role == 4) {
         $ketua = ketua_program::where('username', $user->username)->first();
         if (!$ketua) abort(403, "Data Ketua Program tidak ditemukan.");
         $jurusanFilter = $ketua->jurusan;
@@ -51,7 +51,7 @@ public function index()
     }
 
     // === Role 4: Walikelas → filter berdasarkan 1 kelas ===
-    if ($role == 4) {
+    if ($role == 3) {
         $wali = walikelas::where('username', $user->username)->first();
         if (!$wali) abort(403, "Data Wali Kelas tidak ditemukan.");
         $kelasFilter = [$wali->id_kelas];
@@ -138,8 +138,8 @@ public function index()
 
     if ($role == 1) return view('wakasek.dashboard', $data);
     if ($role == 2) return view('gurubk.dashboard', $data);
-    if ($role == 3) return view('ketua_program.dashboard', $data);
-    if ($role == 4) return view('walikelas.dashboard', $data);
+    if ($role == 4) return view('ketua_program.dashboard', $data);
+    if ($role == 3) return view('walikelas.dashboard', $data);
 
     abort(403, 'Role tidak dikenali.');
 }
