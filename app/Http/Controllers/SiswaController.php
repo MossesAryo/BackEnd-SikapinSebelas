@@ -42,7 +42,7 @@ class SiswaController extends Controller
     $query = Siswa::with('kelas');
 
     // Hardcode kelas per guru BK
-    if (Auth::user()->role === 'guru_bk') {
+    if (Auth::user()->role === '2') {
         $guruBk = guru_bk::where('user_id', Auth::id())->first();
         if ($guruBk) {
             
