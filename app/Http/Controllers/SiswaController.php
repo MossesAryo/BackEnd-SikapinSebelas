@@ -32,57 +32,79 @@ class SiswaController extends Controller
      * Display a listing of the resource.
      */
     public function index(Request $request)
-    {
-        // Data dropdown / helper
-        $jurusanList = Kelas::select('jurusan')->distinct()->pluck('jurusan');
-        $kelasList   = Kelas::select('id_kelas', 'nama_kelas', 'jurusan')->get();
-        $penghargaanList = siswa_penghargaan::all();
+{
+    // Data dropdown / helper
+    $jurusanList = Kelas::select('jurusan')->distinct()->pluck('jurusan');
+    $kelasList   = Kelas::select('id_kelas', 'nama_kelas', 'jurusan')->get();
+    $penghargaanList = siswa_penghargaan::all();
 
-        // Mulai query siswa dengan eager load kelas
-        $query = Siswa::with('kelas');
+    // Mulai query siswa
+    $query = Siswa::with('kelas');
 
-        // Jika login guru BK -> batasi ke kelas yang dipegang
-        if (Auth::user()->role === 'guru_bk') {
-            $guruBk = guru_bk::where('user_id', Auth::id())->first();
-            if ($guruBk) {
-                $kelasIds = $guruBk->kelas->pluck('id_kelas')->toArray();
-                if (!empty($kelasIds)) {
-                    $query->whereIn('kelas_id', $kelasIds);
-                } else {
-                    // Jika guru BK tidak pegang kelas sama sekali, kembalikan hasil kosong secara aman
-                    $siswa = collect([])->paginate(10); // fallback (optional)
-                    return view('wakasek.siswa.index', compact('siswa', 'jurusanList', 'kelasList', 'penghargaanList'));
-                }
+    // Hardcode kelas per guru BK
+    if (Auth::user()->role === 'guru_bk') {
+        $guruBk = guru_bk::where('user_id', Auth::id())->first();
+        if ($guruBk) {
+            
+           $kelasByGuru = [
+    'Dra. Wening Wigati, S.E, M.Si' => [
+        'X AK 1','X AK 2','X AK 3','X DKV 1','X DKV 2','X TKJ 1','XII MP 1','XII MP 2','XII MP 3'
+    ],
+    'Ratih Pratiwi, S.Pd' => [
+        'X PM 1','X PM 2','X PM 3','X PPLG 1','X PPLG 2','XI BR 1','XI BR 2','XI TKJ 1','XII TKJ 1'
+    ],
+    'Suci' => [
+        'XI MP 1','XI MP 2','XI MP 3','XI MLOG 1','XI DKV 1','XI DKV 2','XII BR 1','XII BR 2','XII BR 3'
+    ],
+    'Evi Febry Damayanti, S.Pd' => [
+        'X MPLB 1','X MPLB 2','X MPLB 3','X MPLB 4','XI RPL 1','XI RPL 2','XII RPL 1','XII RPL 2'
+    ],
+    'Raden Roro Siti Ameliya Purnama Putri, S.Pd' => [
+        'XI AK 1','XI AK 2','XI AK 3','XI AK 4','XII AK 1','XII AK 2','XII AK 3','XII DKV 1','XII DKV 2'
+    ],
+];
+
+
+            $kelasNames = $kelasByGuru[$guruBk->nama_guru_bk] ?? [];
+
+            if (!empty($kelasNames)) {
+                // Ambil ID kelas dari nama kelas
+                $kelasIds = Kelas::whereIn('nama_kelas', $kelasNames)->pluck('id_kelas')->toArray();
+                $query->whereIn('kelas_id', $kelasIds);
+            } else {
+                $siswa = collect([])->paginate(10);
+                return view('wakasek.siswa.index', compact('siswa', 'jurusanList', 'kelasList', 'penghargaanList'));
             }
         }
-
-        // Search (nama atau nis)
-        if ($request->filled('search')) {
-            $search = $request->search;
-            $query->where(function ($q) use ($search) {
-                $q->where('nama_siswa', 'like', '%' . $search . '%')
-                    ->orWhere('nis', 'like', '%' . $search . '%');
-            });
-        }
-
-        // Filter jurusan -> lewat relasi kelas
-        if ($request->filled('jurusan')) {
-            $query->whereHas('kelas', function ($q) use ($request) {
-                $q->where('jurusan', $request->jurusan);
-            });
-        }
-
-        // Filter kelas spesifik
-        if ($request->filled('kelas')) {
-            $query->where('id_kelas', $request->kelas);
-        }
-
-        // Paginate — sertakan semua query params yang relevan supaya pagination mempertahankan filter/search
-        $siswa = $query->orderBy('nama_siswa')->paginate(10)
-            ->appends($request->only(['search', 'jurusan', 'kelas']));
-
-        return view('wakasek.siswa.index', compact('siswa', 'jurusanList', 'kelasList', 'penghargaanList'));
     }
+
+    // Search (nama atau nis)
+    if ($request->filled('search')) {
+        $search = $request->search;
+        $query->where(function ($q) use ($search) {
+            $q->where('nama_siswa', 'like', '%' . $search . '%')
+              ->orWhere('nis', 'like', '%' . $search . '%');
+        });
+    }
+
+    // Filter jurusan -> lewat relasi kelas
+    if ($request->filled('jurusan')) {
+        $query->whereHas('kelas', function ($q) use ($request) {
+            $q->where('jurusan', $request->jurusan);
+        });
+    }
+
+    // Filter kelas spesifik
+    if ($request->filled('kelas')) {
+        $query->where('id_kelas', $request->kelas);
+    }
+
+    $siswa = $query->orderBy('nama_siswa')->paginate(10)
+        ->appends($request->only(['search', 'jurusan', 'kelas']));
+
+    return view('wakasek.siswa.index', compact('siswa', 'jurusanList', 'kelasList', 'penghargaanList'));
+}
+
 
 
 
