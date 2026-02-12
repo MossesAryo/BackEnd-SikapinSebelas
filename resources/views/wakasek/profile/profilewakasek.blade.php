@@ -19,11 +19,11 @@
                         @auth
                             {{ Auth::user()->wakasek->nama_wakasek }}
                         @endauth
-                    @elseif (auth()->user()->role == 3)
+                    @elseif (auth()->user()->role == 4)
                         @auth
                             {{ Auth::user()->ketua_program->nama_ketua_program }}
                         @endauth
-                    @elseif (auth()->user()->role == 4)
+                    @elseif (auth()->user()->role == 3)
                         @auth
                             {{ Auth::user()->walikelas->nama_walikelas }}
                         @endauth
@@ -34,9 +34,9 @@
                 <p class="profile-title text-blue-600 font-medium mb-6 text-sm">Guru BK</p>
                 @elseif (auth()->user()->role == 1)
                 <p class="profile-title text-blue-600 font-medium mb-6 text-sm">Wakil Kepala Kesiswaan</p>
-                @elseif (auth()->user()->role == 3)
-                <p class="profile-title text-blue-600 font-medium mb-6 text-sm">Ketua Program</p>
                 @elseif (auth()->user()->role == 4)
+                <p class="profile-title text-blue-600 font-medium mb-6 text-sm">Ketua Program</p>
+                @elseif (auth()->user()->role == 3)
                 <p class="profile-title text-blue-600 font-medium mb-6 text-sm">Wali Kelas</p>
                 @endif
                 
@@ -71,11 +71,11 @@
                                 @auth
                                     {{ Auth::user()->wakasek->nama_wakasek }}
                                 @endauth
-                            @elseif (auth()->user()->role == 3)
+                            @elseif (auth()->user()->role == 4)
                                @auth
                                     {{ Auth::user()->ketua_program->nama_ketua_program}}
                                 @endauth
-                                @elseif (auth()->user()->role == 4)
+                                @elseif (auth()->user()->role == 3)
                                 @auth
                                  {{ Auth::user()->walikelas->nama_walikelas}}
                                     @endauth
@@ -95,11 +95,11 @@
                                 @auth
                                     {{ Auth::user()->wakasek->nip_wakasek }}
                                 @endauth
-                            @elseif (auth()->user()->role == 3)
+                            @elseif (auth()->user()->role == 4)
                                 @auth
                                     {{ Auth::user()->ketua_program->nip_kaprog }}
                                 @endauth
-                                @elseif (auth()->user()->role == 4)
+                                @elseif (auth()->user()->role == 3)
                                 @auth
                                     {{ Auth::user()->walikelas->nip_walikelas }}
                                 @endauth
@@ -120,13 +120,13 @@
                                 Guru Bimbingan Konseling    
                             @elseif (auth()->user()->role == 1)
                                 Wakil Kepala Kesiswaan
-                            @elseif (auth()->user()->role == 3)
-                                Ketua Program
                             @elseif (auth()->user()->role == 4)
+                                Ketua Program
+                            @elseif (auth()->user()->role == 3)
                                 WaliKelas
                             @endif</div>
                     </div>
-                                        @if (auth()->user()->role == 3)
+                                        @if (auth()->user()->role == 4)
                     <div class="grid grid-cols-1 md:grid-cols-[140px_1fr] gap-4 py-3 border-b border-slate-100">
                         <div class="text-sm font-medium text-slate-500">Jurusan</div>
                         <div class="info-value text-sm font-medium text-slate-800">
@@ -135,7 +135,7 @@
                         </div>
                     
 
-                    @if (auth()->user()->role == 4)
+                    @if (auth()->user()->role == 3)
                     <div class="grid grid-cols-1 md:grid-cols-[140px_1fr] gap-4 py-3 border-b border-slate-100">
                         <div class="text-sm font-medium text-slate-500">walikelas</div>
                         <div class="info-value text-sm font-medium text-slate-800">
