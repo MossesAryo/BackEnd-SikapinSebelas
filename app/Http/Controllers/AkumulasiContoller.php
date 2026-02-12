@@ -96,6 +96,8 @@ class AkumulasiContoller extends Controller
 
     public function export_pdf(Request $request)
     {
+        ini_set('memory_limit','512M');
+
         [$jurusanKetua, $kelasWalikelas] = $this->resolveRoleScope(Auth::user());
 
         $akumulasi = $this->buildSiswaQuery($request, $jurusanKetua, $kelasWalikelas)->get();
