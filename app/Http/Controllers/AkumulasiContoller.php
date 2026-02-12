@@ -17,28 +17,31 @@ class AkumulasiContoller extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(Request $request)
+  public function index(Request $request)
 {
     $user = Auth::user();
     [$jurusanKetua, $kelasWalikelas] = $this->resolveRoleScope($user);
 
-    // Jurusan list (jika role=4/Kaprog dibatasi jurusan sendiri)
+    // Jurusan list
     $jurusanList = $user->role == 4
-        ? collect([$jurusanKetua])  // hanya jurusan ketua
+        ? collect([$jurusanKetua])
         : kelas::select('jurusan')->distinct()->pluck('jurusan');
 
-    // Kelas list (jika role=3/Walikelas dibatasi kelas sendiri)
+    // Kelas list
     $kelasList = kelas::query()
         ->when($user->role == 4, fn($q) => $q->where('jurusan', $jurusanKetua))
         ->when($user->role == 3, fn($q) => $q->where('id_kelas', $kelasWalikelas))
         ->get();
 
-    // Query siswa dengan filter role + request
-    $query = $this->buildSiswaQuery($request, $jurusanKetua, $kelasWalikelas);
+    // Query siswa dengan join ke kelas
+    $query = Siswa::query()
+        ->join('kelas', 'siswa.id_kelas', '=', 'kelas.id') // join kelas
+        ->select('siswa.*') // biar kolom siswa saja
+        ->when($user->role == 4, fn($q) => $q->where('kelas.jurusan', $jurusanKetua))
+        ->when($user->role == 3, fn($q) => $q->where('siswa.id_kelas', $kelasWalikelas));
 
-    // Tambahkan filter role di query siswa
-    $query->when($user->role == 4, fn($q) => $q->where('jurusan', $jurusanKetua))
-          ->when($user->role == 3, fn($q) => $q->where('id_kelas', $kelasWalikelas));
+    // Bisa tambahkan filter lain dari request jika ada
+    $query = $this->buildSiswaQuery($request, $jurusanKetua, $kelasWalikelas, $query);
 
     $siswa = $query->paginate(10)->appends($request->all());
 
