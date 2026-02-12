@@ -17,7 +17,7 @@ jobs:
           username: ${{ secrets.SERVER_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
-              cd ~/apps/BackEnd-SikapinSebelas
+              cd ~/web/sjuwara.student.smkn11bdg.sch.id/public_html/BackEnd-SikapinSebelas
 
               git fetch origin
               git reset --hard origin/main-local
