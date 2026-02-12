@@ -76,7 +76,7 @@
 
 
 
-                @if (auth()->user()->role == 3)
+                @if (auth()->user()->role == 4)
                     <li>
                         <a href="{{ route('ketua_program.siswa') }}"
                             class="flex items-center gap-3 px-4 py-3 rounded-lg menu-link
@@ -95,7 +95,7 @@
                     </li>
                 @endif
 
-                @if (auth()->user()->role == 4)
+                @if (auth()->user()->role == 3)
                     <li>
                         <a href="{{ route('walikelas.siswa') }}"
                             class="flex items-center gap-3 px-4 py-3 rounded-lg menu-link
