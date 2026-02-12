@@ -132,14 +132,14 @@ public function export_Excel(Request $request)
         $jurusanKetua   = null; // Kaprog (role 3)
         $kelasWalikelas = null; // Walikelas (role 4)
 
-        if ($user->role == 3) {
+        if ($user->role == 4) {
             $ketua = ketua_program::where('username', $user->username)->first();
             if ($ketua && $ketua->jurusan) {
                 $jurusanKetua = $ketua->jurusan;
             }
         }
 
-        if ($user->role == 4) {
+        if ($user->role == 3) {
             $walikelas = walikelas::where('username', $user->username)->first();
             if ($walikelas && $walikelas->id_kelas) {
                 $kelasWalikelas = $walikelas->id_kelas;
