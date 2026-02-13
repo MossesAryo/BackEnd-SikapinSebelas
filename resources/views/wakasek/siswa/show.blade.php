@@ -14,7 +14,7 @@
                 <p class="mt-1 text-gray-600">Informasi lengkap data siswa</p>
             </div>
 
-            @if (auth()->user()->role == 1 || auth()->user()->role == 2 || auth()->user()->role == 4)
+            @if (auth()->user()->role == 1 || auth()->user()->role == 2 || auth()->user()->role == 3)
                 <!-- TOMBOL TAMBAH PENGHARGAAN (HIJAU) -->
                 <button type="button" onclick="openCreateModalPenghargaan('{{ $siswa->nis }}')"
                     class="flex items-center justify-center sm:justify-start gap-2 px-4 py-2 w-full sm:w-auto rounded-lg bg-green-600 text-white hover:bg-green-700 transition-colors">
