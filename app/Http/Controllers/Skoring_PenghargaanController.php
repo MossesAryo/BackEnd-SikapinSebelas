@@ -29,7 +29,7 @@ class Skoring_PenghargaanController extends Controller
     })->with(['siswa.kelas', 'aspek_penilaian']);
 
     // Jika user adalah ketua program
-    if ($user->role == 3) {
+    if ($user->role == 4) {
         $ketua = ketua_program::where('username', $user->username)->first();
 
         if ($ketua && $ketua->jurusan) {
@@ -42,7 +42,7 @@ class Skoring_PenghargaanController extends Controller
         }
     }
 
-    if ($user->role == 4) {
+    if ($user->role == 3) {
         $walikelas = walikelas::where('username', $user->username)->first();
 
         if ($walikelas && $walikelas->id_kelas) {

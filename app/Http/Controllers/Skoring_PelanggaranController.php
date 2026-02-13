@@ -28,7 +28,7 @@ class Skoring_PelanggaranController extends Controller
     $kelasWalikelas = null;
 
     // Jika user adalah ketua program (role 3)
-    if ($user->role == 3) {
+    if ($user->role == 4) {
         $ketua = ketua_program::where('username', $user->username)->first();
 
         if ($ketua && $ketua->jurusan) {
@@ -41,7 +41,7 @@ class Skoring_PelanggaranController extends Controller
         }
     }
 
-     if ($user->role == 4) {
+     if ($user->role == 3) {
         $walikelas = walikelas::where('username', $user->username)->first();
 
         if ($walikelas && $walikelas->id_kelas) {
