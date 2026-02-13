@@ -20,39 +20,57 @@ class AkumulasiContoller extends Controller
   public function index(Request $request)
 {
     $user = Auth::user();
-    [$jurusanKetua, $kelasWalikelas] = $this->resolveRoleScope($user);
 
-    // Jurusan list
-    $jurusanList = $user->role == 4
-        ? collect([$jurusanKetua])
-        : kelas::select('jurusan')->distinct()->pluck('jurusan');
+    // Data dropdown
+    $jurusanList = Kelas::select('jurusan')->distinct()->pluck('jurusan');
+    $kelasList   = Kelas::select('id_kelas', 'nama_kelas', 'jurusan')->get();
+    $penghargaanList = siswa_penghargaan::all();
 
-    // Kelas list
-    $kelasList = kelas::query()
-        ->when($user->role == 4, fn($q) => $q->where('jurusan', $jurusanKetua))
-        ->when($user->role == 3, fn($q) => $q->where('id_kelas', $kelasWalikelas))
-        ->get();
+    // Mulai query siswa
+    $query = Siswa::with('kelas');
 
-    // Query siswa dengan join ke kelas
-    $query = Siswa::query()
-        ->join('kelas', 'siswa.id_kelas', '=', 'kelas.id') // join kelas
-        ->select('siswa.*') // biar kolom siswa saja
-        ->when($user->role == 4, fn($q) => $q->where('kelas.jurusan', $jurusanKetua))
-        ->when($user->role == 3, fn($q) => $q->where('siswa.id_kelas', $kelasWalikelas));
+    // Filter berdasarkan role
+    if ($user->role == 2) {
+        // Guru BK -> hardcode kelas per guru
+        $guruBk = guru_bk::where('username', $user->username)->first();
 
-    // Bisa tambahkan filter lain dari request jika ada
-    $query = $this->buildSiswaQuery($request, $jurusanKetua, $kelasWalikelas, $query);
+        if ($guruBk) {
+            $kelasByGuru = [
+                'Dra. Wening Wigati, S.E, M.Si' => ['X AK 1','X AK 2','X AK 3','X DKV 1','X DKV 2','X TKJ 1','XII MP 1','XII MP 2','XII MP 3'],
+                'Ratih Pratiwi, S.Pd' => ['X PM 1','X PM 2','X PM 3','X PPLG 1','X PPLG 2','XI BR 1','XI BR 2','XI TKJ 1','XII TKJ 1'],
+                'Suci' => ['XI MP 1','XI MP 2','XI MP 3','XI MLOG 1','XI DKV 1','XI DKV 2','XII BR 1','XII BR 2','XII BR 3'],
+                'Evi Febry Damayanti, S.Pd' => ['X MPLB 1','X MPLB 2','X MPLB 3','X MPLB 4','XI RPL 1','XI RPL 2','XII RPL 1','XII RPL 2'],
+                'Raden Roro Siti Ameliya Purnama Putri, S.Pd' => ['XI AK 1','XI AK 2','XI AK 3','XI AK 4','XII AK 1','XII AK 2','XII AK 3','XII DKV 1','XII DKV 2'],
+            ];
 
+            $kelasGuru = $kelasByGuru[$guruBk->nama] ?? [];
+            
+            // Filter siswa hanya di kelas yang dia pegang
+            $query->whereIn('id_kelas', function($q) use ($kelasGuru) {
+                $q->select('id_kelas')->from('kelas')->whereIn('nama_kelas', $kelasGuru);
+            });
+        }
+
+    } elseif ($user->role == 4) {
+        // Kaprog -> filter berdasarkan jurusan
+        [$jurusanKetua, $kelasWalikelas] = $this->resolveRoleScope($user);
+        $query->whereHas('kelas', fn($q) => $q->where('jurusan', $jurusanKetua));
+    }
+
+    // Tambahkan filter tambahan dari request jika ada
+    $query = $this->buildSiswaQuery($request, $user->role == 4 ? $jurusanKetua : null, null, $query);
+
+    // Paginate hasil
     $siswa = $query->paginate(10)->appends($request->all());
 
     return view('wakasek.akumulasi.index', [
-        'siswa'          => $siswa,
-        'jurusanList'    => $jurusanList,
-        'kelasList'      => $kelasList,
-        'jurusanKetua'   => $jurusanKetua,
-        'kelasWalikelas' => $kelasWalikelas,
+        'siswa'           => $siswa,
+        'jurusanList'     => $jurusanList,
+        'kelasList'       => $kelasList,
+        'penghargaanList' => $penghargaanList,
     ]);
 }
+
 
 
     public function fetchAPI(Request $request)
