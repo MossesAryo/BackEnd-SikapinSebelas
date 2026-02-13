@@ -19,6 +19,8 @@ class AkumulasiContoller extends Controller
      */
  public function index(Request $request)
 {
+    $jurusanKetua = null;
+$kelasWalikelas = null;
     $user = Auth::user();
 
     // Ambil daftar jurusan & kelas untuk dropdown
