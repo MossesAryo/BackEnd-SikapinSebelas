@@ -19,11 +19,13 @@ class AkumulasiContoller extends Controller
      */
  public function index(Request $request)
 {
-    $jurusanKetua = null;
-$kelasWalikelas = null;
     $user = Auth::user();
 
-    // Ambil daftar jurusan & kelas untuk dropdown
+    // default
+    $jurusanKetua = null;
+    $kelasWalikelas = null;
+
+    // Ambil dropdown
     $jurusanList = Kelas::select('jurusan')->distinct()->pluck('jurusan');
     $kelasList   = Kelas::select('id_kelas', 'nama_kelas', 'jurusan')->get();
 
@@ -32,9 +34,8 @@ $kelasWalikelas = null;
 
     // Filter berdasarkan role
     if ($user->role == 2) {
-        // Guru BK -> filter kelas sesuai guru
+        // Guru BK -> filter kelas sesuai hardcode
         $guruBk = guru_bk::where('username', $user->username)->first();
-
         if ($guruBk) {
             $kelasByGuru = [
                 'Dra. Wening Wigati, S.E, M.Si' => ['X AK 1','X AK 2','X AK 3','X DKV 1','X DKV 2','X TKJ 1','XII MP 1','XII MP 2','XII MP 3'],
@@ -45,8 +46,7 @@ $kelasWalikelas = null;
             ];
 
             $kelasGuru = $kelasByGuru[$guruBk->nama] ?? [];
-            
-            // Filter siswa hanya di kelas yang dia pegang
+
             $query->whereIn('id_kelas', function($q) use ($kelasGuru) {
                 $q->select('id_kelas')->from('kelas')->whereIn('nama_kelas', $kelasGuru);
             });
@@ -56,12 +56,15 @@ $kelasWalikelas = null;
         // Kaprog -> filter berdasarkan jurusan
         [$jurusanKetua, $kelasWalikelas] = $this->resolveRoleScope($user);
         $query->whereHas('kelas', fn($q) => $q->where('jurusan', $jurusanKetua));
+    } elseif ($user->role == 3) {
+        // Walikelas -> filter berdasarkan kelas yang dia pegang
+        [$jurusanKetua, $kelasWalikelas] = $this->resolveRoleScope($user);
+        $query->where('id_kelas', $kelasWalikelas);
     }
 
-    // Tambahkan filter tambahan dari request jika ada
-    $query = $this->buildSiswaQuery($request, $user->role == 4 ? $jurusanKetua : null, null, $query);
+    // Tambahkan filter tambahan dari request
+    $query = $this->buildSiswaQuery($request, $jurusanKetua, $kelasWalikelas, $query);
 
-    // Paginate hasil
     $siswa = $query->paginate(10)->appends($request->all());
 
     return view('wakasek.akumulasi.index', [
