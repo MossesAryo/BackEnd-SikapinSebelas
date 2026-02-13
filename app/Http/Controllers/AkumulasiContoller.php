@@ -17,21 +17,20 @@ class AkumulasiContoller extends Controller
     /**
      * Display a listing of the resource.
      */
-  public function index(Request $request)
+ public function index(Request $request)
 {
     $user = Auth::user();
 
-    // Data dropdown
+    // Ambil daftar jurusan & kelas untuk dropdown
     $jurusanList = Kelas::select('jurusan')->distinct()->pluck('jurusan');
     $kelasList   = Kelas::select('id_kelas', 'nama_kelas', 'jurusan')->get();
-    $penghargaanList = siswa_penghargaan::all();
 
     // Mulai query siswa
     $query = Siswa::with('kelas');
 
     // Filter berdasarkan role
     if ($user->role == 2) {
-        // Guru BK -> hardcode kelas per guru
+        // Guru BK -> filter kelas sesuai guru
         $guruBk = guru_bk::where('username', $user->username)->first();
 
         if ($guruBk) {
@@ -64,10 +63,9 @@ class AkumulasiContoller extends Controller
     $siswa = $query->paginate(10)->appends($request->all());
 
     return view('wakasek.akumulasi.index', [
-        'siswa'           => $siswa,
-        'jurusanList'     => $jurusanList,
-        'kelasList'       => $kelasList,
-        'penghargaanList' => $penghargaanList,
+        'siswa'       => $siswa,
+        'jurusanList' => $jurusanList,
+        'kelasList'   => $kelasList,
     ]);
 }
 
