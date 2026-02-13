@@ -199,19 +199,16 @@ $siswaList = $siswaList->orderBy('nama_siswa')->get();
             $siswa->poin_total       += $skor;
             $siswa->save();
 
-            DB::table('activity_logs')->insert([
-                'user_id'     => $user->id,
-                'nis'         => $siswa->nis,
-                'kategori'    => 'Pelanggaran',
-                'activity'    => 'Hapus Pelanggaran',
-                'description' => $uraian, // uraian aspek yang dihapus
-                'point'       => $skor,
-                'created_at'  => now(),
-                'updated_at'  => now(),
-            ]);
+             DB::table('activity_logs')
+            ->where('nis', $siswa->nis)
+            ->where('kategori', 'Pelanggaran')
+            ->where('activity', 'Hapus Pelanggaran')
+            ->where('point', $skor)
+            ->delete();
         }
 
         $skoring->delete();
+               
 
         return redirect()->back()->with('success', 'Skoring berhasil dihapus!');
     }

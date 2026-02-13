@@ -41,7 +41,7 @@ class KelasSeeder extends Seeder
             ['id_kelas' => 'XII-BR-1', 'nama_kelas' => 'XII BR 1', 'jurusan' => 'PM'],
             ['id_kelas' => 'XII-BR-2', 'nama_kelas' => 'XII BR 2', 'jurusan' => 'PM'],
             ['id_kelas' => 'XII-BR-3', 'nama_kelas' => 'XII BR 3', 'jurusan' => 'PM'],
-
+ 
 
 
             ['id_kelas' => 'X-AK-1', 'nama_kelas' => 'X AK 1', 'jurusan' => 'AK'],
