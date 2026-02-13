@@ -4,15 +4,15 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
-use App\Models\Siswa;
-use App\Models\Kelas;
+use App\Models\siswa;
+use App\Models\kelas;
 use Illuminate\Support\Facades\DB;
 
 class TahunAjaranController extends Controller
 {
     public function index()
     {
-        $belumDiproses = Siswa::where('status', 'aktif')->exists();
+        $belumDiproses = siswa::where('status', 'aktif')->exists();
 
         $preview = [
             'x_ke_xi' => 0,
@@ -44,7 +44,7 @@ class TahunAjaranController extends Controller
     {
         DB::transaction(function () {
 
-            Siswa::where('status', 'aktif')
+            siswa::where('status', 'aktif')
                 ->chunkById(100, function ($siswas) {
 
                     foreach ($siswas as $siswa) {
@@ -70,7 +70,7 @@ class TahunAjaranController extends Controller
                         }
 
                         // ================= VALIDASI KELAS =================
-                        if (! Kelas::where('id_kelas', $nextIdKelas)->exists()) {
+                        if (! kelas::where('id_kelas', $nextIdKelas)->exists()) {
                             continue;
                         }
 
@@ -97,7 +97,7 @@ class TahunAjaranController extends Controller
             'alumni' => 0,
         ];
 
-        Siswa::where('status', 'aktif')->each(function ($siswa) use (&$data) {
+        siswa::where('status', 'aktif')->each(function ($siswa) use (&$data) {
 
             if (str_starts_with($siswa->id_kelas, 'X-')) {
                 $data['x_ke_xi']++;
