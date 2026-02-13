@@ -49,13 +49,14 @@
                     Jurusan
                 </label>
                 <select name="jurusan" class="w-full rounded-xl border-2 border-gray-200 px-4 py-3 text-sm focus:ring-4 focus:ring-blue-100 focus:border-blue-500 transition-all duration-200">
-                    @foreach ($jurusanList as $jur)
-                <option value="{{ $jur }}"
-                    @if ($jurusanKetua == $jur) selected @endif
-                    @if (request('jurusan') == $jur) selected @endif>
-                    {{ $jur }}
-                </option>
-          @endforeach
+                   @foreach ($jurusanList as $jur)
+    <option value="{{ $jur }}"
+        @if (($jurusanKetua ?? null) == $jur) selected @endif
+        @if (request('jurusan') == $jur) selected @endif>
+        {{ $jur }}
+    </option>
+@endforeach
+
                </select>
 
            @endif
