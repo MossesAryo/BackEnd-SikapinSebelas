@@ -1,80 +1,61 @@
 <?php
 
-namespace App\Http\Controllers\Auth;
+namespace App\Http\Controllers\AuthAPI;
 
 use App\Http\Controllers\Controller;
-use App\Models\guru_bk;
 use App\Models\User;
-use App\Models\wakasek;
-use App\Models\ketua_program;
 use App\Models\walikelas;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
-class AuthController extends Controller
+class AuthAPIcontroller extends Controller
 {
-    public function index()
-    {
-        return view('auth.login');
-    }
-
-    public function login(Request $request)
+    public function login(Request $request): JsonResponse
     {
         $request->validate([
-            'nip' => 'required',
-            'password' => 'required',
+            'nip'      => 'required|string',
+            'password' => 'required|string',
         ]);
 
-        $role = null;
-        $user = null;
+        $wk = walikelas::where('nip_walikelas', $request->nip)->first();
 
-        $wakasek = wakasek::where('nip_wakasek', $request->nip)->first();
-        if ($wakasek) {
-            $user = User::where('username', $wakasek->username)->first();
-            $role = 'wakasek';
+        if (!$wk) {
+            return response()->json([
+                'status'  => false,
+                'message' => 'NIP tidak ditemukan',
+            ], 401);
         }
 
-        if (!$user) {
-            $guru_bk = guru_bk::where('nip_bk', $request->nip)->first();
-            if ($guru_bk) {
-                $user = User::where('username', $guru_bk->username)->first();
-                $role = 'guru_bk';
-            }
+        $user = User::where('username', $wk->username)->first();
+
+        if (!$user || !Hash::check($request->password, $user->password)) {
+            return response()->json([
+                'status'  => false,
+                'message' => 'Password salah',
+            ], 401);
         }
 
-        if (!$user) {
-            $ketua_program = ketua_program::where('nip_kaprog', $request->nip)->first();
-            if ($ketua_program) {
-                $user = User::where('username', $ketua_program->username)->first();
-                $role = 'ketua_program';
-            }
-        }
+        $user->tokens()->delete();
 
-        if (!$user) {
-            $walikelas = walikelas::where('nip_walikelas', $request->nip)->first();
-            if ($walikelas) {
-                $user = User::where('username', $walikelas->username)->first();
-                $role = 'walikelas';
-            }
-        }
+        $token = $user->createToken('api-token')->plainTextToken;
 
-        if (!$user) {
-            return back()->withErrors(['nip' => 'NIP tidak ditemukan']);
-        }
-
-        if (!Hash::check($request->password, $user->password)) {
-            return back()->withErrors(['password' => 'Password salah']);
-        }
-
-        Auth::login($user);
-
-        return redirect()->route('wakasek.dashboard')->with('success', 'Berhasil login');
+        return response()->json([
+            'status' => true,
+            'role'   => 3,
+            'token'  => $token,
+            'user'   => [
+                'username' => $user->username,
+                'email'    => $user->email,
+            ],
+            'detail' => $wk->toArray(),
+        ]);
     }
 
-    public function logout()
+    public function logout(Request $request): JsonResponse
     {
-        Auth::logout();
-        return redirect()->route('login');
+        $request->user()->currentAccessToken()->delete();
+
+        return response()->json(['status' => true, 'message' => 'Berhasil logout']);
     }
 }
