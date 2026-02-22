@@ -2,76 +2,60 @@
 
 namespace App\Http\Controllers\AuthAPI;
 
+use App\Http\Controllers\Controller;
 use App\Models\User;
 use App\Models\walikelas;
-use App\Models\ketua_program;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
 class AuthAPIcontroller extends Controller
 {
-    public function login(Request $request)
+    public function login(Request $request): JsonResponse
     {
         $request->validate([
-            'nip' => 'required',
-            'password' => 'required'
+            'nip'      => 'required|string',
+            'password' => 'required|string',
         ]);
 
-        // ===== CEK KAPROG =====
-        $kaprog = ketua_program::where('nip_kaprog', $request->nip)->first();
-        if ($kaprog) {
-            $user = User::where('username', $kaprog->username)->first();
+        $wk = walikelas::where('nip_walikelas', $request->nip)->first();
 
-            if ($user && Hash::check($request->password, $user->password)) {
-                Auth::login($user); // ⬅️ Simpan user ke session
-
-                return response()->json([
-                    'status' => true,
-                    'role' => 4,
-                    'user' => $user,
-                    'detail' => $kaprog,
-                    'message' => 'Login berhasil (Kaprog)'
-                ]);
-            }
+        if (!$wk) {
+            return response()->json([
+                'status'  => false,
+                'message' => 'NIP tidak ditemukan',
+            ], 401);
         }
 
-        // ===== CEK WALI KELAS =====
-        $waliKelas = walikelas::where('nip_walikelas', $request->nip)->first();
-        if ($waliKelas) {
-            $user = User::where('username', $waliKelas->username)->first();
+        $user = User::where('username', $wk->username)->first();
 
-            if ($user && Hash::check($request->password, $user->password)) {
-                Auth::login($user); // ⬅️ Simpan user ke session
-
-                return response()->json([
-                    'status' => true,
-                    'role' => 3,
-                    'user' => $user,
-                    'detail' => $waliKelas,
-                    'message' => 'Login berhasil (Wali Kelas)'
-                ]);
-            }
+        if (!$user || !Hash::check($request->password, $user->password)) {
+            return response()->json([
+                'status'  => false,
+                'message' => 'Password salah',
+            ], 401);
         }
 
-        // Jika gagal
-        return response()->json([
-            'status' => false,
-            'message' => 'NIP atau password salah'
-        ], 401);
-    }
+        $user->tokens()->delete();
 
-    public function logout(Request $request)
-    {
-        Auth::logout(); // ⬅️ Hapus session user
-
-        $request->session()->invalidate();
-        $request->session()->regenerateToken();
+        $token = $user->createToken('api-token')->plainTextToken;
 
         return response()->json([
             'status' => true,
-            'message' => 'Logout berhasil'
+            'role'   => 3,
+            'token'  => $token,
+            'user'   => [
+                'username' => $user->username,
+                'email'    => $user->email,
+            ],
+            'detail' => $wk->toArray(),
         ]);
+    }
+
+    public function logout(Request $request): JsonResponse
+    {
+        $request->user()->currentAccessToken()->delete();
+
+        return response()->json(['status' => true, 'message' => 'Berhasil logout']);
     }
 }
