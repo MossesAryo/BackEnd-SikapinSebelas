@@ -20,7 +20,7 @@ class guru_bk extends Model
    public function kelas()
 {
     return $this->belongsToMany(
-        Kelas::class,
+        kelas::class,
         'guru_bk_kelas',
         'guru_bk_id',    
         'kelas_id',       
