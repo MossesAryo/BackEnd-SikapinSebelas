@@ -4,6 +4,36 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="google-site-verification" content="nbPE5Fm6_GATYTsRoFTUinYGMDkkqDuTy5dO5z6VICw" />
+     <meta name="description"
+        content="Masuk ke SIJUWARA – Sistem Jurnal Siswa Aktif untuk mencatat, menilai, dan melaporkan aktivitas siswa secara digital. Platform manajemen jurnal sekolah yang modern dan responsif.">
+    <meta name="keywords"
+        content="SIJUWARA, sistem jurnal siswa aktif, jurnal siswa, manajemen sekolah, penilaian siswa, monitoring siswa, laporan siswa, aplikasi sekolah, login sekolah">
+    <meta name="author" content="SIJUWARA">
+    <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
+    <meta name="theme-color" content="#56A6E8">
+    <link rel="canonical" href="<?php echo e(url()->current()); ?>">
+ 
+    <!-- ===== OPEN GRAPH (Facebook, WhatsApp, LinkedIn) ===== -->
+    <meta property="og:type" content="website">
+    <meta property="og:locale" content="id_ID">
+    <meta property="og:site_name" content="SIJUWARA">
+    <meta property="og:title" content="Login SIJUWARA – Sistem Jurnal Siswa Aktif">
+    <meta property="og:description"
+        content="Masuk ke SIJUWARA untuk mencatat, menilai, dan melaporkan aktivitas siswa. Platform manajemen jurnal sekolah yang modern dan mudah digunakan.">
+    <meta property="og:url" content="<?php echo e(url()->current()); ?>">
+    <meta property="og:image" content="<?php echo e(asset('storage/assets/logowtext.png')); ?>">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:image:alt" content="SIJUWARA – Sistem Jurnal Siswa Aktif">
+ 
+    <!-- ===== TWITTER / X CARD ===== -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Login SIJUWARA – Sistem Jurnal Siswa Aktif">
+    <meta name="twitter:description"
+        content="Masuk ke SIJUWARA untuk mencatat, menilai, dan melaporkan aktivitas siswa secara digital.">
+    <meta name="twitter:image" content="<?php echo e(asset('storage/assets/logowtext.png')); ?>">
+    <meta name="twitter:image:alt" content="SIJUWARA – Sistem Jurnal Siswa Aktif">
     <title>SIJUWARA - Login</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
