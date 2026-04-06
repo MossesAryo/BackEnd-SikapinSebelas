@@ -32,9 +32,9 @@
                 <select id="jurusan" name="jurusan"
                     class="w-full rounded-xl border-2 border-gray-200 px-4 py-3 text-sm focus:ring-4 focus:ring-blue-100 focus:border-blue-500 transition-all duration-200">
                     <option value="">-- Pilih Jurusan --</option>
-                    @foreach ($jurusanList as $jurusan)
-                        <option value="{{ $jurusan }}" {{ request('jurusan') == $jurusan ? 'selected' : '' }}>
-                            {{ $jurusan }}
+                     @foreach ($jurusanList as $jurusan)
+                        <option value="{{ $jurusan->id_jurusan }}" {{ request('jurusan') == $jurusan->id_jurusan ? 'selected' : '' }}>
+                            {{ $jurusan->id_jurusan }} 
                         </option>
                     @endforeach
                 </select>

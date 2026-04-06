@@ -23,9 +23,9 @@
                 </label>
                 <select id="jurusan" name="jurusan" class="w-full rounded-xl border-2 border-gray-200 px-4 py-3 focus:ring-4 focus:ring-blue-100 focus:border-blue-500">
                     <option value="">-- Pilih Jurusan --</option>
-                    @foreach ($daftar_jurusan as $item)
-                        <option value="{{ $item }}" {{ request('jurusan') == $item ? 'selected' : '' }}>
-                            {{ $item }}
+                     @foreach ($daftar_jurusan as $jurusan)
+                        <option value="{{ $jurusan->id_jurusan }}" {{ request('jurusan') == $jurusan->id_jurusan ? 'selected' : '' }}>
+                            {{ $jurusan->id_jurusan }} 
                         </option>
                     @endforeach
                 </select>
