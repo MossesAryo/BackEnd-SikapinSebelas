@@ -22,61 +22,62 @@
 
         <!-- Form -->
         <form method="GET" action="{{ route('akumulasi.index') }}" class="p-6 space-y-6">
-         @if (auth()->user()->role == 1 || auth()->user()->role == 2)
-            <!-- Jurusan -->
+            @if (auth()->user()->role == 1 || auth()->user()->role == 2)
+                <!-- Jurusan -->
+                <div class="space-y-2">
+                    <label class="block text-sm font-semibold text-gray-700 flex items-center gap-2">
+                        <i class="bi bi-buildings text-gray-500"></i>
+                        Jurusan
+                    </label>
+                    <select id="jurusan" name="jurusan"
+                        class="w-full rounded-xl border-2 border-gray-200 px-4 py-3 text-sm focus:ring-4 focus:ring-blue-100 focus:border-blue-500 transition-all duration-200">
+                        <option value="">-- Pilih Jurusan --</option>
+                        @foreach ($jurusanList as $jurusan)
+                            <option value="{{ $jurusan->id_jurusan }}"
+                                {{ request('jurusan') == $jurusan->id_jurusan ? 'selected' : '' }}>
+                                {{ $jurusan->id_jurusan }}
+                            </option>
+                        @endforeach
+                    </select>
+                </div>
+
+            @endif
+
+            @if (auth()->user()->role == 3)
+                <div class="space-y-2">
+                    <label class="block text-sm font-semibold text-gray-700 flex items-center gap-2">
+                        <i class="bi bi-buildings text-gray-500"></i>
+                        Jurusan
+                    </label>
+                    <select name="jurusan"
+                        class="w-full rounded-xl border-2 border-gray-200 px-4 py-3 text-sm focus:ring-4 focus:ring-blue-100 focus:border-blue-500 transition-all duration-200">
+                        @foreach ($jurusanList as $jur)
+                            <option value="{{ $jur }}" @if (($jurusanKetua ?? null) == $jur) selected @endif
+                                @if (request('jurusan') == $jur) selected @endif>
+                                {{ $jur }}
+                            </option>
+                        @endforeach
+
+                    </select>
+
+            @endif
+            <!-- Kelas -->
             <div class="space-y-2">
                 <label class="block text-sm font-semibold text-gray-700 flex items-center gap-2">
-                    <i class="bi bi-buildings text-gray-500"></i>
-                    Jurusan
+                    <i class="bi bi-collection text-gray-500"></i>
+                    Kelas
                 </label>
-                <select id="jurusan" name="jurusan"
+                <select id="kelas" name="kelas"
                     class="w-full rounded-xl border-2 border-gray-200 px-4 py-3 text-sm focus:ring-4 focus:ring-blue-100 focus:border-blue-500 transition-all duration-200">
-                    <option value="">-- Pilih Jurusan --</option>
-                     @foreach ($jurusanList as $jurusan)
-                        <option value="{{ $jurusan->id_jurusan }}" {{ request('jurusan') == $jurusan->id_jurusan ? 'selected' : '' }}>
-                            {{ $jurusan->id_jurusan }} 
+                    <option value="">-- Pilih Kelas --</option>
+                    @foreach ($kelasList as $kelas)
+                        <option value="{{ $kelas->id_kelas }}" data-jurusan="{{ $kelas->id_jurusan }}"
+                            {{ request('kelas') == $kelas->id_kelas ? 'selected' : '' }}>
+                            {{ $kelas->nama_kelas }}
                         </option>
                     @endforeach
                 </select>
             </div>
-            
-          @endif
-
-           @if (auth()->user()->role == 3)
-             <div class="space-y-2">
-                <label class="block text-sm font-semibold text-gray-700 flex items-center gap-2">
-                    <i class="bi bi-buildings text-gray-500"></i>
-                    Jurusan
-                </label>
-                <select name="jurusan" class="w-full rounded-xl border-2 border-gray-200 px-4 py-3 text-sm focus:ring-4 focus:ring-blue-100 focus:border-blue-500 transition-all duration-200">
-                   @foreach ($jurusanList as $jur)
-    <option value="{{ $jur }}"
-        @if (($jurusanKetua ?? null) == $jur) selected @endif
-        @if (request('jurusan') == $jur) selected @endif>
-        {{ $jur }}
-    </option>
-@endforeach
-
-               </select>
-
-           @endif
-            <!-- Kelas -->
-            <div class="space-y-2">
-    <label class="block text-sm font-semibold text-gray-700 flex items-center gap-2">
-        <i class="bi bi-collection text-gray-500"></i>
-        Kelas
-    </label>
-    <select id="kelas" name="kelas"
-        class="w-full rounded-xl border-2 border-gray-200 px-4 py-3 text-sm focus:ring-4 focus:ring-blue-100 focus:border-blue-500 transition-all duration-200">
-        <option value="">-- Pilih Kelas --</option>
-        @foreach ($kelasList as $kelas)
-            <option value="{{ $kelas->id_kelas }}" data-jurusan="{{ $kelas->jurusan }}"
-                {{ request('kelas') == $kelas->id_kelas ? 'selected' : '' }}>
-                {{ $kelas->nama_kelas }}
-            </option>
-        @endforeach
-    </select>
-</div>
 
             <!-- Action Buttons -->
             <div class="flex flex-col sm:flex-row justify-end gap-3 pt-6 border-t border-gray-100">
