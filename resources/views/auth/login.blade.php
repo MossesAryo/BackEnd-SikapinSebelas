@@ -5,6 +5,23 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="google-site-verification" content="nbPE5Fm6_GATYTsRoFTUinYGMDkkqDuTy5dO5z6VICw" />
+     <!-- SEO Meta Tags -->
+        <meta name="description"
+            content="Sikapin adalah sistem skoring untuk manajemen penilaian, monitoring siswa, dan dashboard sekolah yang modern dan responsif.">
+        <meta name="keywords"
+            content="Sikapin, sistem skoring, dashboard sekolah, penilaian siswa, monitoring siswa, wakasek, sekolah">
+        <meta name="author" content="Sikapin">
+        <meta name="robots" content="index, follow">
+        <link rel="canonical" href="{{ url()->current() }}">
+
+        <!-- Open Graph -->
+        
+        <meta property="og:type" content="website">
+        <meta property="og:title" content="Sikapin - Sistem Skoring">
+        <meta property="og:description"
+            content="Sistem skoring modern untuk monitoring dan manajemen penilaian siswa di sekolah.">
+        <meta property="og:url" content="{{ url()->current() }}">
+        <meta property="og:image" content="{{ asset('images/logo.png') }}">
     <title>SIJUWARA - Login</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
