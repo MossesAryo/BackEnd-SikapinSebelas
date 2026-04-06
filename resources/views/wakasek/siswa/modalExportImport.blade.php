@@ -71,8 +71,8 @@
                                            text-gray-700 text-sm disabled:bg-gray-100 disabled:cursor-not-allowed">
                                     <option value="" class="text-gray-500">Semua Kelas</option>
                                     @foreach ($kelasList as $kelas)
-                                        <option value="{{ $kelas->id_kelas }}" data-jurusan="{{ $kelas->jurusan }}"
-                                            class="text-gray-900">
+                                        <option value="{{ $kelas->id_kelas }}" data-jurusan="{{ $kelas->id_jurusan }}"
+                                            {{ request('kelas') == $kelas->id_kelas ? 'selected' : '' }}>
                                             {{ $kelas->nama_kelas }}
                                         </option>
                                     @endforeach
