@@ -17,7 +17,7 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Sikapin - Sistem Skoring</title>
+        <title>SIJUWARA - Sistem Skoring</title>
         <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.11.1/font/bootstrap-icons.min.css"
             rel="stylesheet">
         <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
@@ -32,7 +32,7 @@
 
     <body class="bg-gray-50">
         <!-- Dashboard Layout -->
-        <div class="flex">
+        <div class="flex">  
             @include('layouts.wakasek.sidebar')
 
             <!-- Main Content -->
