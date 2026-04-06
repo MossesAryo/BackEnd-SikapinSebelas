@@ -1,0 +1,240 @@
+    
+
+    <?php $__env->startPush('css'); ?>
+        <link rel="stylesheet" href="<?php echo e(asset('css/wakasek/siswa.css')); ?>">
+    <?php $__env->stopPush(); ?>
+
+    <?php $__env->startSection('content'); ?>
+        <div class="space-y-6">
+            <!-- Header -->
+            <div class="flex justify-between items-center">
+                <div>
+                    <h1 class="text-2xl font-bold gradient-text">Data Siswa</h1>
+                    <p class="text-gray-600 mt-1">Kelola data Siswa</p>
+                </div>
+                <?php if(auth()->user()->role == 1): ?>
+                    <button onclick="openCreateModal()"
+                        class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg flex items-center gap-2 transition-colors">
+                        <i class="bi bi-plus-lg"></i>
+                        Tambah Siswa
+                    </button>
+                <?php endif; ?>
+            </div>
+
+            <?php if(session('success')): ?>
+                <div class="bg-green-50 border border-green-200 text-green-800 px-4 py-3 rounded-lg">
+                    <p class="text-sm font-semibold flex items-center gap-2">
+                        <i class="bi bi-check-circle-fill text-green-600"></i>
+                        <?php echo e(session('success')); ?>
+
+                    </p>
+                </div>
+            <?php endif; ?>
+
+            <?php if(session('error')): ?>
+                <div class="bg-red-50 border border-red-200 text-red-800 px-4 py-3 rounded-lg">
+                    <p class="text-sm font-semibold flex items-center gap-2">
+                        <i class="bi bi-exclamation-triangle-fill text-red-600"></i>
+                        <?php echo e(session('error')); ?>
+
+                    </p>
+                </div>
+            <?php endif; ?>
+
+            <!-- Search and Filter -->
+            <div class="py-4">
+                <div class="bg-white p-6 rounded-xl shadow-sm border px-4">
+                    <div class="flex flex-col md:flex-row gap-2 items-center justify-between">
+                        <div class="relative w-full md:w-64">
+                            <i class="bi bi-search absolute left-3 top-2.5 text-gray-400"></i>
+                            <input id="inputSearch" type="text" placeholder="Cari Siswa..."
+                                class="pl-10 pr-4 py-1.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent w-full">
+                        </div>
+                        <?php if(auth()->user()->role == 1 || auth()->user()->role == 2 || auth()->user()->role == 4): ?>
+                            <div class="flex gap-2">
+                                <?php
+                                    $filterCount = collect(request()->except(['page', 'search', '_token', '_method']))
+                                        ->filter(function ($v) {
+                                            return $v !== null && $v !== '';
+                                        })
+                                        ->count();
+                                ?>
+                                
+                                    
+                                <button onclick="openfilterModal()"
+                                class="px-3 py-1.5 border border-gray-300 rounded-lg hover:bg-gray-50 flex items-center gap-1.5">
+                                <i class="bi bi-funnel"></i> Filter
+                                <?php if($filterCount > 0): ?>
+                                <span
+                                class="ml-2 inline-flex items-center justify-center bg-blue-600 text-white text-xs font-semibold rounded-full w-6 h-6"><?php echo e($filterCount); ?></span>
+                               
+                            </button>
+                            <?php endif; ?>
+                        <?php endif; ?>
+
+
+
+                        <?php if(auth()->user()->role == 1): ?>
+                            <button id="exportImportBtn"
+                                class="px-3 py-1.5 border border-gray-300 rounded-lg hover:bg-gray-50 flex items-center gap-1.5">
+                                <i class="bi bi-download"></i> Export / Import
+                            </button>
+                        <?php endif; ?>
+                    </div>
+                </div>
+            </div>
+
+
+
+            <!-- Data Table -->
+
+            <div class="bg-white rounded-xl shadow-sm border overflow-visible mt-6">
+                <div class="px-6 py-4 border-b border-gray-200">
+                    <h3 class="text-lg font-semibold text-gray-900">Daftar Siswa</h3>
+                </div>
+
+                <div class="overflow-x-auto">
+                    <table class="w-full">
+                        <thead class="bg-gray-50 border-b border-gray-200">
+                            <tr>
+                                <th
+                                    class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                                    <div class="flex items-center gap-2">
+                                        <i class="bi bi-hash text-gray-400"></i>
+                                        No
+                                    </div>
+                                </th>
+                                <th
+                                    class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                                    <div class="flex items-center gap-2">
+                                        <i class="bi bi-hash text-gray-400"></i>
+                                        NIS
+                                    </div>
+                                </th>
+                                <th
+                                    class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                                    <div class="flex items-center gap-2">
+                                        <i class="bi bi-person text-gray-400"></i>
+                                        Nama Siswa
+                                    </div>
+                                </th>
+
+                                <th
+                                    class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                                    <div class="flex items-center gap-2">
+                                        <i class="bi bi-person text-gray-400"></i>
+                                        Kelas
+                                    </div>
+                                </th>
+
+                                <th
+                                    class="px-5 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                                    <div class="flex items-center gap-2">
+                                        <i class="bi bi-gear text-gray-400"></i>
+                                        Aksi
+                                    </div>
+                                </th>
+                            </tr>
+                        </thead>
+
+                        <tbody id="tableBody" class="bg-white divide-y divide-gray-100">
+                            <?php $__empty_1 = true; $__currentLoopData = $siswa; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
+                                <tr class="hover:bg-gray-50 group">
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="text-sm font-semibold text-gray-900">
+                                            <?php echo e(($siswa->firstItem() ?? 0) + $loop->iteration - 1); ?></div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="flex items-center">
+                                            <div
+                                                class="w-2 h-2 bg-blue-400 rounded-full mr-3 opacity-0 group-hover:opacity-100 transition-opacity">
+                                            </div>
+                                            <span class="text-sm font-medium text-gray-900"><?php echo e($item->nis); ?></span>
+                                        </div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="text-sm font-semibold text-gray-900"><?php echo e($item->nama_siswa); ?></div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="text-sm font-semibold text-gray-900"><?php if($item->id_kelas != 'ALUMNI'): ?>
+                                          <?php echo e($item->kelas->nama_kelas ?? $item->id_jurusan ?? '-'); ?>
+
+                                        <?php else: ?>
+                                           Alumni  
+                                        <?php endif; ?>
+                                        </div>
+                                    </td>
+
+
+                                    
+
+
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="flex items-center gap-1">
+                                            <?php if(auth()->user()->role == 1 || auth()->user()->role == 2): ?>
+                                                <button
+                                                    onclick="openEditModal('<?php echo e($item->nis); ?>', '<?php echo e(addslashes($item->nama_siswa)); ?>', '<?php echo e($item->id_kelas); ?>', 'index')"
+                                                    class="action-btn inline-flex items-center justify-center w-9 h-9 text-blue-600 hover:text-blue-800 hover:bg-blue-50 rounded-full"
+                                                    title="Edit Siswa">
+                                                    <i class="bi bi-pencil-square text-sm"></i>
+                                                </button>
+                                            <?php endif; ?>
+                                            <button onclick="window.location='<?php echo e(route('siswa.show', $item->nis)); ?>'"
+                                                class="action-btn inline-flex items-center justify-center w-9 h-9 text-yellow-600 hover:text-yellow-800 hover:bg-orange-50 rounded-full"
+                                                title="Edit Siswa">
+                                                <i class="bi bi-eye text-sm"></i>
+                                            </button>
+                                            <?php if(auth()->user()->role == 1 || auth()->user()->role == 2): ?>
+                                                <button
+                                                    onclick="openDeleteModal('<?php echo e($item->nis); ?>', '<?php echo e($item->nama_siswa); ?>')"
+                                                    class="action-btn inline-flex items-center justify-center w-9 h-9 text-red-600 hover:text-red-800 hover:bg-red-50 rounded-full"
+                                                    title="Hapus Siswa">
+                                                    <i class="bi bi-trash text-sm"></i>
+                                                </button>
+                                            <?php endif; ?>
+                                        </div>
+                                    </td>
+                                </tr>
+                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?>
+                                <tr>
+                                    <td colspan="5" class="px-6 py-12 text-center">
+                                        <div
+                                            class="mx-auto w-24 h-24 bg-gray-100 rounded-full flex items-center justify-center mb-4">
+                                            <i class="bi bi-people text-3xl text-gray-400"></i>
+                                        </div>
+                                        <h3 class="text-lg font-medium text-gray-900 mb-2">Belum ada data siswa</h3>
+                                        <p class="text-gray-500">Tambahkan data siswa untuk memulai.</p>
+                                    </td>
+                                </tr>
+                            <?php endif; ?>
+                        </tbody>
+                    </table>
+                    <!-- PAGINATION -->
+                    <div id="pagination" class="px-6 py-4 border-t border-gray-200 bg-white">
+                        <?php echo $__env->make('layouts.wakasek.pagination', ['data' => $siswa], array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?>
+                    </div>
+                </div>
+            </div>
+        </div>
+        </div>
+
+        <?php if(auth()->user()->role == 1 || auth()->user()->role == 2): ?>
+            <?php echo $__env->make('wakasek.siswa.create', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?>
+            <?php echo $__env->make('wakasek.siswa.edit', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?>
+            <?php echo $__env->make('wakasek.siswa.delete', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?>
+            <?php echo $__env->make('wakasek.siswa.modalExportImport', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?>
+        <?php endif; ?>
+
+        <?php echo $__env->make('wakasek.siswa.filter', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?>
+
+
+
+
+    <?php $__env->stopSection(); ?>
+
+
+    <?php $__env->startPush('js'); ?>
+        <script src="<?php echo e(asset('js/wakasek/siswa.js')); ?>"></script>
+    <?php $__env->stopPush(); ?>
+
+<?php echo $__env->make('layouts.wakasek.app', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?><?php /**PATH D:\laragon\www\BackEnd-SikapinSebelas\resources\views/wakasek/siswa/index.blade.php ENDPATH**/ ?>
