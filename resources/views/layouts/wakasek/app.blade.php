@@ -27,6 +27,7 @@
         <link rel="canonical" href="{{ url()->current() }}">
 
         <!-- Open Graph -->
+        <meta name="google-site-verification" content="nbPE5Fm6_GATYTsRoFTUinYGMDkkqDuTy5dO5z6VICw" />
         <meta property="og:type" content="website">
         <meta property="og:title" content="Sikapin - Sistem Skoring">
         <meta property="og:description"
