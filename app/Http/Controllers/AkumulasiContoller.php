@@ -6,91 +6,121 @@ use App\Models\kelas;
 use App\Models\siswa;
 use App\Models\walikelas;
 use App\Models\ketua_program;
+use App\Models\guru_bk;
+use App\Models\jurusan;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Maatwebsite\Excel\Facades\Excel;
-use App\Exports\Akumulasi_ExportExcel;
 
 class AkumulasiContoller extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
- public function index(Request $request)
-{
-    $user = Auth::user();
+    public function index(Request $request)
+    {
+        $user = Auth::user();
 
-    // default
-    $jurusanKetua = null;
-    $kelasWalikelas = null;
+        $jurusanList = jurusan::all();
+        $kelasList   = Kelas::with('jurusan')->get();
 
-    // Ambil dropdown
-    $jurusanList = Kelas::select('jurusan')->distinct()->pluck('jurusan');
-    $kelasList   = Kelas::select('id_kelas', 'nama_kelas', 'jurusan')->get();
+        $query = Siswa::with(['kelas.jurusan']);
 
-    // Mulai query siswa
-    $query = Siswa::with('kelas');
+        // === Guru BK (role 2): hanya kelas yang diajar ===
+        if ($user->role == 2) {
+            $guruBk = guru_bk::where('username', $user->username)->first();
 
-    // Filter berdasarkan role
-    if ($user->role == 2) {
-        // Guru BK -> filter kelas sesuai hardcode
-        $guruBk = guru_bk::where('username', $user->username)->first();
-        if ($guruBk) {
-            $kelasByGuru = [
-                'Dra. Wening Wigati, S.E, M.Si' => ['X AK 1','X AK 2','X AK 3','X DKV 1','X DKV 2','X TKJ 1','XII MP 1','XII MP 2','XII MP 3'],
-                'Ratih Pratiwi, S.Pd' => ['X PM 1','X PM 2','X PM 3','X PPLG 1','X PPLG 2','XI BR 1','XI BR 2','XI TKJ 1','XII TKJ 1'],
-                'Suci' => ['XI MP 1','XI MP 2','XI MP 3','XI MLOG 1','XI DKV 1','XI DKV 2','XII BR 1','XII BR 2','XII BR 3'],
-                'Evi Febry Damayanti, S.Pd' => ['X MPLB 1','X MPLB 2','X MPLB 3','X MPLB 4','XI RPL 1','XI RPL 2','XII RPL 1','XII RPL 2'],
-                'Raden Roro Siti Ameliya Purnama Putri, S.Pd' => ['XI AK 1','XI AK 2','XI AK 3','XI AK 4','XII AK 1','XII AK 2','XII AK 3','XII DKV 1','XII DKV 2'],
-            ];
+            if ($guruBk) {
+                $kelasIds = $guruBk->kelas()->pluck('kelas.id_kelas')->toArray();
 
-            $kelasGuru = $kelasByGuru[$guruBk->nama] ?? [];
-
-            $query->whereIn('id_kelas', function($q) use ($kelasGuru) {
-                $q->select('id_kelas')->from('kelas')->whereIn('nama_kelas', $kelasGuru);
-            });
+                if (!empty($kelasIds)) {
+                    $query->whereIn('id_kelas', $kelasIds);
+                } else {
+                    // Guru BK tidak punya kelas, return kosong
+                    $siswa = Siswa::paginate(10);
+                    return view('wakasek.akumulasi.index', compact('siswa', 'jurusanList', 'kelasList'));
+                }
+            }
         }
 
-    } elseif ($user->role == 4) {
-        // Kaprog -> filter berdasarkan jurusan
-        [$jurusanKetua, $kelasWalikelas] = $this->resolveRoleScope($user);
-        $query->whereHas('kelas', fn($q) => $q->where('jurusan', $jurusanKetua));
-    } elseif ($user->role == 3) {
-        // Walikelas -> filter berdasarkan kelas yang dia pegang
-        [$jurusanKetua, $kelasWalikelas] = $this->resolveRoleScope($user);
-        $query->where('id_kelas', $kelasWalikelas);
+        // === Walikelas (role 3): hanya kelas yang dipegang ===
+        elseif ($user->role == 3) {
+            $walikelas = walikelas::where('username', $user->username)->first();
+
+            if (!$walikelas) {
+                abort(403, "Data Walikelas tidak ditemukan.");
+            }
+
+            $query->where('id_kelas', $walikelas->id_kelas);
+
+            // Persempit dropdown kelas hanya miliknya
+            $kelasList = Kelas::where('id_kelas', $walikelas->id_kelas)->get();
+        }
+
+        // === Ketua Program (role 4): hanya jurusan yang dipegang ===
+        elseif ($user->role == 4) {
+            $ketua = ketua_program::where('username', $user->username)->first();
+
+            if (!$ketua) {
+                abort(403, "Data Ketua Program tidak ditemukan.");
+            }
+
+            $query->whereHas('kelas.jurusan', function ($q) use ($ketua) {
+                $q->where('id_jurusan', $ketua->id_jurusan);
+            });
+
+            // Persempit dropdown kelas sesuai jurusannya
+            $kelasList = Kelas::whereHas('jurusan', function ($q) use ($ketua) {
+                $q->where('id_jurusan', $ketua->id_jurusan);
+            })->get();
+        }
+
+        // Tambahkan filter dari request (tidak menimpa filter role)
+        $query = $this->applyRequestFilters($request, $query, $user);
+
+        $siswa = $query->orderBy('nama_siswa')->paginate(10)->appends($request->all());
+
+        return view('wakasek.akumulasi.index', compact('siswa', 'jurusanList', 'kelasList'));
     }
 
-    // Tambahkan filter tambahan dari request
-    $query = $this->buildSiswaQuery($request, $jurusanKetua, $kelasWalikelas, $query);
+    public function export_pdf(Request $request)
+    {
+        ini_set('memory_limit', '512M');
 
-    $siswa = $query->paginate(10)->appends($request->all());
+        $user  = Auth::user();
+        $query = Siswa::with(['kelas.jurusan']);
+        $query = $this->applyRoleScope($query, $user);
+        $query = $this->applyRequestFilters($request, $query, $user);
 
-    return view('wakasek.akumulasi.index', [
-        'siswa'       => $siswa,
-        'jurusanList' => $jurusanList,
-        'kelasList'   => $kelasList,
-    ]);
-}
+        $akumulasi = $query->get();
 
+        $pdf = Pdf::loadView('Export.akumulasi.pdf', compact('akumulasi'));
+        return $pdf->download('akumulasi.pdf');
+    }
 
+    public function export_Excel(Request $request)
+    {
+        $user  = Auth::user();
+        $query = Siswa::with(['kelas.jurusan']);
+        $query = $this->applyRoleScope($query, $user);
+        $query = $this->applyRequestFilters($request, $query, $user);
+
+        $akumulasi = $query->get();
+
+        return Excel::download(new \App\Exports\Akumulasi_ExportExcel($akumulasi), 'akumulasi.xlsx');
+    }
 
     public function fetchAPI(Request $request)
     {
-        // (dibiarkan seperti semula; bisa disesuaikan dengan helper jika mau)
-        $jurusanList = kelas::select('jurusan')->distinct()->pluck('jurusan');
-        $kelasList   = kelas::all();
+        $jurusanList = jurusan::all();
+        $kelasList   = Kelas::with('jurusan')->get();
 
-        $query = siswa::query();
+        $query = Siswa::with(['kelas.jurusan']);
 
         if ($request->filled('jurusan')) {
-            $query->whereHas('kelas', fn($q) => $q->where('jurusan', $request->jurusan));
+            $query->whereHas('kelas.jurusan', fn($q) => $q->where('id_jurusan', $request->jurusan));
         }
 
         if ($request->filled('kelas')) {
-            // gunakan id_kelas jika form mengirim id_kelas; sesuaikan jika mau pakai nama_kelas
-            $query->whereHas('kelas', fn($q) => $q->where('id_kelas', $request->kelas));
+            $query->where('id_kelas', $request->kelas);
         }
 
         $siswa = $query->paginate(10)->withQueryString();
@@ -100,97 +130,81 @@ class AkumulasiContoller extends Controller
             'message'      => 'Data siswa berhasil diambil',
             'jurusan_list' => $jurusanList,
             'kelas_list'   => $kelasList,
-            'data'         => $siswa
+            'data'         => $siswa,
         ], 200);
     }
 
     public function indexBK(Request $request)
     {
-        // (dibiarkan seperti semula; bisa disesuaikan dengan helper jika mau)
-        $jurusanList = kelas::select('jurusan')->distinct()->pluck('jurusan');
-        $kelasList   = kelas::all();
+        $user   = Auth::user();
+        $guruBk = guru_bk::where('username', $user->username)->first();
 
-        $query = siswa::query();
+        $query = Siswa::with(['kelas.jurusan']);
 
-        if ($request->filled('jurusan')) {
-            $query->whereHas('kelas', fn($q) => $q->where('jurusan', $request->jurusan));
+        if ($guruBk) {
+            $kelasIds = $guruBk->kelas()->pluck('kelas.id_kelas')->toArray();
+            if (!empty($kelasIds)) {
+                $query->whereIn('id_kelas', $kelasIds);
+            }
         }
-        if ($request->filled('kelas')) {
-            $query->whereHas('kelas', fn($q) => $q->where('id_kelas', $request->kelas));
-        }
 
-        $siswa = $query->get();
+        $query = $this->applyRequestFilters($request, $query, $user);
+
+        $jurusanList = jurusan::all();
+        $kelasList   = Kelas::with('jurusan')->get();
+        $siswa       = $query->get();
 
         return view('gurubk.akumulasi.index', compact('siswa', 'jurusanList', 'kelasList'));
     }
 
-    public function export_pdf(Request $request)
+    /* ======================= Helpers ======================= */
+
+    /**
+     * Terapkan scope berdasarkan role (tanpa filter request).
+     * Dipakai di export agar konsisten dengan index().
+     */
+    private function applyRoleScope($query, $user)
     {
-        ini_set('memory_limit','512M');
-
-        [$jurusanKetua, $kelasWalikelas] = $this->resolveRoleScope(Auth::user());
-
-        $akumulasi = $this->buildSiswaQuery($request, $jurusanKetua, $kelasWalikelas)->get();
-
-        $pdf = PDF::loadView('Export.akumulasi.pdf', compact('akumulasi'));
-        return $pdf->download('akumulasi.pdf');
-    }
-
-public function export_Excel(Request $request)
-{
-    [$jurusanKetua, $kelasWalikelas] = $this->resolveRoleScope(Auth::user());
-
-    // Data sudah terfilter sesuai role + filter jurusan/kelas/search
-    $akumulasi = $this->buildSiswaQuery($request, $jurusanKetua, $kelasWalikelas)->get();
-
-    return Excel::download(new \App\Exports\Akumulasi_ExportExcel($akumulasi), 'akumulasi.xlsx');
-}
-
-    /* ======================= Helper ======================= */
-
-    private function resolveRoleScope($user): array
-    {
-        $jurusanKetua   = null; // Kaprog (role 3)
-        $kelasWalikelas = null; // Walikelas (role 4)
-
-        if ($user->role == 4) {
-            $ketua = ketua_program::where('username', $user->username)->first();
-            if ($ketua && $ketua->jurusan) {
-                $jurusanKetua = $ketua->jurusan;
+        if ($user->role == 2) {
+            $guruBk = guru_bk::where('username', $user->username)->first();
+            if ($guruBk) {
+                $kelasIds = $guruBk->kelas()->pluck('kelas.id_kelas')->toArray();
+                if (!empty($kelasIds)) {
+                    $query->whereIn('id_kelas', $kelasIds);
+                }
             }
-        }
-
-        if ($user->role == 3) {
+        } elseif ($user->role == 3) {
             $walikelas = walikelas::where('username', $user->username)->first();
-            if ($walikelas && $walikelas->id_kelas) {
-                $kelasWalikelas = $walikelas->id_kelas;
+            if ($walikelas) {
+                $query->where('id_kelas', $walikelas->id_kelas);
+            }
+        } elseif ($user->role == 4) {
+            $ketua = ketua_program::where('username', $user->username)->first();
+            if ($ketua) {
+                $query->whereHas('kelas.jurusan', fn($q) => $q->where('id_jurusan', $ketua->id_jurusan));
             }
         }
 
-        return [$jurusanKetua, $kelasWalikelas];
+        return $query;
     }
 
-    private function buildSiswaQuery(Request $request, $jurusanKetua, $kelasWalikelas)
+    /**
+     * Terapkan filter dari request (jurusan, kelas, search).
+     * Filter jurusan/kelas diabaikan jika role sudah membatasi scope tersebut.
+     */
+    private function applyRequestFilters(Request $request, $query, $user)
     {
-        $query = siswa::with('kelas');
-
-        // Filter otomatis berdasarkan role
-        if ($jurusanKetua) {
-            $query->whereHas('kelas', fn($q) => $q->where('jurusan', $jurusanKetua));
-        }
-        if ($kelasWalikelas) {
-            $query->whereHas('kelas', fn($q) => $q->where('id_kelas', $kelasWalikelas));
+        // Filter jurusan hanya untuk role yang belum terikat jurusan (bukan role 4)
+        if ($request->filled('jurusan') && $user->role != 4) {
+            $query->whereHas('kelas.jurusan', fn($q) => $q->where('id_jurusan', $request->jurusan));
         }
 
-        // Filter request (tidak menimpa filter role)
-        if ($request->filled('jurusan') && !$jurusanKetua) {
-            $query->whereHas('kelas', fn($q) => $q->where('jurusan', $request->jurusan));
-        }
-        if ($request->filled('kelas') && !$kelasWalikelas) {
-            $query->whereHas('kelas', fn($q) => $q->where('id_kelas', $request->kelas));
+        // Filter kelas hanya untuk role yang belum terikat kelas spesifik (bukan role 3)
+        if ($request->filled('kelas') && $user->role != 3) {
+            $query->where('id_kelas', $request->kelas);
         }
 
-        // Search NIS / nama_siswa
+        // Search NIS / nama_siswa (berlaku semua role)
         if ($request->filled('search')) {
             $search = $request->search;
             $query->where(function ($q) use ($search) {

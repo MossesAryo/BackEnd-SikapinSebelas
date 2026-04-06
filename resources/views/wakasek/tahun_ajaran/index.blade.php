@@ -1,156 +1,171 @@
-@php
-    $preview = $preview ?? [
-        'x_ke_xi' => 0,
-        'xi_ke_xii' => 0,
-        'alumni' => 0,
-    ];
-
-    $belumDiproses = $belumDiproses ?? false;
-@endphp
-
-
 @extends('layouts.wakasek.app')
 
-@push('css')
-@endpush
+@php
+    $preview = $preview ?? ['x_ke_xi' => 0, 'xi_ke_xii' => 0, 'lulus' => 0];
+    $tahunAktif = $tahunAktif ?? null;
+    $tahunDipilih = old('tahun_ajaran_id', $tahunAktif?->id);
+@endphp
 
 @section('content')
-    <div class="space-y-6">
+<div class="space-y-6">
 
-        <!-- Header -->
-        <div class="flex justify-between items-center">
-            <div>
-                <h1 class="text-2xl font-bold gradient-text">Kenaikan Kelas</h1>
-                <p class="text-gray-600 mt-1">Proses kenaikan kelas dan kelulusan siswa</p>
-            </div>
+    {{-- Header --}}
+    <div>
+        <h1 class="text-2xl font-bold">Manajemen Tahun Ajaran</h1>
+        <p class="text-gray-500">Kelola proses kenaikan kelas siswa sesuai tahun ajaran aktif</p>
+    </div>
+
+    {{-- Alert --}}
+    @if (session('success'))
+        <div class="bg-green-100 border border-green-300 text-green-800 p-3 rounded">
+            {{ session('success') }}
         </div>
+    @endif
 
-        <!-- Alert -->
-        @if (session('success'))
-            <div class="bg-green-50 border border-green-200 text-green-800 px-4 py-3 rounded-lg">
-                <p class="text-sm font-semibold flex items-center gap-2">
-                    <i class="bi bi-check-circle-fill text-green-600"></i>
-                    {{ session('success') }}
-                </p>
-            </div>
-        @endif
-
-        @if (session('error'))
-            <div class="bg-red-50 border border-red-200 text-red-800 px-4 py-3 rounded-lg">
-                <p class="text-sm font-semibold flex items-center gap-2">
-                    <i class="bi bi-exclamation-triangle-fill text-red-600"></i>
-                    {{ session('error') }}
-                </p>
-            </div>
-        @endif
-
-        <!-- Preview Card -->
-        <div class="bg-white p-6 rounded-xl shadow-sm border">
-            <div class="flex items-center justify-between mb-4">
-                <h3 class="text-lg font-semibold text-gray-900 flex items-center gap-2">
-                    <i class="bi bi-bar-chart-fill text-blue-600"></i>
-                    Preview Kenaikan Kelas
-                </h3>
-            </div>
-
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                <div class="p-4 rounded-lg border bg-blue-50">
-                    <p class="text-sm text-gray-600">Siswa X → XI</p>
-                    <p class="text-2xl font-bold text-blue-700">
-                        {{ $preview['x_ke_xi'] }}
-                    </p>
-                </div>
-
-                <div class="p-4 rounded-lg border bg-indigo-50">
-                    <p class="text-sm text-gray-600">Siswa XI → XII</p>
-                    <p class="text-2xl font-bold text-indigo-700">
-                        {{ $preview['xi_ke_xii'] }}
-                    </p>
-                </div>
-
-                <div class="p-4 rounded-lg border bg-green-50">
-                    <p class="text-sm text-gray-600">Siswa Lulus (Alumni)</p>
-                    <p class="text-2xl font-bold text-green-700">
-                        {{ $preview['alumni'] }}
-                    </p>
-                </div>
-            </div>
+    {{-- Preview --}}
+    <div class="grid md:grid-cols-3 gap-4">
+        <div class="bg-blue-50 border rounded-lg p-4">
+            <p class="text-sm text-gray-600">Siswa X → XI</p>
+            <p class="text-3xl font-bold text-blue-700">{{ $preview['x_ke_xi'] }}</p>
         </div>
-
-        <!-- Action Card -->
-        <div class="bg-white rounded-xl shadow-sm border">
-            <div class="px-6 py-4 border-b border-gray-200">
-                <h3 class="text-lg font-semibold text-gray-900 flex items-center gap-2">
-                    <i class="bi bi-gear-fill text-gray-600"></i>
-                    Aksi
-                </h3>
-            </div>
-
-            <div class="px-6 py-6">
-                <button type="button" onclick="openKenaikanModal()" @if (!$belumDiproses) disabled @endif
-                    class="px-6 py-3 rounded-lg text-white font-semibold flex items-center gap-2 transition
-                    {{ $belumDiproses ? 'bg-red-600 hover:bg-red-700' : 'bg-gray-400 cursor-not-allowed' }}">
-                    <i class="bi bi-arrow-up-circle"></i>
-                    {{ $belumDiproses ? 'Proses Kenaikan Kelas' : 'Kenaikan Kelas Sudah Diproses' }}
-                </button>
-
-
-                <p class="mt-4 text-sm text-gray-500">
-                    <i class="bi bi-info-circle"></i>
-                    Pastikan data kelas sudah lengkap sebelum menjalankan proses ini.
-                </p>
-            </div>
+        <div class="bg-indigo-50 border rounded-lg p-4">
+            <p class="text-sm text-gray-600">Siswa XI → XII</p>
+            <p class="text-3xl font-bold text-indigo-700">{{ $preview['xi_ke_xii'] }}</p>
+        </div>
+        <div class="bg-green-50 border rounded-lg p-4">
+            <p class="text-sm text-gray-600">Siswa XII → Alumni</p>
+            <p class="text-3xl font-bold text-green-700">{{ $preview['lulus'] }}</p>
         </div>
     </div>
 
-    <!-- Modal Konfirmasi Kenaikan Kelas -->
-    <div id="kenaikanModal" class="fixed inset-0 bg-gray-600 bg-opacity-50 hidden z-50 flex items-center justify-center">
+    {{-- Form --}}
+    <div class="bg-white border rounded-xl p-6">
+        <h3 class="font-semibold mb-1 text-lg">Pilih Tahun Ajaran</h3>
+        <p class="text-sm text-gray-500 mb-4">
+            Sistem akan otomatis menaikkan atau menurunkan kelas siswa sesuai selisih tahun ajaran.
+        </p>
 
-        <div class="bg-white rounded-xl shadow-lg w-full max-w-md mx-4">
-            <div class="px-6 py-4 border-b flex items-center gap-2">
-                <i class="bi bi-exclamation-triangle-fill text-red-600"></i>
-                <h3 class="text-lg font-semibold">Konfirmasi Kenaikan Kelas</h3>
-            </div>
+        <form method="POST" action="{{ route('tahun_ajaran.update') }}"
+              onsubmit="return confirmGanti(event)">
+            @csrf
+            <div class="flex flex-col md:flex-row gap-4 items-start md:items-center">
+                <select name="tahun_ajaran_id" id="selectTahun"
+                        class="border rounded px-4 py-2 w-full md:w-1/2">
+                    @foreach ($tahunAjaran as $ta)
+                        <option value="{{ $ta->id }}"
+                            data-selisih="{{ $ta->id - ($tahunAktif?->id ?? $ta->id) }}"
+                            {{ $ta->id == $tahunDipilih ? 'selected' : '' }}>
+                            {{ $ta->tahun_ajaran }}
+                            @if ($ta->status === 'aktif') (aktif) @endif
+                        </option>
+                    @endforeach
+                </select>
 
-            <div class="px-6 py-5 text-sm text-gray-700 space-y-2">
-                <p>
-                    Proses ini akan:
-                </p>
-                <ul class="list-disc pl-5 text-gray-600">
-                    <li>Menaikkan siswa kelas X ke XI</li>
-                    <li>Menaikkan siswa kelas XI ke XII</li>
-                    <li>Mengubah siswa kelas XII menjadi <b>Alumni</b></li>
-                </ul>
-                <p class="text-red-600 font-semibold">
-                    Proses ini tidak bisa dibatalkan.
-                </p>
-            </div>
-
-            <div class="px-6 py-4 border-t flex justify-end gap-2">
-                <button onclick="closeKenaikanModal()" class="px-4 py-2 rounded-lg border hover:bg-gray-50">
-                    Batal
+                <button type="submit"
+                        class="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2.5 rounded-lg font-semibold">
+                    Ganti Tahun Ajaran
                 </button>
-
-                <form method="POST" action="{{ route('tahun_ajaran.proses') }}">
-                    @csrf
-                    <button class="px-4 py-2 rounded-lg bg-red-600 text-white hover:bg-red-700 flex items-center gap-2">
-                        <i class="bi bi-check-circle"></i>
-                        Ya, Proses
-                    </button>
-                </form>
             </div>
+
+            <p id="hintSelisih" class="text-sm mt-3"></p>
+        </form>
+    </div>
+
+</div>
+
+{{-- Modal --}}
+<div id="modalKonfirmasi"
+     class="fixed inset-0 bg-black bg-opacity-40 hidden items-center justify-center z-50 flex">
+    <div class="bg-white rounded-xl w-full max-w-md shadow-lg">
+        <div class="p-5 border-b">
+            <h3 class="font-semibold text-lg">Konfirmasi Ganti Tahun Ajaran</h3>
+        </div>
+        <div class="p-5 text-sm space-y-2">
+            <p id="modalDesc" class="text-gray-700"></p>
+            <p class="text-red-600 font-semibold mt-2">Proses ini tidak bisa dibatalkan.</p>
+        </div>
+        <div class="p-5 border-t flex justify-end gap-2">
+            <button onclick="closeModal()"
+                    class="border px-4 py-2 rounded hover:bg-gray-50">
+                Batal
+            </button>
+            <button id="btnConfirm"
+                    class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">
+                Ya, Ganti
+            </button>
         </div>
     </div>
+</div>
 @endsection
 
 @push('js')
-    <script>
-        function openKenaikanModal() {
-            document.getElementById('kenaikanModal').classList.remove('hidden');
+<script>
+    const select   = document.getElementById('selectTahun');
+    const hint     = document.getElementById('hintSelisih');
+    const activeId = {{ $tahunAktif?->id ?? 'null' }};
+
+    function hitungPerubahan(selisih) {
+        const tingkats = ['X', 'XI', 'XII'];
+        return tingkats.map(t => {
+            const targetIdx = tingkats.indexOf(t) + selisih;
+            if (selisih > 0) {
+                return targetIdx >= tingkats.length
+                    ? `${t} → Alumni`
+                    : `${t} → ${tingkats[targetIdx]}`;
+            } else {
+                return targetIdx < 0
+                    ? `${t} → (tidak berubah)`
+                    : `${t} → ${tingkats[targetIdx]}`;
+            }
+        }).join(', ');
+    }
+
+    function updateHint() {
+        const opt     = select.options[select.selectedIndex];
+        const selisih = parseInt(opt.dataset.selisih ?? 0);
+
+        if (!activeId || selisih === 0) {
+            hint.textContent = '';
+            hint.className   = 'text-sm mt-3';
+            return;
         }
 
-        function closeKenaikanModal() {
-            document.getElementById('kenaikanModal').classList.add('hidden');
+        if (selisih > 0) {
+            hint.textContent = `⬆ Naik ${selisih} tingkat: ${hitungPerubahan(selisih)}`;
+            hint.className   = 'text-sm text-green-700 mt-3';
+        } else {
+            hint.textContent = `⬇ Turun ${Math.abs(selisih)} tingkat: ${hitungPerubahan(selisih)}`;
+            hint.className   = 'text-sm text-yellow-600 mt-3';
         }
-    </script>
+    }
+
+    select.addEventListener('change', updateHint);
+    updateHint();
+
+    function confirmGanti(e) {
+        e.preventDefault();
+
+        const opt     = select.options[select.selectedIndex];
+        const selisih = parseInt(opt.dataset.selisih ?? 0);
+
+        if (selisih === 0) {
+            alert('Tahun ajaran ini sudah aktif.');
+            return false;
+        }
+
+        const arah   = selisih > 0
+            ? `Naik ${selisih} tingkat`
+            : `Turun ${Math.abs(selisih)} tingkat`;
+
+        document.getElementById('modalDesc').textContent = `${arah}: ${hitungPerubahan(selisih)}`;
+        document.getElementById('modalKonfirmasi').classList.remove('hidden');
+        document.getElementById('btnConfirm').onclick = () => e.target.submit();
+
+        return false;
+    }
+
+    function closeModal() {
+        document.getElementById('modalKonfirmasi').classList.add('hidden');
+    }
+</script>
 @endpush

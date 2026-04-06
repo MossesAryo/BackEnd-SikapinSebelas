@@ -6,15 +6,13 @@ use App\Models\kelas;
 use App\Models\siswa;
 use App\Models\ActivityLog;
 use Illuminate\Http\Request;
-
 use App\Exports\Siswa_ExportExcel;
 use App\Imports\Siswa_Import;
 use App\Models\aspek_penilaian;
 use Illuminate\Support\Facades\DB;
 use App\Models\penilaian;
 use App\Models\intervensi;
-
-
+use App\Models\jurusan;
 use App\Models\guru_bk;
 use App\Models\penghargaan;
 use App\Models\siswa_penghargaan;
@@ -28,61 +26,49 @@ use Illuminate\Support\Facades\Auth;
 
 class SiswaController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index(Request $request)
-
 {
-    // Data dropdown / helper
-   
-    $jurusanList = Kelas::select('jurusan')->distinct()->pluck('jurusan');
-    $kelasList   = Kelas::select('id_kelas', 'nama_kelas', 'jurusan')->get();
-    $penghargaanList = siswa_penghargaan::all();
+    $user        = Auth::user();
+    $jurusanList = jurusan::all();
+    $query       = siswa::with(['kelas.jurusan']);
 
-    // Mulai query siswa
-    $query = Siswa::with('kelas');
-
-    // Hardcode kelas per guru BK
-    if (Auth::user()->role == '2') {
-       $guruBk = guru_bk::where('username', Auth::user()->username)
-                     ->first();
+    // === Role 2: Guru BK — hanya kelas yang dipegang ===
+    if ($user->role == '2') {
+        $guruBk = guru_bk::where('username', $user->username)->first();
         if ($guruBk) {
-            
-           $kelasByGuru = [
-    'Dra. Wening Wigati, S.E, M.Si' => [
-        'X AK 1','X AK 2','X AK 3','X DKV 1','X DKV 2','X TKJ 1','XII MP 1','XII MP 2','XII MP 3'
-    ],
-    'Ratih Pratiwi, S.Pd' => [
-        'X PM 1','X PM 2','X PM 3','X PPLG 1','X PPLG 2','XI BR 1','XI BR 2','XI TKJ 1','XII TKJ 1'
-    ],
-    'Suci' => [
-        'XI MP 1','XI MP 2','XI MP 3','XI MLOG 1','XI DKV 1','XI DKV 2','XII BR 1','XII BR 2','XII BR 3'
-    ],
-    'Evi Febry Damayanti, S.Pd' => [
-        'X MPLB 1','X MPLB 2','X MPLB 3','X MPLB 4','XI RPL 1','XI RPL 2','XII RPL 1','XII RPL 2'
-    ],
-    'Raden Roro Siti Ameliya Purnama Putri, S.Pd' => [
-        'XI AK 1','XI AK 2','XI AK 3','XI AK 4','XII AK 1','XII AK 2','XII AK 3','XII DKV 1','XII DKV 2'
-    ],
-];
-
-
-            $kelasNames = $kelasByGuru[$guruBk->nama_guru_bk] ?? [];
-         
-
-            if (!empty($kelasNames)) {
-                // Ambil ID kelas dari nama kelas
-                $kelasIds = Kelas::whereIn('nama_kelas', $kelasNames)->pluck('id_kelas')->toArray();
+            $kelasIds = $guruBk->kelas()->pluck('kelas.id_kelas')->toArray();
+            if (!empty($kelasIds)) {
                 $query->whereIn('id_kelas', $kelasIds);
             } else {
-                $siswa = collect([])->paginate(10);
+                $kelasList       = kelas::with('jurusan')->get();
+                $penghargaanList = siswa_penghargaan::all();
+                $siswa           = siswa::paginate(10);
                 return view('wakasek.siswa.index', compact('siswa', 'jurusanList', 'kelasList', 'penghargaanList'));
             }
         }
     }
 
-    // Search (nama atau nis)
+    // === Role 4: Ketua Program — hanya siswa dari jurusannya ===
+    $ketua = null;
+    if ($user->role == '4') {
+        $ketua = ketua_program::where('username', $user->username)->first();
+        if (!$ketua) {
+            abort(403, 'Data Ketua Program tidak ditemukan.');
+        }
+        $query->whereHas('kelas.jurusan', fn($q) => $q->where('id_jurusan', $ketua->id_jurusan));
+    }
+
+    // === Role 3: Walikelas — hanya siswa dari kelasnya ===
+    $wali = null;
+    if ($user->role == '3') {
+        $wali = walikelas::where('username', $user->username)->first();
+        if (!$wali) {
+            abort(403, 'Data Walikelas tidak ditemukan.');
+        }
+        $query->where('id_kelas', $wali->id_kelas);
+    }
+
+    // === Filter: search nama atau NIS ===
     if ($request->filled('search')) {
         $search = $request->search;
         $query->where(function ($q) use ($search) {
@@ -91,17 +77,30 @@ class SiswaController extends Controller
         });
     }
 
-    // Filter jurusan -> lewat relasi kelas
-    if ($request->filled('jurusan')) {
-        $query->whereHas('kelas', function ($q) use ($request) {
-            $q->where('jurusan', $request->jurusan);
-        });
+    // === Filter: jurusan (skip untuk role 4 karena sudah di-filter otomatis) ===
+    if ($request->filled('jurusan') && $user->role != '4') {
+        $query->whereHas('kelas.jurusan', fn($q) => $q->where('id_jurusan', $request->jurusan));
     }
 
-    // Filter kelas spesifik
-    if ($request->filled('kelas')) {
+    // === Filter: kelas spesifik (skip untuk role 3 karena sudah di-filter otomatis) ===
+    if ($request->filled('kelas') && $user->role != '3') {
         $query->where('id_kelas', $request->kelas);
     }
+
+    // === Dropdown kelas — disesuaikan per role, pakai variable yang sudah di-fetch ===
+    if ($user->role == '4' && $ketua) {
+        $kelasList = kelas::with('jurusan')
+            ->whereHas('jurusan', fn($q) => $q->where('id_jurusan', $ketua->id_jurusan))
+            ->get();
+    } elseif ($user->role == '3' && $wali) {
+        $kelasList = kelas::with('jurusan')
+            ->where('id_kelas', $wali->id_kelas)
+            ->get();
+    } else {
+        $kelasList = kelas::with('jurusan')->get();
+    }
+
+    $penghargaanList = siswa_penghargaan::all();
 
     $siswa = $query->orderBy('nama_siswa')->paginate(10)
         ->appends($request->only(['search', 'jurusan', 'kelas']));
@@ -109,16 +108,9 @@ class SiswaController extends Controller
     return view('wakasek.siswa.index', compact('siswa', 'jurusanList', 'kelasList', 'penghargaanList'));
 }
 
-
-
-
-
-
-
     public function fetchAPI()
     {
         $siswa = siswa::all();
-
         return response()->json([
             'success' => true,
             'message' => 'Data siswa berhasil diambil',
@@ -126,106 +118,18 @@ class SiswaController extends Controller
         ], 200);
     }
 
-    public function siswa_ketua_program(Request $request)
-    {
-        $user = Auth::user();
-
-        // Ambil data ketua program termasuk jurusan
-        $ketua = ketua_program::where('username', $user->username)->first();
-
-        if (!$ketua) {
-            abort(403, "Data Ketua Program tidak ditemukan.");
-        }
-
-        $jurusanKetua = $ketua->jurusan;
-
-        // Query siswa yang jurusannya sama dengan ketua program
-        $query = siswa::with('kelas')
-            ->whereHas('kelas', function ($q) use ($jurusanKetua) {
-                $q->where('jurusan', $jurusanKetua);
-            });
-
-        // Filter kelas
-        if ($request->filled('kelas')) {
-            $query->where('id_kelas', $request->kelas);
-        }
-
-        // Search (nama atau nis)
-        if ($request->filled('search')) {
-            $search = $request->search;
-            $query->where(function ($q) use ($search) {
-                $q->where('nama_siswa', 'like', '%' . $search . '%')
-                    ->orWhere('nis', 'like', '%' . $search . '%');
-            });
-        }
-
-        $siswa = $query->orderBy('nama_siswa')->paginate(10)
-            ->appends($request->only(['search', 'kelas']));
-
-        // List kelas sesuai jurusan ketua program
-        $kelasList = kelas::where('jurusan', $jurusanKetua)->get();
-
-        return view('wakasek.siswa.index', compact('siswa', 'kelasList'));
-    }
-
-
-
-    public function siswa_walikelas(Request $request)
-    {
-        $user = Auth::user();
-
-        $walikelas = walikelas::where('username', $user->username)->first();
-
-        if (!$walikelas) {
-            abort(403, "Data Walikelas tidak ditemukan.");
-        }
-
-        // Ambil jurusan ketua program
-        $kelasWalikelas = $walikelas->id_kelas;
-
-        // Query siswa
-        $query = siswa::with('kelas')
-            ->whereHas('kelas', function ($q) use ($kelasWalikelas) {
-                $q->where('id_kelas', $kelasWalikelas);
-            });
-
-        // Filter berdasarkan kelas
-        if ($request->filled('kelas')) {
-            $query->where('id_kelas', $request->kelas);
-        }
-
-        // Search (nama atau nis)
-        if ($request->filled('search')) {
-            $search = $request->search;
-            $query->where(function ($q) use ($search) {
-                $q->where('nama_siswa', 'like', '%' . $search . '%')
-                    ->orWhere('nis', 'like', '%' . $search . '%');
-            });
-        }
-
-        $siswa = $query->orderBy('nama_siswa')->paginate(10)
-            ->appends($request->only(['search', 'kelas']));
-
-        // List kelas jurusan ketua program
-        $kelasList = kelas::where('id_kelas', $kelasWalikelas)->get();
-
-        return view('wakasek.siswa.index', compact('siswa', 'kelasList'));
-    }
-
-
-
     public function store(Request $request)
     {
         $request->validate([
-            'nis' => 'required|string',
+            'nis'        => 'required|string',
             'nama_siswa' => 'required|string',
-            'id_kelas' => 'required',
+            'id_kelas'   => 'required',
         ]);
 
         siswa::create([
-            'nis' => $request->nis,
+            'nis'        => $request->nis,
             'nama_siswa' => $request->nama_siswa,
-            'id_kelas' => $request->id_kelas,
+            'id_kelas'   => $request->id_kelas,
         ]);
 
         return redirect()->route('siswa.index')->with('success', 'Siswa berhasil ditambahkan');
@@ -238,12 +142,13 @@ class SiswaController extends Controller
         ]);
 
         siswa_penghargaan::create([
-            'nis' => $nis,
+            'nis'            => $nis,
             'id_penghargaan' => $request->id_penghargaan,
         ]);
 
         return redirect()->back()->with('success', 'Penghargaan berhasil ditambahkan');
     }
+
     public function peringatan(Request $request, string $nis)
     {
         $request->validate([
@@ -251,42 +156,33 @@ class SiswaController extends Controller
         ]);
 
         siswa_sp::create([
-            'nis' => $nis,
+            'nis'   => $nis,
             'id_sp' => $request->id_sp,
         ]);
 
         return redirect()->back()->with('success', 'Surat Peringatan berhasil ditambahkan');
     }
 
-
-    /**
-     * Show the detail of the student
-     */
     public function show(string $nis)
     {
         $siswa = siswa::where('nis', $nis)->first();
-        $penghargaan = penghargaan::all();
-        // Ambil hanya penghargaan yang terkait siswa ini
-        $penghargaanList = siswa_penghargaan::where('nis', $nis)->get();
-        $peringatan = surat_peringatan::all();
-        $skoringpenghargaan = aspek_penilaian::where('jenis_poin', 'Apresiasi')->get();
-        $skoringpelanggaran = aspek_penilaian::where('jenis_poin', 'Pelanggaran')->get();
-        // Ambil hanya surat peringatan yang terkait siswa ini
-        $peringatanList = siswa_sp::where('nis', $nis)->get();
-        // Ambil data intervensi (penanganan) untuk siswa ini
-        $intervensiList = intervensi::where('nis', $nis)->orderBy('created_at', 'desc')->get();
 
         if (!$siswa) {
             return redirect()->route('siswa.index')->with('error', 'Siswa tidak ditemukan');
         }
 
+        $penghargaan        = penghargaan::all();
+        $penghargaanList    = siswa_penghargaan::where('nis', $nis)->get();
+        $peringatan         = surat_peringatan::all();
+        $skoringpenghargaan = aspek_penilaian::where('jenis_poin', 'Apresiasi')->get();
+        $skoringpelanggaran = aspek_penilaian::where('jenis_poin', 'Pelanggaran')->get();
+        $peringatanList     = siswa_sp::where('nis', $nis)->get();
+        $intervensiList     = intervensi::where('nis', $nis)->orderBy('created_at', 'desc')->get();
 
         $poinPositif = $siswa->poin_apresiasi ?? 0;
         $poinNegatif = $siswa->poin_pelanggaran ?? 0;
         $poinTotal   = $siswa->poin_total ?? 0;
 
-        // Pastikan penghargaan / surat peringatan otomatis tercipta sesuai akumulasi
-        // PH ditentukan dari poin total (bukan hanya poin apresiasi)
         $this->cekPenghargaanOtomatis($siswa, $poinTotal);
         $this->cekSPOtomatis($siswa, $poinTotal);
 
@@ -296,37 +192,31 @@ class SiswaController extends Controller
             ->get();
 
         return view('wakasek.siswa.show', [
-            'siswa' => $siswa,
-            'kelasList' => kelas::all(),
-            'activities' => $activities,
-            'poinPositif' => $poinPositif,
-            'poinNegatif' => $poinNegatif,
-            'poinTotal'   => $poinTotal,
-            'penghargaanList' => $penghargaanList,
-            'penghargaan' => $penghargaan,
-            'peringatanList' => $peringatanList,
-            'peringatan' => $peringatan,
+            'siswa'              => $siswa,
+            'kelasList'          => kelas::with('jurusan')->get(),
+            'activities'         => $activities,
+            'poinPositif'        => $poinPositif,
+            'poinNegatif'        => $poinNegatif,
+            'poinTotal'          => $poinTotal,
+            'penghargaanList'    => $penghargaanList,
+            'penghargaan'        => $penghargaan,
+            'peringatanList'     => $peringatanList,
+            'peringatan'         => $peringatan,
             'skoringpenghargaan' => $skoringpenghargaan,
             'skoringpelanggaran' => $skoringpelanggaran,
-            'intervensiList' => $intervensiList,
+            'intervensiList'     => $intervensiList,
         ]);
     }
 
-    /**
-     * Cek dan buat penghargaan otomatis berdasarkan poin apresiasi
-     */
     private function cekPenghargaanOtomatis($siswa, $poinTotal)
     {
-        // Gunakan poin_total untuk menentukan PH. Jika poin_total <= -25 maka SP menang.
         $poinTotal = $poinTotal ?? ($siswa->poin_total ?? 0);
 
         if ($poinTotal <= -25) {
-            // jika SP berlaku, hapus semua PH relasi
             siswa_penghargaan::where('nis', $siswa->nis)->delete();
             return;
         }
 
-        // Tentukan level PH tertinggi berdasarkan poin_total
         $level = null;
         if ($poinTotal >= 151) {
             $level = 'PH3';
@@ -339,38 +229,33 @@ class SiswaController extends Controller
         if ($level) {
             $penghargaan = penghargaan::firstOrCreate(
                 ['level_penghargaan' => $level],
-                ['tanggal_penghargaan' => now(), 'alasan' => "Penghargaan otomatis – Poin total sesuai rentang"]
+                ['tanggal_penghargaan' => now(), 'alasan' => 'Penghargaan otomatis – Poin total sesuai rentang']
             );
 
             if (!siswa_penghargaan::where('nis', $siswa->nis)->where('id_penghargaan', $penghargaan->id_penghargaan)->exists()) {
                 siswa_penghargaan::create(['nis' => $siswa->nis, 'id_penghargaan' => $penghargaan->id_penghargaan]);
-
                 ActivityLog::create([
-                    'user_id' => Auth::id() ?? 1,
-                    'nis' => $siswa->nis,
-                    'kategori' => 'Apresiasi',
-                    'activity' => 'Penghargaan Otomatis',
+                    'user_id'     => Auth::id() ?? 1,
+                    'nis'         => $siswa->nis,
+                    'kategori'    => 'Apresiasi',
+                    'activity'    => 'Penghargaan Otomatis',
                     'description' => "Mendapatkan {$level}",
-                    'point' => 0,
+                    'point'       => 0,
                 ]);
             }
 
-            // hapus relasi penghargaan lain yang tidak sesuai level ini
             $otherPengh = siswa_penghargaan::where('nis', $siswa->nis)
                 ->whereHas('penghargaan', fn($q) => $q->where('level_penghargaan', '!=', $level));
-            if ($otherPengh->exists()) $otherPengh->delete();
+            if ($otherPengh->exists()) {
+                $otherPengh->delete();
+            }
         } else {
-            // tidak masuk rentang PH -> hapus relasi PH
             siswa_penghargaan::where('nis', $siswa->nis)->delete();
         }
     }
 
-    /**
-     * Cek dan buat SP otomatis berdasarkan poin total (negatif)
-     */
     private function cekSPOtomatis($siswa, $poinTotal)
     {
-        // Tentukan level SP tertinggi jika memenuhi
         $level = null;
         if ($poinTotal <= -76) {
             $level = 'SP3';
@@ -381,17 +266,15 @@ class SiswaController extends Controller
         }
 
         if ($level) {
-            // hapus semua penghargaan relasi siswa kalau SP tercapai
             siswa_penghargaan::where('nis', $siswa->nis)->delete();
-
             $this->buatSP($siswa, $level, 'poin sesuai rentang');
 
-            // hapus SP lain yang tidak relevan
             $otherSP = siswa_sp::where('nis', $siswa->nis)
                 ->whereHas('peringatan', fn($q) => $q->where('level_sp', '!=', $level));
-            if ($otherSP->exists()) $otherSP->delete();
+            if ($otherSP->exists()) {
+                $otherSP->delete();
+            }
         } else {
-            // tidak memenuhi SP -> hapus relasi SP
             siswa_sp::where('nis', $siswa->nis)->delete();
         }
     }
@@ -400,48 +283,38 @@ class SiswaController extends Controller
     {
         $sp = surat_peringatan::firstOrCreate(
             ['level_sp' => $level],
-            [
-                'tanggal_sp' => now(),
-                'alasan' => "Surat Peringatan otomatis – {$keterangan}",
-            ]
+            ['tanggal_sp' => now(), 'alasan' => "Surat Peringatan otomatis – {$keterangan}"]
         );
 
         if (!siswa_sp::where('nis', $siswa->nis)->where('id_sp', $sp->id_sp)->exists()) {
-            siswa_sp::create([
-                'nis' => $siswa->nis,
-                'id_sp' => $sp->id_sp,
-            ]);
-
+            siswa_sp::create(['nis' => $siswa->nis, 'id_sp' => $sp->id_sp]);
             ActivityLog::create([
-                'user_id' => Auth::id() ?? 1,
-                'nis' => $siswa->nis,
-                'kategori' => 'Pelanggaran',
-                'activity' => 'Surat Peringatan Otomatis',
+                'user_id'     => Auth::id() ?? 1,
+                'nis'         => $siswa->nis,
+                'kategori'    => 'Pelanggaran',
+                'activity'    => 'Surat Peringatan Otomatis',
                 'description' => "Mendapatkan {$level} ({$keterangan})",
-                'point' => 0,
+                'point'       => 0,
             ]);
         }
     }
 
-
     public function update(Request $request, $nis)
     {
         $request->validate([
-            'nis' => 'required|integer',
+            'nis'        => 'required|integer',
             'nama_siswa' => 'required|string',
-            'id_kelas' => 'required|string',
+            'id_kelas'   => 'required|string',
         ]);
 
         $siswa = siswa::where('nis', $nis)->firstOrFail();
-
         $siswa->update([
-            'nis' => $request->nis,
+            'nis'        => $request->nis,
             'nama_siswa' => $request->nama_siswa,
-            'id_kelas' => $request->id_kelas,
+            'id_kelas'   => $request->id_kelas,
         ]);
 
-        $redirectTo = $request->input('redirect_to');
-        if ($redirectTo === 'show') {
+        if ($request->input('redirect_to') === 'show') {
             return redirect()->route('siswa.show', $siswa->nis)->with('success', 'Data berhasil diperbarui.');
         }
 
@@ -460,9 +333,11 @@ class SiswaController extends Controller
 
         return redirect()->route('siswa.index')->with('success', 'Siswa berhasil dihapus');
     }
+
     public function destroyPenghargaan(string $nis, int $id)
     {
         $penghargaanList = siswa_penghargaan::where('id', $id)->where('nis', $nis)->first();
+
         if (!$penghargaanList) {
             return back()->with('error', 'Penghargaan tidak ditemukan');
         }
@@ -471,24 +346,27 @@ class SiswaController extends Controller
 
         return back()->with('success', 'Penghargaan berhasil dihapus');
     }
+
     public function destroyPeringatan(string $nis, int $id)
     {
         $peringatanList = siswa_sp::where('id', $id)->where('nis', $nis)->first();
+
         if (!$peringatanList) {
-            return back()->with('error', 'Penghargaan tidak ditemukan');
+            return back()->with('error', 'Peringatan tidak ditemukan');
         }
 
         $peringatanList->delete();
 
-        return back()->with('success', 'Penghargaan berhasil dihapus');
+        return back()->with('success', 'Peringatan berhasil dihapus');
     }
+
     public function exportPdf(Request $request)
     {
-        $query = siswa::with('kelas');
+        $query = siswa::with(['kelas.jurusan']);
 
         if ($request->filled('jurusan')) {
-            $query->whereHas('kelas', function ($q) use ($request) {
-                $q->where('jurusan', $request->jurusan);
+            $query->whereHas('kelas.jurusan', function ($q) use ($request) {
+                $q->where('id_jurusan', $request->jurusan);
             });
         }
 
@@ -497,18 +375,18 @@ class SiswaController extends Controller
         }
 
         $siswa = $query->get();
+        $pdf   = Pdf::loadView('Export.siswa.pdf', compact('siswa'));
 
-        $pdf = Pdf::loadView('Export.siswa.pdf', compact('siswa'));
         return $pdf->download('Data_Siswa.pdf');
     }
 
     public function exportExcel(Request $request)
     {
-        $query = siswa::with('kelas');
+        $query = siswa::with(['kelas.jurusan']);
 
         if ($request->filled('jurusan')) {
-            $query->whereHas('kelas', function ($q) use ($request) {
-                $q->where('jurusan', $request->jurusan);
+            $query->whereHas('kelas.jurusan', function ($q) use ($request) {
+                $q->where('id_jurusan', $request->jurusan);
             });
         }
 
@@ -523,11 +401,8 @@ class SiswaController extends Controller
 
     public function import(Request $request)
     {
-        $siswa = siswa::all();
-
         $request->validate([
             'file' => 'required|mimes:xlsx,xls,csv|max:10240',
-
         ]);
 
         Excel::import(new Siswa_Import, $request->file('file'));
@@ -537,27 +412,23 @@ class SiswaController extends Controller
 
     public function naikKelasSemua()
     {
-        $semuaKelas = Kelas::all();
+        $semuaKelas = kelas::all();
 
         foreach ($semuaKelas as $kelasAsal) {
             $kelasTujuan = null;
 
             if (str_starts_with($kelasAsal->id_kelas, 'X-')) {
-
                 $kelasTujuan = str_replace('X-', 'XI-', $kelasAsal->id_kelas);
             } elseif (str_starts_with($kelasAsal->id_kelas, 'XI-')) {
-
                 $kelasTujuan = str_replace('XI-', 'XII-', $kelasAsal->id_kelas);
             } elseif (str_starts_with($kelasAsal->id_kelas, 'XII-')) {
-
                 continue;
             }
 
-
-            $kelasTujuanData = Kelas::where('id_kelas', $kelasTujuan)->first();
+            $kelasTujuanData = kelas::where('id_kelas', $kelasTujuan)->first();
 
             if ($kelasTujuanData) {
-                Siswa::where('id_kelas', $kelasAsal->id_kelas)
+                siswa::where('id_kelas', $kelasAsal->id_kelas)
                     ->update(['id_kelas' => $kelasTujuanData->id_kelas]);
             }
         }
@@ -567,44 +438,38 @@ class SiswaController extends Controller
 
     public function skoringPenghargaan(Request $request)
     {
-
         $request->validate([
-
             'nis'               => 'required',
             'id_aspekpenilaian' => 'required',
         ]);
 
-        // Ambil skor & uraian dari aspek_penilaian
         $aspek  = aspek_penilaian::findOrFail($request->id_aspekpenilaian);
         $skor   = (int) $aspek->indikator_poin;
         $uraian = $aspek->uraian;
         $user   = Auth::user();
 
-        // Simpan penilaian
         penilaian::create([
-
             'nis'               => $request->nis,
             'id_aspekpenilaian' => $request->id_aspekpenilaian,
-            'nip_bk'        => $user->gurubk->nip_bk ?? null,
-            'nip_walikelas' =>  null,
-            'nip_wakasek'   => $user->wakasek->nip_wakasek ?? null,
+            'nip_bk'            => $user->gurubk->nip_bk ?? null,
+            'nip_walikelas'     => null,
+            'nip_wakasek'       => $user->wakasek->nip_wakasek ?? null,
             'created_at'        => now(),
         ]);
 
-        // Update poin siswa
         $siswa = siswa::where('nis', $request->nis)->first();
+
         if ($siswa) {
             $siswa->poin_apresiasi += $skor;
             $siswa->poin_total     += $skor;
             $siswa->save();
 
-            // Simpan log aktivitas (pakai query builder agar kategori pasti tersimpan)
             DB::table('activity_logs')->insert([
                 'user_id'     => $user->id,
                 'nis'         => $siswa->nis,
                 'kategori'    => 'Apresiasi',
                 'activity'    => 'Tambah Penghargaan',
-                'description' => $uraian,   // uraian dari aspek_penilaian
+                'description' => $uraian,
                 'point'       => $skor,
                 'created_at'  => now(),
                 'updated_at'  => now(),
@@ -615,48 +480,40 @@ class SiswaController extends Controller
             ->with('success', 'Data penghargaan berhasil ditambahkan.');
     }
 
-
     public function skoringPelanggaran(Request $request)
     {
-
         $request->validate([
             'nis'               => 'required',
             'id_aspekpenilaian' => 'required',
         ]);
 
-        $user = Auth::user();
-        $aspek   = aspek_penilaian::findOrFail($request->id_aspekpenilaian);
-        $skor    = (int) $aspek->indikator_poin;
-        $uraian  = $aspek->uraian;
+        $user   = Auth::user();
+        $aspek  = aspek_penilaian::findOrFail($request->id_aspekpenilaian);
+        $skor   = (int) $aspek->indikator_poin;
+        $uraian = $aspek->uraian;
 
-        // Simpan penilaian
         penilaian::create([
-
             'nis'               => $request->nis,
             'id_aspekpenilaian' => $request->id_aspekpenilaian,
-
-            'nip_bk'        => $user->gurubk->nip_bk ?? null,
-            'nip_walikelas' => $user->walikelas->nip_walikelas ?? null,
-            'nip_wakasek'   => $user->wakasek->nip_wakasek ?? null,
+            'nip_bk'            => $user->gurubk->nip_bk ?? null,
+            'nip_walikelas'     => $user->walikelas->nip_walikelas ?? null,
+            'nip_wakasek'       => $user->wakasek->nip_wakasek ?? null,
             'created_at'        => now(),
-
         ]);
 
-        // Update poin siswa
         $siswa = siswa::where('nis', $request->nis)->first();
-        $user = Auth::user();
+
         if ($siswa) {
             $siswa->poin_pelanggaran += $skor;
             $siswa->poin_total       -= $skor;
             $siswa->save();
 
-            // Insert ke activity_logs
             DB::table('activity_logs')->insert([
                 'user_id'     => $user->id,
                 'nis'         => $siswa->nis,
                 'kategori'    => 'Pelanggaran',
                 'activity'    => 'Tambah Pelanggaran',
-                'description' => $uraian, // gunakan uraian aspek_penilaian
+                'description' => $uraian,
                 'point'       => $skor,
                 'created_at'  => now(),
                 'updated_at'  => now(),
@@ -666,29 +523,31 @@ class SiswaController extends Controller
         return redirect()->route('siswa.show', $request->nis)
             ->with('success', 'Data Pelanggaran berhasil ditambahkan.');
     }
+
     public function createPenanganan(Request $request, $nis)
     {
         $request->validate([
-            'nis' => 'required',
-            'nama_intervensi' => 'required|string|max:255',
-            'isi_intervensi' => 'required|string|max:1000',
-            'tanggal_Mulai_Perbaikan' => 'required|date',
+            'nis'                       => 'required',
+            'nama_intervensi'           => 'required|string|max:255',
+            'isi_intervensi'            => 'required|string|max:1000',
+            'tanggal_Mulai_Perbaikan'   => 'required|date',
             'tanggal_Selesai_Perbaikan' => 'required|date|after_or_equal:tanggal_Mulai_Perbaikan',
-            'status' => 'required|string|max:50',
-
+            'status'                    => 'required|string|max:50',
         ]);
+
         $user = Auth::user();
+
         intervensi::create([
-            'nis' => $request->nis,
-            'nip_bk' => $user->gurubk->nip_bk ?? null,
-            'nip_walikelas' => $user->walikelas->nip_walikelas ?? null,
-            'nip_wakasek' => $user->wakasek->nip_wakasek ?? null,
-            'nama_intervensi' => $request->nama_intervensi,
-            'isi_intervensi' => $request->isi_intervensi,
-            'tanggal_Mulai_Perbaikan' => $request->tanggal_Mulai_Perbaikan,
+            'nis'                       => $request->nis,
+            'nip_bk'                    => $user->gurubk->nip_bk ?? null,
+            'nip_walikelas'             => $user->walikelas->nip_walikelas ?? null,
+            'nip_wakasek'               => $user->wakasek->nip_wakasek ?? null,
+            'nama_intervensi'           => $request->nama_intervensi,
+            'isi_intervensi'            => $request->isi_intervensi,
+            'tanggal_Mulai_Perbaikan'   => $request->tanggal_Mulai_Perbaikan,
             'tanggal_Selesai_Perbaikan' => $request->tanggal_Selesai_Perbaikan,
-            'status' => $request->status,
-            'created_at' => now(),
+            'status'                    => $request->status,
+            'created_at'                => now(),
         ]);
 
         return redirect()->route('siswa.show', $request->nis)
@@ -697,9 +556,8 @@ class SiswaController extends Controller
 
     public function nonaktif($nis)
     {
-        $siswa = Siswa::where('nis', $nis)->firstOrFail();
+        $siswa = siswa::where('nis', $nis)->firstOrFail();
 
-        // Cegah nonaktif ganda
         if ($siswa->status !== 'aktif') {
             return back()->with('error', 'Siswa sudah tidak aktif');
         }
@@ -709,8 +567,7 @@ class SiswaController extends Controller
             'id_kelas' => 'NONAKTIF',
         ]);
 
-        return redirect()
-            ->route('siswa.show', $nis)
+        return redirect()->route('siswa.show', $nis)
             ->with('success', 'Siswa berhasil dinonaktifkan');
     }
 }

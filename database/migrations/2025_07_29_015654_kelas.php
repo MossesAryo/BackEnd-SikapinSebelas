@@ -10,9 +10,10 @@ return new class extends Migration {
         Schema::create('kelas', function (Blueprint $table) {
             $table->string('id_kelas')->unique();
             $table->string('nama_kelas');
-            $table->string('jurusan');
+            $table->string('id_jurusan')->nullable();
             $table->timestamps();
-
+            
+            $table->foreign('id_jurusan')->references('id_jurusan')->on('jurusan')->onDelete('cascade');
 
         });
 

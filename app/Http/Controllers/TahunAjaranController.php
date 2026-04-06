@@ -1,113 +1,129 @@
 <?php
-
 namespace App\Http\Controllers;
-
 use Illuminate\Http\Request;
-
 use App\Models\siswa;
 use App\Models\kelas;
+use App\Models\tahunAjaran;
 use Illuminate\Support\Facades\DB;
 
 class TahunAjaranController extends Controller
 {
     public function index()
     {
-        $belumDiproses = siswa::where('status', 'aktif')->exists();
+        $tahunAjaran = tahunAjaran::orderBy('id', 'asc')->get();
+        $tahunAktif  = tahunAjaran::where('status', 'aktif')->first();
 
         $preview = [
-            'x_ke_xi' => 0,
-            'xi_ke_xii' => 0,
-            'alumni' => 0,
+            'x_ke_xi'   => siswa::where('id_kelas', 'like', 'X-%')->where('status', 'aktif')->count(),
+            'xi_ke_xii' => siswa::where('id_kelas', 'like', 'XI-%')->where('status', 'aktif')->count(),
+            'lulus'     => siswa::where('id_kelas', 'like', 'XII-%')->where('status', 'aktif')->count(),
         ];
 
-        if ($belumDiproses) {
-            Siswa::where('status', 'aktif')->each(function ($siswa) use (&$preview) {
-
-                if (str_starts_with($siswa->id_kelas, 'X-')) {
-                    $preview['x_ke_xi']++;
-                } elseif (str_starts_with($siswa->id_kelas, 'XI-')) {
-                    $preview['xi_ke_xii']++;
-                } elseif (str_starts_with($siswa->id_kelas, 'XII-')) {
-                    $preview['alumni']++;
-                }
-            });
-        }
-
         return view('wakasek.tahun_ajaran.index', [
-            'preview' => $preview,
-            'belumDiproses' => $belumDiproses
+            'preview'     => $preview,
+            'tahunAjaran' => $tahunAjaran,
+            'tahunAktif'  => $tahunAktif,
         ]);
     }
 
-
-    public function proses()
+    public function update(Request $request)
     {
-        DB::transaction(function () {
+        $request->validate([
+            'tahun_ajaran_id' => 'required|exists:tahun_ajaran,id'
+        ]);
 
-            siswa::where('status', 'aktif')
-                ->chunkById(100, function ($siswas) {
+        $tahunBaru     = tahunAjaran::find($request->tahun_ajaran_id);
+        $tahunSekarang = tahunAjaran::where('status', 'aktif')->first();
 
-                    foreach ($siswas as $siswa) {
+        if (!$tahunSekarang) {
+            $tahunBaru->update(['status' => 'aktif']);
+            return back()->with('success', 'Tahun ajaran berhasil diaktifkan.');
+        }
 
-                        // ================= XII → ALUMNI =================
-                        if (str_starts_with($siswa->id_kelas, 'XII-')) {
-                            $siswa->update([
-                                'status'   => 'alumni',
-                                'id_kelas' => 'ALUMNI'
-                            ]);
-                            continue;
-                        }
+        if ($tahunSekarang->id === $tahunBaru->id) {
+            return back()->with('success', 'Tahun ajaran ini sudah aktif.');
+        }
 
-                        // ================= XI → XII =================
-                        if (str_starts_with($siswa->id_kelas, 'XI-')) {
-                            $nextIdKelas = str_replace('XI-', 'XII-', $siswa->id_kelas);
-                        }
-                        // ================= X → XI =================
-                        elseif (str_starts_with($siswa->id_kelas, 'X-')) {
-                            $nextIdKelas = str_replace('X-', 'XI-', $siswa->id_kelas);
-                        } else {
-                            continue;
-                        }
+        $selisih = $tahunBaru->id - $tahunSekarang->id;
 
-                        // ================= VALIDASI KELAS =================
-                        if (! kelas::where('id_kelas', $nextIdKelas)->exists()) {
-                            continue;
-                        }
-
-                        // ================= UPDATE SISWA =================
-                        $siswa->update([
-                            'id_kelas' => $nextIdKelas
-                        ]);
-                    }
-                });
-        });
-
-        return redirect()
-            ->route('tahun_ajaran.index')
-            ->with('success', 'Kenaikan kelas berhasil diproses');
-    }
-
-
-
-    public function preview()
-    {
-        $data = [
-            'x_ke_xi' => 0,
-            'xi_ke_xii' => 0,
-            'alumni' => 0,
-        ];
-
-        siswa::where('status', 'aktif')->each(function ($siswa) use (&$data) {
-
-            if (str_starts_with($siswa->id_kelas, 'X-')) {
-                $data['x_ke_xi']++;
-            } elseif (str_starts_with($siswa->id_kelas, 'XI-')) {
-                $data['xi_ke_xii']++;
-            } elseif (str_starts_with($siswa->id_kelas, 'XII-')) {
-                $data['alumni']++;
+        DB::transaction(function () use ($selisih, $tahunSekarang, $tahunBaru) {
+            if ($selisih > 0) {
+                for ($i = 0; $i < $selisih; $i++) {
+                    $this->naikKelas();
+                }
+            } elseif ($selisih < 0) {
+                for ($i = 0; $i < abs($selisih); $i++) {
+                    $this->turunKelas();
+                }
             }
+
+            $tahunSekarang->update(['status' => 'nonaktif']);
+            $tahunBaru->update(['status' => 'aktif']);
         });
 
-        return $data;
+        return back()->with('success', 'Tahun ajaran berhasil diubah.');
     }
+
+   private function naikKelas(): void
+{
+    // Proses XII dulu → alumni
+    siswa::where('status', 'aktif')
+        ->where('id_kelas', 'like', 'XII-%')
+        ->each(function ($s) {
+            [$tingkat, $jurusan, $nomor] = array_pad(explode('-', $s->id_kelas, 3), 3, null);
+            if (!$jurusan || !$nomor) return;
+
+            $s->id_kelas = null;
+            $s->status   = 'alumni';
+            $s->save();
+        });
+
+    // Lalu XI → XII
+    siswa::where('status', 'aktif')
+        ->where('id_kelas', 'like', 'XI-%')
+        ->each(function ($s) {
+            [$tingkat, $jurusan, $nomor] = array_pad(explode('-', $s->id_kelas, 3), 3, null);
+            if (!$jurusan || !$nomor) return;
+
+            $s->id_kelas = "XII-{$jurusan}-{$nomor}";
+            $s->save();
+        });
+
+    // Terakhir X → XI
+    siswa::where('status', 'aktif')
+        ->where('id_kelas', 'like', 'X-%')
+        ->each(function ($s) {
+            [$tingkat, $jurusan, $nomor] = array_pad(explode('-', $s->id_kelas, 3), 3, null);
+            if (!$jurusan || !$nomor) return;
+
+            $s->id_kelas = "XI-{$jurusan}-{$nomor}";
+            $s->save();
+        });
+}
+
+private function turunKelas(): void
+{
+    // Proses X dulu → tidak berubah, skip
+    // XI → X dulu
+    siswa::where('status', 'aktif')
+        ->where('id_kelas', 'like', 'XI-%')
+        ->each(function ($s) {
+            [$tingkat, $jurusan, $nomor] = array_pad(explode('-', $s->id_kelas, 3), 3, null);
+            if (!$jurusan || !$nomor) return;
+
+            $s->id_kelas = "X-{$jurusan}-{$nomor}";
+            $s->save();
+        });
+
+    // Lalu XII → XI
+    siswa::where('status', 'aktif')
+        ->where('id_kelas', 'like', 'XII-%')
+        ->each(function ($s) {
+            [$tingkat, $jurusan, $nomor] = array_pad(explode('-', $s->id_kelas, 3), 3, null);
+            if (!$jurusan || !$nomor) return;
+
+            $s->id_kelas = "XI-{$jurusan}-{$nomor}";
+            $s->save();
+        });
+}
 }

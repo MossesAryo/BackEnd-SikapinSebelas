@@ -125,16 +125,16 @@
                                     </div>
                                 </td>
                                 <td class="px-6 py-4">
-                                    <div class="text-sm font-semibold text-gray-900">{{ $item->jurusan }}</div>
+                                    <div class="text-sm font-semibold text-gray-900">{{ $item->nama_jurusan}}</div>
                                 </td>
-                                <td class="px-6 py-4">
+                                <td class="px-6 py-4">  
                                     <div class="text-sm font-semibold text-gray-900">{{ $item->nama_kelas }}</div>
                                 </td>
                                 @if (auth()->user()->role == 1)
                                     <td class="px-6 py-4">
                                         <div class="flex items-center gap-1">
                                             <button
-                                                onclick="openEditModal('{{ $item->id_kelas }}', '{{ $item->nama_kelas }}', '{{ $item->jurusan }}')"
+                                                onclick="openEditModal('{{ $item->id_kelas }}', '{{ $item->nama_kelas }}', '{{ $item->id_jurusan }}')"
                                                 class="action-btn inline-flex items-center justify-center w-9 h-9 text-blue-600 hover:text-blue-800 hover:bg-blue-50 rounded-full"
                                                 title="Edit Kelas">
                                                 <i class="bi bi-pencil-square text-sm"></i>

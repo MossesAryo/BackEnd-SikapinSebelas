@@ -147,14 +147,18 @@
                                             <div
                                                 class="w-2 h-2 bg-blue-400 rounded-full mr-3 opacity-0 group-hover:opacity-100 transition-opacity">
                                             </div>
-                                            <span class="text-sm font-medium text-gray-900">{{ $item->nis }}</span>
+                                            <span class="text-sm font-medium text-gray-900">{{ $item->nis  }}</span>
                                         </div>
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap">
                                         <div class="text-sm font-semibold text-gray-900">{{ $item->nama_siswa }}</div>
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap">
-                                        <div class="text-sm font-semibold text-gray-900">{{ $item->kelas->nama_kelas }}
+                                        <div class="text-sm font-semibold text-gray-900">@if ($item->id_kelas != 'ALUMNI')
+                                          {{$item->kelas->nama_kelas ?? $item->id_jurusan ?? '-' }}
+                                        @else
+                                           Alumni  
+                                        @endif
                                         </div>
                                     </td>
 

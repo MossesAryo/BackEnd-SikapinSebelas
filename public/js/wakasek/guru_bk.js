@@ -20,7 +20,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
     let debounceTimer = null;
 
-    // Simpan halaman terakhir sebelum search
     let lastPageUrl = window.location.href;
 
     function fetchData(url) {
@@ -45,7 +44,6 @@ document.addEventListener("DOMContentLoaded", () => {
             link.addEventListener("click", function (e) {
                 e.preventDefault();
 
-                // Simpan page terakhir sebelum search
                 lastPageUrl = this.href;
 
                 fetchData(this.href);
@@ -55,7 +53,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
     activatePaginationLinks();
 
-    // Auto search
     input.addEventListener("keyup", function () {
         clearTimeout(debounceTimer);
 
@@ -63,12 +60,10 @@ document.addEventListener("DOMContentLoaded", () => {
             const query = input.value.trim();
 
             if (query.length === 0) {
-                // User hapus search → kembali ke page terakhir
                 fetchData(lastPageUrl);
                 return;
             }
 
-            // Search selalu mulai dari page 1
             const url = `/gurubk?search=${query}`;
             fetchData(url);
 

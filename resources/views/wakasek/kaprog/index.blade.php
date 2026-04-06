@@ -133,7 +133,7 @@
                                 </td>
 
                                 <td class="px-6 py-4 whitespace-nowrap">
-                                    <span class="text-lg font-bold text-black">{{ $item->jurusan }}</span>
+                                    <span class="text-lg font-bold text-black">{{ $item->id_jurusan }}</span>
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap">
                                     <div class="flex items-center gap-1">

@@ -60,27 +60,32 @@
              <div class="flex flex-col md:flex-row gap-2 items-center justify-between">
                  <div class="relative w-full md:w-64">
                      <i class="bi bi-search absolute left-3 top-2.5 text-gray-400"></i>
-                     <input  id="inputSearch" type="text" placeholder="Cari Akumulasi.."
+                     <input id="inputSearch" type="text" placeholder="Cari Akumulasi.."
                          class="pl-10 pr-4 py-1.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent w-full">
                  </div>
                  <div class="flex gap-2">
-                    @if (auth()->user()->role == 1 || auth()->user()->role == 2 || auth()->user()->role == 4)
-                    @php
-                        $filterCount = collect(request()->except(['page','search','_token','_method']))->filter(function($v){ return $v !== null && $v !== ''; })->count();
-                    @endphp
-                    <button onclick="openfilterModal()"
-                        class="px-3 py-1.5 border border-gray-300 rounded-lg hover:bg-gray-50 flex items-center gap-1.5">
-                        <i class="bi bi-funnel"></i> Filter
-                        @if($filterCount > 0)
-                            <span class="ml-2 inline-flex items-center justify-center bg-blue-600 text-white text-xs font-semibold rounded-full w-6 h-6">{{ $filterCount }}</span>
-                        @endif
-                    </button>
-                    @endif
-                    @if (auth()->user()->role == 1)
-                     <button onclick="openModal('exportImportModal')"
-                         class="px-3 py-1.5 border border-gray-300 rounded-lg hover:bg-gray-50 flex items-center gap-1.5">
-                         <i class="bi bi-download"></i> Export
-                     </button>
+                     @if (auth()->user()->role == 1 || auth()->user()->role == 2 || auth()->user()->role == 4)
+                         @php
+                             $filterCount = collect(request()->except(['page', 'search', '_token', '_method']))
+                                 ->filter(function ($v) {
+                                     return $v !== null && $v !== '';
+                                 })
+                                 ->count();
+                         @endphp
+                         <button onclick="openfilterModal()"
+                             class="px-3 py-1.5 border border-gray-300 rounded-lg hover:bg-gray-50 flex items-center gap-1.5">
+                             <i class="bi bi-funnel"></i> Filter
+                             @if ($filterCount > 0)
+                                 <span
+                                     class="ml-2 inline-flex items-center justify-center bg-blue-600 text-white text-xs font-semibold rounded-full w-6 h-6">{{ $filterCount }}</span>
+                             @endif
+                         </button>
+                     @endif
+                     @if (auth()->user()->role == 1)
+                         <button onclick="openModal('exportImportModal')"
+                             class="px-3 py-1.5 border border-gray-300 rounded-lg hover:bg-gray-50 flex items-center gap-1.5">
+                             <i class="bi bi-download"></i> Export
+                         </button>
                      @endif
                  </div>
              </div>
@@ -117,30 +122,33 @@
                      <tbody id="tableBody" class="bg-white divide-y divide-gray-100">
                          @forelse ($siswa as $item)
                              <tr class="hover:bg-gray-50 group">
-                                <td class="px-6 py-4 whitespace-nowrap">{{ ($siswa->firstItem() ?? 0) + $loop->iteration - 1 }}</td>
+                                 <td class="px-6 py-4 whitespace-nowrap">
+                                     {{ ($siswa->firstItem() ?? 0) + $loop->iteration - 1 }}</td>
                                  <td class="px-6 py-4 whitespace-nowrap">{{ $item->nis }}</td>
                                  <td class="px-6 py-4 whitespace-nowrap">{{ $item->nama_siswa }}</td>
-                                 <td class="px-6 py-4 whitespace-nowrap">{{ $item->kelas->nama_kelas }}</td>
+                                 <td class="px-6 py-4 whitespace-nowrap">
+                                     {{ $item->kelas->nama_kelas ?? ($item->id_jurusan ?? '-') }}</td>
                                  <td class="px-6 py-4 whitespace-nowrap">{{ $item->poin_pelanggaran ?? 0 }}</td>
                                  <td class="px-6 py-4 whitespace-nowrap">{{ $item->poin_apresiasi ?? 0 }}</td>
                                  <td class="px-6 py-4 whitespace-nowrap">{{ $item->poin_total ?? 0 }}</td>
                              </tr>
                          @empty
-<tr id="emptyState">
-    <td colspan="7" class="px-6 py-20 text-center">
-        <div class="mx-auto w-28 h-28 bg-gradient-to-br from-gray-50 to-gray-100 rounded-full flex items-center justify-center mb-6 shadow-xl border-4 border-white">
-            <i class="bi bi-calculator-fill text-6xl text-gray-600 drop-shadow-lg"></i>
-        </div>
+                             <tr id="emptyState">
+                                 <td colspan="7" class="px-6 py-20 text-center">
+                                     <div
+                                         class="mx-auto w-28 h-28 bg-gradient-to-br from-gray-50 to-gray-100 rounded-full flex items-center justify-center mb-6 shadow-xl border-4 border-white">
+                                         <i class="bi bi-calculator-fill text-6xl text-gray-600 drop-shadow-lg"></i>
+                                     </div>
 
-        <h3 class="text-2xl font-bold text-gray-900 mb-3">Belum Ada Data Akumulasi</h3>
-        <p class="text-gray-600 text-lg max-w-md mx-auto leading-relaxed">
-            Sistem belum dapat menghitung akumulasi poin karena belum ada data.
-        </p>
-        <p class="text-gray-500 text-base mt-3">
-            Tambahkan penghargaan atau pelanggaran untuk melihat total poin siswa.
-        </p>
-    </td>
-</tr>
+                                     <h3 class="text-2xl font-bold text-gray-900 mb-3">Belum Ada Data Akumulasi</h3>
+                                     <p class="text-gray-600 text-lg max-w-md mx-auto leading-relaxed">
+                                         Sistem belum dapat menghitung akumulasi poin karena belum ada data.
+                                     </p>
+                                     <p class="text-gray-500 text-base mt-3">
+                                         Tambahkan penghargaan atau pelanggaran untuk melihat total poin siswa.
+                                     </p>
+                                 </td>
+                             </tr>
                          @endforelse
                      </tbody>
                  </table>
@@ -260,68 +268,68 @@
          });
 
 
-           // Search functionality
-    document.addEventListener("DOMContentLoaded", () => {
-    const input = document.getElementById("inputSearch");
-    const tableBody = document.getElementById("tableBody");
-    const pagination = document.getElementById("pagination");
+         // Search functionality
+         document.addEventListener("DOMContentLoaded", () => {
+             const input = document.getElementById("inputSearch");
+             const tableBody = document.getElementById("tableBody");
+             const pagination = document.getElementById("pagination");
 
-    let debounceTimer = null;
+             let debounceTimer = null;
 
-    // Simpan halaman terakhir sebelum search
-    let lastPageUrl = window.location.href;
+             // Simpan halaman terakhir sebelum search
+             let lastPageUrl = window.location.href;
 
-    function fetchData(url) {
-        fetch(url)
-            .then(res => res.text())
-            .then(html => {
-                const parser = new DOMParser();
-                const doc = parser.parseFromString(html, "text/html");
+             function fetchData(url) {
+                 fetch(url)
+                     .then(res => res.text())
+                     .then(html => {
+                         const parser = new DOMParser();
+                         const doc = parser.parseFromString(html, "text/html");
 
-                tableBody.innerHTML = doc.querySelector("#tableBody").innerHTML;
-                pagination.innerHTML = doc.querySelector("#pagination").innerHTML;
+                         tableBody.innerHTML = doc.querySelector("#tableBody").innerHTML;
+                         pagination.innerHTML = doc.querySelector("#pagination").innerHTML;
 
-                activatePaginationLinks();
-            })
-            .catch(err => console.error("ERR:", err));
-    }
+                         activatePaginationLinks();
+                     })
+                     .catch(err => console.error("ERR:", err));
+             }
 
-    function activatePaginationLinks() {
-        const links = document.querySelectorAll("#pagination a");
+             function activatePaginationLinks() {
+                 const links = document.querySelectorAll("#pagination a");
 
-        links.forEach(link => {
-            link.addEventListener("click", function (e) {
-                e.preventDefault();
+                 links.forEach(link => {
+                     link.addEventListener("click", function(e) {
+                         e.preventDefault();
 
-                // Simpan page terakhir sebelum search
-                lastPageUrl = this.href;
+                         // Simpan page terakhir sebelum search
+                         lastPageUrl = this.href;
 
-                fetchData(this.href);
-            });
-        });
-    }
+                         fetchData(this.href);
+                     });
+                 });
+             }
 
-    activatePaginationLinks();
+             activatePaginationLinks();
 
-    // Auto search
-    input.addEventListener("keyup", function () {
-        clearTimeout(debounceTimer);
+             // Auto search
+             input.addEventListener("keyup", function() {
+                 clearTimeout(debounceTimer);
 
-        debounceTimer = setTimeout(() => {
-            const query = input.value.trim();
+                 debounceTimer = setTimeout(() => {
+                     const query = input.value.trim();
 
-            if (query.length === 0) {
-                // User hapus search → kembali ke page terakhir
-                fetchData(lastPageUrl);
-                return;
-            }
+                     if (query.length === 0) {
+                         // User hapus search → kembali ke page terakhir
+                         fetchData(lastPageUrl);
+                         return;
+                     }
 
-            // Search selalu mulai dari page 1
-            const url = `/akumulasi?search=${query}`;
-            fetchData(url);
+                     // Search selalu mulai dari page 1
+                     const url = `/akumulasi?search=${query}`;
+                     fetchData(url);
 
-        }, 200);
-    });
-});
+                 }, 200);
+             });
+         });
      </script>
  @endpush

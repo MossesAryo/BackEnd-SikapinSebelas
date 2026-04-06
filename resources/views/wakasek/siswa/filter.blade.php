@@ -25,8 +25,8 @@
                 <select id="jurusan" name="jurusan" class="w-full rounded-xl border-2 border-gray-200 px-4 py-3 focus:ring-4 focus:ring-blue-100 focus:border-blue-500">
                     <option value="">-- Pilih Jurusan --</option>
                     @foreach ($jurusanList as $jurusan)
-                        <option value="{{ $jurusan }}" {{ request('jurusan') == $jurusan ? 'selected' : '' }}>
-                            {{ $jurusan }}
+                        <option value="{{ $jurusan->id_jurusan }}" {{ request('jurusan') == $jurusan->id_jurusan ? 'selected' : '' }}>
+                            {{ $jurusan->id_jurusan }} 
                         </option>
                     @endforeach
                 </select>
@@ -40,10 +40,10 @@
                 <select id="kelas" name="kelas" class="w-full rounded-xl border-2 border-gray-200 px-4 py-3 focus:ring-4 focus:ring-blue-100 focus:border-blue-500">
                     <option value="">-- Pilih Kelas --</option>
                     @foreach ($kelasList as $kelas)
-                        <option value="{{ $kelas->id_kelas }}" data-jurusan="{{ $kelas->jurusan }}"
-                            {{ request('kelas') == $kelas->id_kelas ? 'selected' : '' }}>
-                            {{ $kelas->nama_kelas }}
-                        </option>
+                       <option value="{{ $kelas->id_kelas }}" data-jurusan="{{ $kelas->id_jurusan }}"
+    {{ request('kelas') == $kelas->id_kelas ? 'selected' : '' }}>
+    {{ $kelas->nama_kelas }}
+</option>
                     @endforeach
                 </select>
             </div>
@@ -67,15 +67,37 @@
 </div>
 
 <script>
-    document.getElementById('jurusan')?.addEventListener('change', function() {
-        let selected = this.value;
-        document.querySelectorAll('#kelas option').forEach(opt => {
-            if (!opt.value) return;
-            opt.style.display = (opt.dataset.jurusan === selected || !selected) ? 'block' : 'none';
-        });
-        document.getElementById('kelas').value = "";
+function filterKelas() {
+    const jurusanEl = document.getElementById('jurusan');
+    const kelasEl   = document.getElementById('kelas');
+    if (!jurusanEl || !kelasEl) return;
+
+    const selected = String(jurusanEl.value).trim();
+
+    Array.from(kelasEl.options).forEach(opt => {
+        if (!opt.value) return; // skip placeholder
+
+        const optJurusan = String(opt.getAttribute('data-jurusan') || '').trim();
+
+        if (!selected || optJurusan === selected) {
+            opt.hidden   = false;
+            opt.disabled = false;
+        } else {
+            opt.hidden   = true;
+            opt.disabled = true;
+        }
     });
-    document.addEventListener('DOMContentLoaded', () => {
-        document.getElementById('jurusan')?.dispatchEvent(new Event('change'));
-    });
+
+    // Reset kelas if selected option is now hidden
+    const current = kelasEl.options[kelasEl.selectedIndex];
+    if (current && current.value && current.hidden) {
+        kelasEl.value = '';
+    }
+}
+
+document.getElementById('jurusan')?.addEventListener('change', filterKelas);
+
+document.addEventListener('DOMContentLoaded', filterKelas);
+
+window.initFilterModal = filterKelas; // call this from openModal()
 </script>

@@ -57,7 +57,7 @@
             <div class="bg-white rounded-2xl p-8 shadow-sm h-full">
                 <h2
                     class="text-xl font-semibold text-slate-800 mb-6 relative pb-2 after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-[30px] after:h-0.5 after:bg-blue-600 after:rounded-sm">
-                    Informasi Profile
+                    Informasi Profil
                 </h2>
                 <div class="space-y-4">
                     <div class="grid grid-cols-1 md:grid-cols-[140px_1fr] gap-4 py-3 border-b border-slate-100">

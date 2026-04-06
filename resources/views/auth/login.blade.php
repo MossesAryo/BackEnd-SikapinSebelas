@@ -4,156 +4,258 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SIKAPIN SEBELAS - Login</title>
+    <title>SIJUWARA - Login</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
-        .gradient-bg {
-            background: linear-gradient(135deg, #56A6E8 0%, #56A6E8 100%);
+        * { font-family: 'Plus Jakarta Sans', sans-serif; }
+
+        body { background: #f0f6ff; }
+
+        .right-panel {
+            background: linear-gradient(160deg, #f0f6ff 0%, #e8f2ff 50%, #ddeeff 100%);
+            position: relative;
+            overflow: hidden;
         }
 
-        .floating-shape {
-            animation: float 6s ease-in-out infinite;
+        .right-panel::before {
+            content: '';
+            position: absolute;
+            top: -120px; right: -120px;
+            width: 400px; height: 400px;
+            background: radial-gradient(circle, rgba(86,166,232,0.15) 0%, transparent 70%);
+            border-radius: 50%;
         }
 
-        .floating-shape:nth-child(2) {
-            animation-delay: -2s;
+        .right-panel::after {
+            content: '';
+            position: absolute;
+            bottom: -80px; left: -80px;
+            width: 320px; height: 320px;
+            background: radial-gradient(circle, rgba(86,166,232,0.12) 0%, transparent 70%);
+            border-radius: 50%;
         }
 
-        .floating-shape:nth-child(3) {
-            animation-delay: -4s;
+        .input-field {
+            width: 100%;
+            padding: 12px 16px;
+            background: #f8fafc;
+            border: 1.5px solid #e2e8f0;
+            border-radius: 10px;
+            font-size: 14px;
+            color: #1e293b;
+            transition: all 0.2s ease;
+            outline: none;
         }
 
-        .floating-shape:nth-child(4) {
-            animation-delay: -1s;
+        .input-field:focus {
+            border-color: #56A6E8;
+            background: #fff;
+            box-shadow: 0 0 0 3px rgba(86,166,232,0.1);
         }
 
-        .floating-shape:nth-child(5) {
-            animation-delay: -3s;
+        .input-field::placeholder { color: #94a3b8; }
+
+        .sign-in-btn {
+            width: 100%;
+            padding: 13px;
+            background: linear-gradient(135deg, #56A6E8 0%, #3d8fd4 100%);
+            color: white;
+            font-weight: 700;
+            font-size: 15px;
+            border-radius: 12px;
+            border: none;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            box-shadow: 0 4px 15px rgba(86,166,232,0.35);
         }
 
-        @keyframes float {
-            0%,
-            100% {
-                transform: translateY(0px) rotate(0deg);
-            }
-            50% {
-                transform: translateY(-15px) rotate(5deg);
-            }
+        .sign-in-btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 6px 20px rgba(86,166,232,0.45);
         }
 
-        .phone-3d {
-            transform: perspective(1000px) rotateY(-8deg) rotateX(2deg);
-            filter: drop-shadow(0 25px 50px rgba(0, 0, 0, 0.3));
+        .mockup-img {
+            filter: drop-shadow(0 20px 40px rgba(86,166,232,0.25));
+        }
+
+        .label-text {
+            font-size: 13px;
+            font-weight: 600;
+            color: #475569;
+            margin-bottom: 6px;
+            display: block;
+        }
+
+        .deco-circle {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(86,166,232,0.08);
+        }
+
+        .tagline-box {
+            background: rgba(255,255,255,0.7);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(255,255,255,0.9);
+            border-radius: 16px;
+            padding: 20px 28px;
+            text-align: center;
+            max-width: 440px;
+        }
+
+        .divider {
+            height: 1px;
+            background: linear-gradient(to right, transparent, #e2e8f0, transparent);
+            margin: 24px 0;
+        }
+
+        .alert-error {
+            background: #fef2f2;
+            border-left: 3px solid #f87171;
+            color: #b91c1c;
+            padding: 12px 16px;
+            border-radius: 8px;
+            font-size: 13px;
+            margin-bottom: 20px;
         }
     </style>
 </head>
 
-<body class="min-h-screen flex font-sans">
-    <!-- Left Side -->
-    <div class="w-1/2 flex items-center justify-center bg-white">
-        <div class="w-full max-w-sm" x-data="{ email: '', password: '', isLoading: false, showPassword: false }">
-            <!-- Header -->
-            <div class="text-center mb-10">
-                <h1 class="text-3xl font-bold text-[#56A6E8]">SIJUWARA</h1>
-                <h1 class="text-1xl font-bold text-[#56A6E8]">(Sistem Jurnal Siswa Aktif)</h1>
+<body class="min-h-screen flex" x-data="{ showPassword: false }">
 
+    <!-- ========== LEFT SIDE ========== -->
+    <div class="w-1/2 flex items-center justify-center bg-white px-16 py-12">
+
+        <div class="w-full max-w-[360px]">
+
+            <!-- Logo above form -->
+            <div class="mb-10">
+                <img
+                    src="{{ asset('storage/assets/logowtext.png') }}"
+                    alt="SIJUWARA - Sistem Jurnal Siswa Aktif"
+                    class="h-12 w-auto object-contain"
+                >
+            </div>
+
+            <!-- Heading -->
+            <div class="mb-8">
+                <h2 class="text-[26px] text-[#0f172a] leading-tight mb-2" style="font-weight:800;">
+                    Selamat Datang Kembali
+                </h2>
+                <p class="text-sm text-slate-400 leading-relaxed">
+                    Silakan masukkan detail anda untuk mengakses dasbor
                 </p>
             </div>
 
-            <!-- Session Error Message -->
+            <!-- Alerts -->
             @if (session('error'))
-                <div class="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 mb-6 rounded" role="alert">
-                    <p>{{ session('error') }}</p>
-                </div>
+                <div class="alert-error" role="alert">{{ session('error') }}</div>
             @endif
 
-            <!-- Validation Errors -->
             @if ($errors->any())
-                <div class="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 mb-6 rounded" role="alert">
-                    <ul>
-                        @foreach ($errors->all() as $error)
-                            <li>{{ $error }}</li>
-                        @endforeach
-                    </ul>
+                <div class="alert-error" role="alert">
+                    @foreach ($errors->all() as $error)
+                        <div>{{ $error }}</div>
+                    @endforeach
                 </div>
             @endif
 
             <!-- Form -->
-            <form method="POST" action="{{ route('login.submit') }}" class="space-y-6">
+            <form method="POST" action="{{ route('login.submit') }}" class="space-y-5">
                 @csrf
+
+                <!-- NIP -->
                 <div>
-                    <label class="block text-sm font-semibold text-gray-800 mb-2">NIP</label>
-                    <input type="text" name="nip" value="{{ old('nip') }}"
-                        class="w-full px-4 py-2 bg-[#EAF4FE] rounded-lg border border-gray-300 focus:outline-none focus:border-[#56A6E8] transition-all"
-                        required>
+                    <label class="label-text">NIP</label>
+                    <input
+                        type="text"
+                        name="nip"
+                        value="{{ old('nip') }}"
+                        placeholder="192837363555355"
+                        class="input-field"
+                        required
+                    >
                 </div>
+
+                <!-- Password -->
                 <div>
-                    <label class="block text-sm font-semibold text-gray-800 mb-2">Password</label>
+                    <label class="label-text">Password</label>
                     <div class="relative">
-                        <input :type="showPassword ? 'text' : 'password'" name="password"
-                            class="w-full px-4 py-2 bg-[#EAF4FE] rounded-lg border border-gray-300 focus:outline-none focus:border-[#56A6E8] transition-all"
-                            required>
-                        <button type="button" @click="showPassword = !showPassword"
-                            class="absolute inset-y-0 right-0 flex items-center pr-3 text-gray-500 hover:text-[#56A6E8]">
-                            <svg x-show="!showPassword" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                        <input
+                            :type="showPassword ? 'text' : 'password'"
+                            name="password"
+                            placeholder="••••••••"
+                            class="input-field"
+                            style="padding-right: 44px;"
+                            required
+                        >
+                        <button
+                            type="button"
+                            @click="showPassword = !showPassword"
+                            class="absolute inset-y-0 right-3 flex items-center text-slate-400 hover:text-[#56A6E8] transition-colors"
+                        >
+                            <svg x-show="!showPassword" width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
                             </svg>
-                            <svg x-show="showPassword" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.542-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.542 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21" />
+                            <svg x-show="showPassword" width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.542-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.542 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21"/>
                             </svg>
                         </button>
                     </div>
                 </div>
 
-                <!-- Forgot -->
-                <div class="text-right mt-1">
-                    <a href="#" class="text-[#56A6E8] text-sm hover:underline">Lupa Password?</a>
+                <!-- Forgot Password -->
+                <div class="text-right -mt-1">
+                    <a href="#" class="text-xs text-[#56A6E8] hover:text-[#3d8fd4] font-medium hover:underline transition-colors">
+                        Lupa Password?
+                    </a>
                 </div>
 
-                <!-- Button -->
-                <button type="submit"
-                    class="w-full bg-[#56A6E8] hover:bg-[#4d96d5] text-white font-semibold py-2 rounded-lg shadow-sm transition-colors duration-200"
-                    :disabled="isLoading" :class="{ 'opacity-50 cursor-not-allowed': isLoading }">
-                    LOGIN
+                <!-- Submit -->
+                <button type="submit" class="sign-in-btn">
+                    Sign In
                 </button>
+
             </form>
+
+            <div class="divider"></div>
+            <p class="text-center text-xs text-slate-400">
+                &copy; {{ date('Y') }} SIJUWARA &middot; Sistem Jurnal Siswa Aktif
+            </p>
+
         </div>
     </div>
 
-    <!-- Right Side -->
-    <div class="w-1/2 bg-[#56A6E8] flex flex-col p-8 text-white relative">
-        <!-- Header Top -->
-        <div class="flex items-center mb-10 relative z-10">
-            <div class="w-14 h-14 mr-3 bg-[#EAF4FE] rounded-full flex items-center justify-center">
-                <img src="{{ asset('img/logo-sekolah.png') }}" alt="Logo" class="w-12 h-12 object-contain">
-            </div>
-           
+    <!-- ========== RIGHT SIDE ========== -->
+    <div class="w-1/2 right-panel flex flex-col items-center justify-center px-10 py-10 relative z-10">
+
+        <!-- Decorative circles -->
+        <div class="deco-circle w-64 h-64" style="top:-60px;right:-40px;"></div>
+        <div class="deco-circle w-48 h-48" style="bottom:-30px;left:-20px;"></div>
+        <div class="deco-circle w-20 h-20" style="top:30%;left:8%;background:rgba(86,166,232,0.06);"></div>
+
+        <!-- Mockup Image — bigger, no animation -->
+        <div class="mockup-img mb-7 relative z-10 w-full flex items-center justify-center">
+            <img
+                src="{{ asset('storage/assets/image.png') }}"
+                alt="App Mockup"
+                class="w-full max-w-[520px] object-contain"
+            >
         </div>
 
-        <!-- Content Center -->
-        <div class="flex flex-col flex-grow items-center justify-center text-center relative z-10">
-            <img src="{{ asset('img/logo-hp.png') }}" alt="Mockup HP" class="w-96 mb-0 mt-10" style="transform: translateY(-50px);">
-            <div>
-                <p class="text-sm opacity-90 leading-relaxed">
-                    Mulai dari pencatatan, penilaian, hingga laporan, semuanya ada di satu aplikasi.
-                </p>
-                <p class="text-sm font-semibold mt-1">
-                    Yuk, mulai perjalanan Anda sekarang!
-                </p>
-            </div>
+        <!-- Tagline Card -->
+        <div class="tagline-box relative z-10">
+            <h3 class="font-bold text-[17px] mb-2" style="color:#56A6E8;">
+                Sistem Jurnal Siswa Aktif
+            </h3>
+            <p class="text-slate-500 text-sm leading-relaxed">
+                Mulai dari pencatatan, penilaian, hingga laporan — semuanya ada di satu aplikasi.
+            </p>
         </div>
 
-        <!-- Background Shapes -->
-        <div class="absolute inset-0 overflow-hidden">
-            <div class="absolute w-20 h-20 bg-white/20 rounded-full floating-shape" style="top: 10%; left: 10%;"></div>
-            <div class="absolute w-16 h-16 bg-white/20 rounded-full floating-shape" style="top: 30%; right: 15%;"></div>
-            <div class="absolute w-12 h-12 bg-white/20 rounded-full floating-shape" style="bottom: 20%; left: 20%;"></div>
-            <div class="absolute w-24 h-24 bg-white/20 rounded-full floating-shape" style="bottom: 10%; right: 10%;"></div>
-            <div class="absolute w-18 h-18 bg-white/20 rounded-full floating-shape" style="top: 50%; left: 40%;"></div>
-        </div>
     </div>
+
 </body>
-
 </html>

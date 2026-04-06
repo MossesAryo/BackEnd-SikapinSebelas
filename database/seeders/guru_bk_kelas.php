@@ -63,14 +63,12 @@ class guru_bk_kelas extends Seeder
                 }
 
                 DB::table('guru_bk_kelas')->insert([
-                    'guru_bk_id' => $guru->nip_bk, // karena tabel guru_bk gak punya kolom id
+                    'guru_bk_id' => $guru->nip_bk,
                     'kelas_id'   => $kelas->id_kelas,
                     'created_at' => now(),
                     'updated_at' => now(),
                 ]);
             }
         }
-
-        echo "✅ Seeder guru_bk_kelas selesai!\n";
     }
 }

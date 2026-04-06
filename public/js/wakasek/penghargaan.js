@@ -70,7 +70,6 @@ document.addEventListener("DOMContentLoaded", () => {
                 tableBody.innerHTML = doc.querySelector("#tableBody").innerHTML;
                 pagination.innerHTML = doc.querySelector("#pagination").innerHTML;
 
-                // Re-activate pagination links setelah diganti
                 document.querySelectorAll("#pagination a").forEach(link => {
                     link.addEventListener("click", function (e) {
                         e.preventDefault();
@@ -82,7 +81,6 @@ document.addEventListener("DOMContentLoaded", () => {
             .catch(err => console.error("Fetch error:", err));
     }
 
-    // Search dengan debounce
     input.addEventListener("keyup", function () {
         clearTimeout(debounceTimer);
         debounceTimer = setTimeout(() => {

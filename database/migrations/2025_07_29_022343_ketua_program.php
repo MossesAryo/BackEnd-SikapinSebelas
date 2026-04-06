@@ -4,7 +4,6 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-// 5. Ketua Program
 return new class extends Migration {
     public function up()
     {
@@ -12,9 +11,10 @@ return new class extends Migration {
             $table->bigInteger('nip_kaprog');
             $table->string('username');
             $table->string('nama_ketua_program');
-            $table->string('jurusan');
+            $table->string('id_jurusan');
             $table->timestamps();
             $table->foreign('username')->references('username')->on('users')->onDelete('cascade')->onUpdate('cascade');
+            $table->foreign('id_jurusan')->references('id_jurusan')->on('jurusan')->onDelete('cascade')->onUpdate('cascade');
         });
     }
     public function down()

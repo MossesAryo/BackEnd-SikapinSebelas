@@ -1,5 +1,4 @@
  document.addEventListener("DOMContentLoaded", function() {
-            // Initialize Charts
             const revenueCtx = document.getElementById('revenueChart').getContext('2d');
             const revenueChart = new Chart(revenueCtx, {
                 type: 'bar',
@@ -78,20 +77,16 @@
                 }
             });
 
-            // Toggle button functionality
             document.querySelectorAll('.toggle-btn').forEach(btn => {
                 btn.addEventListener('click', function() {
-                    // Get the parent toggle container
                     const toggleContainer = this.parentElement;
                     const buttons = toggleContainer.querySelectorAll('.toggle-btn');
 
-                    // Remove active state from all buttons in this container
                     buttons.forEach(button => {
                         button.classList.remove('bg-white', 'text-blue-500');
                         button.classList.add('text-gray-600');
                     });
 
-                    // Add active state to clicked button
                     this.classList.add('bg-white', 'text-blue-500');
                     this.classList.remove('text-gray-600');
                 });

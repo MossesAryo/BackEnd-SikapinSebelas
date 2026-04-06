@@ -207,12 +207,28 @@
                     <div class="p-6">
                         <div class="space-y-4">
                             @php
+                                $kelasLabel = $siswa->id_kelas != 'ALUMNI' ? 'Kelas' : 'Jurusan (Alumni)';
+                                $kelasValue =
+                                    $siswa->id_kelas != 'ALUMNI'
+                                        ? $siswa->kelas?->nama_kelas
+                                        : ($siswa->jurusan?->nama_jurusan ?? 'Alumni') . ' (Alumni)';
+
                                 $studentInfo = [
                                     ['label' => 'NIS', 'value' => $siswa->nis],
                                     ['label' => 'Nama Lengkap', 'value' => $siswa->nama_siswa],
-                                    ['label' => 'Kelas', 'value' => $siswa->kelas->nama_kelas],
-                                    ['label' => 'Walikelas', 'value' => $siswa->kelas->walikelas->nama_walikelas ?? ''],
-                                    ['label' => 'Tahun Masuk', 'value' => $siswa->tahun_masuk ?? '2023'],
+                                    ['label' => $kelasLabel, 'value' => $kelasValue],
+                                ];
+
+                                if ($siswa->id_kelas !== 'ALUMNI') {
+                                    $studentInfo[] = [
+                                        'label' => 'Walikelas',
+                                        'value' => $siswa->kelas?->walikelas?->nama_walikelas ?? '-',
+                                    ];
+                                }
+
+                                $studentInfo[] = [
+                                    'label' => 'Tahun Masuk',
+                                    'value' => $siswa->tahun_masuk ?? '2023',
                                 ];
                             @endphp
 
@@ -492,8 +508,7 @@
                 <form method="POST" id="nonaktifForm">
                     @csrf
                     @method('PATCH')
-                    <button
-                        class="px-4 py-2 rounded-lg bg-red-600 text-white hover:bg-red-700 flex items-center gap-2">
+                    <button class="px-4 py-2 rounded-lg bg-red-600 text-white hover:bg-red-700 flex items-center gap-2">
                         <i class="bi bi-check-circle"></i>
                         Ya, Nonaktifkan
                     </button>

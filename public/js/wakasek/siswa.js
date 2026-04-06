@@ -84,7 +84,6 @@ function openEditModal(nis, nama_siswa, id_kelas, redirect_to) {
     document.getElementById('edit_id_kelas').value = id_kelas;
     document.getElementById('redirect_to').value = redirect_to;
 
-    // Tambahan ini yang wajib!
     document.getElementById('form-edit').action = `/siswa/${nis}/update`;
 
     document.getElementById('modal-edit').classList.remove('hidden');
@@ -115,7 +114,6 @@ function openDeletePeringatanModal(nis, id, nama_peringatan) {
     openModal('modal-delete-peringatan');
 }
 
-// Close modal saat klik luar atau tekan Escape
 document.addEventListener('click', e => {
     const modalIds = ['modal-create', 'modal-edit', 'modal-delete', 'modal-filter', 'modal-penghargaan', 'modal-peringatan', 'modal-delete-penghargaan', 'modal-delete-peringatan', 'modal-create-penghargaan', 'modal-create-pelanggaran', 'modal-create-penanganan'];
     modalIds.forEach(id => {
@@ -144,7 +142,6 @@ document.addEventListener("DOMContentLoaded", () => {
     let debounceTimer = null;
     let lastPageUrl = window.location.href;
 
-    // Ambil URL dasar sesuai role (dinamis)
     const baseUrl = window.location.pathname; 
 
     function fetchData(url) {
@@ -183,7 +180,6 @@ document.addEventListener("DOMContentLoaded", () => {
                 if (query.length === 0) {
                     fetchData(lastPageUrl);
                 } else {
-                    // Gunakan url halaman sekarang + search
                     const searchUrl = `${baseUrl}?search=${encodeURIComponent(query)}`;
                     fetchData(searchUrl);
                 }

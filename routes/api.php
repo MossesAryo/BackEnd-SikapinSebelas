@@ -32,7 +32,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/notifikasi',     [NotifikasiController::class,      'index']);
 
     Route::get('/skoring_penghargaan',  [SkoringPenghargaan::class,  'index']);
-    Route::get('/skoring_2pelanggaran', [skoringpelanggaran::class,   'index']);
+    Route::get('/skoring_pelanggaran', [skoringpelanggaran::class,   'index']);    
     Route::post('/skoring_penghargaan', [SkoringPenghargaan::class,  'store']);
     Route::post('/skoring_pelanggaran', [skoringpelanggaran::class,   'store']);
     Route::post('/AddCatatan/{nis}', [catatanController::class, 'AddCatatanAPI']);

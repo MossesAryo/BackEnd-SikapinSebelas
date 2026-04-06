@@ -42,4 +42,8 @@ class siswa extends Model
     {
         return $this->hasMany(siswa_sp::class, 'nis', 'nis');
     }
+     public function jurusan()
+    {
+        return $this->belongsTo(jurusan::class, 'id_jurusan', 'id_jurusan');
+    }
 }

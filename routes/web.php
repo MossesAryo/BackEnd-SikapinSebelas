@@ -47,7 +47,7 @@ Route::middleware(['auth'])->group(function () {
 
     Route::get('/siswa', [SiswaController::class, 'index'])->name('siswa.index');
     Route::get('/siswa/{nis}/show', [SiswaController::class, 'show'])->name('siswa.show');
-    Route::post('/siswa/{nis}/show/penghargaan', [SiswaController::class, 'penghargaan'])->name('siswa.penghargaan');
+    Route::post('/siswa/{nis}/show/penghargaan', [SiswaController::class, 'penghargaan'])->name('siswa.penghargaan');   
     Route::post('/siswa/{nis}/show/peringatan', [SiswaController::class, 'peringatan'])->name('siswa.peringatan');
 
     Route::post('/siswa/{nis}/show/skoringpPenghargaan', [SiswaController::class, 'skoringPenghargaan'])->name('siswa.skoringPenghargaan');
@@ -143,11 +143,7 @@ Route::middleware(['auth'])->group(function () {
     Route::put('/kelas/{id}/update', [KelasController::class, 'update'])->name('kelas.update');
     Route::delete('/kelas/{id}', [KelasController::class, 'destroy'])->name('kelas.destroy');
 
-    Route::get('/ketua-program/kelas', [KelasController::class, 'kelasKetuaProgram'])->name('ketua_program.kelas');
-    Route::get('/ketua-program/siswa', [SiswaController::class, 'siswa_ketua_program'])->name('ketua_program.siswa');
-
-
-    Route::get('/walikelas/siswa', [SiswaController::class, 'siswa_walikelas'])->name('walikelas.siswa');
+    
 
     Route::get('/gurubk', [Guru_bkController::class, 'index'])->name('gurubk.index');
     Route::post('/gurubk/store', [Guru_bkController::class, 'store'])->name('gurubk.store');
@@ -193,7 +189,8 @@ Route::middleware(['auth'])->group(function () {
     Route::put('/intervensi/{id_intervensi}/update', [IntervensiController::class, 'update'])->name('intervensi.update');
     Route::delete('/intervensi/{id_intervensi}/destroy', [IntervensiController::class, 'destroy'])->name('intervensi.destroy');
 
-    Route::get('tahun_ajaran', [TahunAjaranController::class, 'index'])->name('tahun_ajaran.index');
-    Route::post('tahun_ajaran/proses', [TahunAjaranController::class, 'proses'])->name('tahun_ajaran.proses');
-    Route::post('tahun_ajaran/preview', [TahunAjaranController::class, 'preview'])->name('tahun_ajaran.preview');
+    Route::get('tahun-ajaran', [TahunAjaranController::class, 'index'])->name('tahun_ajaran.index');
+    Route::post('tahun-ajaran/naik', [TahunAjaranController::class, 'NaikKelas'])->name('tahun_ajaran.naik');
+    Route::post('tahun-ajaran/turun', [TahunAjaranController::class, 'TurunKelas'])->name('tahun_ajaran.turun');
+    Route::post('tahun-ajaran/update', [TahunAjaranController::class, 'update'])->name('tahun_ajaran.update');
 });
