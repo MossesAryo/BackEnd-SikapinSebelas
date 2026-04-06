@@ -9,6 +9,10 @@ use App\Imports\Surat_Peringatan_Import;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Maatwebsite\Excel\Facades\Excel;
 
+/**
+ * Pengelolaan surat peringatan (SP).
+ * Buat, cetak, dan update status SP siswa.
+ */
 class SuratPeringatanController extends Controller
 {
     public function index(Request $request)

@@ -4,6 +4,10 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * Model penghargaan.
+ * Menyimpan jenis apresiasi serta poin penghargaan.
+ */
 class penghargaan extends Model
 {
     protected $table = 'penghargaan';

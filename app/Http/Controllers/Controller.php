@@ -2,7 +2,11 @@
 
 namespace App\Http\Controllers;
 
-abstract class Controller
+/**
+ * Kelas dasar semua controller aplikasi.
+ * Menyediakan helper/middleware yang dapat dipakai turunan.
+ */
+class Controller
 {
     //
 }

@@ -4,6 +4,10 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * Model riwayat penghargaan siswa.
+ * Menyimpan pemberian apresiasi beserta poin yang diterima.
+ */
 class siswa_penghargaan extends Model
 {
     protected $table = 'siswapenghargaan';

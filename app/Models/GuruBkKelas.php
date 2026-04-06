@@ -4,6 +4,10 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * Pivot guru BK dan kelas.
+ * Menghubungkan guru BK dengan rombel yang dibimbing.
+ */
 class GuruBkKelas extends Model
 {
     protected $table = 'guru_bk_kelas';

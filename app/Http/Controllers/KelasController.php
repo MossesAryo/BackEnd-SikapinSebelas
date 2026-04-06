@@ -10,6 +10,10 @@ use Illuminate\Http\Request;
 use App\Models\ketua_program;
 use Illuminate\Support\Facades\Auth;
 
+/**
+ * Manajemen data kelas beserta jurusan.
+ * CRUD kelas, impor/ekspor, dan relasi wali atau guru BK.
+ */
 class KelasController extends Controller
 {
     public function index(Request $request)

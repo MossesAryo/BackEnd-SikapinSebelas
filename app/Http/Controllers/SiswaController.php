@@ -24,6 +24,10 @@ use Barryvdh\DomPDF\Facade\Pdf;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Facades\Auth;
 
+/**
+ * Manajemen data siswa terpusat.
+ * CRUD, import/export, skoring, intervensi, dan laporan siswa.
+ */
 class SiswaController extends Controller
 {
     public function index(Request $request)

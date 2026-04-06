@@ -4,6 +4,10 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * Model aspek penilaian.
+ * Definisi jenis poin apresiasi/pelanggaran beserta bobotnya.
+ */
 class aspek_penilaian extends Model
 {
     public $incrementing = true; 

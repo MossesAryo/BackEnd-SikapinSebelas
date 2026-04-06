@@ -5,6 +5,10 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
+/**
+ * Autentikasi web pengguna.
+ * Login, logout, dan arahkan dashboard sesuai role.
+ */
 class AuthController extends Controller
 {
     public function showLogin()

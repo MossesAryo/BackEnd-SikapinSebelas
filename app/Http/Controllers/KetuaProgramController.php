@@ -13,6 +13,10 @@ use App\Imports\Ketua_Program_Import;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Maatwebsite\Excel\Facades\Excel;
 
+/**
+ * Kelola data ketua program.
+ * CRUD akun ketua program dan keterkaitan jurusan.
+ */
 class KetuaProgramController extends Controller
 {
     public function index(Request $request)

@@ -4,6 +4,10 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * Model log aktivitas pengguna.
+ * Menyimpan jejak aksi (user, siswa, keterangan) di sistem.
+ */
 class ActivityLog extends Model
 {
     protected $guarded = [

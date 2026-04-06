@@ -10,6 +10,10 @@ use App\Imports\Penghargaan_Import;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Maatwebsite\Excel\Facades\Excel;
 
+/**
+ * Pengelolaan penghargaan siswa.
+ * CRUD poin apresiasi serta cetak laporan.
+ */
 class PenghargaanController extends Controller
 {
 

@@ -15,6 +15,10 @@ use App\Exports\Intervensi_ExportExcel;
 use Maatwebsite\Excel\Facades\Excel;
 use Barryvdh\DomPDF\Facade\Pdf;
 
+/**
+ * Penanganan intervensi siswa.
+ * Catat rencana, tindak lanjut, dan status intervensi.
+ */
 class IntervensiController extends Controller
 {
     public function index(Request $request)

@@ -12,6 +12,10 @@ use App\Imports\Walikelas_Import;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Maatwebsite\Excel\Facades\Excel;
 
+/**
+ * Manajemen data wali kelas.
+ * CRUD wali kelas dan kaitan dengan kelas.
+ */
 class WalikelasController extends Controller
 {
     /**

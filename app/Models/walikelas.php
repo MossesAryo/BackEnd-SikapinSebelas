@@ -4,6 +4,10 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * Model wali kelas.
+ * Data wali kelas serta kaitan ke kelas dan siswa.
+ */
 class walikelas extends Model
 {
     protected $table = 'walikelas';

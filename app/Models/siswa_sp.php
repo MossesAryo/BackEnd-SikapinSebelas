@@ -4,6 +4,10 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * Model surat peringatan/pelanggaran siswa.
+ * Mencatat pelanggaran, level SP, dan poin yang dijatuhkan.
+ */
 class siswa_sp extends Model
 {
    protected $table = 'siswaperingatan';

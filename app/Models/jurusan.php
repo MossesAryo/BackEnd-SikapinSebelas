@@ -4,6 +4,10 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * Model jurusan/program keahlian.
+ * Relasi ke kelas, ketua program, dan siswa.
+ */
 class jurusan extends Model
 {
     protected $table = 'jurusan';

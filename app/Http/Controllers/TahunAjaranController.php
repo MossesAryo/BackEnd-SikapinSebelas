@@ -6,6 +6,10 @@ use App\Models\kelas;
 use App\Models\tahunAjaran;
 use Illuminate\Support\Facades\DB;
 
+/**
+ * Manajemen tahun ajaran.
+ * CRUD periode akademik untuk data relasi.
+ */
 class TahunAjaranController extends Controller
 {
     public function index()

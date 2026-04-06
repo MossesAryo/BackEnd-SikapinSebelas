@@ -6,6 +6,10 @@ use App\Models\catatan;
 use App\Models\intervensi;
 use Illuminate\Http\Request;
 
+/**
+ * Notifikasi untuk wakasek.
+ * Ambil, tandai, dan tampilkan notifikasi disiplin.
+ */
 class NotifikasiWakasekController extends Controller
 {
     public function index()

@@ -4,6 +4,10 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * Model master surat peringatan.
+ * Menyimpan template/jenis SP beserta poin yang melekat.
+ */
 class surat_peringatan extends Model
 {
     protected $table = 'surat_peringatan';

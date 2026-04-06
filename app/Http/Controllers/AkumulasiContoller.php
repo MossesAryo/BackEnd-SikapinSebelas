@@ -13,6 +13,10 @@ use Illuminate\Support\Facades\Auth;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Maatwebsite\Excel\Facades\Excel;
 
+/**
+ * Controller API akumulasi poin siswa.
+ * Menyajikan rekap pelanggaran/apresiasi serta ekspor laporan.
+ */
 class AkumulasiContoller extends Controller
 {
     public function index(Request $request)

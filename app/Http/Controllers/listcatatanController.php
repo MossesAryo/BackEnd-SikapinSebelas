@@ -5,6 +5,10 @@ namespace App\Http\Controllers;
 use App\Models\catatan;
 use Illuminate\Http\Request;
 
+/**
+ * Daftar catatan per siswa.
+ * Menyediakan API list catatan untuk role terkait.
+ */
 class listcatatanController extends Controller
 {
      public function index()

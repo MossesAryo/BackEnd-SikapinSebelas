@@ -4,6 +4,10 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * Model ketua program.
+ * Data ketua program dan jurusan yang diampu.
+ */
 class ketua_program extends Model
 {
     protected $table = 'ketua_program';

@@ -12,6 +12,10 @@ use App\Models\walikelas;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 
+/**
+ * Skoring penghargaan siswa.
+ * Tambah poin apresiasi dan laporan penghargaan.
+ */
 class Skoring_PenghargaanController extends Controller
 {
     /**

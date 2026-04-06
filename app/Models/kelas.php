@@ -4,6 +4,10 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * Model kelas/rombel.
+ * Data kelas beserta jurusan, wali, guru BK, dan relasi siswa.
+ */
 class kelas extends Model
 {
     protected $table = 'kelas';

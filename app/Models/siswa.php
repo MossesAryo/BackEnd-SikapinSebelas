@@ -4,6 +4,10 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * Model siswa.
+ * Data identitas siswa, jurusan, kelas, dan perhitungan poin.
+ */
 class siswa extends Model
 {
     protected $table = 'siswa';

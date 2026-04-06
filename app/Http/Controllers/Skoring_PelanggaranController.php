@@ -12,6 +12,10 @@ use App\Models\walikelas;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 
+/**
+ * Skoring pelanggaran siswa.
+ * Hitung/tambah poin pelanggaran dan generate dokumen SP.
+ */
 class Skoring_PelanggaranController extends Controller
 {
     /**

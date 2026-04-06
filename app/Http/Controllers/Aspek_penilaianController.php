@@ -12,6 +12,10 @@ use Illuminate\Http\Request;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Maatwebsite\Excel\Facades\Excel;
 
+/**
+ * Mengelola API aspek penilaian (kategori poin).
+ * CRUD jenis apresiasi dan pelanggaran yang dipakai skoring.
+ */
 class Aspek_penilaianController extends Controller
 {
     /**
@@ -285,5 +289,3 @@ class Aspek_penilaianController extends Controller
 
 
 }
-
-

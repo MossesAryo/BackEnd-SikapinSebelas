@@ -13,6 +13,10 @@ use App\Models\guru_bk;
 use App\Models\ketua_program;
 use Illuminate\Support\Facades\Auth;
 
+/**
+ * Dashboard ringkasan performa siswa.
+ * Menampilkan statistik dan aktivitas sesuai filter role pengguna.
+ */
 class DashboardController extends Controller
 {
     public function index()

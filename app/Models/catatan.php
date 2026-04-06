@@ -4,6 +4,10 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * Model catatan siswa.
+ * Menyimpan catatan konseling atau kejadian per NIS.
+ */
 class catatan extends Model
 {
     protected $table = 'catatan';

@@ -4,6 +4,10 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * Model penilaian siswa.
+ * Relasi nilai ke wakasek, wali, BK, aspek penilaian, dan siswa.
+ */
 class penilaian extends Model
 {
     protected $table = 'penilaian';

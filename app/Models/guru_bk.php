@@ -4,6 +4,10 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * Model guru BK.
+ * Data identitas guru BK serta relasi ke kelas dan penilaian.
+ */
 class guru_bk extends Model
 {
     protected $table = 'guru_bk';

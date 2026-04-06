@@ -4,6 +4,10 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * Model wakasek.
+ * Data wakil kepala sekolah dan relasi penilaian siswa.
+ */
 class wakasek extends Model
 {
     protected $table = 'wakasek';

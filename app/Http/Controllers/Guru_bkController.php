@@ -12,6 +12,10 @@ use App\Imports\Guru_Bk_Import;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Maatwebsite\Excel\Facades\Excel;
 
+/**
+ * Manajemen akun dan kelas guru BK.
+ * CRUD data guru BK, impor/ekspor, serta relasi kelas.
+ */
 class Guru_bkController extends Controller
 {
     /**
@@ -142,6 +146,3 @@ public function destroy(string $id)
     }
 
 }
-
-
-

@@ -13,6 +13,10 @@ use App\Models\user;
 use App\Models\ketua_program;
 use Carbon\Carbon;
 
+/**
+ * Generator laporan siswa.
+ * Produksi PDF/Excel pelanggaran, penghargaan, dan intervensi.
+ */
 class LaporanController extends Controller
 {
     /**

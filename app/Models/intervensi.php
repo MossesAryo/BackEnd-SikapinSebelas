@@ -4,6 +4,10 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * Model intervensi siswa.
+ * Mencatat rencana dan tindak lanjut intervensi setiap siswa.
+ */
 class intervensi extends Model
 {
     protected $table = 'intervensi';

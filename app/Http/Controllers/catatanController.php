@@ -7,6 +7,10 @@ use App\Models\catatan;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
+/**
+ * Catatan konseling/kejadian siswa.
+ * Tambah dan ambil catatan via web/API dengan penanda peran penginput.
+ */
 class catatanController extends Controller
 {
     public function AddCatatan(Request $request, $nis)

@@ -8,6 +8,10 @@ use App\Models\ketua_program;
 use App\Models\walikelas;
 use Illuminate\Support\Facades\Auth;
 
+/**
+ * Status intervensi siswa.
+ * CRUD tahapan/status intervensi.
+ */
 class StatusIntervensiController extends Controller
 {
 
@@ -62,4 +66,3 @@ public function index()
         return view('wakasek.statusIntervensi.show',compact('intervensi'));
     }
 }
- 
