@@ -133,7 +133,7 @@
                             {{ Str::upper($log->siswa?->nama_siswa ?? $log->nis) }}
                         </p>
                         <span class="text-xs text-gray-400 bg-gray-100 px-2 py-0.5 rounded-md">
-                            Kelas {{ Str::upper($log->siswa?->id_kelas?->nama_kelas ?? '—') }}
+                            Kelas {{ Str::upper($log->siswa?->kelas?->nama_kelas ?? '—') }}
                         </span>
                     </div>
                     <p class="text-sm text-gray-500 mt-0.5 truncate italic">"{{ $log->description }}"</p>
