@@ -35,7 +35,7 @@ class KetuaProgramController extends Controller
                               ->paginate(5)
                               ->appends($request->only(['jurusan', 'search']));
 
-        $daftar_jurusan = jurusan::pluck('nama_jurusan', 'id_jurusan');
+        $daftar_jurusan = jurusan::all();
 
         return view('wakasek.kaprog.index', compact('ketua_program', 'daftar_jurusan'));
     }
