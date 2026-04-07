@@ -23,8 +23,8 @@ class guru_bk_kelas extends Seeder
                 'XII-MP-1', 'XII-MP-2', 'XII-MP-3',
             ],
             'Ratih Pratiwi, S.Pd' => [
-                'X-PM-1', 'X-PM-2', 'X-PM-3',
-                'X-PPLG-1', 'X-PPLG-2',
+                'X-BR-1', 'X-BR-2', 'X-BR-3',
+                'X-RPL-1', 'X-RPL-2',
                 'XI-BR-1', 'XI-BR-2', 'XI-TKJ-1',
                 'XII-TKJ-1',
             ],
@@ -34,7 +34,7 @@ class guru_bk_kelas extends Seeder
                 'XII-BR-1', 'XII-BR-2', 'XII-BR-3',
             ],
             'Evi Febry Damayanti, S.Pd' => [
-                'X-MPLB-1', 'X-MPLB-2', 'X-MPLB-3', 'X-MPLB-4',
+                'X-MP-1', 'X-MP-2', 'X-MP-3', 'X-MP-4',
                 'XI-RPL-1', 'XI-RPL-2',
                 'XII-RPL-1', 'XII-RPL-2',
             ],
