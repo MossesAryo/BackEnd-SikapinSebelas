@@ -113,6 +113,7 @@
                         </tr>
                     </thead>
                     <tbody id="tableBody" class="bg-white divide-y divide-gray-100">
+                        @dd($kelas)
                         @forelse ($kelas as $item)
                             <tr class="hover:bg-gray-50 group">
                                 <td class="px-6 py-4">
