@@ -12,12 +12,12 @@
                 <h1 class="text-2xl font-bold gradient-text">Data Kelas</h1>
                 <p class="text-gray-600 mt-1">Kelola data Kelas</p>
             </div>
-             @if (auth()->user()->role == 1)
-            <button onclick="openCreateModal()"
-                class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg flex items-center gap-2 transition-colors">
-                <i class="bi bi-plus-lg"></i>
-                Tambah Kelas
-            </button>
+            @if (auth()->user()->role == 1)
+                <button onclick="openCreateModal()"
+                    class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg flex items-center gap-2 transition-colors">
+                    <i class="bi bi-plus-lg"></i>
+                    Tambah Kelas
+                </button>
             @endif
         </div>
 
@@ -125,7 +125,7 @@
                                     </div>
                                 </td>
                                 <td class="px-6 py-4">
-                                    <div class="text-sm font-semibold text-gray-900">{{ $item->jurusan->id_jurusan}}</div>
+                                    <div class="text-sm font-semibold text-gray-900">{{ $item->jurusan->id_jurusan }}</div>
                                 </td>
                                 <td class="px-6 py-4">
                                     <div class="text-sm font-semibold text-gray-900">{{ $item->nama_kelas }}</div>
@@ -259,14 +259,32 @@
             let lastPageUrl = window.location.href;
 
             function fetchData(url) {
-                fetch(url)
-                    .then(res => res.text())
+                fetch(url, {
+                        headers: {
+                            "X-Requested-With": "XMLHttpRequest"
+                        }
+                    })
+                    .then(res => {
+                        if (!res.ok) {
+                            throw new Error(`HTTP error ${res.status}`);
+                        }
+                        return res.text();
+                    })
                     .then(html => {
                         const parser = new DOMParser();
                         const doc = parser.parseFromString(html, "text/html");
 
-                        tableBody.innerHTML = doc.querySelector("#tableBody").innerHTML;
-                        pagination.innerHTML = doc.querySelector("#pagination").innerHTML;
+                        const newTableBody = doc.querySelector("#tableBody");
+                        const newPagination = doc.querySelector("#pagination");
+
+                        if (!newTableBody || !newPagination) {
+                            console.error("Selector tidak ditemukan");
+                            console.log(html);
+                            return;
+                        }
+
+                        tableBody.innerHTML = newTableBody.innerHTML;
+                        pagination.innerHTML = newPagination.innerHTML;
 
                         activatePaginationLinks();
                     })

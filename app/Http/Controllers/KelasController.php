@@ -20,8 +20,8 @@ class KelasController extends Controller
     {
         $user        = Auth::user();
         $jurusanList = jurusan::all();
-        $query       = kelas::with('jurusan');
-
+        $query       = kelas::with('jurusan')
+                        ->where('nama_kelas', '!=', 'Alumni');
         if ($user) {
 
             // === Role 4: Ketua Program — hanya kelas dari jurusannya ===
