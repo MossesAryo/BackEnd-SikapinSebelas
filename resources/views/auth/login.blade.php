@@ -162,7 +162,7 @@
             <!-- Logo above form -->
             <div class="mb-10">
                 <img
-                    src="{{ asset('storage/assets/logowtext.png') }}"
+                    src="{{ dd(asset('storage/assets/logowtext.png')) }}"
                     alt="SIJUWARA - Sistem Jurnal Siswa Aktif"
                     class="h-12 w-auto object-contain"
                 >
