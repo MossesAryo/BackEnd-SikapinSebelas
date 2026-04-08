@@ -15,12 +15,7 @@
                             class="mt-1 block w-full border border-gray-300 rounded-lg shadow-sm px-3 py-1.5 focus:ring focus:ring-blue-200 focus:outline-none "
                             required>
                     </div>
-                    <div>
-                        <label for="username" class="block text-sm font-medium text-gray-700">Username</label>
-                        <input type="text" id="username" name="username" placeholder=" Contoh : Hestia nur"
-                            class="mt-1 block w-full border border-gray-300 rounded-lg shadow-sm px-3 py-1.5 focus:ring focus:ring-blue-200 focus:outline-none"
-                            required>
-                    </div>
+
                     <div>
                         <label for="nama" class="block text-sm font-medium text-gray-700">Nama</label>
                         <input type="text" id="nama" name="nama_guru_bk" placeholder=" Contoh : Hestia Nur"

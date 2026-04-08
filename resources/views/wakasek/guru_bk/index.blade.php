@@ -113,7 +113,7 @@
                                 <td class="px-6 py-4 whitespace-nowrap">
                                     <div class="flex items-center gap-1">
                                         <button
-                                            onclick="openEditModal('{{ $item->nip_bk }}', '{{ $item->username }}', '{{ $item->nama_guru_bk }}')"
+                                            onclick="openEditModal('{{ $item->nip_bk }}', '{{ $item->nama_guru_bk }}')"
                                             class="action-btn inline-flex items-center justify-center w-9 h-9 text-blue-600 hover:text-blue-800 hover:bg-blue-50 rounded-full"
                                             title="Edit Guru BK">
                                             <i class="bi bi-pencil-square text-sm"></i>

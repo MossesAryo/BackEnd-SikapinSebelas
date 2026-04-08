@@ -60,20 +60,19 @@ class Guru_bkController extends Controller
         try {
         $request->validate([
             'nip_bk' => 'required',
-            'username' => 'required|string|max:255',
             'nama_guru_bk' => 'required|string|max:255',
         ]);
 
         $user = User::create([
-            'username' => $request->username,
-            'email' => strtolower(Str::slug($request->username)) . '@gmail.com',
+            'username' => $request->nama_guru_bk,
+            'email' => strtolower(Str::slug($request->nama_guru_bk)) . '@gmail.com',
             'password' => bcrypt('password'),
             'role' => 2
         ]);
 
         guru_bk::create([
             'nip_bk' => $request->nip_bk,
-            'username' => $request->username,
+            'username' => $request->nama_guru_bk,
             'nama_guru_bk' => $request->nama_guru_bk,
         ]);
 
@@ -88,20 +87,15 @@ class Guru_bkController extends Controller
         try {
         $request->validate([
             'nip_bk' => 'required',
-            'username' => 'required',
             'nama_guru_bk' => 'required',
         ]);
 
         $bk = guru_bk::where('nip_bk', $nip_bk)->firstOrFail();
 
 
-        User::where('username', $bk->username)->update([
-            'username' => $request->username
-        ]);
 
         $bk->update([
             'nip_bk' => $request->nip_bk,
-            'username' => $request->username,
             'nama_guru_bk' => $request->nama_guru_bk,
         ]);
 

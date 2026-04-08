@@ -1,6 +1,5 @@
-function openEditModal(nip, username, nama) {
+function openEditModal(nip, nama) {
             document.getElementById('edit_nip_bk').value = nip;
-            document.getElementById('edit_username').value = username;
             document.getElementById('edit_nama_guru_bk').value = nama;
             document.getElementById('form-edit').action = `/gurubk/${nip}/update`;
             document.getElementById('modal-edit').classList.remove('hidden');
