@@ -67,6 +67,7 @@ class WalikelasController extends Controller
      */
     public function store(Request $request)
     {
+        try {
         $request->validate([
             'nip_walikelas' => 'required',
             'nama_walikelas' => 'required',
@@ -91,6 +92,9 @@ class WalikelasController extends Controller
         ]);
 
         return redirect()->route('walikelas.index')->with('success', 'Data walikelas berhasil ditambahkan');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
+        }
     }
 
 
@@ -112,7 +116,7 @@ class WalikelasController extends Controller
      */
     public function update(Request $request, $nip_walikelas, $username)
     {
-
+        try {
         $request->validate([
             'nip_walikelas' => 'required|integer',
             'username' => 'required|string',
@@ -141,6 +145,9 @@ class WalikelasController extends Controller
 
 
         return redirect()->route('walikelas.index')->with('success', 'Data berhasil diperbarui.');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
+        }
     }
 
     /**
@@ -148,6 +155,7 @@ class WalikelasController extends Controller
      */
     public function destroy($nip_walikelas)
     {
+        try {
         $walikelas = Walikelas::where('nip_walikelas', $nip_walikelas)->firstOrFail();
         $user = User::where('username', $walikelas->username)->first();
         if ($user) {
@@ -156,23 +164,35 @@ class WalikelasController extends Controller
         $walikelas->delete();
 
         return redirect()->route('walikelas.index')->with('success', 'Data Walikelas berhasil dihapus.');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
+        }
     }
 
     public function export_pdf()
     {
+        try {
         $walikelas = walikelas::all();
 
         $pdf = PDF::loadView('Export.walikelas.pdf', compact('walikelas'));
         return $pdf->download('walikelas.pdf');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
+        }
     }
 
     public function export_excel()
     {
+        try {
         return Excel::download(new Walikelas_ExportExcel, 'walikelas.xlsx');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
+        }
     }
 
     public function import(Request $request)
     {
+        try {
         $walikelas = walikelas::all();
 
         $request->validate([
@@ -183,5 +203,8 @@ class WalikelasController extends Controller
         Excel::import(new Walikelas_Import, $request->file('file'));
 
         return redirect()->back()->with('success', 'Data Walikelas berhasil diimport!');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
+        }
     }
 }

@@ -25,6 +25,7 @@ class Aspek_penilaianController extends Controller
 
     public function FetchApi()
     {
+        try {
         $aspek_penilaian = aspek_penilaian::all();
 
         return response()->json([
@@ -32,6 +33,12 @@ class Aspek_penilaianController extends Controller
             'message' => 'Data Aspek Penilaian berhasil diambil',
             'data'    => $aspek_penilaian
         ], 200);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Terjadi kesalahan: ' . $e->getMessage(),
+            ], 500);
+        }
     }
 
 
@@ -43,9 +50,13 @@ class Aspek_penilaianController extends Controller
      */
     public function destroy(string $id)
     {
+        try {
         $data = aspek_penilaian::find($id)->delete();
 
         return redirect()->route('aspekpenilaian')->with('success', 'Aspek Penilaian berhasil dihapus');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
+        }
     }
 
 
@@ -79,6 +90,7 @@ class Aspek_penilaianController extends Controller
 
     public function storePenghargaan(Request $request)
     {
+        try {
         $request->validate([
 
 
@@ -98,10 +110,14 @@ class Aspek_penilaianController extends Controller
 
 
         return redirect()->route('aspek_penghargaan.index')->with('success', 'Aspek Penilaian berhasil ditambahkan');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
+        }
     }
 
     public function updatePenghargaan(Request $request, string $id)
     {
+        try {
         $data = $request->validate([
 
 
@@ -121,6 +137,9 @@ class Aspek_penilaianController extends Controller
         ]);
 
         return redirect()->route('aspek_penghargaan.index')->with('success', 'Aspek Penilaian berhasil diedit');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
+        }
     }
 
     /**
@@ -128,26 +147,39 @@ class Aspek_penilaianController extends Controller
      */
     public function destroyPenghargaan(string $id)
     {
+        try {
         $data = aspek_penilaian::find($id)->delete();
 
         return redirect()->route('aspek_penghargaan.index')->with('success', 'Aspek Penilaian berhasil dihapus');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
+        }
     }
 
     public function export_pdf()
     {
+        try {
         $aspek_penilaian = aspek_penilaian::where('jenis_poin', 'Apresiasi')->get();
 
         $pdf = PDF::loadView('Export.aspek_penghargaan.pdf', compact('aspek_penilaian'));
         return $pdf->download('aspek_penghargaan.pdf');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
+        }
     }
 
     public function export_excel()
     {
+        try {
         return Excel::download(new Aspek_Penghargaan_ExportExcel, 'aspek_penghargaan.xlsx');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
+        }
     }
 
     public function import(Request $request)
     {
+        try {
         $aspek_penilaian = aspek_penilaian::where('jenis_poin', 'Apresiasi')->get();
 
 
@@ -159,13 +191,16 @@ class Aspek_penilaianController extends Controller
         Excel::import(new Aspek_Penghargaan_Import, $request->file('file'));
 
         return redirect()->back()->with('success', 'Data Aspek Penghargaan berhasil diimport!');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
+        }
     }
 
 
 
 
 
-   public function indexPelanggaran(Request $request)
+    public function indexPelanggaran(Request $request)
 {
     $query = aspek_penilaian::where('jenis_poin', 'Pelanggaran');
 
@@ -200,6 +235,7 @@ class Aspek_penilaianController extends Controller
 
     public function storePelanggaran(Request $request)
     {
+        try {
         $request->validate([
 
             'kategori' => 'required',
@@ -219,10 +255,14 @@ class Aspek_penilaianController extends Controller
 
 
         return redirect()->route('aspek_pelanggaran.index')->with('success', 'Aspek Penilaian berhasil ditambahkan');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
+        }
     }
 
     public function updatePelanggaran(Request $request, string $id)
     {
+        try {
         $data = $request->validate([
 
 
@@ -244,6 +284,9 @@ class Aspek_penilaianController extends Controller
         ]);
 
         return redirect()->route('aspek_pelanggaran.index')->with('success', 'Aspek Penilaian berhasil diedit');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
+        }
     }
 
     /**
@@ -251,29 +294,41 @@ class Aspek_penilaianController extends Controller
      */
     public function destroyPelanggaran(string $id)
     {
+        try {
         $data = aspek_penilaian::find($id)->delete();
 
         return redirect()->route('aspek_pelanggaran.index')->with('success', 'Aspek Penilaian berhasil dihapus');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
+        }
     }
 
 
 
-     public function export_pelanggaran_pdf()
+    public function export_pelanggaran_pdf()
     {
+        try {
         $aspek_penilaian = aspek_penilaian::where('jenis_poin', 'Pelanggaran')->get();
 
         $pdf = PDF::loadView('Export.aspek_pelanggaran.pdf', compact('aspek_penilaian'));
         return $pdf->download('aspek_pelanggaran.pdf');
-
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
+        }
     }
 
     public function export_pelanggaran_excel()
     {
+        try {
         return Excel::download(new Aspek_Pelanggaran_ExportExcel, 'aspek_pelanggaran.xlsx');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
+        }
     }
 
-      public function import_pelanggaran(Request $request)
+    public function import_pelanggaran(Request $request)
     {
+        try {
         $aspek_penilaian = aspek_penilaian::where('jenis_poin', 'Pelanggaran')->get();
 
 
@@ -285,7 +340,8 @@ class Aspek_penilaianController extends Controller
         Excel::import(new Aspek_Pelanggaran_Import, $request->file('file'));
 
         return redirect()->back()->with('success', 'Data Aspek Pelanggaran berhasil diimport!');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
+        }
     }
-
-
 }

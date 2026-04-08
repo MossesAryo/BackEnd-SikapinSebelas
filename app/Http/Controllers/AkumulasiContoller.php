@@ -87,6 +87,7 @@ class AkumulasiContoller extends Controller
 
     public function export_pdf(Request $request)
     {
+        try {
         ini_set('memory_limit', '512M');
 
         $user  = Auth::user();
@@ -98,10 +99,14 @@ class AkumulasiContoller extends Controller
 
         $pdf = Pdf::loadView('Export.akumulasi.pdf', compact('akumulasi'));
         return $pdf->download('akumulasi.pdf');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
+        }
     }
 
     public function export_Excel(Request $request)
     {
+        try {
         $user  = Auth::user();
         $query = Siswa::with(['kelas.jurusan']);
         $query = $this->applyRoleScope($query, $user);
@@ -110,10 +115,14 @@ class AkumulasiContoller extends Controller
         $akumulasi = $query->get();
 
         return Excel::download(new \App\Exports\Akumulasi_ExportExcel($akumulasi), 'akumulasi.xlsx');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
+        }
     }
 
     public function fetchAPI(Request $request)
     {
+        try {
         $jurusanList = jurusan::all();
         $kelasList   = Kelas::with('jurusan')->get();
 
@@ -136,6 +145,12 @@ class AkumulasiContoller extends Controller
             'kelas_list'   => $kelasList,
             'data'         => $siswa,
         ], 200);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Terjadi kesalahan: ' . $e->getMessage(),
+            ], 500);
+        }
     }
 
     public function indexBK(Request $request)

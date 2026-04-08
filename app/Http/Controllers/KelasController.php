@@ -101,27 +101,27 @@ class KelasController extends Controller
                     $query->orderBy('nama_kelas', 'desc');
                     break;
                 case 'tingkat_asc':
-                    $query->orderByRaw("CASE 
-                        WHEN nama_kelas LIKE 'X %' THEN 1 
-                        WHEN nama_kelas LIKE 'XI %' THEN 2 
-                        WHEN nama_kelas LIKE 'XII %' THEN 3 
+                    $query->orderByRaw("CASE
+                        WHEN nama_kelas LIKE 'X %' THEN 1
+                        WHEN nama_kelas LIKE 'XI %' THEN 2
+                        WHEN nama_kelas LIKE 'XII %' THEN 3
                         ELSE 4 END")
                         ->orderBy('nama_kelas', 'asc');
                     break;
                 case 'tingkat_desc':
-                    $query->orderByRaw("CASE 
-                        WHEN nama_kelas LIKE 'XII %' THEN 1 
-                        WHEN nama_kelas LIKE 'XI %' THEN 2 
-                        WHEN nama_kelas LIKE 'X %' THEN 3 
+                    $query->orderByRaw("CASE
+                        WHEN nama_kelas LIKE 'XII %' THEN 1
+                        WHEN nama_kelas LIKE 'XI %' THEN 2
+                        WHEN nama_kelas LIKE 'X %' THEN 3
                         ELSE 4 END")
                         ->orderBy('nama_kelas', 'asc');
                     break;
             }
         } else {
-            $query->orderByRaw("CASE 
-                WHEN nama_kelas LIKE 'X %' THEN 1 
-                WHEN nama_kelas LIKE 'XI %' THEN 2 
-                WHEN nama_kelas LIKE 'XII %' THEN 3 
+            $query->orderByRaw("CASE
+                WHEN nama_kelas LIKE 'X %' THEN 1
+                WHEN nama_kelas LIKE 'XI %' THEN 2
+                WHEN nama_kelas LIKE 'XII %' THEN 3
                 ELSE 4 END")
                 ->orderBy('nama_kelas', 'asc');
         }
@@ -173,6 +173,7 @@ class KelasController extends Controller
 
     public function store(Request $request)
     {
+        try {
         $request->validate([
             'id_kelas'   => 'required',
             'nama_kelas' => 'required',
@@ -182,10 +183,14 @@ class KelasController extends Controller
         kelas::create($request->all());
 
         return redirect()->route('kelas')->with('success', 'Kelas berhasil ditambahkan');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
+        }
     }
 
     public function update(Request $request, string $id)
     {
+        try {
         $data = $request->validate([
             'id_kelas'   => 'required',
             'nama_kelas' => 'required',
@@ -195,12 +200,19 @@ class KelasController extends Controller
         kelas::where('id_kelas', $id)->update($data);
 
         return redirect()->route('kelas')->with('success', 'Kelas berhasil diedit');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
+        }
     }
 
     public function destroy(string $id)
     {
+        try {
         kelas::where('id_kelas', $id)->delete();
 
         return redirect()->route('kelas')->with('success', 'Kelas berhasil dihapus');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
+        }
     }
 }

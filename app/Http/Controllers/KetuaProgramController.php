@@ -46,6 +46,7 @@ class KetuaProgramController extends Controller
 
     public function store(Request $request)
     {
+        try {
         $request->validate([
             'nip_kaprog' => 'required|unique:ketua_program,nip_kaprog',
             'nama_ketua_program' => 'required|string|max:255',
@@ -67,6 +68,9 @@ class KetuaProgramController extends Controller
         ]);
 
         return redirect()->route('kaprog.index')->with('success', 'Data Ketua Program berhasil disimpan.');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
+        }
     }
 
     public function edit($nip_kaprog)
@@ -80,6 +84,7 @@ class KetuaProgramController extends Controller
 
     public function update(Request $request, $nip_kaprog, $username)
     {
+        try {
         $request->validate([
             'nip_kaprog' => 'required|unique:ketua_program,nip_kaprog,' . $nip_kaprog . ',nip_kaprog',
             'nama_ketua_program' => 'required|string|max:255',
@@ -101,32 +106,48 @@ class KetuaProgramController extends Controller
         ]);
 
         return redirect()->route('kaprog.index')->with('success', 'Data berhasil diperbarui.');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
+        }
     }
 
     public function destroy($nip_kaprog)
     {
+        try {
         $kp = ketua_program::where('nip_kaprog', $nip_kaprog)->firstOrFail();
         User::where('username', $kp->username)->delete();
         $kp->delete();
 
         return redirect()->route('kaprog.index')->with('success', 'Data Ketua Program berhasil dihapus.');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
+        }
     }
 
     public function export_pdf()
     {
+        try {
         $ketua_program = ketua_program::with('jurusan')->get();
 
         $pdf = Pdf::loadView('Export.ketua_program.pdf', compact('ketua_program'));
         return $pdf->download('ketuaprogram.pdf');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
+        }
     }
 
     public function export_excel()
     {
+        try {
         return Excel::download(new Ketua_Program_ExportExcel, 'ketuaprogram.xlsx');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
+        }
     }
 
     public function import(Request $request)
     {
+        try {
         $request->validate([
             'file' => 'required|mimes:xlsx,xls,csv|max:10240',
         ]);
@@ -134,5 +155,8 @@ class KetuaProgramController extends Controller
         Excel::import(new Ketua_Program_Import, $request->file('file'));
 
         return redirect()->back()->with('success', 'Data Ketua Program berhasil diimport!');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
+        }
     }
 }

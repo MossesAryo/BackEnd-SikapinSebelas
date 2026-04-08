@@ -134,6 +134,7 @@ $siswaList = $siswaList->orderBy('nama_siswa')->get();
      */
     public function store(Request $request)
     {
+        try {
         $request->validate([
             'nis'               => 'required',
             'id_aspekpenilaian' => 'required',
@@ -180,6 +181,9 @@ $siswaList = $siswaList->orderBy('nama_siswa')->get();
 
         return redirect()->route('skoring_pelanggaran.index')
             ->with('success', 'Data pelanggaran berhasil ditambahkan.');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
+        }
     }
 
     /**
@@ -192,6 +196,7 @@ $siswaList = $siswaList->orderBy('nama_siswa')->get();
      */
     public function destroy(string $id)
     {
+        try {
         $skoring = penilaian::findOrFail($id);
         $siswa   = $skoring->siswa;
         $skor    = $skoring->aspek_penilaian->indikator_poin ?? 0;
@@ -212,8 +217,10 @@ $siswaList = $siswaList->orderBy('nama_siswa')->get();
         }
 
         $skoring->delete();
-               
 
         return redirect()->back()->with('success', 'Skoring berhasil dihapus!');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
+        }
     }
 }

@@ -15,6 +15,7 @@ class catatanController extends Controller
 {
     public function AddCatatan(Request $request, $nis)
     {
+        try {
         $user = Auth::user();
          $request->validate([
             'judul_catatan' => 'required|string',
@@ -30,9 +31,13 @@ class catatanController extends Controller
         ]);
 
        return redirect()->back()->with('success', 'Catatan   berhasil ditambahkan');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
+        }
     }
     public function AddCatatanAPI(Request $request, $nis)
-{
+    {
+        try {
     $user = Auth::user();
     $request->validate([
         'judul_catatan' => 'required|string',
@@ -52,6 +57,11 @@ class catatanController extends Controller
         'message' => 'Catatan berhasil ditambahkan',
         'data'    => $catatan
     ], 201);
-}
-
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Terjadi kesalahan: ' . $e->getMessage(),
+            ], 500);
+        }
+    }
 }

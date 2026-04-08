@@ -69,8 +69,9 @@ class LaporanController extends Controller
 }
 
 
- public function exportPdf(Request $request)
-{
+    public function exportPdf(Request $request)
+    {
+        try {
     $type      = $request->query('type');
     $kelas     = $request->query('kelas');
     $tingkat   = $request->query('tingkat');
@@ -149,10 +150,14 @@ class LaporanController extends Controller
     $fileName .= '.pdf';
 
     return $pdf->download($fileName);
-}
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
+        }
+    }
 
     public function exportExcel(Request $request)
     {
+        try {
         $type = $request->query('type');
         $kelas = $request->query('kelas');
         $tingkat = $request->query('tingkat');
@@ -180,5 +185,8 @@ class LaporanController extends Controller
             new LaporanSkoringExport($type, $kelas, $tingkat, $jurusan, $startDate, $endDate),
             $fileName
         );
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
+        }
     }
 }

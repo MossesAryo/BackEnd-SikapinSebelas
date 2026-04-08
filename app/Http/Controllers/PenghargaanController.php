@@ -50,27 +50,32 @@ public function index(Request $request)
 
     public function store(Request $request)
     {
+        try {
         $request->validate([
-          
+
             'tanggal_penghargaan' => 'required|date',
             'level_penghargaan' => 'required|in:PH1,PH2,PH3',
             'alasan' => 'required|string|max:255',
         ]);
         penghargaan::create($request->all());
         return redirect()->back()->with('success', 'Data berhasil disimpan');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
+        }
     }
 
     public function update(Request $request, $id_penghargaan)
     {
+        try {
         $request->validate([
-            
+
             'tanggal_penghargaan' => 'required|date',
             'level_penghargaan' => 'required|in:PH1,PH2,PH3',
             'alasan' => 'required|string|max:255',
         ]);
 
         $data = [
-            
+
             'tanggal_penghargaan' => $request->tanggal_penghargaan,
             'level_penghargaan' => $request->level_penghargaan,
             'alasan' => $request->alasan,
@@ -79,34 +84,49 @@ public function index(Request $request)
         $updated = penghargaan::where('id_penghargaan', $id_penghargaan)->update($data);
 
         return redirect()->route('penghargaan.index')->with('success', 'Penghargaan berhasil diedit.');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
+        }
     }
 
 
     public function destroy($id)
     {
+        try {
         $penghargaan = penghargaan::findOrFail($id);
         $penghargaan->delete();
 
         return redirect()->route('penghargaan.index')->with('success', 'Data penghargaan berhasil dihapus.');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
+        }
     }
 
 
-          public function export_pdf()
+    public function export_pdf()
     {
+        try {
         $penghargaan = penghargaan::all();
 
         $pdf = PDF::loadView('Export.penghargaan.pdf', compact('penghargaan'));
         return $pdf->download('penghargaan.pdf');
-
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
+        }
     }
 
     public function export_excel()
     {
+        try {
         return Excel::download(new Penghargaan_ExportExcel, 'penghargaan.xlsx');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
+        }
     }
 
-      public function import(Request $request)
+    public function import(Request $request)
     {
+        try {
         $penghargaan = penghargaan::all();
 
         $request->validate([
@@ -117,8 +137,8 @@ public function index(Request $request)
         Excel::import(new Penghargaan_Import, $request->file('file'));
 
         return redirect()->back()->with('success', 'Data penghargaan berhasil diimport!');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
+        }
     }
-
-
-
 }

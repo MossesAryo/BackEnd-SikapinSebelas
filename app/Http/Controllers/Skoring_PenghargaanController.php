@@ -134,6 +134,7 @@ return view('wakasek.skoring.penghargaan.index', [
      */
     public function store(Request $request)
     {
+        try {
         $request->validate([
             
             'nis'               => 'required',
@@ -148,7 +149,7 @@ return view('wakasek.skoring.penghargaan.index', [
 
         // Simpan penilaian
         penilaian::create([
-            
+
             'nis'               => $request->nis,
             'id_aspekpenilaian' => $request->id_aspekpenilaian,
             'nip_bk'        => $user->gurubk->nip_bk ?? null,
@@ -179,18 +180,22 @@ return view('wakasek.skoring.penghargaan.index', [
 
         return redirect()->route('skoring_penghargaan.index')
             ->with('success', 'Data penghargaan berhasil ditambahkan.');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
+        }
     }
 
     /**
      * Update the specified resource in storage.
      */
-    
+
 
     /**
      * Remove the specified resource from storage.
      */
     public function destroy(string $id)
     {
+        try {
         $skoring = penilaian::findOrFail($id);
         $siswa   = $skoring->siswa;
         $user = Auth::user();
@@ -220,5 +225,8 @@ return view('wakasek.skoring.penghargaan.index', [
         $skoring->delete();
 
         return redirect()->back()->with('success', 'Penghargaan berhasil dihapus!');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
+        }
     }
 }

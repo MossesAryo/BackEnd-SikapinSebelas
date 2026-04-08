@@ -14,7 +14,7 @@ class listcatatanController extends Controller
      public function index()
     {
         $catatans = Catatan::orderBy('created_at', 'desc')->paginate(10);
-        
+
         return view('wakasek.catatan.index', compact('catatans'));
     }
 
@@ -23,8 +23,9 @@ class listcatatanController extends Controller
      */
     public function update(Request $request, $id)
     {
+        try {
         $catatan = catatan::findOrFail($id);
-        
+
         $validated = $request->validate([
             'judul_catatan' => 'required|string|max:255',
             'isi_catatan' => 'required|string',
@@ -39,5 +40,8 @@ class listcatatanController extends Controller
         return redirect()
             ->route('catatan.index')
             ->with('success', 'Catatan berhasil diperbarui!');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
+        }
     }
 }

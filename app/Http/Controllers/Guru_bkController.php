@@ -57,6 +57,7 @@ class Guru_bkController extends Controller
      */
     public function store(Request $request)
     {
+        try {
         $request->validate([
             'nip_bk' => 'required',
             'username' => 'required|string|max:255',
@@ -77,10 +78,14 @@ class Guru_bkController extends Controller
         ]);
 
         return redirect()->route('gurubk.index')->with('success', 'Guru BK berhasil ditambahkan');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
+        }
     }
 
     public function update(Request $request, $nip_bk)
     {
+        try {
         $request->validate([
             'nip_bk' => 'required',
             'username' => 'required',
@@ -101,13 +106,17 @@ class Guru_bkController extends Controller
         ]);
 
         return redirect()->route('gurubk.index')->with('success', 'Data berhasil diperbarui.');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
+        }
     }
 
     /**
      * Remove the specified resource from storage.
      */
-public function destroy(string $id)
-{
+    public function destroy(string $id)
+    {
+        try {
     $bk = guru_bk::findOrFail($id);
 
     User::where('username', $bk->username)->delete();
@@ -115,24 +124,35 @@ public function destroy(string $id)
     $bk->delete();
 
     return redirect()->route('gurubk.index')->with('success', 'Guru BK dan user berhasil dihapus');
-}
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
+        }
+    }
 
- public function export_pdf()
+    public function export_pdf()
     {
+        try {
         $guru_bk = guru_bk::all();
 
         $pdf = PDF::loadView('Export.guru_bk.pdf', compact('guru_bk'));
         return $pdf->download('guru_bk.pdf');
-
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
+        }
     }
 
     public function export_excel()
     {
+        try {
         return Excel::download(new Guru_Bk_ExportExcel, 'guru_bk.xlsx');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
+        }
     }
 
-      public function import(Request $request)
+    public function import(Request $request)
     {
+        try {
         $guru_bk = guru_bk::all();
 
         $request->validate([
@@ -143,6 +163,8 @@ public function destroy(string $id)
         Excel::import(new Guru_Bk_Import, $request->file('file'));
 
         return redirect()->back()->with('success', 'Data Guru BK berhasil diimport!');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
+        }
     }
-
 }

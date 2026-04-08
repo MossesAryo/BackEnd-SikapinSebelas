@@ -12,7 +12,6 @@ class PenilaianController extends Controller
 {
     public function index()
     {
-
         return view('wakasek.penilaian');
     }
 }

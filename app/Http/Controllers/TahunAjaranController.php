@@ -32,6 +32,7 @@ class TahunAjaranController extends Controller
 
     public function update(Request $request)
     {
+        try {
         $request->validate([
             'tahun_ajaran_id' => 'required|exists:tahun_ajaran,id'
         ]);
@@ -66,10 +67,14 @@ class TahunAjaranController extends Controller
         });
 
         return back()->with('success', 'Tahun ajaran berhasil diubah.');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
+        }
     }
 
-   private function naikKelas(): void
-{
+    private function naikKelas(): void
+    {
+        try {
     // Proses XII dulu → alumni
     siswa::where('status', 'aktif')
         ->where('id_kelas', 'like', 'XII-%')
@@ -103,10 +108,14 @@ class TahunAjaranController extends Controller
             $s->id_kelas = "XI-{$jurusan}-{$nomor}";
             $s->save();
         });
-}
+        } catch (\Exception $e) {
+            throw $e;
+        }
+    }
 
-private function turunKelas(): void
-{
+    private function turunKelas(): void
+    {
+        try {
     // Proses X dulu → tidak berubah, skip
     // XI → X dulu
     siswa::where('status', 'aktif')
@@ -129,5 +138,8 @@ private function turunKelas(): void
             $s->id_kelas = "XI-{$jurusan}-{$nomor}";
             $s->save();
         });
-}
+        } catch (\Exception $e) {
+            throw $e;
+        }
+    }
 }

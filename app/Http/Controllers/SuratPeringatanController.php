@@ -48,8 +48,8 @@ class SuratPeringatanController extends Controller
 
     public function store(Request $request)
     {
+        try {
         $request->validate([
-            
             'tanggal_sp' => 'required|date',
             'level_sp' => 'required|in:SP1,SP2,SP3',
             'alasan' => 'required|string|max:255',
@@ -57,10 +57,14 @@ class SuratPeringatanController extends Controller
 
         surat_peringatan::create($request->all());
         return redirect()->back()->with('success', 'Data berhasil disimpan');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
+        }
     }
 
     public function update(Request $request, $id_sp)
     {
+        try {
         $request->validate([
             'id_sp' => 'required',
             'tanggal_sp' => 'required|date',
@@ -77,33 +81,49 @@ class SuratPeringatanController extends Controller
 
         $updated = surat_peringatan::where('id_sp', $id_sp)->update($data);
         return redirect()->route('peringatan.index')->with('success', 'Peringatan berhasil diedit.');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
+        }
     }
 
 
     public function destroy($id)
     {
+        try {
         $peringatan = surat_peringatan::findOrFail($id);
         $peringatan->delete();
 
         return redirect()->route('peringatan.index')->with('success', 'Data surat peringatan berhasil dihapus.');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
+        }
     }
 
 
     public function export_pdf()
     {
+        try {
         $peringatan = surat_peringatan::all(); // ganti nama variabel jadi $peringatan
 
         $pdf = PDF::loadView('Export.peringatan.pdf', compact('peringatan'));
         return $pdf->download('peringatan.pdf');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
+        }
     }
 
     public function export_excel()
     {
+        try {
         return Excel::download(new Surat_Peringatan_ExportExcel, 'peringatan.xlsx');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
+        }
     }
 
     public function import(Request $request)
     {
+        try {
         $surat_peringatan = surat_peringatan::all();
 
         $request->validate([
@@ -114,8 +134,8 @@ class SuratPeringatanController extends Controller
         Excel::import(new Surat_Peringatan_Import, $request->file('file'));
 
         return redirect()->back()->with('success', 'Data Surat Peringatan berhasil diimport!');
-
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
+        }
     }
-  
-
 }

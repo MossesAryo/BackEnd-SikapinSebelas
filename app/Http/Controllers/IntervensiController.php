@@ -188,14 +188,19 @@ class IntervensiController extends Controller
 
     public function destroy(string $id_intervensi)
     {
+        try {
         $intervensi = intervensi::findOrFail($id_intervensi);
         $intervensi->delete();
 
         return back()->with('success', 'Data intervensi berhasil dihapus.');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
+        }
     }
 
-          public function exportPdf(Request $request)
-{
+    public function exportPdf(Request $request)
+    {
+        try {
             $query = intervensi::with(['siswa.kelas']);
 
             $user = Auth::user();
@@ -245,10 +250,14 @@ class IntervensiController extends Controller
 
             $pdf = Pdf::loadView('wakasek.intervensi.pdf', compact('intervensi'));
             return $pdf->download('Data_Intervensi.pdf');
-}
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
+        }
+    }
 
-   public function exportExcel(Request $request)
-{
+    public function exportExcel(Request $request)
+    {
+        try {
     $query = intervensi::with(['siswa.kelas']);
 
     $user = Auth::user();
@@ -296,6 +305,8 @@ class IntervensiController extends Controller
     $intervensi = $query->latest()->get();
 
     return Excel::download(new Intervensi_ExportExcel($intervensi), 'Data_Intervensi.xlsx');
-}
-
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
+        }
+    }
 }
