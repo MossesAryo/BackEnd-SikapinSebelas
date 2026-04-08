@@ -65,6 +65,10 @@ class Aspek_penilaianController extends Controller
     public function indexPenghargaan(Request $request)
     {
         $query = aspek_penilaian::where('jenis_poin', 'Apresiasi');
+         $kategoriList = aspek_penilaian::where('jenis_poin', 'Apresiasi')
+        ->select('kategori')
+        ->distinct()
+        ->get();
 
 
         if ($request->filled('kategori')) {
@@ -85,7 +89,7 @@ class Aspek_penilaianController extends Controller
 
     $aspek_penilaian = $query->paginate(10)->appends($request->all());
 
-        return view('wakasek.aspek_penilaian.aspek_penghargaan.index', compact('aspek_penilaian'));
+        return view('wakasek.aspek_penilaian.aspek_penghargaan.index', compact('aspek_penilaian', 'kategoriList'));
     }
 
     public function storePenghargaan(Request $request)
@@ -203,6 +207,10 @@ class Aspek_penilaianController extends Controller
     public function indexPelanggaran(Request $request)
 {
     $query = aspek_penilaian::where('jenis_poin', 'Pelanggaran');
+     $kategoriList = aspek_penilaian::where('jenis_poin', 'Pelanggaran')
+        ->select('kategori')
+        ->distinct()
+        ->get();
 
     if ($request->filled('kategori')) {
         $query->where('kategori', 'like', '%' . $request->kategori . '%');
@@ -227,7 +235,7 @@ class Aspek_penilaianController extends Controller
 
     $aspek_penilaian = $query->paginate(10)->appends($request->all());
 
-    return view('wakasek.aspek_penilaian.aspek_pelanggaran.index', compact('aspek_penilaian'));
+    return view('wakasek.aspek_penilaian.aspek_pelanggaran.index', compact('aspek_penilaian', 'kategoriList'));
 }
 
 

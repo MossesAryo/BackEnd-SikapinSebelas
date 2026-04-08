@@ -23,16 +23,19 @@
         <form method="GET" action="{{ route('aspek_penghargaan.index') }}"
               class="p-6 space-y-6">
            
-            <!-- Kategori -->
+            
             <div class="space-y-2">
                 <label class="block text-sm font-semibold text-gray-700 flex items-center gap-2">
-                    <i class="bi bi-tag text-gray-500"></i>
-                    Kategori
+                    <i class="bi bi-buildings text-gray-500"></i> Kategori
                 </label>
-                <input type="text" name="kategori"
-                       value="{{ request('kategori') }}"
-                       placeholder="Misalnya: Pengembangan Keagamaan, Kejujuran, dll..."
-                       class="w-full rounded-xl border-2 border-gray-200 px-4 py-3 text-sm placeholder-gray-400 focus:ring-4 focus:ring-blue-100 focus:border-blue-500 transition-all duration-200 hover:border-gray-300">
+                <select id="jurusan" name="kategori" class="w-full rounded-xl border-2 border-gray-200 px-4 py-3 focus:ring-4 focus:ring-blue-100 focus:border-blue-500">
+                    <option value="">-- Pilih Kategori --</option>
+                    @foreach ($kategoriList as $aspek)
+                        <option value="{{ $aspek->kategori }}" {{ request('kategori') == $aspek->id_aspekpenilaian ? 'selected' : '' }}>
+                            {{ $aspek->kategori }} 
+                        </option>
+                    @endforeach
+                </select>
             </div>
 
          
