@@ -20,7 +20,6 @@ function openModal(modalId) {
             document.getElementById('edit_nip').value = nip;
             document.getElementById('edit_nama').value = nama;
             document.getElementById('edit_jurusan').value = id_jurusan;
-
             document.getElementById('form-edit').action = `/kaprog/${nip}/update`;
             openModal('modal-edit');
         }
