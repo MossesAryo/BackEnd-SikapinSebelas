@@ -125,9 +125,9 @@
                                     </div>
                                 </td>
                                 <td class="px-6 py-4">
-                                    <div class="text-sm font-semibold text-gray-900">{{ $item->nama_jurusan}}</div>
+                                    <div class="text-sm font-semibold text-gray-900">{{ $item->jurusan->id_jurusan}}</div>
                                 </td>
-                                <td class="px-6 py-4">  
+                                <td class="px-6 py-4">
                                     <div class="text-sm font-semibold text-gray-900">{{ $item->nama_kelas }}</div>
                                 </td>
                                 @if (auth()->user()->role == 1)
