@@ -16,13 +16,12 @@ function openModal(modalId) {
         function openFilterModal() { 
        openModal('modal-filter'); }
 
-        function openEditModal(nip, nama, jurusan, username) {
+        function openEditModal(nip, nama, id_jurusan) {
             document.getElementById('edit_nip').value = nip;
             document.getElementById('edit_nama').value = nama;
-            document.getElementById('edit_jurusan').value = jurusan;
-            document.getElementById('username').value = username;
+            document.getElementById('edit_jurusan').value = id_jurusan;
 
-            document.getElementById('form-edit').action = `/kaprog/${nip}/${username}/update`;
+            document.getElementById('form-edit').action = `/kaprog/${nip}/update`;
             openModal('modal-edit');
         }
 

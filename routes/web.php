@@ -130,7 +130,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/kaprog', [KetuaProgramController::class, 'index'])->name('kaprog.index');
     Route::post('/kaprog/store', [KetuaProgramController::class, 'store'])->name('kaprog.store');
     Route::get('/kaprog/edit/{id}', [KetuaProgramController::class, 'edit'])->name('kaprog.edit');
-    Route::put('/kaprog/{nip_kaprog}/{username}/update', [KetuaProgramController::class, 'update'])->name('kaprog.update');
+    Route::put('/kaprog/{nip_kaprog}/update', [KetuaProgramController::class, 'update'])->name('kaprog.update');
     Route::delete('/kaprog/{nip_kaprog}', [KetuaProgramController::class, 'destroy'])->name('kaprog.destroy');
 
     Route::get('/ketua_program/export_pdf', [KetuaProgramController::class, 'export_pdf'])->name('ketua_program.export.pdf');

@@ -22,6 +22,7 @@ class KetuaProgramController extends Controller
     public function index(Request $request)
     {
         $query = ketua_program::with('jurusan');
+     
 
         if ($request->filled('jurusan')) {
             $query->where('id_jurusan', $request->jurusan);
@@ -38,8 +39,8 @@ class KetuaProgramController extends Controller
                               ->orderBy('nama_ketua_program')
                               ->paginate(5)
                               ->appends($request->only(['jurusan', 'search']));
-
         $daftar_jurusan = jurusan::all();
+       
 
         return view('wakasek.kaprog.index', compact('ketua_program', 'daftar_jurusan'));
     }
@@ -82,27 +83,22 @@ class KetuaProgramController extends Controller
         return view('wakasek.kaprog.edit', compact('kp', 'users', 'daftar_jurusan'));
     }
 
-    public function update(Request $request, $nip_kaprog, $username)
+    public function update(Request $request, $nip_kaprog)
     {
         try {
         $request->validate([
             'nip_kaprog' => 'required|unique:ketua_program,nip_kaprog,' . $nip_kaprog . ',nip_kaprog',
             'nama_ketua_program' => 'required|string|max:255',
-            'username' => 'required|string|max:255',
             'id_jurusan' => 'required',
         ]);
 
         $kp = ketua_program::where('nip_kaprog', $nip_kaprog)->firstOrFail();
 
-        User::where('username', $username)->update([
-            'username' => $request->username
-        ]);
 
         $kp->update([
             'nip_kaprog' => $request->nip_kaprog,
             'nama_ketua_program' => $request->nama_ketua_program,
             'id_jurusan' => $request->id_jurusan,
-            'username' => $request->username
         ]);
 
         return redirect()->route('kaprog.index')->with('success', 'Data berhasil diperbarui.');
