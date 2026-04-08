@@ -124,7 +124,7 @@ class LaporanController extends Controller
         $kelasModel = \App\Models\kelas::find($kelas);
         if ($kelasModel) {
             $kelasNama   = $kelasModel->nama_kelas;
-            $jurusanNama = strtoupper($kelasModel->jurusan); // atau $kelasModel->jurusan jika ingin tampilan asli
+            $jurusanNama = strtoupper($kelasModel->jurusan->id_jurusan);
         }
     } else if ($jurusan) {
         // Hanya jika tidak ada kelas, baru ambil dari parameter jurusan
