@@ -52,12 +52,14 @@ public function index(Request $request)
     {
         try {
         $request->validate([
-
-            'tanggal_penghargaan' => 'required|date',
             'level_penghargaan' => 'required|in:PH1,PH2,PH3',
             'alasan' => 'required|string|max:255',
         ]);
-        penghargaan::create($request->all());
+       penghargaan::create([
+            'tanggal_penghargaan' =>  now()->format('Y-m-d') ,
+            'level_penghargaan' => $request->level_penghargaan ,
+            'alasan' => $request->alasan,
+        ]);
         return redirect()->back()->with('success', 'Data berhasil disimpan');
         } catch (\Exception $e) {
             return redirect()->back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
@@ -68,16 +70,14 @@ public function index(Request $request)
     {
         try {
         $request->validate([
-
-            'tanggal_penghargaan' => 'required|date',
             'level_penghargaan' => 'required|in:PH1,PH2,PH3',
             'alasan' => 'required|string|max:255',
         ]);
 
         $data = [
 
-            'tanggal_penghargaan' => $request->tanggal_penghargaan,
-            'level_penghargaan' => $request->level_penghargaan,
+            'tanggal_penghargaan' => now()->format('Y-m-d') ,
+            'level_penghargaan' => $request->level_penghargaan ,
             'alasan' => $request->alasan,
         ];
 

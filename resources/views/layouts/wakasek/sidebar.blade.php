@@ -109,16 +109,7 @@
                     </a>
                 </li>
 
-                @if (auth()->user()->role == 1)
-                <li class="px-3">
-                    <a href="{{ route('tahun_ajaran.index') }}"
-                        class="flex items-center gap-3 px-3 py-2.5 rounded-lg menu-link
-                        {{ request()->routeIs('tahun_ajaran.*') ? 'active-link' : 'text-gray-600 hover:bg-gray-50' }}">
-                        <i class="bi bi-calendar3"></i>
-                        <span>Tahun Ajaran</span>
-                    </a>
-                </li>
-                @endif
+                
 
                 <!-- ───── MANAJEMEN USER ───── -->
                 @if (auth()->user()->role == 1)
@@ -193,7 +184,7 @@
                 <li><div class="section-divider mt-2"></div></li>
                 <li><div class="section-label">Input Data</div></li>
 
-                <li class="px-3">
+                {{-- <li class="px-3">
                     <a href="{{ route('penghargaan.index') }}"
                         class="flex items-center gap-3 px-3 py-2.5 rounded-lg menu-link
                         {{ request()->routeIs('penghargaan.*') ? 'active-link' : 'text-gray-600 hover:bg-gray-50' }}">
@@ -208,8 +199,9 @@
                         <i class="bi bi-shield-exclamation"></i>
                         <span>Pelanggaran</span>
                     </a>
-                </li>
+                </li> --}}
                 @endif
+                
 
                 <li class="px-3">
                     <a href="{{ route('skoring_penghargaan.index') }}"
@@ -227,6 +219,16 @@
                         <span>Skoring Pelanggaran</span>
                     </a>
                 </li>
+                  @if (auth()->user()->role == 1 || auth()->user()->role == 2 || auth()->user()->role == 3)
+                <li class="px-3">
+                    <a href="{{ route('intervensi.index') }}"
+                        class="flex items-center gap-3 px-3 py-2.5 rounded-lg menu-link
+                        {{ request()->routeIs('intervensi.*') ? 'active-link' : 'text-gray-600 hover:bg-gray-50' }}">
+                        <i class="bi bi-life-preserver"></i>
+                        <span>Penanganan</span>
+                    </a>
+                </li>
+                @endif
 
                 <!-- ───── REKAP & TINDAK LANJUT ───── -->
                 <li><div class="section-divider mt-2"></div></li>
@@ -241,16 +243,7 @@
                     </a>
                 </li>
 
-                @if (auth()->user()->role == 1 || auth()->user()->role == 2 || auth()->user()->role == 3)
-                <li class="px-3">
-                    <a href="{{ route('intervensi.index') }}"
-                        class="flex items-center gap-3 px-3 py-2.5 rounded-lg menu-link
-                        {{ request()->routeIs('intervensi.*') ? 'active-link' : 'text-gray-600 hover:bg-gray-50' }}">
-                        <i class="bi bi-life-preserver"></i>
-                        <span>Penanganan</span>
-                    </a>
-                </li>
-                @endif
+              
 
                 @if (auth()->user()->role == 1)
                 <li class="px-3">
@@ -261,6 +254,15 @@
                         <span>Laporan</span>
                     </a>
                 </li>
+                <li class="px-3">
+                    <a href="{{ route('tahun_ajaran.index') }}"
+                        class="flex items-center gap-3 px-3 py-2.5 rounded-lg menu-link
+                        {{ request()->routeIs('tahun_ajaran.*') ? 'active-link' : 'text-gray-600 hover:bg-gray-50' }}">
+                        <i class="bi bi-calendar3"></i>
+                        <span>Tahun Ajaran</span>
+                    </a>
+                </li>
+                
                 @endif
 
             </ul>

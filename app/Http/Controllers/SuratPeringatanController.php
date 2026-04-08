@@ -50,12 +50,15 @@ class SuratPeringatanController extends Controller
     {
         try {
         $request->validate([
-            'tanggal_sp' => 'required|date',
             'level_sp' => 'required|in:SP1,SP2,SP3',
             'alasan' => 'required|string|max:255',
         ]);
 
-        surat_peringatan::create($request->all());
+        surat_peringatan::create([
+            'tanggal_sp' => now()->format('Y-m-d'),
+            'level_sp' => $request->level_sp,
+            'alasan' => $request->alasan,
+        ]);
         return redirect()->back()->with('success', 'Data berhasil disimpan');
         } catch (\Exception $e) {
             return redirect()->back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
@@ -67,14 +70,13 @@ class SuratPeringatanController extends Controller
         try {
         $request->validate([
             'id_sp' => 'required',
-            'tanggal_sp' => 'required|date',
             'level_sp' => 'required|in:SP1,SP2,SP3',
             'alasan' => 'required|string|max:255',
         ]);
 
         $data = [
             'id_sp' => $request->id_sp,
-            'tanggal_sp' => $request->tanggal_sp,
+            'tanggal_sp' => now()->format('Y-m-d'),
             'level_sp' => $request->level_sp,
             'alasan' => $request->alasan,
         ];

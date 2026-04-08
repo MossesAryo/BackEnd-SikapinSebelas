@@ -10,16 +10,12 @@
         }
 
         function openCreateModal() {
-            document.getElementById('id_penghargaan').value = '';
-            document.getElementById('tanggal_penghargaan').value = '';
             document.getElementById('level_penghargaan').value = '';
             document.getElementById('alasan').value = '';
             openModal('modal-create');
         }
 
-        function openEditModal(id_penghargaan, tanggal_penghargaan, level_penghargaan, alasan) {
-            document.getElementById('edit_id_penghargaan').value = id_penghargaan;
-            document.getElementById('edit_tanggal_penghargaan').value = tanggal_penghargaan;
+        function openEditModal(id_penghargaan, level_penghargaan, alasan) {
             document.getElementById('edit_level_penghargaan').value = level_penghargaan;
             document.getElementById('edit_alasan').value = alasan;
             document.getElementById('form-edit').action = `/penghargaan/${id_penghargaan}/update`;

@@ -10,11 +10,7 @@
             </div>
 
             <div class="space-y-4">
-                <div>
-                    <label for="tanggal_penghargaan" class="block text-sm font-medium text-gray-700 mb-1">Tanggal Penghargaan</label>
-                    <input type="date" id="tanggal_penghargaan" name="tanggal_penghargaan" required
-                        class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-transparent">
-                </div>
+    
 
                 <div>
                     <label for="level_penghargaan" class="block text-sm font-medium text-gray-700 mb-1">Level Penghargaan</label>

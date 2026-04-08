@@ -130,7 +130,7 @@
                                     <td class="px-6 py-4 whitespace-nowrap">
                                         <div class="flex items-center gap-1">
                                             <button
-                                                onclick="openEditModal('{{ $item->id_sp }}', '{{ $item->tanggal_sp }}', '{{ $item->level_sp }}', '{{ $item->alasan }}')"
+                                                onclick="openEditModal('{{ $item->id_sp }}', '{{ $item->level_sp }}', '{{ $item->alasan }}')"
                                                 class="action-btn inline-flex items-center justify-center w-9 h-9 text-blue-600 hover:text-blue-800 hover:bg-blue-50 rounded-full"
                                                 title="Edit Penghargaan">
                                                 <i class="bi bi-pencil-square text-sm"></i>

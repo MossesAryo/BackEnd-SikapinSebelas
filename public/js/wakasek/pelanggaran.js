@@ -10,15 +10,13 @@ function openModal(modalId) {
 
         function openCreateModal() {
             document.getElementById('id_sp').value = '';
-            document.getElementById('tanggal_sp').value = '';
             document.getElementById('level_sp').value = '';
             document.getElementById('alasan').value = '';
             openModal('modal-create');
         }
 
-    function openEditModal(id_sp, tanggal_sp, level_sp, alasan) {
+    function openEditModal(id_sp, level_sp, alasan) {
             document.getElementById('edit_id_sp').value = id_sp;
-            document.getElementById('edit_tanggal_sp').value = tanggal_sp;
             document.getElementById('edit_level_sp').value = level_sp;
             document.getElementById('edit_alasan').value = alasan;
             document.getElementById('form-edit').action = `/peringatan/${id_sp}/update`;
