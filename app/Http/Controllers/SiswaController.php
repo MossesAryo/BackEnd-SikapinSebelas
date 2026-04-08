@@ -629,7 +629,6 @@ class SiswaController extends Controller
 
         $siswa->update([
             'status'   => 'nonaktif',
-            'id_kelas' => 'NONAKTIF',
         ]);
 
         return redirect()->route('siswa.show', $nis)
