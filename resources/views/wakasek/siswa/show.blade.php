@@ -227,8 +227,8 @@
                                 }
 
                                 $studentInfo[] = [
-                                    'label' => 'Tahun Masuk',
-                                    'value' => $siswa->tahun_masuk ?? '2023',
+                                    'label' => 'Status',
+                                    'value' => $siswa->status,
                                 ];
                             @endphp
 
