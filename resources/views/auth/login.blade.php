@@ -236,13 +236,6 @@
                     </div>
                 </div>
 
-                <!-- Forgot Password -->
-                <div class="text-right -mt-1">
-                    <a href="#" class="text-xs text-[#56A6E8] hover:text-[#3d8fd4] font-medium hover:underline transition-colors">
-                        Lupa Password?
-                    </a>
-                </div>
-
                 <!-- Submit -->
                 <button type="submit" class="sign-in-btn">
                     Sign In
