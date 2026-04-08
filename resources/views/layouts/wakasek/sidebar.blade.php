@@ -65,7 +65,7 @@
     <!-- Fixed Header -->
     <div class="p-6 flex-shrink-0 border-b border-gray-100">
         <div class="flex items-center gap-3">
-            <img src="{{ asset('storage/assets/logo.png') }}" alt="SIJUWARA" class="w-10 h-10 object-contain">
+            <img src="{{ asset('img/logo.png') }}" alt="SIJUWARA" class="w-10 h-10 object-contain">
             <div>
                 <h1 class="text-lg font-extrabold tracking-wide" style="color: #1e3a5f;">SIJUWARA</h1>
                 <p class="text-xs font-medium" style="color: #4a7ab5;">(Sistem Jurnal Siswa Aktif)</p>

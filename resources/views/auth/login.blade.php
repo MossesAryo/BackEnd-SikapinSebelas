@@ -162,7 +162,7 @@
             <!-- Logo above form -->
             <div class="mb-10">
                 <img
-                    src="{{ asset('storage/assets/logowtext.png') }}"
+                    src="{{ asset('img/logowtext.png') }}"
                     alt="SIJUWARA - Sistem Jurnal Siswa Aktif"
                     class="h-12 w-auto object-contain"
                 >
@@ -262,7 +262,7 @@
         <!-- Mockup Image — bigger, no animation -->
         <div class="mockup-img mb-7 relative z-10 w-full flex items-center justify-center">
             <img
-                src="{{ asset('storage/assets/image.png') }}"
+                src="{{ asset('img/image.png') }}"
                 alt="App Mockup"
                 class="w-full max-w-[520px] object-contain"
             >
