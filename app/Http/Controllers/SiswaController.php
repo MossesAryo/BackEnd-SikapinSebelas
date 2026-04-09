@@ -139,7 +139,7 @@ class SiswaController extends Controller
 
         return redirect()->route('siswa.index')->with('success', 'Siswa berhasil ditambahkan');
         } catch (\Exception $e) {
-            return redirect()->back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
+            return redirect()->back()->with('error', 'Terjadi kesalahan');
         }
     }
 
@@ -157,7 +157,7 @@ class SiswaController extends Controller
 
         return redirect()->back()->with('success', 'Penghargaan berhasil ditambahkan');
         } catch (\Exception $e) {
-            return redirect()->back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
+            return redirect()->back()->with('error', 'Terjadi kesalahan');
         }
     }
 
@@ -175,7 +175,7 @@ class SiswaController extends Controller
 
         return redirect()->back()->with('success', 'Surat Peringatan berhasil ditambahkan');
         } catch (\Exception $e) {
-            return redirect()->back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
+            return redirect()->back()->with('error', 'Terjadi kesalahan');
         }
     }
 
@@ -315,7 +315,7 @@ class SiswaController extends Controller
             ]);
         }
         } catch (\Exception $e) {
-            return redirect()->back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
+            return redirect()->back()->with('error', 'Terjadi kesalahan');
         }
     }
 
@@ -341,7 +341,7 @@ class SiswaController extends Controller
 
         return redirect()->route('siswa.index')->with('success', 'Data berhasil diperbarui.');
         } catch (\Exception $e) {
-            return redirect()->back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
+            return redirect()->back()->with('error', 'Terjadi kesalahan');
         }
     }
 
@@ -358,7 +358,7 @@ class SiswaController extends Controller
 
         return redirect()->route('siswa.index')->with('success', 'Siswa berhasil dihapus');
         } catch (\Exception $e) {
-            return redirect()->back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
+            return redirect()->back()->with('error', 'Terjadi kesalahan');
         }
     }
 
@@ -375,7 +375,7 @@ class SiswaController extends Controller
 
         return back()->with('success', 'Penghargaan berhasil dihapus');
         } catch (\Exception $e) {
-            return redirect()->back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
+            return redirect()->back()->with('error', 'Terjadi kesalahan');
         }
     }
 
@@ -392,7 +392,7 @@ class SiswaController extends Controller
 
         return back()->with('success', 'Peringatan berhasil dihapus');
         } catch (\Exception $e) {
-            return redirect()->back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
+            return redirect()->back()->with('error', 'Terjadi kesalahan');
         }
     }
 
@@ -416,7 +416,7 @@ class SiswaController extends Controller
 
         return $pdf->download('Data_Siswa.pdf');
         } catch (\Exception $e) {
-            return redirect()->back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
+            return redirect()->back()->with('error', 'Terjadi kesalahan');
         }
     }
 
@@ -439,7 +439,7 @@ class SiswaController extends Controller
 
         return Excel::download(new Siswa_ExportExcel($siswa), 'Data_Siswa.xlsx');
         } catch (\Exception $e) {
-            return redirect()->back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
+            return redirect()->back()->with('error', 'Terjadi kesalahan');
         }
     }
 
@@ -454,7 +454,7 @@ class SiswaController extends Controller
 
         return redirect()->back()->with('success', 'Data Siswa berhasil diimport!');
         } catch (\Exception $e) {
-            return redirect()->back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
+            return redirect()->back()->with('error', 'Terjadi kesalahan');
         }
     }
 
@@ -484,7 +484,7 @@ class SiswaController extends Controller
 
         return back()->with('success', 'Semua siswa berhasil dinaikkan kelas');
         } catch (\Exception $e) {
-            return redirect()->back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
+            return redirect()->back()->with('error', 'Terjadi kesalahan');
         }
     }
 
@@ -532,7 +532,7 @@ class SiswaController extends Controller
         return redirect()->route('siswa.show', $request->nis)
             ->with('success', 'Data penghargaan berhasil ditambahkan.');
         } catch (\Exception $e) {
-            return redirect()->back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
+            return redirect()->back()->with('error', 'Terjadi kesalahan');
         }
     }
 
@@ -580,7 +580,7 @@ class SiswaController extends Controller
         return redirect()->route('siswa.show', $request->nis)
             ->with('success', 'Data Pelanggaran berhasil ditambahkan.');
         } catch (\Exception $e) {
-            return redirect()->back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
+            return redirect()->back()->with('error', 'Terjadi kesalahan');
         }
     }
 
@@ -614,7 +614,7 @@ class SiswaController extends Controller
         return redirect()->route('siswa.show', $request->nis)
             ->with('success', 'Data Penanganan berhasil ditambahkan.');
         } catch (\Exception $e) {
-            return redirect()->back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
+            return redirect()->back()->with('error', 'Terjadi kesalahan');
         }
     }
 
@@ -634,7 +634,7 @@ class SiswaController extends Controller
         return redirect()->route('siswa.show', $nis)
             ->with('success', 'Siswa berhasil dinonaktifkan');
         } catch (\Exception $e) {
-            return redirect()->back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
+            return redirect()->back()->with('error', 'Terjadi kesalahan');
         }
     }
 }

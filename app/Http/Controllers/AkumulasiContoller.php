@@ -100,7 +100,7 @@ class AkumulasiContoller extends Controller
         $pdf = Pdf::loadView('Export.akumulasi.pdf', compact('akumulasi'));
         return $pdf->download('akumulasi.pdf');
         } catch (\Exception $e) {
-            return redirect()->back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
+            return redirect()->back()->with('error', 'Terjadi kesalahan');
         }
     }
 
@@ -116,7 +116,7 @@ class AkumulasiContoller extends Controller
 
         return Excel::download(new \App\Exports\Akumulasi_ExportExcel($akumulasi), 'akumulasi.xlsx');
         } catch (\Exception $e) {
-            return redirect()->back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
+            return redirect()->back()->with('error', 'Terjadi kesalahan');
         }
     }
 
@@ -148,7 +148,7 @@ class AkumulasiContoller extends Controller
         } catch (\Exception $e) {
             return response()->json([
                 'success' => false,
-                'message' => 'Terjadi kesalahan: ' . $e->getMessage(),
+                'message' => 'Terjadi kesalahan',
             ], 500);
         }
     }

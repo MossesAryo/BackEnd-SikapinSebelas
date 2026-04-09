@@ -136,7 +136,7 @@ return view('wakasek.skoring.penghargaan.index', [
     {
         try {
         $request->validate([
-            
+
             'nis'               => 'required',
             'id_aspekpenilaian' => 'required',
         ]);
@@ -181,7 +181,7 @@ return view('wakasek.skoring.penghargaan.index', [
         return redirect()->route('skoring_penghargaan.index')
             ->with('success', 'Data penghargaan berhasil ditambahkan.');
         } catch (\Exception $e) {
-            return redirect()->back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
+            return redirect()->back()->with('error', 'Terjadi kesalahan');
         }
     }
 
@@ -226,7 +226,7 @@ return view('wakasek.skoring.penghargaan.index', [
 
         return redirect()->back()->with('success', 'Penghargaan berhasil dihapus!');
         } catch (\Exception $e) {
-            return redirect()->back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
+            return redirect()->back()->with('error', 'Terjadi kesalahan');
         }
     }
 }

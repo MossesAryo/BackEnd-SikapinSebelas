@@ -22,7 +22,7 @@ class KetuaProgramController extends Controller
     public function index(Request $request)
     {
         $query = ketua_program::with('jurusan');
-     
+
 
         if ($request->filled('jurusan')) {
             $query->where('id_jurusan', $request->jurusan);
@@ -40,7 +40,7 @@ class KetuaProgramController extends Controller
                               ->paginate(5)
                               ->appends($request->only(['jurusan', 'search']));
         $daftar_jurusan = jurusan::all();
-       
+
 
         return view('wakasek.kaprog.index', compact('ketua_program', 'daftar_jurusan'));
     }
@@ -70,7 +70,7 @@ class KetuaProgramController extends Controller
 
         return redirect()->route('kaprog.index')->with('success', 'Data Ketua Program berhasil disimpan.');
         } catch (\Exception $e) {
-            return redirect()->back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
+            return redirect()->back()->with('error', 'Terjadi kesalahan');
         }
     }
 
@@ -103,7 +103,7 @@ class KetuaProgramController extends Controller
 
         return redirect()->route('kaprog.index')->with('success', 'Data berhasil diperbarui.');
         } catch (\Exception $e) {
-            return redirect()->back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
+            return redirect()->back()->with('error', 'Terjadi kesalahan');
         }
     }
 
@@ -116,7 +116,7 @@ class KetuaProgramController extends Controller
 
         return redirect()->route('kaprog.index')->with('success', 'Data Ketua Program berhasil dihapus.');
         } catch (\Exception $e) {
-            return redirect()->back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
+            return redirect()->back()->with('error', 'Terjadi kesalahan');
         }
     }
 
@@ -128,7 +128,7 @@ class KetuaProgramController extends Controller
         $pdf = Pdf::loadView('Export.ketua_program.pdf', compact('ketua_program'));
         return $pdf->download('ketuaprogram.pdf');
         } catch (\Exception $e) {
-            return redirect()->back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
+            return redirect()->back()->with('error', 'Terjadi kesalahan');
         }
     }
 
@@ -137,7 +137,7 @@ class KetuaProgramController extends Controller
         try {
         return Excel::download(new Ketua_Program_ExportExcel, 'ketuaprogram.xlsx');
         } catch (\Exception $e) {
-            return redirect()->back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
+            return redirect()->back()->with('error', 'Terjadi kesalahan');
         }
     }
 
@@ -152,7 +152,7 @@ class KetuaProgramController extends Controller
 
         return redirect()->back()->with('success', 'Data Ketua Program berhasil diimport!');
         } catch (\Exception $e) {
-            return redirect()->back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
+            return redirect()->back()->with('error', 'Terjadi kesalahan');
         }
     }
 }

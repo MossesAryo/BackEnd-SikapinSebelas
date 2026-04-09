@@ -194,7 +194,7 @@ class IntervensiController extends Controller
 
         return back()->with('success', 'Data intervensi berhasil dihapus.');
         } catch (\Exception $e) {
-            return redirect()->back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
+            return redirect()->back()->with('error', 'Terjadi kesalahan');
         }
     }
 
@@ -251,7 +251,7 @@ class IntervensiController extends Controller
             $pdf = Pdf::loadView('wakasek.intervensi.pdf', compact('intervensi'));
             return $pdf->download('Data_Intervensi.pdf');
         } catch (\Exception $e) {
-            return redirect()->back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
+            return redirect()->back()->with('error', 'Terjadi kesalahan');
         }
     }
 
@@ -306,7 +306,7 @@ class IntervensiController extends Controller
 
     return Excel::download(new Intervensi_ExportExcel($intervensi), 'Data_Intervensi.xlsx');
         } catch (\Exception $e) {
-            return redirect()->back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
+            return redirect()->back()->with('error', 'Terjadi kesalahan');
         }
     }
 }

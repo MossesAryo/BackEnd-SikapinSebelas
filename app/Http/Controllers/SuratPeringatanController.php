@@ -61,7 +61,7 @@ class SuratPeringatanController extends Controller
         ]);
         return redirect()->back()->with('success', 'Data berhasil disimpan');
         } catch (\Exception $e) {
-            return redirect()->back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
+            return redirect()->back()->with('error', 'Terjadi kesalahan');
         }
     }
 
@@ -84,7 +84,7 @@ class SuratPeringatanController extends Controller
         $updated = surat_peringatan::where('id_sp', $id_sp)->update($data);
         return redirect()->route('peringatan.index')->with('success', 'Peringatan berhasil diedit.');
         } catch (\Exception $e) {
-            return redirect()->back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
+            return redirect()->back()->with('error', 'Terjadi kesalahan');
         }
     }
 
@@ -97,7 +97,7 @@ class SuratPeringatanController extends Controller
 
         return redirect()->route('peringatan.index')->with('success', 'Data surat peringatan berhasil dihapus.');
         } catch (\Exception $e) {
-            return redirect()->back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
+            return redirect()->back()->with('error', 'Terjadi kesalahan');
         }
     }
 
@@ -110,7 +110,7 @@ class SuratPeringatanController extends Controller
         $pdf = PDF::loadView('Export.peringatan.pdf', compact('peringatan'));
         return $pdf->download('peringatan.pdf');
         } catch (\Exception $e) {
-            return redirect()->back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
+            return redirect()->back()->with('error', 'Terjadi kesalahan');
         }
     }
 
@@ -119,7 +119,7 @@ class SuratPeringatanController extends Controller
         try {
         return Excel::download(new Surat_Peringatan_ExportExcel, 'peringatan.xlsx');
         } catch (\Exception $e) {
-            return redirect()->back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
+            return redirect()->back()->with('error', 'Terjadi kesalahan');
         }
     }
 
@@ -137,7 +137,7 @@ class SuratPeringatanController extends Controller
 
         return redirect()->back()->with('success', 'Data Surat Peringatan berhasil diimport!');
         } catch (\Exception $e) {
-            return redirect()->back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
+            return redirect()->back()->with('error', 'Terjadi kesalahan');
         }
     }
 }

@@ -93,7 +93,7 @@ class WalikelasController extends Controller
 
         return redirect()->route('walikelas.index')->with('success', 'Data walikelas berhasil ditambahkan');
         } catch (\Exception $e) {
-            return redirect()->back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
+            return redirect()->back()->with('error', 'Terjadi kesalahan');
         }
     }
 
@@ -146,7 +146,7 @@ class WalikelasController extends Controller
 
         return redirect()->route('walikelas.index')->with('success', 'Data berhasil diperbarui.');
         } catch (\Exception $e) {
-            return redirect()->back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
+            return redirect()->back()->with('error', 'Terjadi kesalahan');
         }
     }
 
@@ -165,7 +165,7 @@ class WalikelasController extends Controller
 
         return redirect()->route('walikelas.index')->with('success', 'Data Walikelas berhasil dihapus.');
         } catch (\Exception $e) {
-            return redirect()->back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
+            return redirect()->back()->with('error', 'Terjadi kesalahan');
         }
     }
 
@@ -177,7 +177,7 @@ class WalikelasController extends Controller
         $pdf = PDF::loadView('Export.walikelas.pdf', compact('walikelas'));
         return $pdf->download('walikelas.pdf');
         } catch (\Exception $e) {
-            return redirect()->back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
+            return redirect()->back()->with('error', 'Terjadi kesalahan');
         }
     }
 
@@ -186,7 +186,7 @@ class WalikelasController extends Controller
         try {
         return Excel::download(new Walikelas_ExportExcel, 'walikelas.xlsx');
         } catch (\Exception $e) {
-            return redirect()->back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
+            return redirect()->back()->with('error', 'Terjadi kesalahan');
         }
     }
 
@@ -204,7 +204,7 @@ class WalikelasController extends Controller
 
         return redirect()->back()->with('success', 'Data Walikelas berhasil diimport!');
         } catch (\Exception $e) {
-            return redirect()->back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
+            return redirect()->back()->with('error', 'Terjadi kesalahan');
         }
     }
 }
