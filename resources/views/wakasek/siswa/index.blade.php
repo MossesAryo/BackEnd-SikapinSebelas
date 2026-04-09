@@ -190,7 +190,7 @@
 
                                     <td class="px-6 py-4 whitespace-nowrap">
                                         <div class="flex items-center gap-1">
-                                            @if (auth()->user()->role == 1 || auth()->user()->role == 2)
+                                            @if (auth()->user()->role == 1)
                                                 <button
                                                     onclick="openEditModal('{{ $item->nis }}', '{{ addslashes($item->nama_siswa) }}', '{{ $item->id_kelas }}', 'index')"
                                                     class="action-btn inline-flex items-center justify-center w-9 h-9 text-blue-600 hover:text-blue-800 hover:bg-blue-50 rounded-full"
