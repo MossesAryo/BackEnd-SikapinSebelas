@@ -180,9 +180,9 @@
                 </li>
 
                 <!-- ───── INPUT DATA ───── -->
-                @if (auth()->user()->role == 1)
                 <li><div class="section-divider mt-2"></div></li>
                 <li><div class="section-label">Input Data</div></li>
+                @if (auth()->user()->role == 1)
 
                 {{-- <li class="px-3">
                     <a href="{{ route('penghargaan.index') }}"
