@@ -27,7 +27,7 @@
                 <label class="block text-sm font-semibold text-gray-700 flex items-center gap-2">
                     <i class="bi bi-buildings text-gray-500"></i> Kategori
                 </label>
-                <select id="jurusan" name="kategori" class="w-full rounded-xl border-2 border-gray-200 px-4 py-3 focus:ring-4 focus:ring-blue-100 focus:border-blue-500">
+                <select id="kategori" name="kategori" class="w-full rounded-xl border-2 border-gray-200 px-4 py-3 focus:ring-4 focus:ring-blue-100 focus:border-blue-500">
                     <option value="">-- Pilih Kategori --</option>
                     @foreach ($kategoriList as $aspek)
                         <option value="{{ $aspek->kategori }}" {{ request('kategori') == $aspek->id_aspekpenilaian ? 'selected' : '' }}>

@@ -204,39 +204,40 @@ class Aspek_penilaianController extends Controller
 
 
 
-    public function indexPelanggaran(Request $request)
-{
-    $query = aspek_penilaian::where('jenis_poin', 'Pelanggaran');
-     $kategoriList = aspek_penilaian::where('jenis_poin', 'Pelanggaran')
-        ->select('kategori')
-        ->distinct()
-        ->get();
+        public function indexPelanggaran(Request $request)
+    {
+        $query = aspek_penilaian::where('jenis_poin', 'Pelanggaran');
+        $kategoriList = aspek_penilaian::where('jenis_poin', 'Pelanggaran')
+            ->select('kategori')
+            ->distinct()
+            ->get();
+            
 
-    if ($request->filled('kategori')) {
-        $query->where('kategori', 'like', '%' . $request->kategori . '%');
+        if ($request->filled('kategori')) {
+            $query->where('kategori', 'like', '%' . $request->kategori . '%');
+        }
+
+        if ($request->filled('pelanggaran_ke')) {
+            $query->where('pelanggaran_ke', $request->pelanggaran_ke);
+        }
+
+        // GLOBAL SEARCH
+        if ($request->filled('search')) {
+            $search = $request->search;
+
+            $query->where(function ($q) use ($search) {
+                $q->where('id_aspekpenilaian', 'like', "%$search%")
+                ->orWhere('kategori', 'like', "%$search%")
+                ->orWhere('uraian', 'like', "%$search%")
+                ->orWhere('pelanggaran_ke', 'like', "%$search%")
+                ->orWhereRaw("CAST(indikator_poin AS CHAR) LIKE ?", ["%$search%"]);
+            });
+        }
+
+        $aspek_penilaian = $query->paginate(10)->appends($request->all());
+
+        return view('wakasek.aspek_penilaian.aspek_pelanggaran.index', compact('aspek_penilaian', 'kategoriList'));
     }
-
-    if ($request->filled('pelanggaran_ke')) {
-        $query->where('pelanggaran_ke', $request->pelanggaran_ke);
-    }
-
-    // GLOBAL SEARCH
-    if ($request->filled('search')) {
-        $search = $request->search;
-
-        $query->where(function ($q) use ($search) {
-            $q->where('id_aspekpenilaian', 'like', "%$search%")
-              ->orWhere('kategori', 'like', "%$search%")
-              ->orWhere('uraian', 'like', "%$search%")
-              ->orWhere('pelanggaran_ke', 'like', "%$search%")
-              ->orWhereRaw("CAST(indikator_poin AS CHAR) LIKE ?", ["%$search%"]);
-        });
-    }
-
-    $aspek_penilaian = $query->paginate(10)->appends($request->all());
-
-    return view('wakasek.aspek_penilaian.aspek_pelanggaran.index', compact('aspek_penilaian', 'kategoriList'));
-}
 
 
 
