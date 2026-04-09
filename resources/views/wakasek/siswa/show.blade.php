@@ -36,30 +36,14 @@
                 </button>
             @endif
 
-            @if (auth()->user()->role == 1 || auth()->user()->role == 2)
+            
                 <a href="{{ route('siswa.index') }}"
                     class="flex items-center justify-center sm:justify-start gap-2 px-4 py-2 w-full sm:w-auto
               rounded-lg bg-gray-600 text-white transition-colors hover:bg-gray-700">
                     <i class="bi bi-arrow-left"></i>
                     <span>Kembali</span>
                 </a>
-            @endif
-            @if (auth()->user()->role == 4)
-                <a href="{{ route('walikelas.siswa') }}"
-                    class="flex items-center justify-center sm:justify-start gap-2 px-4 py-2 w-full sm:w-auto
-              rounded-lg bg-gray-600 text-white transition-colors hover:bg-gray-700">
-                    <i class="bi bi-arrow-left"></i>
-                    <span>Kembali</span>
-                </a>
-            @endif
-            @if (auth()->user()->role == 3)
-                <a href="{{ route('ketua_program.siswa') }}"
-                    class="flex items-center justify-center sm:justify-start gap-2 px-4 py-2 w-full sm:w-auto
-              rounded-lg bg-gray-600 text-white transition-colors hover:bg-gray-700">
-                    <i class="bi bi-arrow-left"></i>
-                    <span>Kembali</span>
-                </a>
-            @endif
+            
         </div>
 
 
