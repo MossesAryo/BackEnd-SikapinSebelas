@@ -78,7 +78,7 @@ class Guru_bkController extends Controller
 
         return redirect()->route('gurubk.index')->with('success', 'Guru BK berhasil ditambahkan');
         } catch (\Exception $e) {
-            return redirect()->back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
+            return redirect()->back()->with('error', 'Terjadi kesalahan');
         }
     }
 
@@ -101,7 +101,7 @@ class Guru_bkController extends Controller
 
         return redirect()->route('gurubk.index')->with('success', 'Data berhasil diperbarui.');
         } catch (\Exception $e) {
-            return redirect()->back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
+            return redirect()->back()->with('error', 'Terjadi kesalahan');
         }
     }
 
@@ -119,7 +119,7 @@ class Guru_bkController extends Controller
 
     return redirect()->route('gurubk.index')->with('success', 'Guru BK dan user berhasil dihapus');
         } catch (\Exception $e) {
-            return redirect()->back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
+            return redirect()->back()->with('error', 'Terjadi kesalahan');
         }
     }
 
@@ -131,7 +131,7 @@ class Guru_bkController extends Controller
         $pdf = PDF::loadView('Export.guru_bk.pdf', compact('guru_bk'));
         return $pdf->download('guru_bk.pdf');
         } catch (\Exception $e) {
-            return redirect()->back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
+            return redirect()->back()->with('error', 'Terjadi kesalahan');
         }
     }
 
@@ -140,7 +140,7 @@ class Guru_bkController extends Controller
         try {
         return Excel::download(new Guru_Bk_ExportExcel, 'guru_bk.xlsx');
         } catch (\Exception $e) {
-            return redirect()->back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
+            return redirect()->back()->with('error', 'Terjadi kesalahan');
         }
     }
 
@@ -158,7 +158,7 @@ class Guru_bkController extends Controller
 
         return redirect()->back()->with('success', 'Data Guru BK berhasil diimport!');
         } catch (\Exception $e) {
-            return redirect()->back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
+            return redirect()->back()->with('error', 'Terjadi kesalahan');
         }
     }
 }

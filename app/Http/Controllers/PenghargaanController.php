@@ -62,7 +62,7 @@ public function index(Request $request)
         ]);
         return redirect()->back()->with('success', 'Data berhasil disimpan');
         } catch (\Exception $e) {
-            return redirect()->back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
+            return redirect()->back()->with('error', 'Terjadi kesalahan');
         }
     }
 
@@ -85,7 +85,7 @@ public function index(Request $request)
 
         return redirect()->route('penghargaan.index')->with('success', 'Penghargaan berhasil diedit.');
         } catch (\Exception $e) {
-            return redirect()->back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
+            return redirect()->back()->with('error', 'Terjadi kesalahan');
         }
     }
 
@@ -98,7 +98,7 @@ public function index(Request $request)
 
         return redirect()->route('penghargaan.index')->with('success', 'Data penghargaan berhasil dihapus.');
         } catch (\Exception $e) {
-            return redirect()->back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
+            return redirect()->back()->with('error', 'Terjadi kesalahan');
         }
     }
 
@@ -111,7 +111,7 @@ public function index(Request $request)
         $pdf = PDF::loadView('Export.penghargaan.pdf', compact('penghargaan'));
         return $pdf->download('penghargaan.pdf');
         } catch (\Exception $e) {
-            return redirect()->back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
+            return redirect()->back()->with('error', 'Terjadi kesalahan');
         }
     }
 
@@ -120,7 +120,7 @@ public function index(Request $request)
         try {
         return Excel::download(new Penghargaan_ExportExcel, 'penghargaan.xlsx');
         } catch (\Exception $e) {
-            return redirect()->back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
+            return redirect()->back()->with('error', 'Terjadi kesalahan');
         }
     }
 
@@ -138,7 +138,7 @@ public function index(Request $request)
 
         return redirect()->back()->with('success', 'Data penghargaan berhasil diimport!');
         } catch (\Exception $e) {
-            return redirect()->back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
+            return redirect()->back()->with('error', 'Terjadi kesalahan');
         }
     }
 }

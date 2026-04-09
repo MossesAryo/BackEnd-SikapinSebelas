@@ -119,7 +119,7 @@ if ($user->role == 4 && isset($kelasWalikelas)) {
 
 $siswaList = $siswaList->orderBy('nama_siswa')->get();
 
-   
+
     return view('wakasek.skoring.pelanggaran.index', [
         "penilaian" => $penilaian,
         "siswa"     => $siswaList,
@@ -182,7 +182,7 @@ $siswaList = $siswaList->orderBy('nama_siswa')->get();
         return redirect()->route('skoring_pelanggaran.index')
             ->with('success', 'Data pelanggaran berhasil ditambahkan.');
         } catch (\Exception $e) {
-            return redirect()->back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
+            return redirect()->back()->with('error', 'Terjadi kesalahan');
         }
     }
 
@@ -220,7 +220,7 @@ $siswaList = $siswaList->orderBy('nama_siswa')->get();
 
         return redirect()->back()->with('success', 'Skoring berhasil dihapus!');
         } catch (\Exception $e) {
-            return redirect()->back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
+            return redirect()->back()->with('error', 'Terjadi kesalahan');
         }
     }
 }

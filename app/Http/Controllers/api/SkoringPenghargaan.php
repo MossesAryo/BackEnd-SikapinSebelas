@@ -87,7 +87,7 @@ class SkoringPenghargaan extends Controller
             } catch (\Exception $e) {
             return response()->json([
                 'success' => false,
-                'message' => 'Gagal menambahkan penghargaan: ' . $e->getMessage(),
+                'message' => 'Gagal menambahkan penghargaan',
             ], 500);
         }
     }

@@ -32,7 +32,7 @@ class catatanController extends Controller
 
        return redirect()->back()->with('success', 'Catatan   berhasil ditambahkan');
         } catch (\Exception $e) {
-            return redirect()->back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
+            return redirect()->back()->with('error', 'Terjadi kesalahan');
         }
     }
     public function AddCatatanAPI(Request $request, $nis)
@@ -60,7 +60,7 @@ class catatanController extends Controller
         } catch (\Exception $e) {
             return response()->json([
                 'success' => false,
-                'message' => 'Terjadi kesalahan: ' . $e->getMessage(),
+                'message' => 'Terjadi kesalahan',
             ], 500);
         }
     }

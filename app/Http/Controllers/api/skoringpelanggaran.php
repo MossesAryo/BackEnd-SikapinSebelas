@@ -90,7 +90,7 @@ class skoringpelanggaran extends Controller
             } catch (\Exception $e) {
             return response()->json([
                 'success' => false,
-                'message' => 'Gagal menambahkan pelanggaran: ' . $e->getMessage(),
+                'message' => 'Gagal menambahkan pelanggaran',
             ], 500);
         }
     }

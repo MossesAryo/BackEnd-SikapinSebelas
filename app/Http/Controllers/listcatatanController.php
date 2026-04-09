@@ -41,7 +41,7 @@ class listcatatanController extends Controller
             ->route('catatan.index')
             ->with('success', 'Catatan berhasil diperbarui!');
         } catch (\Exception $e) {
-            return redirect()->back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
+            return redirect()->back()->with('error', 'Terjadi kesalahan');
         }
     }
 }

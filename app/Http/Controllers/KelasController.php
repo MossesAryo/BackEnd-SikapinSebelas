@@ -184,7 +184,7 @@ class KelasController extends Controller
 
         return redirect()->route('kelas')->with('success', 'Kelas berhasil ditambahkan');
         } catch (\Exception $e) {
-            return redirect()->back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
+            return redirect()->back()->with('error', 'Terjadi kesalahan');
         }
     }
 
@@ -201,7 +201,7 @@ class KelasController extends Controller
 
         return redirect()->route('kelas')->with('success', 'Kelas berhasil diedit');
         } catch (\Exception $e) {
-            return redirect()->back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
+            return redirect()->back()->with('error', 'Terjadi kesalahan');
         }
     }
 
@@ -212,7 +212,7 @@ class KelasController extends Controller
 
         return redirect()->route('kelas')->with('success', 'Kelas berhasil dihapus');
         } catch (\Exception $e) {
-            return redirect()->back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
+            return redirect()->back()->with('error', 'Terjadi kesalahan');
         }
     }
 }

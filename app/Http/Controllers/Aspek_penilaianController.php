@@ -36,7 +36,7 @@ class Aspek_penilaianController extends Controller
         } catch (\Exception $e) {
             return response()->json([
                 'success' => false,
-                'message' => 'Terjadi kesalahan: ' . $e->getMessage(),
+                'message' => 'Terjadi kesalahan',
             ], 500);
         }
     }
@@ -55,7 +55,7 @@ class Aspek_penilaianController extends Controller
 
         return redirect()->route('aspekpenilaian')->with('success', 'Aspek Penilaian berhasil dihapus');
         } catch (\Exception $e) {
-            return redirect()->back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
+            return redirect()->back()->with('error', 'Terjadi kesalahan');
         }
     }
 
@@ -115,7 +115,7 @@ class Aspek_penilaianController extends Controller
 
         return redirect()->route('aspek_penghargaan.index')->with('success', 'Aspek Penilaian berhasil ditambahkan');
         } catch (\Exception $e) {
-            return redirect()->back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
+            return redirect()->back()->with('error', 'Terjadi kesalahan');
         }
     }
 
@@ -142,7 +142,7 @@ class Aspek_penilaianController extends Controller
 
         return redirect()->route('aspek_penghargaan.index')->with('success', 'Aspek Penilaian berhasil diedit');
         } catch (\Exception $e) {
-            return redirect()->back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
+            return redirect()->back()->with('error', 'Terjadi kesalahan');
         }
     }
 
@@ -156,7 +156,7 @@ class Aspek_penilaianController extends Controller
 
         return redirect()->route('aspek_penghargaan.index')->with('success', 'Aspek Penilaian berhasil dihapus');
         } catch (\Exception $e) {
-            return redirect()->back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
+            return redirect()->back()->with('error', 'Terjadi kesalahan');
         }
     }
 
@@ -168,7 +168,7 @@ class Aspek_penilaianController extends Controller
         $pdf = PDF::loadView('Export.aspek_penghargaan.pdf', compact('aspek_penilaian'));
         return $pdf->download('aspek_penghargaan.pdf');
         } catch (\Exception $e) {
-            return redirect()->back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
+            return redirect()->back()->with('error', 'Terjadi kesalahan');
         }
     }
 
@@ -177,7 +177,7 @@ class Aspek_penilaianController extends Controller
         try {
         return Excel::download(new Aspek_Penghargaan_ExportExcel, 'aspek_penghargaan.xlsx');
         } catch (\Exception $e) {
-            return redirect()->back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
+            return redirect()->back()->with('error', 'Terjadi kesalahan');
         }
     }
 
@@ -196,7 +196,7 @@ class Aspek_penilaianController extends Controller
 
         return redirect()->back()->with('success', 'Data Aspek Penghargaan berhasil diimport!');
         } catch (\Exception $e) {
-            return redirect()->back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
+            return redirect()->back()->with('error', 'Terjadi kesalahan');
         }
     }
 
@@ -264,7 +264,7 @@ class Aspek_penilaianController extends Controller
 
         return redirect()->route('aspek_pelanggaran.index')->with('success', 'Aspek Penilaian berhasil ditambahkan');
         } catch (\Exception $e) {
-            return redirect()->back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
+            return redirect()->back()->with('error', 'Terjadi kesalahan');
         }
     }
 
@@ -293,7 +293,7 @@ class Aspek_penilaianController extends Controller
 
         return redirect()->route('aspek_pelanggaran.index')->with('success', 'Aspek Penilaian berhasil diedit');
         } catch (\Exception $e) {
-            return redirect()->back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
+            return redirect()->back()->with('error', 'Terjadi kesalahan');
         }
     }
 
@@ -307,7 +307,7 @@ class Aspek_penilaianController extends Controller
 
         return redirect()->route('aspek_pelanggaran.index')->with('success', 'Aspek Penilaian berhasil dihapus');
         } catch (\Exception $e) {
-            return redirect()->back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
+            return redirect()->back()->with('error', 'Terjadi kesalahan');
         }
     }
 
@@ -321,7 +321,7 @@ class Aspek_penilaianController extends Controller
         $pdf = PDF::loadView('Export.aspek_pelanggaran.pdf', compact('aspek_penilaian'));
         return $pdf->download('aspek_pelanggaran.pdf');
         } catch (\Exception $e) {
-            return redirect()->back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
+            return redirect()->back()->with('error', 'Terjadi kesalahan');
         }
     }
 
@@ -330,7 +330,7 @@ class Aspek_penilaianController extends Controller
         try {
         return Excel::download(new Aspek_Pelanggaran_ExportExcel, 'aspek_pelanggaran.xlsx');
         } catch (\Exception $e) {
-            return redirect()->back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
+            return redirect()->back()->with('error', 'Terjadi kesalahan');
         }
     }
 
@@ -349,7 +349,7 @@ class Aspek_penilaianController extends Controller
 
         return redirect()->back()->with('success', 'Data Aspek Pelanggaran berhasil diimport!');
         } catch (\Exception $e) {
-            return redirect()->back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
+            return redirect()->back()->with('error', 'Terjadi kesalahan');
         }
     }
 }
