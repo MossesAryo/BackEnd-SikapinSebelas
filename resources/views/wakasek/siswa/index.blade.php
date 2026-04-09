@@ -243,9 +243,9 @@
             @include('wakasek.siswa.delete')
             @include('wakasek.siswa.modalExportImport')
         @endif
-
+        @if (auth()->user()->role != 3)
         @include('wakasek.siswa.filter')
-
+        @endif
 
 
 
