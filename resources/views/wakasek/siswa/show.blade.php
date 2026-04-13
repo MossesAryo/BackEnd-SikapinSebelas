@@ -36,14 +36,14 @@
                 </button>
             @endif
 
-            
-                <a href="{{ route('siswa.index') }}"
-                    class="flex items-center justify-center sm:justify-start gap-2 px-4 py-2 w-full sm:w-auto
+
+            <a href="{{ route('siswa.index') }}"
+                class="flex items-center justify-center sm:justify-start gap-2 px-4 py-2 w-full sm:w-auto
               rounded-lg bg-gray-600 text-white transition-colors hover:bg-gray-700">
-                    <i class="bi bi-arrow-left"></i>
-                    <span>Kembali</span>
-                </a>
-        
+                <i class="bi bi-arrow-left"></i>
+                <span>Kembali</span>
+            </a>
+
         </div>
 
 
@@ -191,28 +191,32 @@
                     <div class="p-6">
                         <div class="space-y-4">
                             @php
-                                $kelasLabel = $siswa->id_kelas != 'ALUMNI' ? 'Kelas' : 'Jurusan (Alumni)';
-                                $kelasValue =
-                                    $siswa->id_kelas != 'ALUMNI'
-                                        ? $siswa->kelas?->nama_kelas
-                                        : ($siswa->jurusan?->nama_jurusan ?? 'Alumni') . ' (Alumni)';
+                                $isAlumni = $siswa->status == 'alumni';
+
+                                $kelasLabel = $isAlumni ? 'Jurusan' : 'Kelas';
+
+                                $kelasValue = $isAlumni
+                                    ? $siswa->jurusan?->id_jurusan ?? 'Alumni'
+                                    : $siswa->kelas?->nama_kelas ?? '-';
 
                                 $studentInfo = [
                                     ['label' => 'NIS', 'value' => $siswa->nis],
                                     ['label' => 'Nama Lengkap', 'value' => $siswa->nama_siswa],
                                     ['label' => $kelasLabel, 'value' => $kelasValue],
                                 ];
+                                
 
-                                if ($siswa->id_kelas !== 'ALUMNI') {
+                                // hanya tampilkan walikelas jika bukan alumni
+                                if (!$isAlumni) {
                                     $studentInfo[] = [
                                         'label' => 'Walikelas',
-                                        'value' => $siswa->kelas?->walikelas?->nama_walikelas ?? '-',
+                                        'value' => $siswa->kelas->walikelas->nama_walikelas ?? '-',
                                     ];
                                 }
 
                                 $studentInfo[] = [
                                     'label' => 'Status',
-                                    'value' => $siswa->status,
+                                    'value' => strtoupper($siswa->status),
                                 ];
                             @endphp
 

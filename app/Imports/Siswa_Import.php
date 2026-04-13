@@ -1,15 +1,19 @@
 <?php
+
 namespace App\Imports;
-use App\Models\siswa;
+
 use App\Models\kelas;
+use App\Models\siswa;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithStartRow;
+
 class Siswa_Import implements ToModel, WithStartRow
 {
     public function startRow(): int
     {
         return 3;
     }
+
     public function model(array $row)
     {
         if (empty($row[1]) || empty($row[2])) {
@@ -22,12 +26,26 @@ class Siswa_Import implements ToModel, WithStartRow
         $idKelas = $row[3];
 
         $kelas = kelas::with('jurusan')->where('id_kelas', $idKelas)->first();
-        $idJurusan = $kelas?->jurusan?->id_jurusan ?? null;
+        $parts = explode('-', $idKelas);
+        $kodeJurusan = $parts[1] ?? null;
+        $mapping = [
+            'BR'   => 'PM',   // sesuaikan kalau BR = Pemasaran
+            'RPL'  => 'RPL',
+            'TKJ'  => 'TKJ',
+            'DKV'  => 'DKV',
+            'AK'   => 'AK',
+            'MLOG' => 'MLOG',
+            'MP'   => 'MP',
+            'PM'   => 'PM',
+        ];
+
+        $idJurusan = $mapping[$kodeJurusan] ?? null;
+       
 
         return new siswa([
-            'nis'        => $row[1],
+            'nis' => $row[1],
             'nama_siswa' => $row[2],
-            'id_kelas'   => $idKelas,
+            'id_kelas' => $idKelas,
             'id_jurusan' => $idJurusan,
         ]);
     }

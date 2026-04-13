@@ -124,6 +124,13 @@
                                         Kelas
                                     </div>
                                 </th>
+                                <th
+                                    class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                                    <div class="flex items-center gap-2">
+                                        <i class="bi bi-person text-gray-400"></i>
+                                        Status
+                                    </div>
+                                </th>
 
                                 <th
                                     class="px-5 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
@@ -151,15 +158,18 @@
                                         </div>
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap">
-                                        <div class="text-sm font-semibold text-gray-900">{{ $item->nama_siswa }}</div>
+                                        <div class="text-sm font-semibold text-gray-900">{{ strtoupper($item->nama_siswa) }}</div>
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap">
-                                        <div class="text-sm font-semibold text-gray-900">@if ($item->id_kelas != 'ALUMNI')
-                                          {{$item->kelas->nama_kelas ?? $item->id_jurusan ?? '-' }}
+                                        <div class="text-sm font-semibold text-gray-900">@if ($item->status != 'alumni')
+                                          {{$item->kelas->nama_kelas ?? '-' }}
                                         @else
-                                           Alumni  
+                                        {{$item->jurusan->id_jurusan ?? '-' }} 
                                         @endif
                                         </div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="text-sm font-semibold text-gray-900">{{ strtoupper($item->status) }}</div>
                                     </td>
 
 
