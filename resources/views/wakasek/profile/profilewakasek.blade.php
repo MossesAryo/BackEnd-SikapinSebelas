@@ -130,7 +130,7 @@
                     <div class="grid grid-cols-1 md:grid-cols-[140px_1fr] gap-4 py-3 border-b border-slate-100">
                         <div class="text-sm font-medium text-slate-500">Jurusan</div>
                         <div class="info-value text-sm font-medium text-slate-800">
-                            {{ Auth::user()->ketua_program->jurusan }}
+                            {{ Auth::user()->ketua_program->jurusan->nama_jurusan }}
                             @endif
                         </div>
                     
