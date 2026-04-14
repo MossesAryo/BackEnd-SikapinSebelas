@@ -60,7 +60,7 @@ class SiswaController extends Controller
             if (! $ketua) {
                 abort(403, 'Data Ketua Program tidak ditemukan.');
             }
-            $query->whereHas('kelas.jurusan', fn ($q) => $q->where('id_jurusan', $ketua->id_jurusan));
+            $query->whereHas('kelas.jurusan', fn($q) => $q->where('id_jurusan', $ketua->id_jurusan));
         }
 
         // === Role 3: Walikelas — hanya siswa dari kelasnya ===
@@ -77,8 +77,8 @@ class SiswaController extends Controller
         if ($request->filled('search')) {
             $search = $request->search;
             $query->where(function ($q) use ($search) {
-                $q->where('nama_siswa', 'like', '%'.$search.'%')
-                    ->orWhere('nis', 'like', '%'.$search.'%');
+                $q->where('nama_siswa', 'like', '%' . $search . '%')
+                    ->orWhere('nis', 'like', '%' . $search . '%');
             });
         }
 
@@ -269,7 +269,7 @@ class SiswaController extends Controller
             }
 
             $otherPengh = siswa_penghargaan::where('nis', $siswa->nis)
-                ->whereHas('penghargaan', fn ($q) => $q->where('level_penghargaan', '!=', $level));
+                ->whereHas('penghargaan', fn($q) => $q->where('level_penghargaan', '!=', $level));
             if ($otherPengh->exists()) {
                 $otherPengh->delete();
             }
@@ -294,7 +294,7 @@ class SiswaController extends Controller
             $this->buatSP($siswa, $level, 'poin sesuai rentang');
 
             $otherSP = siswa_sp::where('nis', $siswa->nis)
-                ->whereHas('peringatan', fn ($q) => $q->where('level_sp', '!=', $level));
+                ->whereHas('peringatan', fn($q) => $q->where('level_sp', '!=', $level));
             if ($otherSP->exists()) {
                 $otherSP->delete();
             }
@@ -425,6 +425,21 @@ class SiswaController extends Controller
             return $pdf->download('Data_Siswa.pdf');
         } catch (\Exception $e) {
             return redirect()->back()->with('error', 'Terjadi kesalahan');
+        }
+    }
+
+    public function exportPdfActivity(Request $request, $nis)
+    {
+        try {
+            $siswa = siswa::where('nis', $nis)->firstOrFail();
+
+            $activity = ActivityLog::where('nis', $nis)->orderBy('created_at', 'desc')->get();
+
+            $pdf = Pdf::loadView('Export.siswa.pdfActivity', compact('siswa', 'activity'));
+
+            return $pdf->download('Data_Aktivitas_' . $nis . '.pdf');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Terjadi kesalahan : ' . $e->getMessage());
         }
     }
 
