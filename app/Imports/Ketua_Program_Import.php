@@ -38,7 +38,7 @@ class Ketua_Program_Import implements ToModel, WithHeadingRow
             'nip_kaprog' => $row['nip'],
             'username' => $user->username,
             'nama_ketua_program' => $row['nama_ketua_program'],
-            'jurusan' => $row['jurusan'],
+            'id_jurusan' => $row['jurusan'],
         ]);
     }
 }
