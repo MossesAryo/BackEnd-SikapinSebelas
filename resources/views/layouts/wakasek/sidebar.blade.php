@@ -179,10 +179,11 @@
                     </a>
                 </li>
 
+                @if (auth()->user()->role == 1 || auth()->user()->role == 2 || auth()->user()->role == 3)
                 <!-- ───── INPUT DATA ───── -->
                 <li><div class="section-divider mt-2"></div></li>
                 <li><div class="section-label">Input Data</div></li>
-                @if (auth()->user()->role == 1)
+               
 
                 {{-- <li class="px-3">
                     <a href="{{ route('penghargaan.index') }}"
@@ -200,10 +201,9 @@
                         <span>Pelanggaran</span>
                     </a>
                 </li> --}}
-                @endif
                 
                 
-                @if (auth()->user()->role == 1 || auth()->user()->role == 2 || auth()->user()->role == 3)
+                
                 <li class="px-3">
                     <a href="{{ route('skoring_penghargaan.index') }}"
                         class="flex items-center gap-3 px-3 py-2.5 rounded-lg menu-link
