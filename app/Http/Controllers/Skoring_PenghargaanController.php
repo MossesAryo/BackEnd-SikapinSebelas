@@ -212,7 +212,7 @@ class Skoring_PenghargaanController extends Controller
                     'user_id'     => $user->id,
                     'nis'         => $siswa->nis,
                     'kategori'    => 'Apresiasi',
-                    'activity'    => 'Tambah Penghargaan',
+                    'activity'    => 'Hapus Penghargaan',
                     'description' => $uraian,   // uraian dari aspek_penilaian
                     'point'       => $skor,
                     'created_at'  => now(),
