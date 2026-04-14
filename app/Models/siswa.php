@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
  * Model siswa.
@@ -10,10 +11,13 @@ use Illuminate\Database\Eloquent\Model;
  */
 class siswa extends Model
 {
+    use SoftDeletes;
+
     protected $table = 'siswa';
     protected $primaryKey = 'nis';
     public $incrementing = false;
     protected $keyType = 'string';
+    protected $dates = ['deleted_at'];
     protected $fillable = [
         'nis',
         'id_kelas',

@@ -40,6 +40,9 @@ Route::middleware(['auth'])->group(function () {
 
 
     Route::post('/siswa/store', [SiswaController::class, 'store'])->name('siswa.store');
+    Route::get('/siswa/arsip', [SiswaController::class, 'arsip'])->name('siswa.arsip');
+    Route::patch('/siswa/{nis}/restore', [SiswaController::class, 'restore'])->name('siswa.restore');
+    Route::delete('/siswa/{nis}/force-delete', [SiswaController::class, 'forceDelete'])->name('siswa.forceDelete');
     Route::put('/siswa/{nis}/update', [SiswaController::class, 'update'])->name('siswa.update');
     Route::delete('/siswa/{nis}', [SiswaController::class, 'destroy'])->name('siswa.destroy');
     Route::delete('/siswa/{nis}/penghargaan/{id}', [SiswaController::class, 'destroyPenghargaan'])->name('siswa.penghargaan.destroy');

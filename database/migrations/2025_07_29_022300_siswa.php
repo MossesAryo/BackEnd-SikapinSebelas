@@ -17,6 +17,7 @@ return new class extends Migration {
             $table->integer('poin_pelanggaran')->nullable();
             $table->integer('poin_total')->nullable();
             $table->timestamps();
+            $table->softDeletes();
             $table->foreign('id_kelas')->references('id_kelas')->on('kelas')->onDelete('cascade');
             $table->foreign('id_jurusan')->references('id_jurusan')->on('jurusan')->onDelete('cascade')->onUpdate('cascade');
 

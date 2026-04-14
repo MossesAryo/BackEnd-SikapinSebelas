@@ -370,6 +370,58 @@ class SiswaController extends Controller
         }
     }
 
+    public function arsip(Request $request)
+    {
+        $query = siswa::onlyTrashed()->with(['kelas.jurusan']);
+
+        if ($request->filled('search')) {
+            $search = $request->search;
+            $query->where(function ($q) use ($search) {
+                $q->where('nama_siswa', 'like', '%'.$search.'%')
+                    ->orWhere('nis', 'like', '%'.$search.'%');
+            });
+        }
+
+        $siswa = $query->orderBy('deleted_at', 'desc')->paginate(10)
+            ->appends($request->only(['search']));
+
+        return view('wakasek.siswa.arsip', compact('siswa'));
+    }
+
+    public function restore(string $nis)
+    {
+        try {
+            $siswa = siswa::onlyTrashed()->where('nis', $nis)->first();
+
+            if (! $siswa) {
+                return redirect()->route('siswa.arsip')->with('error', 'Siswa tidak ditemukan di arsip');
+            }
+
+            $siswa->restore();
+
+            return redirect()->route('siswa.arsip')->with('success', 'Siswa berhasil dipulihkan');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Terjadi kesalahan');
+        }
+    }
+
+    public function forceDelete(string $nis)
+    {
+        try {
+            $siswa = siswa::onlyTrashed()->where('nis', $nis)->first();
+
+            if (! $siswa) {
+                return redirect()->route('siswa.arsip')->with('error', 'Siswa tidak ditemukan di arsip');
+            }
+
+            $siswa->forceDelete();
+
+            return redirect()->route('siswa.arsip')->with('success', 'Siswa berhasil dihapus permanen');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Terjadi kesalahan');
+        }
+    }
+
     public function destroyPenghargaan(string $nis, int $id)
     {
         try {

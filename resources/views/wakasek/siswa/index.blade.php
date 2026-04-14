@@ -13,11 +13,18 @@
                     <p class="text-gray-600 mt-1">Kelola data Siswa</p>
                 </div>
                 @if (auth()->user()->role == 1)
-                    <button onclick="openCreateModal()"
-                        class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg flex items-center gap-2 transition-colors">
-                        <i class="bi bi-plus-lg"></i>
-                        Tambah Siswa
-                    </button>
+                    <div class="flex items-center gap-2">
+                        <a href="{{ route('siswa.arsip') }}"
+                            class="bg-gray-100 hover:bg-gray-200 text-gray-700 px-4 py-2 rounded-lg flex items-center gap-2 transition-colors">
+                            <i class="bi bi-archive"></i>
+                            Arsip
+                        </a>
+                        <button onclick="openCreateModal()"
+                            class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg flex items-center gap-2 transition-colors">
+                            <i class="bi bi-plus-lg"></i>
+                            Tambah Siswa
+                        </button>
+                    </div>
                 @endif
             </div>
 
