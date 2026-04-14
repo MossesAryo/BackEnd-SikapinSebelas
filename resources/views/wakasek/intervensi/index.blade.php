@@ -331,5 +331,65 @@
             }, 300);
         });
     });
+    document.addEventListener('DOMContentLoaded', function () {
+    const searchInput = document.getElementById('kelasSearch');
+    const list = document.getElementById('kelasList');
+    const hiddenInput = document.getElementById('kelas');
+
+    if (!searchInput || !list || !hiddenInput) return;
+
+    const items = list.querySelectorAll('.dropdown-item');
+
+    // Show dropdown
+    searchInput.addEventListener('focus', function () {
+        list.classList.remove('hidden');
+        list.style.display = 'block';
+    });
+
+    // Filter dropdown items
+    searchInput.addEventListener('input', function () {
+        const filter = this.value.toLowerCase().trim();
+        let hasVisibleItem = false;
+
+        items.forEach(item => {
+            const text = item.textContent.toLowerCase().trim();
+
+            if (text.includes(filter)) {
+                item.style.display = 'block';
+                hasVisibleItem = true;
+            } else {
+                item.style.display = 'none';
+            }
+        });
+
+        list.style.display = hasVisibleItem ? 'block' : 'none';
+
+        // reset hidden input saat user mengetik ulang
+        hiddenInput.value = '';
+    });
+
+    // Select item
+    items.forEach(item => {
+        item.addEventListener('click', function () {
+            searchInput.value = this.textContent.trim();
+            hiddenInput.value = this.dataset.value;
+            list.style.display = 'none';
+        });
+    });
+
+    // Hide when click outside
+    document.addEventListener('click', function (e) {
+        if (!e.target.closest('.dropdown-container')) {
+            list.style.display = 'none';
+        }
+    });
+
+    // Hide with ESC
+    searchInput.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape') {
+            list.style.display = 'none';
+        }
+    });
+});
 </script>
 @endpush

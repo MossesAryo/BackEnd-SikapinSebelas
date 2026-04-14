@@ -30,7 +30,7 @@ class IntervensiController extends Controller
         $selectedJurusan = null;
 
         // Filter siswa untuk dropdown (create modal)
-        $siswaList = siswa::query();
+        $siswaList = siswa::where('poin_pelanggaran', '>', 0);
         $kelasWalikelas = null;
 
         if ($user->role == 3) {

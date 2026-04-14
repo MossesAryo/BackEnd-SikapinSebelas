@@ -50,7 +50,7 @@ Route::middleware(['auth'])->group(function () {
 
     Route::get('/siswa', [SiswaController::class, 'index'])->name('siswa.index');
     Route::get('/siswa/{nis}/show', [SiswaController::class, 'show'])->name('siswa.show');
-    Route::post('/siswa/{nis}/show/penghargaan', [SiswaController::class, 'penghargaan'])->name('siswa.penghargaan');   
+    Route::post('/siswa/{nis}/show/penghargaan', [SiswaController::class, 'penghargaan'])->name('siswa.penghargaan');
     Route::post('/siswa/{nis}/show/peringatan', [SiswaController::class, 'peringatan'])->name('siswa.peringatan');
 
     Route::post('/siswa/{nis}/show/skoringpPenghargaan', [SiswaController::class, 'skoringPenghargaan'])->name('siswa.skoringPenghargaan');
@@ -80,6 +80,8 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/peringatan/store', [SuratPeringatanController::class, 'store'])->name('peringatan.store');
     Route::put('/peringatan/{id}/update', [SuratPeringatanController::class, 'update'])->name('peringatan.update');
     Route::delete('/peringatan/{id}', [SuratPeringatanController::class, 'destroy'])->name('peringatan.destroy');
+
+    Route::get('/siswa/exportPdfActivity/{nis}', [SiswaController::class, 'exportPdfActivity'])->name('siswa.exportPdfActivity');
 
     Route::get('/peringatan/export_pdf', [SuratPeringatanController::class, 'export_pdf'])->name('peringatan.export.pdf');
     Route::get('/peringatan/export_excel', [SuratPeringatanController::class, 'export_excel'])->name('peringatan.export.excel');
@@ -146,7 +148,7 @@ Route::middleware(['auth'])->group(function () {
     Route::put('/kelas/{id}/update', [KelasController::class, 'update'])->name('kelas.update');
     Route::delete('/kelas/{id}', [KelasController::class, 'destroy'])->name('kelas.destroy');
 
-    
+
 
     Route::get('/gurubk', [Guru_bkController::class, 'index'])->name('gurubk.index');
     Route::post('/gurubk/store', [Guru_bkController::class, 'store'])->name('gurubk.store');

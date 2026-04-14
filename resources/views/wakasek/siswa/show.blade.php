@@ -204,7 +204,6 @@
                                     ['label' => 'Nama Lengkap', 'value' => $siswa->nama_siswa],
                                     ['label' => $kelasLabel, 'value' => $kelasValue],
                                 ];
-                                
 
                                 // hanya tampilkan walikelas jika bukan alumni
                                 if (!$isAlumni) {
@@ -380,6 +379,12 @@
                             <i class="bi bi-clock-history text-gray-700"></i>
                             Aktivitas Terakhir
                         </h3>
+
+                        <button id="exportActivityBtn"
+                            onclick="window.location='{{ route('siswa.exportPdfActivity', $siswa->nis) }}'"
+                            class="px-3 py-1.5 border border-gray-300 rounded-lg hover:bg-gray-50 flex items-center gap-1.5">
+                            <i class="bi bi-download"></i> Export
+                        </button>
 
                     </div>
                     <div class="p-6">
