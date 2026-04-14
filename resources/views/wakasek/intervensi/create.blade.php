@@ -1,4 +1,5 @@
-<div id="modal-create" class="fixed inset-0 bg-black bg-opacity-40 modal-overlay flex items-center justify-center hidden z-50">
+<div id="modal-create"
+    class="fixed inset-0 bg-black bg-opacity-40 modal-overlay flex items-center justify-center hidden z-50">
     <div class="bg-white rounded-xl shadow-xl w-full max-w-2xl mx-4">
         <form action="{{ route('intervensi.store') }}" method="POST" class="p-6 space-y-4">
             @csrf
@@ -11,26 +12,32 @@
             <div class="space-y-4">
                 {{-- Pilih Siswa --}}
                 <div>
-                    <label for="nis" class="block text-sm font-medium text-gray-700 mb-1">Pilih Siswa</label>
-                    <select id="nis" name="nis" required
-                        class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-transparent">
-                        <option value="" disabled selected>Pilih Siswa</option>
-                        @foreach ($siswa as $item)
-                            <option value="{{ $item->nis }}">{{ $item->nama_siswa }}</option>
-                        @endforeach
-                    </select>
-                </div>
+    <label for="nis" class="block text-sm font-medium text-gray-700 mb-1">
+        Pilih Siswa
+    </label>
+    <select id="nis" name="nis" required
+        class="w-full border border-gray-300 rounded-lg px-3 py-2">
+        <option value="">Pilih Siswa</option>
+        @foreach ($siswa as $item)
+            <option value="{{ $item->nis }}">
+                {{ $item->nama_siswa }}
+            </option>
+        @endforeach
+    </select>
+</div>
 
                 <div>
                     <label for="nama_intervensi" class="block text-sm font-medium text-gray-700 mb-1">Nama
                         Penanganan</label>
-                    <input type="text" id="nama_intervensi" name="nama_intervensi"  required placeholder="Contoh : Penindak Lanjutan Kehadiran siswa"
+                    <input type="text" id="nama_intervensi" name="nama_intervensi" required
+                        placeholder="Contoh : Penindak Lanjutan Kehadiran siswa"
                         class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-transparent">
                 </div>
                 <div>
                     <label for="isi_intervensi" class="block text-sm font-medium text-gray-700 mb-1">Isi
                         Penanganan</label>
-                    <textarea id="isi_intervensi" name="isi_intervensi" rows="4" required placeholder="Contoh : Memberikan bimbingan khusus kepada siswa yang sering absen"
+                    <textarea id="isi_intervensi" name="isi_intervensi" rows="4" required
+                        placeholder="Contoh : Memberikan bimbingan khusus kepada siswa yang sering absen"
                         class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-transparent"></textarea>
                 </div>
                 <div>
@@ -70,3 +77,17 @@
         </form>
     </div>
 </div>
+<script src="https://cdn.jsdelivr.net/npm/tom-select/dist/js/tom-select.complete.min.js"></script>
+<link href="https://cdn.jsdelivr.net/npm/tom-select/dist/css/tom-select.css" rel="stylesheet">
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    new TomSelect('#nis', {
+        create: false,
+        sortField: {
+            field: "text",
+            direction: "asc"
+        }
+    });
+});
+</script>
