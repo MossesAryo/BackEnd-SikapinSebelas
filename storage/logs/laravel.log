@@ -15336,3 +15336,19 @@ Did you mean one of these?
 [2026-04-14 07:02:54] local.INFO: Processing row: {"no":6,"nip":"198412052022212018","username":"HIMATUL MUNAWAROH, S.T","nama_ketua_program":"HIMATUL MUNAWAROH, S.T","jurusan":"RPL","5":null,"6":null,"7":null,"8":null,"9":null,"10":null,"11":null,"12":null,"13":null,"14":null,"15":null,"16":null,"17":null,"18":null,"19":null,"20":null,"21":null,"22":null,"23":null,"24":null,"25":null}  
 [2026-04-14 07:02:54] local.INFO: Processing row: {"no":null,"nip":null,"username":null,"nama_ketua_program":null,"jurusan":null,"5":null,"6":null,"7":null,"8":null,"9":null,"10":null,"11":null,"12":null,"13":null,"14":null,"15":null,"16":null,"17":null,"18":null,"19":null,"20":null,"21":null,"22":null,"23":null,"24":null,"25":null}  
 [2026-04-14 07:02:54] local.WARNING: Null or empty username in row: {"no":null,"nip":null,"username":null,"nama_ketua_program":null,"jurusan":null,"5":null,"6":null,"7":null,"8":null,"9":null,"10":null,"11":null,"12":null,"13":null,"14":null,"15":null,"16":null,"17":null,"18":null,"19":null,"20":null,"21":null,"22":null,"23":null,"24":null,"25":null}  
+[2026-04-14 09:42:51] local.ERROR: Allowed memory size of 536870912 bytes exhausted (tried to allocate 20480 bytes) {"userId":1,"exception":"[object] (Symfony\\Component\\ErrorHandler\\Error\\FatalError(code: 0): Allowed memory size of 536870912 bytes exhausted (tried to allocate 20480 bytes) at D:\\BackEnd-SikapinSebelas\\vendor\\dompdf\\dompdf\\src\\Cellmap.php:458)
+[stacktrace]
+#0 {main}
+"} 
+[2026-04-14 09:47:05] local.ERROR: Allowed memory size of 536870912 bytes exhausted (tried to allocate 20480 bytes) {"userId":1,"exception":"[object] (Symfony\\Component\\ErrorHandler\\Error\\FatalError(code: 0): Allowed memory size of 536870912 bytes exhausted (tried to allocate 20480 bytes) at D:\\BackEnd-SikapinSebelas\\vendor\\dompdf\\dompdf\\src\\Cellmap.php:458)
+[stacktrace]
+#0 {main}
+"} 
+[2026-04-14 09:50:42] local.ERROR: Allowed memory size of 536870912 bytes exhausted (tried to allocate 20480 bytes) {"userId":1,"exception":"[object] (Symfony\\Component\\ErrorHandler\\Error\\FatalError(code: 0): Allowed memory size of 536870912 bytes exhausted (tried to allocate 20480 bytes) at D:\\BackEnd-SikapinSebelas\\vendor\\dompdf\\dompdf\\src\\Cellmap.php:458)
+[stacktrace]
+#0 {main}
+"} 
+[2026-04-14 09:52:41] local.ERROR: Allowed memory size of 536870912 bytes exhausted (tried to allocate 20480 bytes) {"userId":1,"exception":"[object] (Symfony\\Component\\ErrorHandler\\Error\\FatalError(code: 0): Allowed memory size of 536870912 bytes exhausted (tried to allocate 20480 bytes) at D:\\BackEnd-SikapinSebelas\\vendor\\dompdf\\dompdf\\src\\Cellmap.php:458)
+[stacktrace]
+#0 {main}
+"} 

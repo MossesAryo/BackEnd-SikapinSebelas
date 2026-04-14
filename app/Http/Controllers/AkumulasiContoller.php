@@ -95,7 +95,7 @@ class AkumulasiContoller extends Controller
         $query = $this->applyRoleScope($query, $user);
         $query = $this->applyRequestFilters($request, $query, $user);
 
-        $akumulasi = $query->get();
+        $akumulasi = $query->limit(200)->get();
 
         $pdf = Pdf::loadView('Export.akumulasi.pdf', compact('akumulasi'));
         return $pdf->download('akumulasi.pdf');
