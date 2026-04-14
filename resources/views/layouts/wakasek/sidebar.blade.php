@@ -202,7 +202,8 @@
                 </li> --}}
                 @endif
                 
-
+                
+                @if (auth()->user()->role == 1 || auth()->user()->role == 2 || auth()->user()->role == 3)
                 <li class="px-3">
                     <a href="{{ route('skoring_penghargaan.index') }}"
                         class="flex items-center gap-3 px-3 py-2.5 rounded-lg menu-link
@@ -219,7 +220,6 @@
                         <span>Skoring Pelanggaran</span>
                     </a>
                 </li>
-                  @if (auth()->user()->role == 1 || auth()->user()->role == 2 || auth()->user()->role == 3)
                 <li class="px-3">
                     <a href="{{ route('intervensi.index') }}"
                         class="flex items-center gap-3 px-3 py-2.5 rounded-lg menu-link
