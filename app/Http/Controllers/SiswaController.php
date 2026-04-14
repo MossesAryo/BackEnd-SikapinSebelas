@@ -419,7 +419,7 @@ class SiswaController extends Controller
                 $query->where('id_kelas', $request->kelas);
             }
 
-            $siswa = $query->get();
+            $siswa = $query->limit(200)->get();
             $pdf = Pdf::loadView('Export.siswa.pdf', compact('siswa'));
 
             return $pdf->download('Data_Siswa.pdf');
