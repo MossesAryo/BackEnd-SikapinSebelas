@@ -49,18 +49,6 @@ This system aims to replace manual recording methods with a **structured, real-t
 * Record achievements and positive behavior
 * Categorized scoring system
 
-### 🔔 Broadcast Information System
-
-* Departments can send validated announcements
-* Notifications delivered to users (teachers/students)
-* Prevents schedule conflicts through admin validation
-
-### 🧑‍💼 Role-Based Access Control
-
-* **Admin** → validates and manages system data
-* **Department Operator** → inputs and sends information
-* **Teacher & Student** → view information only
-
 ### 📊 Reporting & Monitoring
 
 * Generate reports for evaluation
@@ -83,13 +71,6 @@ The system follows a **client-server architecture**, where:
 * Flutter & Web act as clients
 * Laravel API handles business logic
 * MySQL stores structured data
-
-
-## 👨‍💻 Author
-
-**Mosses Aryo Bimo**
-Software Engineering Student (RPL)
-SMKN 11 Bandung
 
 ## 📜 License
 
