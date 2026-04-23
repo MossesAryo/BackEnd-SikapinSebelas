@@ -95,17 +95,20 @@
                     <p class="text-xs text-gray-400 group-hover:text-blue-600">Data Siswa</p>
                 </div>
             </a>
+                @if (auth()->user()->role == 1 || auth()->user()->role == 2)
 
             <a href="{{ route('laporan.index') }}"
                 class="flex items-center gap-4 p-4 rounded-xl border border-gray-100 bg-gray-50 hover:bg-yellow-50 hover:border-yellow-200 transition-all group">
                 <div class="w-11 h-11 bg-yellow-100 rounded-xl flex items-center justify-center flex-shrink-0">
                     <i class="bi bi-file-earmark-text text-yellow-600 text-xl"></i>
                 </div>
+                    
                 <div>
                     <p class="text-sm font-semibold text-gray-700 group-hover:text-yellow-700">Export</p>
                     <p class="text-xs text-gray-400 group-hover:text-yellow-600">Laporan</p>
                 </div>
             </a>
+            @endif
 
         </div>
     </div>

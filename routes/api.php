@@ -12,6 +12,7 @@ use App\Http\Controllers\api\SkoringPenghargaan;
 use App\Http\Controllers\Aspek_penilaianController;
 use App\Http\Controllers\AuthAPI\AuthAPIcontroller;
 use App\Http\Controllers\SuratPeringatanController;
+use App\Http\Controllers\IntervensiController;
 
 
 
@@ -36,4 +37,6 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/skoring_penghargaan', [SkoringPenghargaan::class,  'store']);
     Route::post('/skoring_pelanggaran', [skoringpelanggaran::class,   'store']);
     Route::post('/AddCatatan/{nis}', [catatanController::class, 'AddCatatanAPI']);
+    Route::post('/addpenanganan/{nis}', [IntervensiController::class, 'AddPenangananAPI']);
+
 });

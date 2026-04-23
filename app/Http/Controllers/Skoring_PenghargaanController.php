@@ -105,14 +105,14 @@ class Skoring_PenghargaanController extends Controller
 
         $siswaList = siswa::with('kelas');
 
-        if ($user->role == 3 && $jurusanKetua) {
+        if ($user->role == 4 && $jurusanKetua) {
             // Kaprog hanya boleh melihat siswa dengan jurusan yang sama
             $siswaList->whereHas('kelas', function ($q) use ($jurusanKetua) {
                 $q->where('jurusan', $jurusanKetua);
             });
         }
 
-        if ($user->role == 4 && isset($kelasWalikelas)) {
+        if ($user->role == 3 && isset($kelasWalikelas)) {
             // Wali kelas hanya boleh melihat siswa kelasnya
             $siswaList->where('id_kelas', $kelasWalikelas);
         }

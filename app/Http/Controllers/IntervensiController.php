@@ -307,4 +307,105 @@ class IntervensiController extends Controller
 
         return Excel::download(new Intervensi_ExportExcel($intervensi), 'Data_Intervensi.xlsx');
     }
+   public function AddPenangananAPI(Request $request, string $nis)
+{
+    // ── 1. Validate input ─────────────────────────────────────────────────
+    $validator = \Illuminate\Support\Facades\Validator::make(
+        array_merge($request->all(), ['nis' => $nis]),
+        [
+            'nis'                        => 'required|exists:siswa,nis',
+            'nama_intervensi'            => 'required|string|max:255',
+            'isi_intervensi'             => 'required|string|max:1000',
+            'status'                     => 'required|in:Binaan Khusus,Dalam Binaan,Selesai',
+            'tanggal_Mulai_Perbaikan'    => 'required|date',
+            'tanggal_Selesai_Perbaikan'  => 'required|date|after_or_equal:tanggal_Mulai_Perbaikan',
+        ],
+        [
+            'nis.exists'                          => 'Siswa tidak ditemukan.',
+            'nama_intervensi.required'            => 'Nama penanganan wajib diisi.',
+            'isi_intervensi.required'             => 'Isi penanganan wajib diisi.',
+            'status.in'                           => 'Status tidak valid.',
+            'tanggal_Mulai_Perbaikan.required'    => 'Tanggal mulai wajib diisi.',
+            'tanggal_Selesai_Perbaikan.required'  => 'Tanggal selesai wajib diisi.',
+            'tanggal_Selesai_Perbaikan.after_or_equal' =>
+                'Tanggal selesai harus sama atau setelah tanggal mulai.',
+        ]
+    );
+ 
+    if ($validator->fails()) {
+        return response()->json([
+            'success' => false,
+            'message' => $validator->errors()->first(),
+            'errors'  => $validator->errors(),
+        ], 422);
+    }
+ 
+    // ── 2. Resolve caller identity from query params ───────────────────────
+    $nip      = $request->query('nip', '');
+    $idKelas  = $request->query('id_kelas', '');
+ 
+    // Determine which role this NIP belongs to and set the appropriate FK
+    $nipBk         = null;
+    $nipWalikelas  = null;
+    $nipWakasek    = null;
+ 
+    $walikelas = \App\Models\walikelas::where('nip_walikelas', $nip)->first();
+    if ($walikelas) {
+        $nipWalikelas = $walikelas->nip_walikelas;
+    } else {
+        // Try BK
+        $gurubk = \App\Models\gurubk::where('nip_bk', $nip)->first();
+        if ($gurubk) {
+            $nipBk = $gurubk->nip_bk;
+        }
+    }
+ 
+    // ── 3. Optional: verify the student belongs to the given class ─────────
+    if (!empty($idKelas)) {
+        $siswa = \App\Models\siswa::where('nis', $nis)->first();
+        if ($siswa && $siswa->id_kelas !== $idKelas) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Siswa tidak berada di kelas Anda.',
+            ], 403);
+        }
+    }
+ 
+    // ── 4. Create the intervensi record ────────────────────────────────────
+    try {
+        $intervensi = \App\Models\intervensi::create([
+            'nis'                       => $nis,
+            'nip_bk'                    => $nipBk,
+            'nip_walikelas'             => $nipWalikelas,
+            'nip_wakasek'               => $nipWakasek,
+            'nama_intervensi'           => $request->nama_intervensi,
+            'isi_intervensi'            => $request->isi_intervensi,
+            'status'                    => $request->status,
+            'tanggal_Mulai_Perbaikan'   => $request->tanggal_Mulai_Perbaikan,
+            'tanggal_Selesai_Perbaikan' => $request->tanggal_Selesai_Perbaikan,
+            'created_at'                => now(),
+        ]);
+ 
+        return response()->json([
+            'success' => true,
+            'message' => 'Penanganan berhasil ditambahkan.',
+            'data'    => [
+                'id_intervensi'              => $intervensi->id_intervensi,
+                'nis'                        => $intervensi->nis,
+                'nama_intervensi'            => $intervensi->nama_intervensi,
+                'isi_intervensi'             => $intervensi->isi_intervensi,
+                'status'                     => $intervensi->status,
+                'tanggal_Mulai_Perbaikan'    => $intervensi->tanggal_Mulai_Perbaikan,
+                'tanggal_Selesai_Perbaikan'  => $intervensi->tanggal_Selesai_Perbaikan,
+                'created_at'                 => $intervensi->created_at,
+            ],
+        ], 201);
+ 
+    } catch (\Exception $e) {
+        return response()->json([
+            'success' => false,
+            'message' => 'Terjadi kesalahan saat menyimpan data: ' . $e->getMessage(),
+        ], 500);
+    }
+}
 }
