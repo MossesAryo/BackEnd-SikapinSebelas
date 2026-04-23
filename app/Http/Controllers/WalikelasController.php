@@ -81,7 +81,7 @@ class WalikelasController extends Controller
             'username' => $request->nama_walikelas,
             'email' => $request->nama_walikelas . '@gmail.com',
             'password' => bcrypt('password'), // Gantilah dengan password yang sesuai
-            'role' => 4,
+            'role' => 3,
         ]);
 
         Walikelas::create([
