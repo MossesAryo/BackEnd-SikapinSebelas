@@ -5,7 +5,7 @@
                 <th>NIP</th>
                 <th>Username</th>
                 <th>Nama Ketua Program</th>
-                <th>Jursan</th>
+                <th>Jurusan</th>
             </tr>
         </thead>
         <tbody>
@@ -14,7 +14,7 @@
                     <td>{{ $item->nip_kaprog }}</td>
                     <td>{{ $item->username }}</td>
                     <td>{{ $item->nama_ketua_program }}</td>
-                    <td>{{ $item->jurusan }}</td>
+                    <td>{{ $item->jurusan->nama_jurusan }}</td>
                 </tr>
             @endforeach
         </tbody>

@@ -76,7 +76,6 @@
         <div class="bg-white rounded-xl shadow-sm border overflow-visible">
             <div class="px-6 py-4 border-b border-gray-200">
                 <h3 class="text-lg font-semibold text-gray-900">Daftar Kelas</h3>
-                <p class="text-sm text-gray-500">Menampilkan {{ count($kelas) }} kelas yang tersedia</p>
             </div>
 
             <div class="overflow-x-auto">

@@ -1,281 +1,235 @@
+{{-- Export Data Penanganan Modal --}}
+<div id="exportImportModal" class="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full hidden z-50">
+    <div class="relative top-20 mx-auto p-5 border w-full max-w-md shadow-lg rounded-md bg-white">
+        <div class="mt-3">
+            <!-- Modal Header -->
+            <div class="flex items-center justify-between pb-3 border-b">
+                <h3 class="text-lg font-medium text-gray-900">Export Data Penanganan</h3>
+                <button id="closeModal" class="text-gray-400 hover:text-gray-600">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                </button>
+            </div>
 
-    <div id="exportImportModal" class="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full hidden z-50">
-        <div class="relative top-20 mx-auto p-5 border w-full max-w-md shadow-lg rounded-md bg-white">
-            <div class="mt-3">
-                <!-- Modal Header -->
-                <div class="flex items-center justify-between pb-3 border-b">
-                    <h3 class="text-lg font-medium text-gray-900">Export Data Penanganan </h3>
-                    <button id="closeModal" class="text-gray-400 hover:text-gray-600">
-                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
-                        </svg>
+            <!-- Modal Body -->
+            <div class="mt-4">
+                <!-- Tab Navigation -->
+                <div class="flex border-b border-gray-200 mb-4">
+                    <button id="exportTab"
+                        class="tab-button px-4 py-2 text-sm font-medium text-blue-600 border-b-2 border-blue-600">
+                        Export Data
                     </button>
                 </div>
 
-                <!-- Modal Body -->
-                <div class="mt-4">
-                    <!-- Tab Navigation -->
-                    <div class="flex border-b border-gray-200 mb-4">
-                        <button id="exportTab" class="tab-button px-4 py-2 text-sm font-medium text-blue-600 border-b-2 border-blue-600">
-                            Export Data
-                        </button>
-                    </div>
+                <!-- Export Tab Content -->
+                <div id="exportContent" class="tab-content">
+                    <div class="space-y-4">
 
-                    <!-- Export Tab Content -->
-                    <div id="exportContent" class="tab-content">
-                        <div class="space-y-3">
-                            <h4 class="text-sm font-medium text-gray-700 mb-3">Pilih format export:</h4>
-                            <div class="grid grid-cols-1 gap-3">
-                                @php
-                                    $jurusanOptions = collect($kelas)->pluck('jurusan')->unique()->filter()->values();
-                                    $userRole = auth()->user()->role ?? null;
-                                @endphp
-                                @if($userRole == 4)
-                                    <div class="px-4 py-3 bg-blue-50 border border-blue-200 rounded-lg">
-                                        <div class="flex items-center gap-2">
-                                            <i class="bi bi-bookmark-fill text-blue-600"></i>
-                                            <div>
-                                                <p class="text-xs text-gray-600 font-medium">Kelas Wali</p>
-                                                <p class="text-sm font-semibold text-gray-900">{{ $kelas->first()->nama_kelas ?? '-' }}</p>
-                                                <p class="text-xs text-gray-500">Jurusan: {{ $selectedJurusan ?? '-' }}</p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <input type="hidden" id="export_jurusan" value="{{ $selectedJurusan }}">
-                                    <input type="hidden" id="export_kelas" value="{{ $selectedKelas }}">
-                                @else
+                        @php
+                            $jurusanOptions = collect($kelas)->pluck('jurusan')->unique()->filter()->values();
+                            $userRole = auth()->user()->role ?? null;
+                        @endphp
+
+                        @if ($userRole == 4)
+                            {{-- Role 4: Wali Kelas — show read-only info card --}}
+                            <div class="px-4 py-3 bg-blue-50 border border-blue-200 rounded-lg">
+                                <div class="flex items-center gap-2">
+                                    <i class="bi bi-bookmark-fill text-blue-600"></i>
                                     <div>
-                                        <label class="block text-sm font-medium text-gray-700">Filter Jurusan (opsional)</label>
-                                        <select id="export_jurusan" class="w-full mt-1 rounded-md border-gray-200 px-3 py-2" @if($userRole==3 && $selectedJurusan) disabled @endif>
-                                            <option value="">Semua Jurusan</option>
-                                            @foreach($jurusanOptions as $jur)
-                                                <option value="{{ $jur }}" {{ ($selectedJurusan ?? '') === $jur ? 'selected' : '' }}>{{ $jur }}</option>
-                                            @endforeach
-                                        </select>
+                                        <p class="text-xs text-gray-600 font-medium">Kelas Wali</p>
+                                        <p class="text-sm font-semibold text-gray-900">{{ $kelas->first()->nama_kelas ?? '-' }}</p>
+                                        <p class="text-xs text-gray-500">Jurusan: {{ $selectedJurusan ?? '-' }}</p>
                                     </div>
-                                    <div>
-                                        <label class="block text-sm font-medium text-gray-700">Filter Kelas (opsional)</label>
-                                        <select id="export_kelas" class="w-full mt-1 rounded-md border-gray-200 px-3 py-2" disabled>
-                                            <option value="">Semua Kelas</option>
-                                        </select>
-                                    </div>
-                                @endif
-                                
-                                <div>
-                                    <label class="block text-sm font-medium text-gray-700">Filter Status (opsional)</label>
-                                    <select id="export_status" class="w-full mt-1 rounded-md border-gray-200 px-3 py-2">
-                                        <option value="">Semua Status</option>
-                                        <option value="Dalam Bimbingan">Dalam Bimbingan</option>
-                                        <option value="Dalam Pemantauan">Dalam Pemantauan</option>
-                                        <option value="Selesai">Selesai</option>
-                                    </select>
                                 </div>
                             </div>
-                            <div class="flex items-center justify-between mt-2">
-                                <button type="button" onclick="resetFilters()" class="text-sm text-gray-600 hover:underline">Reset Filter</button>
-                                <div></div>
+                            <input type="hidden" id="export_jurusan" value="{{ $selectedJurusan }}">
+                            <input type="hidden" id="export_kelas" value="{{ $selectedKelas }}">
+                        @else
+                            {{-- Jurusan Filter --}}
+                            <div class="w-full">
+                                <label for="export_jurusan" class="block text-sm font-medium text-gray-700 mb-2">
+                                    Filter Jurusan (opsional)
+                                </label>
+                                <div class="relative">
+                                    <select id="export_jurusan" name="jurusan"
+                                        class="w-full px-4 py-2.5 bg-white border border-gray-300 rounded-lg shadow-sm appearance-none cursor-pointer
+                                               focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500
+                                               hover:border-gray-400 transition-colors duration-200 text-gray-700 text-sm
+                                               @if ($userRole == 3 && $selectedJurusan) opacity-60 cursor-not-allowed @endif"
+                                        @if ($userRole == 3 && $selectedJurusan) disabled @endif>
+                                        <option value="">Semua Jurusan</option>
+                                        @foreach ($jurusanOptions as $jurusan)
+                                            <option value="{{ $jurusan->id_jurusan }}"
+                                                {{ request('jurusan') == $jurusan->id_jurusan ? 'selected' : '' }}>
+                                                {{ $jurusan->id_jurusan }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                    <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3 text-gray-500">
+                                        <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                                        </svg>
+                                    </div>
+                                </div>
                             </div>
-                            <button
-                            onclick="exportExcel()"
-                             class="w-full flex items-center justify-center px-4 py-3 border border-green-300 rounded-md bg-green-50 hover:bg-green-100 text-green-700 transition-colors">
+
+                            {{-- Kelas Filter --}}
+                            <div class="w-full">
+                                <label for="export_kelas" class="block text-sm font-medium text-gray-700 mb-2">
+                                    Filter Kelas (opsional)
+                                </label>
+                                <div class="relative">
+                                    <select id="export_kelas" name="kelas"
+                                        class="w-full px-4 py-2.5 bg-white border border-gray-300 rounded-lg shadow-sm appearance-none cursor-pointer
+                                               focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500
+                                               hover:border-gray-400 transition-colors duration-200 text-gray-700 text-sm
+                                               disabled:bg-gray-100 disabled:cursor-not-allowed"
+                                        disabled>
+                                        <option value="">Semua Kelas</option>
+                                        @foreach ($kelas as $k)
+                                            <option value="{{ $k->id_kelas }}"
+                                                data-jurusan="{{ $k->id_jurusan }}"
+                                                {{ request('kelas') == $k->id_kelas ? 'selected' : '' }}>
+                                                {{ $k->nama_kelas }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                    <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3 text-gray-500">
+                                        <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                                        </svg>
+                                    </div>
+                                </div>
+                            </div>
+                        @endif
+
+                        {{-- Status Filter --}}
+                        <div class="w-full">
+                            <label for="export_status" class="block text-sm font-medium text-gray-700 mb-2">
+                                Filter Status (opsional)
+                            </label>
+                            <div class="relative">
+                                <select id="export_status" name="status"
+                                    class="w-full px-4 py-2.5 bg-white border border-gray-300 rounded-lg shadow-sm appearance-none cursor-pointer
+                                           focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500
+                                           hover:border-gray-400 transition-colors duration-200 text-gray-700 text-sm">
+                                    <option value="">Semua Status</option>
+                                     <option value="Binaan Khusus">Binaan Khusus</option>
+                        <option value="Dalam Binaan">Dalam Binaan</option>
+                        <option value="Selesai">Selesai</option>
+                                </select>
+                                <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3 text-gray-500">
+                                    <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                                    </svg>
+                                </div>
+                            </div>
+                        </div>
+
+                        {{-- Export Buttons --}}
+                        <div class="pt-3 border-t">
+                            <h4 class="text-sm font-medium text-gray-700 mb-3">Pilih format export:</h4>
+
+                            <button id="exportExcelBtn" type="button"
+                                class="w-full flex items-center justify-center px-4 py-3 border border-green-300 rounded-md bg-green-50 hover:bg-green-100 text-green-700 transition-colors">
                                 <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20">
-                                    <path d="M4 4a2 2 0 00-2 2v8a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2H4zm2 2h8v2H6V6zm0 4h8v2H6v-2zm0 4h8v2H6v-2z"/>
+                                    <path d="M4 4a2 2 0 00-2 2v8a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2H4zm2 2h8v2H6V6zm0 4h8v2H6v-2zm0 4h8v2H6v-2z" />
                                 </svg>
                                 Export ke Excel (.xlsx)
                             </button>
 
-                                                        <button 
-                                                        onclick="exportPdf()"
-                                                           class="w-full flex items-center justify-center px-4 py-3 border border-red-300 rounded-md bg-red-50 hover:bg-red-100 text-red-700 transition-colors">
+                            <button id="exportPdfBtn" type="button"
+                                class="mt-2 w-full flex items-center justify-center px-4 py-3 border border-red-300 rounded-md bg-red-50 hover:bg-red-100 text-red-700 transition-colors">
                                 <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20">
-                                    <path d="M4 4a2 2 0 00-2 2v8a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2H4zm0 2h12v8H4V6z"/>
+                                    <path d="M4 4a2 2 0 00-2 2v8a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2H4zm0 2h12v8H4V6z" />
                                 </svg>
                                 Export ke PDF (.pdf)
                             </button>
-
                         </div>
-                    </div>
-
 
                     </div>
                 </div>
-                </form>
+            </div>
 
-                <!-- Modal Footer -->
-                <div class="flex items-center justify-end space-x-3 pt-4 border-t mt-6">
-                    <button id="cancelBtn" class="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50">
-                        Batal
-                    </button>
-                    <button type="submit" form="importForm" id="processBtn" class="hidden px-4 py-2 text-sm font-medium text-white bg-blue-600 border border-transparent rounded-md hover:bg-blue-700">
-                        Proses Import
-                    </button>
-                </div>
+            <!-- Modal Footer -->
+            <div class="flex items-center justify-end space-x-3 pt-4 border-t mt-6">
+                <button id="cancelBtn" type="button"
+                    class="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50">
+                    Batal
+                </button>
             </div>
         </div>
     </div>
-
-    
+</div>
 
 <script>
-        function exportExcel() {
-            const base = "{{ route('intervensi.export.excel') }}";
-            const params = new URLSearchParams(window.location.search);
-            const kelas = document.getElementById('export_kelas')?.value || '';
-            const status = document.getElementById('export_status')?.value || '';
-            const jurusan = document.getElementById('export_jurusan')?.value || '';
-            if (kelas) params.set('kelas', kelas); else params.delete('kelas');
-            if (status) params.set('status', status); else params.delete('status');
-            if (jurusan) params.set('jurusan', jurusan); else params.delete('jurusan');
-            params.delete('page');
-            const qs = params.toString();
-            window.location = base + (qs ? `?${qs}` : '');
-        }
+    const exportImportModal = document.getElementById('exportImportModal');
+    const exportImportBtn = document.getElementById('exportImportBtn');
+    const closeModalBtn = document.getElementById('closeModal');
+    const cancelBtn = document.getElementById('cancelBtn');
 
-        function exportPdf() {
-            const base = "{{ route('intervensi.export.pdf') }}";
-            const params = new URLSearchParams(window.location.search);
-            const kelas = document.getElementById('export_kelas')?.value || '';
-            const status = document.getElementById('export_status')?.value || '';
-            const jurusan = document.getElementById('export_jurusan')?.value || '';
-            if (kelas) params.set('kelas', kelas); else params.delete('kelas');
-            if (status) params.set('status', status); else params.delete('status');
-            if (jurusan) params.set('jurusan', jurusan); else params.delete('jurusan');
-            params.delete('page');
-            const qs = params.toString();
-            window.location = base + (qs ? `?${qs}` : '');
-        }
-        // Kelas data extracted from server-side $kelas collection
-        const kelasData = @json($kelas->map(function($k){
-            return ['id' => $k->id_kelas, 'nama' => $k->nama_kelas, 'jurusan' => $k->jurusan];
-        }));
-
-        function buildKelasOptions(filterJurusan = '') {
-            const sel = document.getElementById('export_kelas');
-            // if not a select (e.g., hidden input for role 4), skip building options
-            if (!sel || sel.tagName !== 'SELECT') return;
-            // clear existing options
-            sel.innerHTML = '';
-            const optAll = document.createElement('option');
-            optAll.value = '';
-            optAll.text = 'Semua Kelas';
-            sel.appendChild(optAll);
-
-            const filtered = filterJurusan ? kelasData.filter(k => k.jurusan === filterJurusan) : [];
-            if (filterJurusan && filtered.length) {
-                filtered.forEach(k => {
-                    const o = document.createElement('option');
-                    o.value = k.id;
-                    o.text = k.nama;
-                    sel.appendChild(o);
-                });
-                sel.disabled = false;
-            } else {
-                // when no jurusan selected, keep disabled
-                sel.disabled = true;
-            }
-        }
-
-        function resetFilters() {
-            const jur = document.getElementById('export_jurusan');
-            const stat = document.getElementById('export_status');
-            const kel = document.getElementById('export_kelas');
-            if (jur) jur.value = '';
-            if (stat) stat.value = '';
-            if (kel) {
-                kel.value = '';
-                buildKelasOptions('');
-            }
-        }
-
-        function prepareModalFilters() {
-            const jurEl = document.getElementById('export_jurusan');
-            const jur = jurEl?.value || '';
-            buildKelasOptions(jur);
-            // if jurusan pre-selected enable kelas (already handled in buildKelasOptions)
-            // if kelas value already set (e.g., role 4 hidden input), keep it
-        }
-
-        // listen for jurusan changes to populate kelas
-        document.getElementById('export_jurusan')?.addEventListener('change', function() {
-            buildKelasOptions(this.value || '');
-        });
-        const modal = document.getElementById('exportImportModal');
-        const exportImportBtn = document.getElementById('exportImportBtn');
-        const cancelBtn = document.getElementById('cancelBtn');
-        const exportTab = document.getElementById('exportTab');
-        const importTab = document.getElementById('importTab');
-        const exportContent = document.getElementById('exportContent');
-        const importContent = document.getElementById('importContent');
-        const processBtn = document.getElementById('processBtn');
-
-        // Modal Controls
-        exportImportBtn.onclick = () => {
-            modal.classList.remove('hidden');
-            prepareModalFilters();
-        };
-        closeModal.onclick = cancelBtn.onclick = () => {
-            modal.classList.add('hidden');
-            switchTab('export');
-            removeFile();
-        };
-
-        // Tab Switching
-        exportTab.onclick = () => switchTab('export');
-        importTab.onclick = () => switchTab('import');
-
-        function switchTab(tab) {
-            if (tab === 'export') {
-                exportTab.className = 'tab-button px-4 py-2 text-sm font-medium text-blue-600 border-b-2 border-blue-600';
-                importTab.className = 'tab-button px-4 py-2 text-sm font-medium text-gray-500 hover:text-gray-700';
-                exportContent.classList.remove('hidden');
-                importContent.classList.add('hidden');
-                processBtn.classList.add('hidden');
-            } else {
-                importTab.className = 'tab-button px-4 py-2 text-sm font-medium text-blue-600 border-b-2 border-blue-600';
-                exportTab.className = 'tab-button px-4 py-2 text-sm font-medium text-gray-500 hover:text-gray-700';
-                importContent.classList.remove('hidden');
-                exportContent.classList.add('hidden');
-            }
-        }
-
-        // File Handling
-        function handleFileSelect(input) {
-            const file = input.files[0];
-            if (file) {
-                document.getElementById('fileName').textContent = file.name;
-                document.getElementById('fileSize').textContent = formatFileSize(file.size);
-                document.getElementById('selectedFile').classList.remove('hidden');
-                document.getElementById('processBtn').classList.remove('hidden');
-            }
-        }
-
-        function removeFile() {
-            document.getElementById('importFile').value = '';
-            document.getElementById('selectedFile').classList.add('hidden');
-            document.getElementById('processBtn').classList.add('hidden');
-        }
-
-        function formatFileSize(bytes) {
-            if (bytes === 0) return '0 Bytes';
-            const k = 1024;
-            const sizes = ['Bytes', 'KB', 'MB', 'GB'];
-            const i = Math.floor(Math.log(bytes) / Math.log(k));
-            return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
-        }
-
-        function handleFileSelect(input) {
-    const file = input.files[0];
-    if (file) {
-        if (file.size > 10 * 1024 * 1024) { // 10MB
-            alert("Ukuran file maksimal 10MB.");
-            input.value = '';
-            return;
-        }
-
-        document.getElementById('fileName').textContent = file.name;
-        document.getElementById('fileSize').textContent = formatFileSize(file.size);
-        document.getElementById('selectedFile').classList.remove('hidden');
-        document.getElementById('processBtn').classList.remove('hidden');
+    function openModal() {
+        exportImportModal.classList.remove('hidden');
+        prepareModalFilters();
     }
-}
-    </script>
+
+    function closeModal() {
+        exportImportModal.classList.add('hidden');
+    }
+
+    exportImportBtn.onclick = openModal;
+    closeModalBtn.onclick = closeModal;
+    cancelBtn.onclick = closeModal;
+
+    exportImportModal.addEventListener('click', function(e) {
+        if (e.target === exportImportModal) closeModal();
+    });
+
+    function prepareModalFilters() {
+        const jurEl = document.getElementById('export_jurusan');
+        if (jurEl && jurEl.tagName === 'SELECT') {
+            filterKelasByJurusan(jurEl.value);
+        }
+    }
+
+    function filterKelasByJurusan(selectedJurusan) {
+        const kelasEl = document.getElementById('export_kelas');
+        if (!kelasEl || kelasEl.tagName !== 'SELECT') return;
+
+        const options = kelasEl.querySelectorAll('option');
+        options.forEach(opt => {
+            if (!opt.value) return;
+            opt.style.display = (!selectedJurusan || opt.dataset.jurusan === selectedJurusan) ? 'block' : 'none';
+        });
+
+        kelasEl.value = '';
+        kelasEl.disabled = !selectedJurusan;
+    }
+
+    document.getElementById('export_jurusan')?.addEventListener('change', function() {
+        filterKelasByJurusan(this.value);
+    });
+
+    function buildExportParams() {
+        const params = new URLSearchParams(window.location.search);
+        const kelas = document.getElementById('export_kelas')?.value || '';
+        const status = document.getElementById('export_status')?.value || '';
+        const jurusan = document.getElementById('export_jurusan')?.value || '';
+        kelas   ? params.set('kelas', kelas)     : params.delete('kelas');
+        status  ? params.set('status', status)   : params.delete('status');
+        jurusan ? params.set('jurusan', jurusan) : params.delete('jurusan');
+        params.delete('page');
+        return params.toString();
+    }
+
+    document.getElementById('exportExcelBtn').addEventListener('click', () => {
+        const qs = buildExportParams();
+        window.location.href = `{{ route('intervensi.export.excel') }}` + (qs ? `?${qs}` : '');
+    });
+
+    document.getElementById('exportPdfBtn').addEventListener('click', () => {
+        const qs = buildExportParams();
+        window.location.href = `{{ route('intervensi.export.pdf') }}` + (qs ? `?${qs}` : '');
+    });
+</script>
