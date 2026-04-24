@@ -9,6 +9,8 @@ use Illuminate\Http\Request;
 use App\Models\aspek_penilaian;
 use App\Models\ketua_program;
 use App\Models\walikelas;
+use App\Models\guru_bk;
+
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 
@@ -57,6 +59,17 @@ class Skoring_PelanggaranController extends Controller
                 });
             }
         }
+        if ($user->role == '2') {
+    $guru = guru_bk::where('username', $user->username)->first();
+
+    if ($guru) {
+        $kelasIds = $guru->kelas()->pluck('kelas.id_kelas')->toArray();
+
+        $query->whereHas('siswa.kelas', function ($q) use ($kelasIds) {
+            $q->whereIn('id_kelas', $kelasIds);
+        });
+    }
+}
 
         // Filter berdasarkan kelas (tetap berjalan tetapi hanya pada kelas yang masuk jurusan ketua)
         if ($request->filled('kelas')) {
@@ -111,6 +124,15 @@ class Skoring_PelanggaranController extends Controller
                 $q->where('jurusan', $jurusanKetua);
             });
         }
+        if ($user->role == 2) {
+    $guru = guru_bk::where('username', $user->username)->first();
+
+    if ($guru) {
+        $kelasIds = $guru->kelas()->pluck('kelas.id_kelas')->toArray();
+
+        $siswaList->whereIn('id_kelas', $kelasIds);
+    }
+}
 
         if ($user->role == 3 && isset($kelasWalikelas)) {
             // Wali kelas hanya boleh melihat siswa kelasnya
