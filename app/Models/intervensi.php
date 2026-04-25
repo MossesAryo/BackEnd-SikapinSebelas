@@ -25,4 +25,16 @@ class intervensi extends Model
     {
         return $this->belongsTo(guru_bk::class, 'nip_bk', 'nip_bk');
     }
+    public function walikelas()
+    {
+        return $this->belongsTo(walikelas::class, 'nip_walikelas', 'nip_walikelas');
+    }
+    public function wakasek()
+    {
+        return $this->belongsTo(wakasek::class, 'nip_wakasek', 'nip_wakasek');
+    }
+    public function bukti()
+    {
+        return $this->hasMany(bukti_pembinaan::class, 'intervensi_id', 'id_intervensi');
+    }
 }

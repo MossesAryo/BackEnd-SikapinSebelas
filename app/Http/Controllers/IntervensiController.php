@@ -114,7 +114,6 @@ class IntervensiController extends Controller
         ));
     }
 
-    // === METHOD LAIN TIDAK DIUBAH SAMA SEKALI ===
     public function store(Request $request)
     {
         $request->validate([
