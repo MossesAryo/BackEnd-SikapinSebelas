@@ -14,6 +14,7 @@ return new class extends Migration {
             $table->bigInteger('nip_walikelas')->nullable();
             $table->bigInteger('nip_wakasek')->nullable();
             $table->bigInteger('nis');
+            $table->bigInteger('id_bukti_intervensi')->nullable();
             $table->string('nama_intervensi');
             $table->string('isi_intervensi');
             $table->enum('status', ['Binaan Khusus', 'Dalam Binaan', 'Selesai']);
@@ -24,6 +25,7 @@ return new class extends Migration {
             $table->foreign('nip_walikelas')->references('nip_walikelas')->on('walikelas')->onDelete('cascade');
             $table->foreign('nip_wakasek')->references('nip_wakasek')->on('wakasek')->onDelete('cascade');
             $table->foreign('nis')->references('nis')->on('siswa')->onDelete('cascade');
+            $table->foreign('id_bukti_pembinaan')->references('id_bukti_pembinaan')->on('bukti_pembinaan')->onDelete('cascade')->onUpdate('cascade');
             $table->timestamps();
         });
     }
