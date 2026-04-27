@@ -193,6 +193,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/intervensi/{id_intervensi}', [IntervensiController::class, 'show'])->name('intervensi.show');
     Route::put('/intervensi/{id_intervensi}/update', [IntervensiController::class, 'update'])->name('intervensi.update');
     Route::delete('/intervensi/{id_intervensi}/destroy', [IntervensiController::class, 'destroy'])->name('intervensi.destroy');
+    Route::get('/intervensi/{id_intervensi}/get-files', [IntervensiController::class, 'getFiles'])->name('intervensi.getFiles');
 
     Route::get('tahun-ajaran', [TahunAjaranController::class, 'index'])->name('tahun_ajaran.index');
     Route::post('tahun-ajaran/naik', [TahunAjaranController::class, 'NaikKelas'])->name('tahun_ajaran.naik');

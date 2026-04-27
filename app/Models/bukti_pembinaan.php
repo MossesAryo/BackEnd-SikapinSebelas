@@ -11,6 +11,7 @@ class bukti_pembinaan extends Model
     protected $fillable = [
         'intervensi_id',
         'file',
+        'nama_file',
     ];
 
     public function intervensi()

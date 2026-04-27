@@ -64,43 +64,6 @@
                 @endif
             </div>
         </div>
-
-        <!-- Badge Filter Aktif -->
-        {{-- @if(request()->hasAny(['kelas','status','tanggal_mulai','tanggal_akhir']))
-            <div class="flex flex-wrap gap-2">
-                @if(request('kelas'))
-                    <span class="inline-flex items-center gap-2 bg-blue-100 text-blue-800 text-sm px-3 py-1.5 rounded-full">
-                        <i class="bi bi-grid-3x3-gap-fill"></i>
-                        {{ $kelas->find(request('kelas'))?->nama_kelas ?? 'Kelas' }}
-                        <a href="{{ route('intervensi.index', request()->except('kelas')) }}" class="hover:text-blue-900">
-                            <i class="bi bi-x-circle-fill"></i>
-                        </a>
-                    </span>
-                @endif
-                @if(request('status'))
-                    <span class="inline-flex items-center gap-2 bg-blue-100 text-blue-800 text-sm px-3 py-1.5 rounded-full">
-                        <i class="bi bi-check-circle-fill"></i> {{ request('status') }}
-                        <a href="{{ route('intervensi.index', request()->except('status')) }}" class="hover:text-blue-900">
-                            <i class="bi bi-x-circle-fill"></i>
-                        </a>
-                    </span>
-                @endif
-                @if(request('tanggal_mulai') || request('tanggal_akhir'))
-                    <span class="inline-flex items-center gap-2 bg-blue-100 text-blue-800 text-sm px-3 py-1.5 rounded-full">
-                        <i class="bi bi-calendar-range"></i>
-                        {{ request('tanggal_mulai') ? \Carbon\Carbon::parse(request('tanggal_mulai'))->format('d M Y') : 'Awal' }}
-                        → {{ request('tanggal_akhir') ? \Carbon\Carbon::parse(request('tanggal_akhir'))->format('d M Y') : 'Akhir' }}
-                        <a href="{{ route('intervensi.index', request()->except(['tanggal_mulai','tanggal_akhir'])) }}" class="hover:text-blue-900">
-                            <i class="bi bi-x-circle-fill"></i>
-                        </a>
-                    </span>
-                @endif
-                <a href="{{ route('intervensi.index') }}"
-                    class="text-sm text-red-600 hover:text-red-800 flex items-center gap-1">
-                    <i class="bi bi-x-octagon-fill"></i> Hapus Semua
-                </a>
-            </div>
-        @endif --}}
     </div>
 
     <!-- Table -->
@@ -129,7 +92,7 @@
                                 {{ $loop->iteration + ($intervensi->currentPage()-1)*$intervensi->perPage() }}
                             </td>
                             <td class="px-6 py-4 text-sm font-medium text-gray-900">{{ $item->siswa->nama_siswa }}</td>
-                            <td class="px-6 py-4 text-sm text-gray-700">{{ $item->siswa->kelas->nama_kelas }}</td>
+                            <td class="px-6 py-4 text-sm text-gray-700">{{ $item->siswa->kelas->nama_kelas ?? 'N/A' }}</td>
                             <td class="px-6 py-4 text-sm text-gray-700">
                                 {{ \Carbon\Carbon::parse($item->tanggal_Mulai_Perbaikan)->format('d M Y') }}
                             </td>
@@ -141,9 +104,9 @@
                                 @php
                                     $statusColor = match($item->status) {
                                         'Binaan Khusus' => 'bg-yellow-100 text-yellow-800',
-                                        'Dalam Binaan' => 'bg-orange-100 text-orange-800',
-                                        'Selesai' => 'bg-green-100 text-green-800',
-                                        default => 'bg-gray-100 text-gray-800'
+                                        'Dalam Binaan'  => 'bg-orange-100 text-orange-800',
+                                        'Selesai'       => 'bg-green-100 text-green-800',
+                                        default         => 'bg-gray-100 text-gray-800'
                                     };
                                 @endphp
                                 <span class="px-3 py-1.5 rounded-full text-xs font-medium {{ $statusColor }}">
@@ -156,7 +119,25 @@
                                         class="text-yellow-600 hover:text-yellow-800 p-2 rounded-full hover:bg-yellow-50 transition">
                                         <i class="bi bi-eye"></i>
                                     </a>
-                                    <button onclick="openEditModal('{{ $item->id_intervensi }}','{{ $item->nis }}','{{ $item->nama_intervensi }}','{{ $item->isi_intervensi }}','{{ $item->status }}','{{ $item->tanggal_Mulai_Perbaikan }}','{{ $item->tanggal_Selesai_Perbaikan }}','{{ $item->perubahan_setelah_intervensi ?? '' }}')"
+                                    {{--
+                                        FIX: Gunakan id_bukti_pembinaan (bukan id) agar nilai tidak null.
+                                        Pastikan nama PK ini sesuai dengan kolom di tabel bukti_pembinaan Anda.
+                                    --}}
+                                    <button onclick='openEditModalIndex(
+                                            "{{ $item->id_intervensi }}",
+                                            "{{ $item->nis }}",
+                                            {{ json_encode($item->nama_intervensi) }},
+                                            {{ json_encode($item->isi_intervensi) }},
+                                            "{{ $item->status }}",
+                                            "{{ $item->tanggal_Mulai_Perbaikan }}",
+                                            "{{ $item->tanggal_Selesai_Perbaikan }}",
+                                            {{ json_encode($item->perubahan_setelah_intervensi ?? '') }},
+                                            {{ $item->bukti->map(fn($b) => [
+                                                "id"        => $b->id_bukti_pembinaan,
+                                                "path"      => $b->file,
+                                                "nama_file" => $b->nama_file
+                                            ])->toJson() }}
+                                        )'
                                         class="text-blue-600 hover:text-blue-800 p-2 rounded-full hover:bg-blue-50 transition">
                                         <i class="bi bi-pencil-square"></i>
                                     </button>
@@ -171,7 +152,7 @@
                         <tr>
                             <td colspan="8" class="px-6 py-16 text-center">
                                 <div class="mx-auto w-24 h-24 bg-gray-100 rounded-full flex items-center justify-center mb-4">
-                                    <i class="bi bi-clipboard-check text-5xl text-grays-600"></i>
+                                    <i class="bi bi-clipboard-check text-5xl text-gray-600"></i>
                                 </div>
                                 <h3 class="text-lg font-medium text-gray-900 mb-2">Belum ada data penanganan</h3>
                                 <p class="text-gray-500">Tambahkan data penanganan untuk memulai.</p>
@@ -187,7 +168,7 @@
     </div>
 </div>
 
-<!-- Filter Modal — 100% Jalan + Status Sesuai DB -->
+<!-- Filter Modal -->
 <div id="modal-filter" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
     <div class="bg-white rounded-2xl shadow-2xl w-full max-w-md mx-4 overflow-visible">
         <div class="flex items-center justify-between p-6 border-b border-gray-100 bg-gradient-to-r from-blue-50 to-indigo-50">
@@ -225,8 +206,8 @@
                     <select name="status" class="w-full rounded-xl border-2 border-gray-200 px-4 py-3 focus:ring-4 focus:ring-blue-100 focus:border-blue-500 transition">
                         <option value="">Semua Status</option>
                         <option value="Binaan Khusus" {{ request('status') == 'Binaan Khusus' ? 'selected' : '' }}>Binaan Khusus</option>
-                        <option value="Dalam Binaan" {{ request('status') == 'Dalam Binaan' ? 'selected' : '' }}>Dalam Binaan</option>
-                        <option value="Selesai" {{ request('status') == 'Selesai' ? 'selected' : '' }}>Selesai</option>
+                        <option value="Dalam Binaan"  {{ request('status') == 'Dalam Binaan'  ? 'selected' : '' }}>Dalam Binaan</option>
+                        <option value="Selesai"       {{ request('status') == 'Selesai'       ? 'selected' : '' }}>Selesai</option>
                     </select>
                 </div>
 
@@ -270,126 +251,139 @@
 
 @push('js')
 <script>
-    function openModal(id) { document.getElementById(id).classList.remove('hidden'); document.body.classList.add('modal-open'); }
+    function openModal(id)  { document.getElementById(id).classList.remove('hidden'); document.body.classList.add('modal-open'); }
     function closeModal(id) { document.getElementById(id).classList.add('hidden'); document.body.classList.remove('modal-open'); }
     function openCreateModal() { openModal('modal-create'); }
     function openFilterModal() { openModal('modal-filter'); }
 
-    // populate and open edit modal with data, set form action and return url
-    function openEditModal(id, nis, nama_intervensi, isi_intervensi, status, tanggalMulai, tanggalSelesai, perubahan) {
-        const form = document.getElementById('form-edit');
-        if (form) form.action = `/intervensi/${id}/update`;
+    /**
+     * Buka modal edit dan isi semua field + tampilkan file tersimpan.
+     *
+     * FIX utama:
+     *  1. Gunakan json_encode di blade (bukan addslashes) agar karakter khusus aman.
+     *  2. Set window.existingFilesData sebelum memanggil renderExistingFiles().
+     *  3. Panggil openEditModal() dari edit.blade.php agar logika terpusat di satu tempat.
+     */
+    function openEditModalIndex(id, nis, nama_intervensi, isi_intervensi, status,
+                                tanggalMulai, tanggalSelesai, perubahan, existingFiles) {
 
-        // set return_to so controller can redirect back
-        const returnInput = document.getElementById('return_to_edit');
-        if (returnInput) returnInput.value = window.location.href;
+        // Siapkan data existing files ke window scope
+        window.existingFilesData = [];
+        window.uploadedFilesEdit = [];
 
-        const nisSelect = document.getElementById('nis_edit'); if (nisSelect) nisSelect.value = nis;
-        const nisHidden = document.getElementById('nis_hidden_edit'); if (nisHidden) nisHidden.value = nis;
+        if (existingFiles && existingFiles.length > 0) {
+            existingFiles.forEach(function(f) {
+                window.existingFilesData.push({
+                    id:        f.id,
+                    path:      f.path,
+                    url:       '/storage/' + f.path,
+                    nama_file: f.nama_file || f.path.split('/').pop()
+                });
+            });
+        }
 
-        const namaEl = document.getElementById('nama_intervensi_edit'); if (namaEl) namaEl.value = nama_intervensi || '';
-        const isiEl = document.getElementById('isi_intervensi_edit'); if (isiEl) isiEl.value = isi_intervensi || '';
-        const statusEl = document.getElementById('status_edit'); if (statusEl) statusEl.value = status || '';
-        const tMulai = document.getElementById('tanggal_Mulai_Perbaikan_edit'); if (tMulai) tMulai.value = tanggalMulai || '';
-        const tSelesai = document.getElementById('tanggal_Selesai_Perbaikan_edit'); if (tSelesai) tSelesai.value = tanggalSelesai || '';
-        const perubahanEl = document.getElementById('perubahan_setelah_intervensi_edit'); if (perubahanEl) perubahanEl.value = perubahan || '';
-
-        try { togglePerubahanFieldEdit(); } catch(e) {}
-        openModal('modal-edit');
+        // Panggil fungsi openEditModal dari edit.blade.php
+        if (typeof openEditModal === 'function') {
+            openEditModal({
+                id:                              id,
+                nis:                             nis,
+                nama_intervensi:                 nama_intervensi,
+                isi_intervensi:                  isi_intervensi,
+                status:                          status,
+                tanggal_Mulai_Perbaikan:         tanggalMulai,
+                tanggal_Selesai_Perbaikan:       tanggalSelesai,
+                perubahan_setelah_intervensi:    perubahan,
+                return_to:                       window.location.href,
+                existing_files:                  window.existingFilesData
+            });
+        }
     }
 
     function openDeleteModal(id, nama) {
         const form = document.getElementById('form-delete');
         if (form) form.action = `/intervensi/${id}/destroy`;
-        const nameSpan = document.getElementById('delete-nama-intervensi'); if (nameSpan) nameSpan.textContent = nama || '';
+        const nameSpan = document.getElementById('delete-nama-intervensi');
+        if (nameSpan) nameSpan.textContent = nama || '';
         openModal('modal-delete');
     }
 
-    // Search AJAX
-    document.addEventListener("DOMContentLoaded", () => {
-        const input = document.getElementById("inputSearch");
-        const tableBody = document.getElementById("tableBody");
-        const pagination = document.getElementById("pagination");
-        let lastPageUrl = window.location.href;
+    // ── Search AJAX ───────────────────────────────────────────
+    document.addEventListener('DOMContentLoaded', () => {
+        const input      = document.getElementById('inputSearch');
+        const tableBody  = document.getElementById('tableBody');
+        const pagination = document.getElementById('pagination');
+        let lastPageUrl  = window.location.href;
 
         function fetchData(url) {
-            fetch(url).then(r => r.text()).then(html => {
-                const doc = new DOMParser().parseFromString(html, "text/html");
-                tableBody.innerHTML = doc.querySelector("#tableBody").innerHTML;
-                pagination.innerHTML = doc.querySelector("#pagination").innerHTML;
-                document.querySelectorAll("#pagination a").forEach(a => {
-                    a.addEventListener("click", e => { e.preventDefault(); lastPageUrl = a.href; fetchData(a.href); });
+            fetch(url)
+                .then(r => r.text())
+                .then(html => {
+                    const doc = new DOMParser().parseFromString(html, 'text/html');
+                    tableBody.innerHTML  = doc.querySelector('#tableBody').innerHTML;
+                    pagination.innerHTML = doc.querySelector('#pagination').innerHTML;
+                    document.querySelectorAll('#pagination a').forEach(a => {
+                        a.addEventListener('click', e => {
+                            e.preventDefault();
+                            lastPageUrl = a.href;
+                            fetchData(a.href);
+                        });
+                    });
                 });
+        }
+
+        if (input) {
+            input.addEventListener('keyup', function () {
+                clearTimeout(window._searchTimer);
+                window._searchTimer = setTimeout(() => {
+                    const q = this.value.trim();
+                    fetchData(q ? `/intervensi?search=${encodeURIComponent(q)}` : lastPageUrl);
+                }, 300);
             });
         }
 
-        input.addEventListener("keyup", function() {
-            clearTimeout(window.st);
-            window.st = setTimeout(() => {
-                const q = this.value.trim();
-                fetchData(q ? `/intervensi?search=${q}` : lastPageUrl);
-            }, 300);
-        });
-    });
-    document.addEventListener('DOMContentLoaded', function () {
-    const searchInput = document.getElementById('kelasSearch');
-    const list = document.getElementById('kelasList');
-    const hiddenInput = document.getElementById('kelas');
+        // ── Kelas dropdown search (create modal) ──────────────
+        const searchInput = document.getElementById('kelasSearch');
+        const list        = document.getElementById('kelasList');
+        const hiddenInput = document.getElementById('kelas');
 
-    if (!searchInput || !list || !hiddenInput) return;
+        if (searchInput && list && hiddenInput) {
+            const items = list.querySelectorAll('.dropdown-item');
 
-    const items = list.querySelectorAll('.dropdown-item');
+            searchInput.addEventListener('focus', () => {
+                list.classList.remove('hidden');
+                list.style.display = 'block';
+            });
 
-    // Show dropdown
-    searchInput.addEventListener('focus', function () {
-        list.classList.remove('hidden');
-        list.style.display = 'block';
-    });
+            searchInput.addEventListener('input', function () {
+                const filter        = this.value.toLowerCase().trim();
+                let hasVisibleItem  = false;
+                items.forEach(item => {
+                    const show = item.textContent.toLowerCase().trim().includes(filter);
+                    item.style.display = show ? 'block' : 'none';
+                    if (show) hasVisibleItem = true;
+                });
+                list.style.display = hasVisibleItem ? 'block' : 'none';
+                hiddenInput.value  = '';
+            });
 
-    // Filter dropdown items
-    searchInput.addEventListener('input', function () {
-        const filter = this.value.toLowerCase().trim();
-        let hasVisibleItem = false;
+            items.forEach(item => {
+                item.addEventListener('click', function () {
+                    searchInput.value  = this.textContent.trim();
+                    hiddenInput.value  = this.dataset.value;
+                    list.style.display = 'none';
+                });
+            });
 
-        items.forEach(item => {
-            const text = item.textContent.toLowerCase().trim();
+            document.addEventListener('click', function (e) {
+                if (!e.target.closest('.dropdown-container')) {
+                    list.style.display = 'none';
+                }
+            });
 
-            if (text.includes(filter)) {
-                item.style.display = 'block';
-                hasVisibleItem = true;
-            } else {
-                item.style.display = 'none';
-            }
-        });
-
-        list.style.display = hasVisibleItem ? 'block' : 'none';
-
-        // reset hidden input saat user mengetik ulang
-        hiddenInput.value = '';
-    });
-
-    // Select item
-    items.forEach(item => {
-        item.addEventListener('click', function () {
-            searchInput.value = this.textContent.trim();
-            hiddenInput.value = this.dataset.value;
-            list.style.display = 'none';
-        });
-    });
-
-    // Hide when click outside
-    document.addEventListener('click', function (e) {
-        if (!e.target.closest('.dropdown-container')) {
-            list.style.display = 'none';
+            searchInput.addEventListener('keydown', function (e) {
+                if (e.key === 'Escape') list.style.display = 'none';
+            });
         }
     });
-
-    // Hide with ESC
-    searchInput.addEventListener('keydown', function (e) {
-        if (e.key === 'Escape') {
-            list.style.display = 'none';
-        }
-    });
-});
 </script>
 @endpush
