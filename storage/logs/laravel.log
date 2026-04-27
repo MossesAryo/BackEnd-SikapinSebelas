@@ -18107,3 +18107,174 @@ Did you mean one of these?
 #19 D:\\BackEnd-SikapinSebelas\\artisan(16): Illuminate\\Foundation\\Application->handleCommand(Object(Symfony\\Component\\Console\\Input\\ArgvInput))
 #20 {main}
 "} 
+[2026-04-28 00:05:54] local.ERROR: Unclosed '[' on line 308 does not match ')' (View: D:\BackEnd-SikapinSebelas\resources\views\wakasek\intervensi\show.blade.php) {"userId":1,"exception":"[object] (Illuminate\\View\\ViewException(code: 0): Unclosed '[' on line 308 does not match ')' (View: D:\\BackEnd-SikapinSebelas\\resources\\views\\wakasek\\intervensi\\show.blade.php) at D:\\BackEnd-SikapinSebelas\\storage\\framework\\views\\9a85080d6a25c2824eb340a29588ec9a.php:309)
+[stacktrace]
+#0 D:\\BackEnd-SikapinSebelas\\vendor\\laravel\\framework\\src\\Illuminate\\View\\Engines\\PhpEngine.php(59): Illuminate\\View\\Engines\\CompilerEngine->handleViewException(Object(ParseError), 1)
+#1 D:\\BackEnd-SikapinSebelas\\vendor\\laravel\\framework\\src\\Illuminate\\View\\Engines\\CompilerEngine.php(76): Illuminate\\View\\Engines\\PhpEngine->evaluatePath('D:\\\\BackEnd-Sika...', Array)
+#2 D:\\BackEnd-SikapinSebelas\\vendor\\laravel\\framework\\src\\Illuminate\\View\\View.php(208): Illuminate\\View\\Engines\\CompilerEngine->get('D:\\\\BackEnd-Sika...', Array)
+#3 D:\\BackEnd-SikapinSebelas\\vendor\\laravel\\framework\\src\\Illuminate\\View\\View.php(191): Illuminate\\View\\View->getContents()
+#4 D:\\BackEnd-SikapinSebelas\\vendor\\laravel\\framework\\src\\Illuminate\\View\\View.php(160): Illuminate\\View\\View->renderContents()
+#5 D:\\BackEnd-SikapinSebelas\\vendor\\laravel\\framework\\src\\Illuminate\\Http\\Response.php(78): Illuminate\\View\\View->render()
+#6 D:\\BackEnd-SikapinSebelas\\vendor\\laravel\\framework\\src\\Illuminate\\Http\\Response.php(34): Illuminate\\Http\\Response->setContent(Object(Illuminate\\View\\View))
+#7 D:\\BackEnd-SikapinSebelas\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Router.php(925): Illuminate\\Http\\Response->__construct(Object(Illuminate\\View\\View), 200, Array)
+#8 D:\\BackEnd-SikapinSebelas\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Router.php(892): Illuminate\\Routing\\Router::toResponse(Object(Illuminate\\Http\\Request), Object(Illuminate\\View\\View))
+#9 D:\\BackEnd-SikapinSebelas\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Router.php(807): Illuminate\\Routing\\Router->prepareResponse(Object(Illuminate\\Http\\Request), Object(Illuminate\\View\\View))
+#10 D:\\BackEnd-SikapinSebelas\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(169): Illuminate\\Routing\\Router->Illuminate\\Routing\\{closure}(Object(Illuminate\\Http\\Request))
+#11 D:\\BackEnd-SikapinSebelas\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Middleware\\SubstituteBindings.php(50): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))
+#12 D:\\BackEnd-SikapinSebelas\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(208): Illuminate\\Routing\\Middleware\\SubstituteBindings->handle(Object(Illuminate\\Http\\Request), Object(Closure))
+#13 D:\\BackEnd-SikapinSebelas\\vendor\\laravel\\framework\\src\\Illuminate\\Auth\\Middleware\\Authenticate.php(63): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))
+#14 D:\\BackEnd-SikapinSebelas\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(208): Illuminate\\Auth\\Middleware\\Authenticate->handle(Object(Illuminate\\Http\\Request), Object(Closure))
+#15 D:\\BackEnd-SikapinSebelas\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Middleware\\VerifyCsrfToken.php(87): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))
+#16 D:\\BackEnd-SikapinSebelas\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(208): Illuminate\\Foundation\\Http\\Middleware\\VerifyCsrfToken->handle(Object(Illuminate\\Http\\Request), Object(Closure))
+#17 D:\\BackEnd-SikapinSebelas\\vendor\\laravel\\framework\\src\\Illuminate\\View\\Middleware\\ShareErrorsFromSession.php(48): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))
+#18 D:\\BackEnd-SikapinSebelas\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(208): Illuminate\\View\\Middleware\\ShareErrorsFromSession->handle(Object(Illuminate\\Http\\Request), Object(Closure))
+#19 D:\\BackEnd-SikapinSebelas\\vendor\\laravel\\framework\\src\\Illuminate\\Session\\Middleware\\StartSession.php(120): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))
+#20 D:\\BackEnd-SikapinSebelas\\vendor\\laravel\\framework\\src\\Illuminate\\Session\\Middleware\\StartSession.php(63): Illuminate\\Session\\Middleware\\StartSession->handleStatefulRequest(Object(Illuminate\\Http\\Request), Object(Illuminate\\Session\\Store), Object(Closure))
+#21 D:\\BackEnd-SikapinSebelas\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(208): Illuminate\\Session\\Middleware\\StartSession->handle(Object(Illuminate\\Http\\Request), Object(Closure))
+#22 D:\\BackEnd-SikapinSebelas\\vendor\\laravel\\framework\\src\\Illuminate\\Cookie\\Middleware\\AddQueuedCookiesToResponse.php(36): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))
+#23 D:\\BackEnd-SikapinSebelas\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(208): Illuminate\\Cookie\\Middleware\\AddQueuedCookiesToResponse->handle(Object(Illuminate\\Http\\Request), Object(Closure))
+#24 D:\\BackEnd-SikapinSebelas\\vendor\\laravel\\framework\\src\\Illuminate\\Cookie\\Middleware\\EncryptCookies.php(74): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))
+#25 D:\\BackEnd-SikapinSebelas\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(208): Illuminate\\Cookie\\Middleware\\EncryptCookies->handle(Object(Illuminate\\Http\\Request), Object(Closure))
+#26 D:\\BackEnd-SikapinSebelas\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(126): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))
+#27 D:\\BackEnd-SikapinSebelas\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Router.php(807): Illuminate\\Pipeline\\Pipeline->then(Object(Closure))
+#28 D:\\BackEnd-SikapinSebelas\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Router.php(786): Illuminate\\Routing\\Router->runRouteWithinStack(Object(Illuminate\\Routing\\Route), Object(Illuminate\\Http\\Request))
+#29 D:\\BackEnd-SikapinSebelas\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Router.php(750): Illuminate\\Routing\\Router->runRoute(Object(Illuminate\\Http\\Request), Object(Illuminate\\Routing\\Route))
+#30 D:\\BackEnd-SikapinSebelas\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Router.php(739): Illuminate\\Routing\\Router->dispatchToRoute(Object(Illuminate\\Http\\Request))
+#31 D:\\BackEnd-SikapinSebelas\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Kernel.php(200): Illuminate\\Routing\\Router->dispatch(Object(Illuminate\\Http\\Request))
+#32 D:\\BackEnd-SikapinSebelas\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(169): Illuminate\\Foundation\\Http\\Kernel->Illuminate\\Foundation\\Http\\{closure}(Object(Illuminate\\Http\\Request))
+#33 D:\\BackEnd-SikapinSebelas\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Middleware\\TransformsRequest.php(21): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))
+#34 D:\\BackEnd-SikapinSebelas\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Middleware\\ConvertEmptyStringsToNull.php(31): Illuminate\\Foundation\\Http\\Middleware\\TransformsRequest->handle(Object(Illuminate\\Http\\Request), Object(Closure))
+#35 D:\\BackEnd-SikapinSebelas\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(208): Illuminate\\Foundation\\Http\\Middleware\\ConvertEmptyStringsToNull->handle(Object(Illuminate\\Http\\Request), Object(Closure))
+#36 D:\\BackEnd-SikapinSebelas\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Middleware\\TransformsRequest.php(21): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))
+#37 D:\\BackEnd-SikapinSebelas\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Middleware\\TrimStrings.php(51): Illuminate\\Foundation\\Http\\Middleware\\TransformsRequest->handle(Object(Illuminate\\Http\\Request), Object(Closure))
+#38 D:\\BackEnd-SikapinSebelas\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(208): Illuminate\\Foundation\\Http\\Middleware\\TrimStrings->handle(Object(Illuminate\\Http\\Request), Object(Closure))
+#39 D:\\BackEnd-SikapinSebelas\\vendor\\laravel\\framework\\src\\Illuminate\\Http\\Middleware\\ValidatePostSize.php(27): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))
+#40 D:\\BackEnd-SikapinSebelas\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(208): Illuminate\\Http\\Middleware\\ValidatePostSize->handle(Object(Illuminate\\Http\\Request), Object(Closure))
+#41 D:\\BackEnd-SikapinSebelas\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Middleware\\PreventRequestsDuringMaintenance.php(109): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))
+#42 D:\\BackEnd-SikapinSebelas\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(208): Illuminate\\Foundation\\Http\\Middleware\\PreventRequestsDuringMaintenance->handle(Object(Illuminate\\Http\\Request), Object(Closure))
+#43 D:\\BackEnd-SikapinSebelas\\vendor\\laravel\\framework\\src\\Illuminate\\Http\\Middleware\\HandleCors.php(48): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))
+#44 D:\\BackEnd-SikapinSebelas\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(208): Illuminate\\Http\\Middleware\\HandleCors->handle(Object(Illuminate\\Http\\Request), Object(Closure))
+#45 D:\\BackEnd-SikapinSebelas\\vendor\\laravel\\framework\\src\\Illuminate\\Http\\Middleware\\TrustProxies.php(58): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))
+#46 D:\\BackEnd-SikapinSebelas\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(208): Illuminate\\Http\\Middleware\\TrustProxies->handle(Object(Illuminate\\Http\\Request), Object(Closure))
+#47 D:\\BackEnd-SikapinSebelas\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Middleware\\InvokeDeferredCallbacks.php(22): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))
+#48 D:\\BackEnd-SikapinSebelas\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(208): Illuminate\\Foundation\\Http\\Middleware\\InvokeDeferredCallbacks->handle(Object(Illuminate\\Http\\Request), Object(Closure))
+#49 D:\\BackEnd-SikapinSebelas\\vendor\\laravel\\framework\\src\\Illuminate\\Http\\Middleware\\ValidatePathEncoding.php(26): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))
+#50 D:\\BackEnd-SikapinSebelas\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(208): Illuminate\\Http\\Middleware\\ValidatePathEncoding->handle(Object(Illuminate\\Http\\Request), Object(Closure))
+#51 D:\\BackEnd-SikapinSebelas\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(126): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))
+#52 D:\\BackEnd-SikapinSebelas\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Kernel.php(175): Illuminate\\Pipeline\\Pipeline->then(Object(Closure))
+#53 D:\\BackEnd-SikapinSebelas\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Kernel.php(144): Illuminate\\Foundation\\Http\\Kernel->sendRequestThroughRouter(Object(Illuminate\\Http\\Request))
+#54 D:\\BackEnd-SikapinSebelas\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Application.php(1219): Illuminate\\Foundation\\Http\\Kernel->handle(Object(Illuminate\\Http\\Request))
+#55 D:\\BackEnd-SikapinSebelas\\public\\index.php(20): Illuminate\\Foundation\\Application->handleRequest(Object(Illuminate\\Http\\Request))
+#56 D:\\BackEnd-SikapinSebelas\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\resources\\server.php(23): require_once('D:\\\\BackEnd-Sika...')
+#57 {main}
+
+[previous exception] [object] (ParseError(code: 0): Unclosed '[' on line 308 does not match ')' at D:\\BackEnd-SikapinSebelas\\storage\\framework\\views\\9a85080d6a25c2824eb340a29588ec9a.php:309)
+[stacktrace]
+#0 D:\\BackEnd-SikapinSebelas\\vendor\\laravel\\framework\\src\\Illuminate\\Filesystem\\Filesystem.php(124): Illuminate\\Filesystem\\Filesystem::Illuminate\\Filesystem\\{closure}()
+#1 D:\\BackEnd-SikapinSebelas\\vendor\\laravel\\framework\\src\\Illuminate\\View\\Engines\\PhpEngine.php(57): Illuminate\\Filesystem\\Filesystem->getRequire('D:\\\\BackEnd-Sika...', Array)
+#2 D:\\BackEnd-SikapinSebelas\\vendor\\laravel\\framework\\src\\Illuminate\\View\\Engines\\CompilerEngine.php(76): Illuminate\\View\\Engines\\PhpEngine->evaluatePath('D:\\\\BackEnd-Sika...', Array)
+#3 D:\\BackEnd-SikapinSebelas\\vendor\\laravel\\framework\\src\\Illuminate\\View\\View.php(208): Illuminate\\View\\Engines\\CompilerEngine->get('D:\\\\BackEnd-Sika...', Array)
+#4 D:\\BackEnd-SikapinSebelas\\vendor\\laravel\\framework\\src\\Illuminate\\View\\View.php(191): Illuminate\\View\\View->getContents()
+#5 D:\\BackEnd-SikapinSebelas\\vendor\\laravel\\framework\\src\\Illuminate\\View\\View.php(160): Illuminate\\View\\View->renderContents()
+#6 D:\\BackEnd-SikapinSebelas\\vendor\\laravel\\framework\\src\\Illuminate\\Http\\Response.php(78): Illuminate\\View\\View->render()
+#7 D:\\BackEnd-SikapinSebelas\\vendor\\laravel\\framework\\src\\Illuminate\\Http\\Response.php(34): Illuminate\\Http\\Response->setContent(Object(Illuminate\\View\\View))
+#8 D:\\BackEnd-SikapinSebelas\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Router.php(925): Illuminate\\Http\\Response->__construct(Object(Illuminate\\View\\View), 200, Array)
+#9 D:\\BackEnd-SikapinSebelas\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Router.php(892): Illuminate\\Routing\\Router::toResponse(Object(Illuminate\\Http\\Request), Object(Illuminate\\View\\View))
+#10 D:\\BackEnd-SikapinSebelas\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Router.php(807): Illuminate\\Routing\\Router->prepareResponse(Object(Illuminate\\Http\\Request), Object(Illuminate\\View\\View))
+#11 D:\\BackEnd-SikapinSebelas\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(169): Illuminate\\Routing\\Router->Illuminate\\Routing\\{closure}(Object(Illuminate\\Http\\Request))
+#12 D:\\BackEnd-SikapinSebelas\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Middleware\\SubstituteBindings.php(50): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))
+#13 D:\\BackEnd-SikapinSebelas\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(208): Illuminate\\Routing\\Middleware\\SubstituteBindings->handle(Object(Illuminate\\Http\\Request), Object(Closure))
+#14 D:\\BackEnd-SikapinSebelas\\vendor\\laravel\\framework\\src\\Illuminate\\Auth\\Middleware\\Authenticate.php(63): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))
+#15 D:\\BackEnd-SikapinSebelas\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(208): Illuminate\\Auth\\Middleware\\Authenticate->handle(Object(Illuminate\\Http\\Request), Object(Closure))
+#16 D:\\BackEnd-SikapinSebelas\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Middleware\\VerifyCsrfToken.php(87): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))
+#17 D:\\BackEnd-SikapinSebelas\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(208): Illuminate\\Foundation\\Http\\Middleware\\VerifyCsrfToken->handle(Object(Illuminate\\Http\\Request), Object(Closure))
+#18 D:\\BackEnd-SikapinSebelas\\vendor\\laravel\\framework\\src\\Illuminate\\View\\Middleware\\ShareErrorsFromSession.php(48): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))
+#19 D:\\BackEnd-SikapinSebelas\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(208): Illuminate\\View\\Middleware\\ShareErrorsFromSession->handle(Object(Illuminate\\Http\\Request), Object(Closure))
+#20 D:\\BackEnd-SikapinSebelas\\vendor\\laravel\\framework\\src\\Illuminate\\Session\\Middleware\\StartSession.php(120): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))
+#21 D:\\BackEnd-SikapinSebelas\\vendor\\laravel\\framework\\src\\Illuminate\\Session\\Middleware\\StartSession.php(63): Illuminate\\Session\\Middleware\\StartSession->handleStatefulRequest(Object(Illuminate\\Http\\Request), Object(Illuminate\\Session\\Store), Object(Closure))
+#22 D:\\BackEnd-SikapinSebelas\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(208): Illuminate\\Session\\Middleware\\StartSession->handle(Object(Illuminate\\Http\\Request), Object(Closure))
+#23 D:\\BackEnd-SikapinSebelas\\vendor\\laravel\\framework\\src\\Illuminate\\Cookie\\Middleware\\AddQueuedCookiesToResponse.php(36): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))
+#24 D:\\BackEnd-SikapinSebelas\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(208): Illuminate\\Cookie\\Middleware\\AddQueuedCookiesToResponse->handle(Object(Illuminate\\Http\\Request), Object(Closure))
+#25 D:\\BackEnd-SikapinSebelas\\vendor\\laravel\\framework\\src\\Illuminate\\Cookie\\Middleware\\EncryptCookies.php(74): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))
+#26 D:\\BackEnd-SikapinSebelas\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(208): Illuminate\\Cookie\\Middleware\\EncryptCookies->handle(Object(Illuminate\\Http\\Request), Object(Closure))
+#27 D:\\BackEnd-SikapinSebelas\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(126): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))
+#28 D:\\BackEnd-SikapinSebelas\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Router.php(807): Illuminate\\Pipeline\\Pipeline->then(Object(Closure))
+#29 D:\\BackEnd-SikapinSebelas\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Router.php(786): Illuminate\\Routing\\Router->runRouteWithinStack(Object(Illuminate\\Routing\\Route), Object(Illuminate\\Http\\Request))
+#30 D:\\BackEnd-SikapinSebelas\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Router.php(750): Illuminate\\Routing\\Router->runRoute(Object(Illuminate\\Http\\Request), Object(Illuminate\\Routing\\Route))
+#31 D:\\BackEnd-SikapinSebelas\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Router.php(739): Illuminate\\Routing\\Router->dispatchToRoute(Object(Illuminate\\Http\\Request))
+#32 D:\\BackEnd-SikapinSebelas\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Kernel.php(200): Illuminate\\Routing\\Router->dispatch(Object(Illuminate\\Http\\Request))
+#33 D:\\BackEnd-SikapinSebelas\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(169): Illuminate\\Foundation\\Http\\Kernel->Illuminate\\Foundation\\Http\\{closure}(Object(Illuminate\\Http\\Request))
+#34 D:\\BackEnd-SikapinSebelas\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Middleware\\TransformsRequest.php(21): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))
+#35 D:\\BackEnd-SikapinSebelas\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Middleware\\ConvertEmptyStringsToNull.php(31): Illuminate\\Foundation\\Http\\Middleware\\TransformsRequest->handle(Object(Illuminate\\Http\\Request), Object(Closure))
+#36 D:\\BackEnd-SikapinSebelas\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(208): Illuminate\\Foundation\\Http\\Middleware\\ConvertEmptyStringsToNull->handle(Object(Illuminate\\Http\\Request), Object(Closure))
+#37 D:\\BackEnd-SikapinSebelas\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Middleware\\TransformsRequest.php(21): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))
+#38 D:\\BackEnd-SikapinSebelas\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Middleware\\TrimStrings.php(51): Illuminate\\Foundation\\Http\\Middleware\\TransformsRequest->handle(Object(Illuminate\\Http\\Request), Object(Closure))
+#39 D:\\BackEnd-SikapinSebelas\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(208): Illuminate\\Foundation\\Http\\Middleware\\TrimStrings->handle(Object(Illuminate\\Http\\Request), Object(Closure))
+#40 D:\\BackEnd-SikapinSebelas\\vendor\\laravel\\framework\\src\\Illuminate\\Http\\Middleware\\ValidatePostSize.php(27): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))
+#41 D:\\BackEnd-SikapinSebelas\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(208): Illuminate\\Http\\Middleware\\ValidatePostSize->handle(Object(Illuminate\\Http\\Request), Object(Closure))
+#42 D:\\BackEnd-SikapinSebelas\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Middleware\\PreventRequestsDuringMaintenance.php(109): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))
+#43 D:\\BackEnd-SikapinSebelas\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(208): Illuminate\\Foundation\\Http\\Middleware\\PreventRequestsDuringMaintenance->handle(Object(Illuminate\\Http\\Request), Object(Closure))
+#44 D:\\BackEnd-SikapinSebelas\\vendor\\laravel\\framework\\src\\Illuminate\\Http\\Middleware\\HandleCors.php(48): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))
+#45 D:\\BackEnd-SikapinSebelas\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(208): Illuminate\\Http\\Middleware\\HandleCors->handle(Object(Illuminate\\Http\\Request), Object(Closure))
+#46 D:\\BackEnd-SikapinSebelas\\vendor\\laravel\\framework\\src\\Illuminate\\Http\\Middleware\\TrustProxies.php(58): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))
+#47 D:\\BackEnd-SikapinSebelas\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(208): Illuminate\\Http\\Middleware\\TrustProxies->handle(Object(Illuminate\\Http\\Request), Object(Closure))
+#48 D:\\BackEnd-SikapinSebelas\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Middleware\\InvokeDeferredCallbacks.php(22): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))
+#49 D:\\BackEnd-SikapinSebelas\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(208): Illuminate\\Foundation\\Http\\Middleware\\InvokeDeferredCallbacks->handle(Object(Illuminate\\Http\\Request), Object(Closure))
+#50 D:\\BackEnd-SikapinSebelas\\vendor\\laravel\\framework\\src\\Illuminate\\Http\\Middleware\\ValidatePathEncoding.php(26): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))
+#51 D:\\BackEnd-SikapinSebelas\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(208): Illuminate\\Http\\Middleware\\ValidatePathEncoding->handle(Object(Illuminate\\Http\\Request), Object(Closure))
+#52 D:\\BackEnd-SikapinSebelas\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(126): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))
+#53 D:\\BackEnd-SikapinSebelas\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Kernel.php(175): Illuminate\\Pipeline\\Pipeline->then(Object(Closure))
+#54 D:\\BackEnd-SikapinSebelas\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Kernel.php(144): Illuminate\\Foundation\\Http\\Kernel->sendRequestThroughRouter(Object(Illuminate\\Http\\Request))
+#55 D:\\BackEnd-SikapinSebelas\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Application.php(1219): Illuminate\\Foundation\\Http\\Kernel->handle(Object(Illuminate\\Http\\Request))
+#56 D:\\BackEnd-SikapinSebelas\\public\\index.php(20): Illuminate\\Foundation\\Application->handleRequest(Object(Illuminate\\Http\\Request))
+#57 D:\\BackEnd-SikapinSebelas\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\resources\\server.php(23): require_once('D:\\\\BackEnd-Sika...')
+#58 {main}
+"} 
+[2026-04-28 00:48:44] local.INFO: hasFile check: false  
+[2026-04-28 00:48:44] local.INFO: file input: null  
+[2026-04-28 00:57:05] local.INFO: hasFile check: false  
+[2026-04-28 00:57:05] local.INFO: file input: null  
+[2026-04-28 00:58:52] local.INFO: hasFile check: false  
+[2026-04-28 00:58:52] local.INFO: file input: null  
+[2026-04-28 01:01:06] local.INFO: hasFile check: false  
+[2026-04-28 01:01:06] local.INFO: file input: null  
+[2026-04-28 01:02:35] local.INFO: Request all: {"_token":"88rdzQkoKaCcmhhVcSRuYd4HFyFVkY9VWRzDmb4B","_method":"PUT","nis":"2310810502","return_to":"http:\/\/127.0.0.1:8000\/intervensi","nama_intervensi":"yijyutijt","isi_intervensi":"jtyyjtty","status":"Binaan Khusus","perubahan_setelah_intervensi":null,"tanggal_Mulai_Perbaikan":"2026-04-27","tanggal_Selesai_Perbaikan":"2026-04-29","file":[{}]}  
+[2026-04-28 01:02:35] local.INFO: Request files: {"file":[{}]}  
+[2026-04-28 01:02:35] local.INFO: hasFile check: true  
+[2026-04-28 01:02:35] local.INFO: file input: [{}]  
+[2026-04-28 01:02:35] local.INFO: files count: 1  
+[2026-04-28 01:02:50] local.INFO: Request all: {"_token":"88rdzQkoKaCcmhhVcSRuYd4HFyFVkY9VWRzDmb4B","_method":"PUT","nis":"2310810502","return_to":"http:\/\/127.0.0.1:8000\/intervensi","nama_intervensi":"yijyutijt","isi_intervensi":"jtyyjtty","status":"Binaan Khusus","perubahan_setelah_intervensi":null,"tanggal_Mulai_Perbaikan":"2026-04-27","tanggal_Selesai_Perbaikan":"2026-04-29","hapus_file":["9"],"file":[{}]}  
+[2026-04-28 01:02:50] local.INFO: Request files: {"file":[{}]}  
+[2026-04-28 01:02:50] local.INFO: hasFile check: true  
+[2026-04-28 01:02:50] local.INFO: file input: [{}]  
+[2026-04-28 01:02:50] local.INFO: files count: 1  
+[2026-04-28 01:03:13] local.INFO: Request all: {"_token":"88rdzQkoKaCcmhhVcSRuYd4HFyFVkY9VWRzDmb4B","_method":"PUT","nis":"2310810502","return_to":"http:\/\/127.0.0.1:8000\/intervensi\/12","nama_intervensi":"yijyutijt","isi_intervensi":"jtyyjtty","status":"Binaan Khusus","perubahan_setelah_intervensi":null,"tanggal_Mulai_Perbaikan":"2026-04-27","tanggal_Selesai_Perbaikan":"2026-04-29","hapus_file":["null"],"file":[{},{},{}]}  
+[2026-04-28 01:03:13] local.INFO: Request files: {"file":[{},{},{}]}  
+[2026-04-28 01:03:13] local.INFO: hasFile check: true  
+[2026-04-28 01:03:13] local.INFO: file input: [{},{},{}]  
+[2026-04-28 01:03:13] local.INFO: files count: 3  
+[2026-04-28 01:03:24] local.INFO: Request all: {"_token":"88rdzQkoKaCcmhhVcSRuYd4HFyFVkY9VWRzDmb4B","_method":"PUT","nis":"2310810502","return_to":"http:\/\/127.0.0.1:8000\/intervensi\/12","nama_intervensi":"yijyutijt","isi_intervensi":"jtyyjtty","status":"Binaan Khusus","perubahan_setelah_intervensi":null,"tanggal_Mulai_Perbaikan":"2026-04-27","tanggal_Selesai_Perbaikan":"2026-04-29","hapus_file":["null"]}  
+[2026-04-28 01:03:24] local.INFO: Request files: []  
+[2026-04-28 01:03:24] local.INFO: hasFile check: false  
+[2026-04-28 01:03:24] local.INFO: file input: null  
+[2026-04-28 01:05:01] local.INFO: Request all: {"_token":"88rdzQkoKaCcmhhVcSRuYd4HFyFVkY9VWRzDmb4B","_method":"PUT","nis":"2310810502","return_to":"http:\/\/127.0.0.1:8000\/intervensi\/12","nama_intervensi":"yijyutijt","isi_intervensi":"jtyyjtty","status":"Binaan Khusus","perubahan_setelah_intervensi":null,"tanggal_Mulai_Perbaikan":"2026-04-27","tanggal_Selesai_Perbaikan":"2026-04-29","hapus_file":["null"]}  
+[2026-04-28 01:05:01] local.INFO: Request files: []  
+[2026-04-28 01:05:01] local.INFO: hasFile check: false  
+[2026-04-28 01:05:01] local.INFO: file input: null  
+[2026-04-28 01:05:56] local.INFO: Request all: {"_token":"88rdzQkoKaCcmhhVcSRuYd4HFyFVkY9VWRzDmb4B","_method":"PUT","nis":"2310810502","return_to":"http:\/\/127.0.0.1:8000\/intervensi\/12","nama_intervensi":"yijyutijt","isi_intervensi":"jtyyjtty","status":"Binaan Khusus","perubahan_setelah_intervensi":null,"tanggal_Mulai_Perbaikan":"2026-04-27","tanggal_Selesai_Perbaikan":"2026-04-29","hapus_file":["null"]}  
+[2026-04-28 01:05:56] local.INFO: Request files: []  
+[2026-04-28 01:05:56] local.INFO: hapus_file input: ["null"]  
+[2026-04-28 01:05:56] local.INFO: hasFile check: false  
+[2026-04-28 01:05:56] local.INFO: file input: null  
+[2026-04-28 01:06:53] local.INFO: Request all: {"_token":"88rdzQkoKaCcmhhVcSRuYd4HFyFVkY9VWRzDmb4B","_method":"PUT","nis":"2310810502","return_to":"http:\/\/127.0.0.1:8000\/intervensi\/12","nama_intervensi":"yijyutijt","isi_intervensi":"jtyyjtty","status":"Binaan Khusus","perubahan_setelah_intervensi":null,"tanggal_Mulai_Perbaikan":"2026-04-27","tanggal_Selesai_Perbaikan":"2026-04-29","hapus_file":["null"]}  
+[2026-04-28 01:06:53] local.INFO: Request files: []  
+[2026-04-28 01:06:53] local.INFO: hapus_file input: ["null"]  
+[2026-04-28 01:06:53] local.INFO: hasFile check: false  
+[2026-04-28 01:06:53] local.INFO: file input: null  
+[2026-04-28 01:08:13] local.INFO: Request all: {"_token":"88rdzQkoKaCcmhhVcSRuYd4HFyFVkY9VWRzDmb4B","_method":"PUT","nis":"2310810502","return_to":"http:\/\/127.0.0.1:8000\/intervensi\/12","nama_intervensi":"yijyutijt","isi_intervensi":"jtyyjtty","status":"Binaan Khusus","perubahan_setelah_intervensi":null,"tanggal_Mulai_Perbaikan":"2026-04-27","tanggal_Selesai_Perbaikan":"2026-04-29","hapus_file":["12"]}  
+[2026-04-28 01:08:13] local.INFO: Request files: []  
+[2026-04-28 01:08:13] local.INFO: hapus_file input: ["12"]  
+[2026-04-28 01:08:13] local.INFO: hasFile check: false  
+[2026-04-28 01:08:13] local.INFO: file input: null  
+[2026-04-28 01:11:53] local.INFO: files count: 1  
+[2026-04-28 01:12:24] local.INFO: files count: 1  

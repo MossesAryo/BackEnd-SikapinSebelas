@@ -294,13 +294,32 @@ document.addEventListener('DOMContentLoaded', function () {
     const formEdit = document.getElementById('form-edit');
     if (!formEdit) return;
 
+    // Mark unsaved on any field change
     formEdit.querySelectorAll('input, textarea, select').forEach(el => {
         el.addEventListener('input',  markUnsaved);
         el.addEventListener('change', markUnsaved);
     });
 
-    formEdit.addEventListener('submit', function () {
+    // ── FIX: Inject hapus_file[] inputs at submit time from the Set ──
+    formEdit.addEventListener('submit', function (e) {
+        // Force sync before submit
+        syncFileInputEdit();
         clearUnsaved();
+
+        // Remove any stale hapus_file inputs first
+        formEdit.querySelectorAll('input[name="hapus_file[]"]').forEach(el => el.remove());
+
+        // Inject one hidden input per file ID tracked for deletion
+        if (window.filesToDeleteEdit && window.filesToDeleteEdit.size > 0) {
+            window.filesToDeleteEdit.forEach(function (id) {
+                const input = document.createElement('input');
+                input.type  = 'hidden';
+                input.name  = 'hapus_file[]';
+                input.value = id;
+                formEdit.appendChild(input);
+            });
+        }
+
         const btn = document.getElementById('edit-save-btn');
         if (btn) {
             btn.disabled = true;
@@ -315,12 +334,12 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 
 // ── File Upload for Edit Modal ────────────────────────────────
-// Gunakan window scope agar bisa diakses dari index.blade.php
 window.uploadedFilesEdit  = [];
 window.existingFilesData  = [];
+window.filesToDeleteEdit  = new Set();
 
-const ALLOWED_TYPES_EDIT      = ['image/jpeg', 'image/png', 'application/pdf'];
-const MAX_SIZE_PER_FILE_EDIT   = 5 * 1024 * 1024;
+const ALLOWED_TYPES_EDIT     = ['image/jpeg', 'image/png', 'application/pdf'];
+const MAX_SIZE_PER_FILE_EDIT  = 5 * 1024 * 1024;
 
 function handleFileDropEdit(e) {
     e.preventDefault();
@@ -340,7 +359,9 @@ function addFilesEdit(newFiles) {
             return;
         }
         const isDuplicate = window.uploadedFilesEdit.some(f => f.name === file.name && f.size === file.size);
-        if (!isDuplicate) window.uploadedFilesEdit.push(file);
+        if (!isDuplicate) {
+            window.uploadedFilesEdit.push(file);
+        }
     });
     syncFileInputEdit();
     renderPreviewsEdit();
@@ -360,6 +381,7 @@ function syncFileInputEdit() {
     const dt = new DataTransfer();
     window.uploadedFilesEdit.forEach(f => dt.items.add(f));
     fileInput.files = dt.files;
+    fileInput._cachedFiles = dt.files;
 }
 
 function formatSizeEdit(bytes) {
@@ -369,11 +391,11 @@ function formatSizeEdit(bytes) {
 }
 
 function renderPreviewsEdit() {
-    const previewArea    = document.getElementById('preview-area-edit');
-    const previewGrid    = document.getElementById('preview-grid-edit');
-    const countBadge     = document.getElementById('file-count-badge-edit');
+    const previewArea     = document.getElementById('preview-area-edit');
+    const previewGrid     = document.getElementById('preview-grid-edit');
+    const countBadge      = document.getElementById('file-count-badge-edit');
     const sizeProgressBar = document.getElementById('size-progress-bar-edit');
-    const totalSizeLabel = document.getElementById('total-size-label-edit');
+    const totalSizeLabel  = document.getElementById('total-size-label-edit');
 
     if (!previewArea || !previewGrid) return;
 
@@ -443,8 +465,7 @@ function renderExistingFiles() {
 
     if (!existingSection || !existingGrid) return;
 
-    // Hapus hidden input hapus_file[] dari sebelumnya agar tidak duplikat
-    document.querySelectorAll('#form-edit input[name="hapus_file[]"]').forEach(el => el.remove());
+    // FIX: Do NOT touch hapus_file[] inputs here — that's handled at submit time via window.filesToDeleteEdit
 
     if (!window.existingFilesData || window.existingFilesData.length === 0) {
         existingSection.classList.add('hidden');
@@ -487,14 +508,11 @@ function renderExistingFiles() {
         removeBtn.innerHTML = '×';
         removeBtn.addEventListener('click', e => {
             e.stopPropagation();
-            // Tambahkan hidden input agar server tahu file mana yang perlu dihapus
-            const hapusInput   = document.createElement('input');
-            hapusInput.type    = 'hidden';
-            hapusInput.name    = 'hapus_file[]';
-            hapusInput.value   = file.id;
-            document.getElementById('form-edit').appendChild(hapusInput);
 
-            // Hapus dari array dan re-render
+            // FIX: Add to the Set — do NOT append hidden inputs here to avoid them being wiped on re-render
+            window.filesToDeleteEdit.add(String(file.id));
+
+            // Remove from display array and re-render
             window.existingFilesData.splice(index, 1);
             renderExistingFiles();
             markUnsaved();
@@ -530,8 +548,9 @@ function openEditModal(data) {
     set('tanggal_Selesai_Perbaikan_edit',    data.tanggal_Selesai_Perbaikan);
 
     // Reset file state
-    window.uploadedFilesEdit = [];
-    window.existingFilesData = [];
+    window.uploadedFilesEdit  = [];
+    window.existingFilesData  = [];
+    window.filesToDeleteEdit  = new Set();
 
     if (data.existing_files && data.existing_files.length > 0) {
         window.existingFilesData = data.existing_files.map(f => ({
@@ -621,7 +640,7 @@ function showToastEdit(message, type = 'info') {
         success: 'bg-green-50 border-green-200 text-green-700',
         info:    'bg-blue-50 border-blue-200 text-blue-700',
     };
-    toast.className  = `fixed bottom-6 right-6 z-[70] px-4 py-3 rounded-xl border text-sm shadow-lg transition-all duration-300 ${colors[type] || colors.info}`;
+    toast.className   = `fixed bottom-6 right-6 z-[70] px-4 py-3 rounded-xl border text-sm shadow-lg transition-all duration-300 ${colors[type] || colors.info}`;
     toast.textContent = message;
     document.body.appendChild(toast);
 

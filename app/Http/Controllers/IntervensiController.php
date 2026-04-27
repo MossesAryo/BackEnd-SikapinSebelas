@@ -239,6 +239,8 @@ class IntervensiController extends Controller
             if (!is_array($files)) {
                 $files = [$files];
             }
+            
+            \Log::info('files count: ' . count($files));
 
             foreach ($files as $file) {
                 if (!$file || !$file->isValid()) continue;

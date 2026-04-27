@@ -55,7 +55,7 @@
                     Kembali
                 </a>
                 <button
-                    onclick="openEditModalFromShow('{{ $intervensi->id_intervensi }}', '{{ $intervensi->nis }}', '{{ addslashes($intervensi->nama_intervensi) }}', '{{ addslashes($intervensi->isi_intervensi) }}', '{{ $intervensi->status }}', '{{ $intervensi->tanggal_Mulai_Perbaikan }}', '{{ $intervensi->tanggal_Selesai_Perbaikan }}', '{{ addslashes($intervensi->perubahan_setelah_intervensi ?? '') }}', {{ $intervensi->bukti->map(fn($b) => ['id' => $b->id, 'path' => $b->file, 'nama_file' => $b->nama_file])->toJson() }})"
+                    onclick="openEditModalFromShow('{{ $intervensi->id_intervensi }}', '{{ $intervensi->nis }}', '{{ addslashes($intervensi->nama_intervensi) }}', '{{ addslashes($intervensi->isi_intervensi) }}', '{{ $intervensi->status }}', '{{ $intervensi->tanggal_Mulai_Perbaikan }}', '{{ $intervensi->tanggal_Selesai_Perbaikan }}', '{{ addslashes($intervensi->perubahan_setelah_intervensi ?? '') }}', {{ $intervensi->bukti->map(fn($b) => ['id' => $b->id_bukti_pembinaan, 'path' => $b->file, 'nama_file' => $b->nama_file])->toJson() }})"
                     class="flex items-center gap-1.5 px-3.5 py-2 bg-white text-blue-600 text-sm font-semibold rounded-xl shadow hover:shadow-md hover:bg-gray-50 transition-all">
                     <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931z"/></svg>
                     Edit
@@ -355,6 +355,8 @@
         
         // Load existing files
         window.existingFilesData = window.existingFilesData || [];
+        window.uploadedFilesEdit = [];
+        window.filesToDeleteEdit = new Set();
         if (existingFiles && existingFiles.length > 0) {
             window.existingFilesData.length = 0;
             existingFiles.forEach(f => {
