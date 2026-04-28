@@ -506,4 +506,175 @@ class IntervensiController extends Controller
             ], 500);
         }
     }
+
+    public function GetPenangananAPI(Request $request, string $nis)
+    {
+        $nip     = $request->query('nip', '');
+        $idKelas = $request->query('id_kelas', '');
+
+        $siswa = \App\Models\siswa::where('nis', $nis)->first();
+        if (!$siswa) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Siswa tidak ditemukan.',
+            ], 404);
+        }
+
+        if (!empty($idKelas) && $siswa->id_kelas !== $idKelas) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Siswa tidak berada di kelas Anda.',
+            ], 403);
+        }
+
+        try {
+            $intervensis = \App\Models\intervensi::where('nis', $nis)
+                ->orderBy('created_at', 'desc')
+                ->get();
+
+            return response()->json([
+                'success' => true,
+                'data' => $intervensis->map(fn($i) => [
+                    'id'                                  => $i->id_intervensi,
+                    'nis'                                 => $i->nis,
+                    'nama_intervensi'                     => $i->nama_intervensi,
+                    'isi_intervensi'                      => $i->isi_intervensi,
+                    'status'                              => $i->status,
+                    'tanggal_mulai_perbaikan'            => $i->tanggal_Mulai_Perbaikan,
+                    'tanggal_selesai_perbaikan'          => $i->tanggal_Selesai_Perbaikan,
+                    'perubahan_setelah_intervensi'       => $i->perubahan_setelah_intervensi,
+                    'created_at'                         => $i->created_at,
+                    'updated_at'                         => $i->updated_at,
+                ]),
+            ], 200);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Terjadi kesalahan: ' . $e->getMessage(),
+            ], 500);
+        }
+    }
+
+    public function UpdatePenangananAPI(Request $request, string $id)
+    {
+        $validator = \Illuminate\Support\Facades\Validator::make(
+            $request->all(),
+            [
+                'nama_intervensi'            => 'required|string|max:255',
+                'isi_intervensi'             => 'required|string|max:1000',
+                'status'                     => 'required|in:Binaan Khusus,Dalam Binaan,Selesai',
+                'tanggal_Mulai_Perbaikan'    => 'required|date',
+                'tanggal_Selesai_Perbaikan'  => 'required|date|after_or_equal:tanggal_Mulai_Perbaikan',
+                'perubahan_setelah_intervensi' => 'nullable|string|max:1000',
+            ],
+            [
+                'nama_intervensi.required'                 => 'Nama penanganan wajib diisi.',
+                'isi_intervensi.required'                  => 'Isi penanganan wajib diisi.',
+                'status.in'                                => 'Status tidak valid.',
+                'tanggal_Mulai_Perbaikan.required'         => 'Tanggal mulai wajib diisi.',
+                'tanggal_Selesai_Perbaikan.required'       => 'Tanggal selesai wajib diisi.',
+                'tanggal_Selesai_Perbaikan.after_or_equal' => 'Tanggal selesai harus sama atau setelah tanggal mulai.',
+            ]
+        );
+
+        if ($validator->fails()) {
+            return response()->json([
+                'success' => false,
+                'message' => $validator->errors()->first(),
+                'errors'  => $validator->errors(),
+            ], 422);
+        }
+
+        $nip     = $request->query('nip', '');
+        $idKelas = $request->query('id_kelas', '');
+
+        $intervensi = \App\Models\intervensi::find($id);
+        if (!$intervensi) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Penanganan tidak ditemukan.',
+            ], 404);
+        }
+
+        if (!empty($idKelas)) {
+            $siswa = \App\Models\siswa::where('nis', $intervensi->nis)->first();
+            if ($siswa && $siswa->id_kelas !== $idKelas) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Anda tidak memiliki akses ke data ini.',
+                ], 403);
+            }
+        }
+
+        try {
+            $intervensi->update([
+                'nama_intervensi'            => $request->nama_intervensi,
+                'isi_intervensi'             => $request->isi_intervensi,
+                'status'                     => $request->status,
+                'tanggal_Mulai_Perbaikan'    => $request->tanggal_Mulai_Perbaikan,
+                'tanggal_Selesai_Perbaikan'  => $request->tanggal_Selesai_Perbaikan,
+                'perubahan_setelah_intervensi' => $request->perubahan_setelah_intervensi,
+                'updated_at'                 => now(),
+            ]);
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Penanganan berhasil diperbarui.',
+                'data'    => [
+                    'id_intervensi'             => $intervensi->id_intervensi,
+                    'nis'                       => $intervensi->nis,
+                    'nama_intervensi'           => $intervensi->nama_intervensi,
+                    'isi_intervensi'            => $intervensi->isi_intervensi,
+                    'status'                    => $intervensi->status,
+                    'tanggal_Mulai_Perbaikan'   => $intervensi->tanggal_Mulai_Perbaikan,
+                    'tanggal_Selesai_Perbaikan' => $intervensi->tanggal_Selesai_Perbaikan,
+                    'perubahan_setelah_intervensi' => $intervensi->perubahan_setelah_intervensi,
+                    'updated_at'                => $intervensi->updated_at,
+                ],
+            ], 200);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Terjadi kesalahan saat memperbarui data: ' . $e->getMessage(),
+            ], 500);
+        }
+    }
+
+    public function DeletePenangananAPI(Request $request, string $id)
+    {
+        $nip     = $request->query('nip', '');
+        $idKelas = $request->query('id_kelas', '');
+
+        $intervensi = \App\Models\intervensi::find($id);
+        if (!$intervensi) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Penanganan tidak ditemukan.',
+            ], 404);
+        }
+
+        if (!empty($idKelas)) {
+            $siswa = \App\Models\siswa::where('nis', $intervensi->nis)->first();
+            if ($siswa && $siswa->id_kelas !== $idKelas) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Anda tidak memiliki akses ke data ini.',
+                ], 403);
+            }
+        }
+
+        try {
+            $intervensi->delete();
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Penanganan berhasil dihapus.',
+            ], 200);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Terjadi kesalahan saat menghapus data: ' . $e->getMessage(),
+            ], 500);
+        }
+    }
 }

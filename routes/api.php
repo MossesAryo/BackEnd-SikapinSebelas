@@ -38,5 +38,8 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/skoring_pelanggaran', [skoringpelanggaran::class,   'store']);
     Route::post('/AddCatatan/{nis}', [catatanController::class, 'AddCatatanAPI']);
     Route::post('/addpenanganan/{nis}', [IntervensiController::class, 'AddPenangananAPI']);
+    Route::get('/penangan/{nis}', [IntervensiController::class, 'GetPenangananAPI']);
+    Route::put('/penangan/{id}', [IntervensiController::class, 'UpdatePenangananAPI']);
+    Route::delete('/penangan/{id}', [IntervensiController::class, 'DeletePenangananAPI']);
 
 });
