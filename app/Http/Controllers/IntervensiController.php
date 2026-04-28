@@ -482,6 +482,7 @@ class IntervensiController extends Controller
                 'status'                    => $request->status,
                 'tanggal_Mulai_Perbaikan'   => $request->tanggal_Mulai_Perbaikan,
                 'tanggal_Selesai_Perbaikan' => $request->tanggal_Selesai_Perbaikan,
+                'perubahan_setelah_intervensi' => $request->perubahan_setelah_intervensi,
                 'created_at'                => now(),
             ]);
 
