@@ -415,6 +415,8 @@ class IntervensiController extends Controller
 
     public function AddPenangananAPI(Request $request, string $nis)
     {
+        \Log::info('AddPenangananAPI called with nis: ' . $nis . ' data: ', $request->all());
+        
         $validator = \Illuminate\Support\Facades\Validator::make(
             array_merge($request->all(), ['nis' => $nis]),
             [
@@ -510,6 +512,8 @@ class IntervensiController extends Controller
 
     public function GetPenangananAPI(Request $request, string $nis)
     {
+        \Log::info('GetPenangananAPI called with nis: ' . $nis . ' nip: ' . $request->query('nip') . ' id_kelas: ' . $request->query('id_kelas'));
+        
         $nip     = $request->query('nip', '');
         $idKelas = $request->query('id_kelas', '');
 
