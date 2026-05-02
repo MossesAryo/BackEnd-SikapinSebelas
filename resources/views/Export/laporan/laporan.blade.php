@@ -19,6 +19,13 @@
     <div class="filter-info">
         <p><strong>Kelas:</strong> {{ $kelas }}</p>
         <p><strong>Jurusan:</strong> {{ $jurusan }}</p>
+        <p><strong>Periode:</strong>@if ($startDate == null && $endDate == null)
+            Semua Periode
+        @elseif ($endDate == null)
+            {{ $startDate }} s/d Sekarang
+        @else
+          {{ $startDate }} s/d {{ $endDate }}     
+        @endif </p>
     </div>
     <table>
         <thead>
@@ -34,7 +41,7 @@
         <tbody>
             @forelse ($data as $item)
                 <tr>
-                    <td>'{{ $item->siswa->nis ?? '-' }}</td>
+                    <td>{{ $item->siswa->nis ?? '-' }}</td>
                     <td>{{ $item->siswa->nama_siswa ?? '-' }}</td>
                     <td>{{ $item->siswa->kelas->nama_kelas ?? '-' }}</td>
                     <td>{{ $item->aspek_penilaian->kategori}}</td>
