@@ -15,6 +15,7 @@
 /node_modules
 /public/build
 /public/hot
+storage/logs/*.log
 
 /storage/*.key
 /storage/pail
