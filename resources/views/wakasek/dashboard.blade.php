@@ -61,7 +61,7 @@
     <p class="text-base font-semibold text-gray-800 mb-5">Aksi Cepat</p>
     <div class="flex flex-wrap gap-3">
 
-        @if (auth()->user()->role == 1 || auth()->user()->role == 2 || auth()->user()->role == 3)
+        @if (auth()->user()->hasRole([1,2,3]))
         <a href="{{ route('skoring_penghargaan.index') }}"
             class="flex items-center gap-4 p-4 rounded-xl border border-gray-100 bg-gray-50 hover:bg-green-50 hover:border-green-200 transition-all group flex-1 min-w-[180px]">
             <div class="w-11 h-11 bg-green-100 rounded-xl flex items-center justify-center flex-shrink-0">
@@ -96,7 +96,7 @@
             </div>
         </a>
 
-        @if (auth()->user()->role == 1 || auth()->user()->role == 2)
+        @if (auth()->user()->hasRole([1]))
         <a href="{{ route('laporan.index') }}"
             class="flex items-center gap-4 p-4 rounded-xl border border-gray-100 bg-gray-50 hover:bg-yellow-50 hover:border-yellow-200 transition-all group flex-1 min-w-[180px]">
             <div class="w-11 h-11 bg-yellow-100 rounded-xl flex items-center justify-center flex-shrink-0">
