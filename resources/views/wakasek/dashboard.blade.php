@@ -57,61 +57,60 @@
     </div>
 
     {{-- Quick Actions --}}
-    <div class="bg-white border border-gray-200 rounded-2xl p-6 mb-6">
-        <p class="text-base font-semibold text-gray-800 mb-5">Aksi Cepat</p>
-        <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
+<div class="bg-white border border-gray-200 rounded-2xl p-6 mb-6">
+    <p class="text-base font-semibold text-gray-800 mb-5">Aksi Cepat</p>
+    <div class="flex flex-wrap gap-3">
 
-            @if (auth()->user()->role == 1 || auth()->user()->role == 2 || auth()->user()->role == 3)
-            <a href="{{ route('skoring_penghargaan.index') }}"
-                class="flex items-center gap-4 p-4 rounded-xl border border-gray-100 bg-gray-50 hover:bg-green-50 hover:border-green-200 transition-all group">
-                <div class="w-11 h-11 bg-green-100 rounded-xl flex items-center justify-center flex-shrink-0">
-                    <i class="bi bi-award text-green-600 text-xl"></i>
-                </div>
-                <div>
-                    <p class="text-sm font-semibold text-gray-700 group-hover:text-green-700">Tambah</p>
-                    <p class="text-xs text-gray-400 group-hover:text-green-600">Skoring Penghargaan</p>
-                </div>
-            </a>
+        @if (auth()->user()->role == 1 || auth()->user()->role == 2 || auth()->user()->role == 3)
+        <a href="{{ route('skoring_penghargaan.index') }}"
+            class="flex items-center gap-4 p-4 rounded-xl border border-gray-100 bg-gray-50 hover:bg-green-50 hover:border-green-200 transition-all group flex-1 min-w-[180px]">
+            <div class="w-11 h-11 bg-green-100 rounded-xl flex items-center justify-center flex-shrink-0">
+                <i class="bi bi-award text-green-600 text-xl"></i>
+            </div>
+            <div>
+                <p class="text-sm font-semibold text-gray-700 group-hover:text-green-700">Tambah</p>
+                <p class="text-xs text-gray-400 group-hover:text-green-600">Skoring Penghargaan</p>
+            </div>
+        </a>
 
-            <a href="{{ route('skoring_pelanggaran.index') }}"
-                class="flex items-center gap-4 p-4 rounded-xl border border-gray-100 bg-gray-50 hover:bg-red-50 hover:border-red-200 transition-all group">
-                <div class="w-11 h-11 bg-red-100 rounded-xl flex items-center justify-center flex-shrink-0">
-                    <i class="bi bi-exclamation-triangle text-red-500 text-xl"></i>
-                </div>
-                <div>
-                    <p class="text-sm font-semibold text-gray-700 group-hover:text-red-600">Tambah</p>
-                    <p class="text-xs text-gray-400 group-hover:text-red-500">Skoring Pelanggaran</p>
-                </div>
-            </a>
-            @endif
+        <a href="{{ route('skoring_pelanggaran.index') }}"
+            class="flex items-center gap-4 p-4 rounded-xl border border-gray-100 bg-gray-50 hover:bg-red-50 hover:border-red-200 transition-all group flex-1 min-w-[180px]">
+            <div class="w-11 h-11 bg-red-100 rounded-xl flex items-center justify-center flex-shrink-0">
+                <i class="bi bi-exclamation-triangle text-red-500 text-xl"></i>
+            </div>
+            <div>
+                <p class="text-sm font-semibold text-gray-700 group-hover:text-red-600">Tambah</p>
+                <p class="text-xs text-gray-400 group-hover:text-red-500">Skoring Pelanggaran</p>
+            </div>
+        </a>
+        @endif
 
-            <a href="{{ route('siswa.index') }}"
-                class="flex items-center gap-4 p-4 rounded-xl border border-gray-100 bg-gray-50 hover:bg-blue-50 hover:border-blue-200 transition-all group">
-                <div class="w-11 h-11 bg-blue-100 rounded-xl flex items-center justify-center flex-shrink-0">
-                    <i class="bi bi-people text-blue-600 text-xl"></i>
-                </div>
-                <div>
-                    <p class="text-sm font-semibold text-gray-700 group-hover:text-blue-700">Lihat</p>
-                    <p class="text-xs text-gray-400 group-hover:text-blue-600">Data Siswa</p>
-                </div>
-            </a>
-                @if (auth()->user()->role == 1 || auth()->user()->role == 2)
+        <a href="{{ route('siswa.index') }}"
+            class="flex items-center gap-4 p-4 rounded-xl border border-gray-100 bg-gray-50 hover:bg-blue-50 hover:border-blue-200 transition-all group flex-1 min-w-[180px]">
+            <div class="w-11 h-11 bg-blue-100 rounded-xl flex items-center justify-center flex-shrink-0">
+                <i class="bi bi-people text-blue-600 text-xl"></i>
+            </div>
+            <div>
+                <p class="text-sm font-semibold text-gray-700 group-hover:text-blue-700">Lihat</p>
+                <p class="text-xs text-gray-400 group-hover:text-blue-600">Data Siswa</p>
+            </div>
+        </a>
 
-            <a href="{{ route('laporan.index') }}"
-                class="flex items-center gap-4 p-4 rounded-xl border border-gray-100 bg-gray-50 hover:bg-yellow-50 hover:border-yellow-200 transition-all group">
-                <div class="w-11 h-11 bg-yellow-100 rounded-xl flex items-center justify-center flex-shrink-0">
-                    <i class="bi bi-file-earmark-text text-yellow-600 text-xl"></i>
-                </div>
-                    
-                <div>
-                    <p class="text-sm font-semibold text-gray-700 group-hover:text-yellow-700">Export</p>
-                    <p class="text-xs text-gray-400 group-hover:text-yellow-600">Laporan</p>
-                </div>
-            </a>
-            @endif
+        @if (auth()->user()->role == 1 || auth()->user()->role == 2)
+        <a href="{{ route('laporan.index') }}"
+            class="flex items-center gap-4 p-4 rounded-xl border border-gray-100 bg-gray-50 hover:bg-yellow-50 hover:border-yellow-200 transition-all group flex-1 min-w-[180px]">
+            <div class="w-11 h-11 bg-yellow-100 rounded-xl flex items-center justify-center flex-shrink-0">
+                <i class="bi bi-file-earmark-text text-yellow-600 text-xl"></i>
+            </div>
+            <div>
+                <p class="text-sm font-semibold text-gray-700 group-hover:text-yellow-700">Export</p>
+                <p class="text-xs text-gray-400 group-hover:text-yellow-600">Laporan</p>
+            </div>
+        </a>
+        @endif
 
-        </div>
     </div>
+</div>
 
     {{-- Recent Activity --}}
     <div class="bg-white border border-gray-200 rounded-2xl overflow-hidden">
