@@ -13,7 +13,7 @@
         <tbody>
             @foreach($siswa as $item)
                 <tr>
-                    <td>{{ $item->nis}}</td>
+                    <td>'{{ $item->nis}}</td>
                     <td>{{ $item->id_kelas}}</td>
                     <td>{{ $item->nama_siswa}}</td>
                     <td>{{ $item->poin_apresiasi}}</td>

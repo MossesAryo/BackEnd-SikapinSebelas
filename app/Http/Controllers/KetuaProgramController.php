@@ -37,7 +37,7 @@ class KetuaProgramController extends Controller
 
         $ketua_program = $query->orderBy('id_jurusan')
                               ->orderBy('nama_ketua_program')
-                              ->paginate(5)
+                              ->paginate(10)
                               ->appends($request->only(['jurusan', 'search']));
         $daftar_jurusan = jurusan::all();
 

@@ -34,7 +34,7 @@
         <tbody>
             @forelse ($data as $item)
                 <tr>
-                    <td>{{ $item->siswa->nis ?? '-' }}</td>
+                    <td>'{{ $item->siswa->nis ?? '-' }}</td>
                     <td>{{ $item->siswa->nama_siswa ?? '-' }}</td>
                     <td>{{ $item->siswa->kelas->nama_kelas ?? '-' }}</td>
                     <td>{{ $item->aspek_penilaian->kategori}}</td>

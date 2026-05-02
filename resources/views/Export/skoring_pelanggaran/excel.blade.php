@@ -12,7 +12,7 @@
         <tbody>
             @foreach ($data as $item)
                 <tr>
-                    <td>{{ $item->siswa->nis ?? '-' }}</td>
+                    <td>'{{ $item->siswa->nis ?? '-' }}</td>
                     <td>{{ $item->siswa->nama_siswa ?? '-' }}</td>
                     <td>{{ \Carbon\Carbon::parse($item->tanggal_pelanggaran)->format('Y-m-d') }}</td>
                     <td>{{ $item->aspek_penilaian->jenis_poin ?? '-' }}</td>

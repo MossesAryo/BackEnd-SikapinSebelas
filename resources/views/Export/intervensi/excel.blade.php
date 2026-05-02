@@ -17,7 +17,7 @@
         @foreach($intervensi as $i => $item)
             <tr>
                 <td>{{ $i + 1 }}</td>
-                <td>{{ $item->nis }}</td>
+                <td>'{{ $item->nis }}</td>
                 <td>{{ $item->siswa->nama_siswa ?? '-' }}</td>
                 <td>{{ $item->siswa->kelas->nama_kelas ?? '-' }}</td>
                 <td>{{ $item->nama_intervensi }}</td>

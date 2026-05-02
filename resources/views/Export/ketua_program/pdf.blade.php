@@ -25,7 +25,6 @@
             @foreach($ketua_program as $item)
                 <tr>
                     <td>{{ $item->nip_kaprog }}</td>
-                    <td>{{ $item->username }}</td>
                     <td>{{ $item->nama_ketua_program }}</td>
                     <td>{{ $item->jurusan->nama_jurusan }}</td>
                 </tr>

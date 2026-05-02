@@ -10,7 +10,7 @@
         <tbody>
             @foreach($guru_bk as $item)
                 <tr>
-                    <td>{{ $item->nip_bk}}</td>
+                    <td>'{{ $item->nip_bk}}</td>
                     <td>{{ $item->username }}</td>
                     <td>{{ $item->nama_guru_bk }}</td>
                 </tr>

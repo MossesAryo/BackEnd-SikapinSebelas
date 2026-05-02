@@ -13,7 +13,7 @@
         <tbody>
             @foreach($akumulasi as $item)
                 <tr>
-                    <td>{{ $item->nis}}</td>
+                    <td>'{{ $item->nis}}</td>
                     <td>{{ $item->nama_siswa}}</td>
                     <td>{{ $item->kelas->nama_kelas ?? '-' }}</td>
                     <td>{{ $item->poin_apresiasi}}</td>
