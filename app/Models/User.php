@@ -71,4 +71,8 @@ class User extends Authenticatable
     {
         return $this->hasOne(ketua_program::class, 'username', 'username');
     }
+    public function hasRole($roles)
+{
+    return in_array($this->role, (array) $roles);
+}
 }

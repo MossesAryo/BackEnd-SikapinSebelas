@@ -100,7 +100,7 @@
                         <span>Siswa</span>
                     </a>
                 </li>
-                 @if (auth()->user()->role == [1, 3, 4])
+                 @if (auth()->user()->hasRole([1,2, 4]))
                 <li class="px-3">
                     <a href="{{ route('kelas') }}"
                         class="flex items-center gap-3 px-3 py-2.5 rounded-lg menu-link
@@ -114,7 +114,7 @@
                 
 
                 <!-- ───── MANAJEMEN USER ───── -->
-                @if (auth()->user()->role == 1)
+                @if (auth()->user()->hasRole(1))
                 <li><div class="section-divider mt-2"></div></li>
                 <li><div class="section-label">Manajemen User</div></li>
 
@@ -181,7 +181,7 @@
                     </a>
                 </li>
 
-                @if (auth()->user()->role == [1,2,3])
+                @if (auth()->user()->hasRole([1, 2, 3]))
                 <!-- ───── INPUT DATA ───── -->
                 <li><div class="section-divider mt-2"></div></li>
                 <li><div class="section-label">Input Data</div></li>
@@ -247,7 +247,7 @@
 
               
 
-                @if (auth()->user()->role == 1)
+                @if (auth()->user()->hasRole([1]))
                 <li class="px-3">
                     <a href="{{ route('laporan.index') }}"
                         class="flex items-center gap-3 px-3 py-2.5 rounded-lg menu-link
