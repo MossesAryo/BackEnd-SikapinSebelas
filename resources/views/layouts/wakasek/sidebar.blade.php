@@ -100,6 +100,7 @@
                         <span>Siswa</span>
                     </a>
                 </li>
+                 @if (auth()->user()->role == [1, 3, 4])
                 <li class="px-3">
                     <a href="{{ route('kelas') }}"
                         class="flex items-center gap-3 px-3 py-2.5 rounded-lg menu-link
@@ -108,6 +109,7 @@
                         <span>Kelas</span>
                     </a>
                 </li>
+                @endif
 
                 
 
@@ -179,7 +181,7 @@
                     </a>
                 </li>
 
-                @if (auth()->user()->role == 1 || auth()->user()->role == 2 || auth()->user()->role == 3)
+                @if (auth()->user()->role == [1,2,3])
                 <!-- ───── INPUT DATA ───── -->
                 <li><div class="section-divider mt-2"></div></li>
                 <li><div class="section-label">Input Data</div></li>
