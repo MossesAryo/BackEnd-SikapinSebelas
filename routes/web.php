@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\catatan;
+use FontLib\Table\Type\name;
 use Illuminate\Routing\RouteUri;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\KelasController;
@@ -37,6 +38,7 @@ Route::middleware(['auth'])->group(function () {});
 Route::middleware(['auth'])->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('wakasek.dashboard');
     Route::get('/profile', [ProfileController::class, 'index'])->name('profile');
+    Route::put('/profile/update', [ProfileController::class, 'updateProfile'])->name('profile.update');
 
 
     Route::post('/siswa/store', [SiswaController::class, 'store'])->name('siswa.store');
